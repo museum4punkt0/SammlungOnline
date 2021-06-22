@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  smb-research:
+    build:
+      context: ./../
+      dockerfile: docker/Dockerfile-build
+    image: smb/research
+    container_name: smb-research
+      # only for development purposes
+    ports:
+      - 9000:80
+
+networks:
+  default:
+    name: smb-net

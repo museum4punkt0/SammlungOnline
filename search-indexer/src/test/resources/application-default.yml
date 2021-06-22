@@ -1,0 +1,4 @@
+# This is just to instruct SpringBoot that our application-test.yml should be scanned
+# and merged with default application.yml from src/main/resources.
+
+spring.profiles.active: test

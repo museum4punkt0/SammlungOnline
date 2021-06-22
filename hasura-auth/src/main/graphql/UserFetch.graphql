@@ -1,0 +1,21 @@
+fragment userData on smb_user {
+    id
+    username:email
+    password,
+    editorScope:editor_scope,
+    role:user_role {
+        name:role
+    }
+}
+
+query FetchUserByToken($token: uuid!) {
+    user:smb_user (where: { id: {_eq: $token}}){
+        ...userData
+    }
+}
+
+query FetchUserByUsername($username: String!) {
+    user:smb_user (where: { email: {_eq: $username}}){
+        ...userData
+    }
+}

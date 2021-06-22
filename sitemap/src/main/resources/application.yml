@@ -1,0 +1,19 @@
+graphql:
+  endpoint: ${HASURA_ENDPOINT:http://smb-hasura:8080/v1/graphql}
+  in-memory-cache-size: 262144
+  headers:
+    X-Hasura-Admin-Secret: ${HASURA_SECRET}
+
+sitemap:
+  # local filesystem path where the sitemaps are stored
+  sitemap-location: ${SITEMAP-LOCATION}
+  # url of the research portal
+  research-base-url: ${RESEARCH-BASE-URL}
+  # url of the topics portal
+  topics-base-url: ${TOPICS-BASE-URL}
+  # url of the guide portal
+  guide-base-url: ${GUIDE-BASE-URL}
+
+logging.level:
+  de.smbonline: INFO
+  org.springframework: WARN

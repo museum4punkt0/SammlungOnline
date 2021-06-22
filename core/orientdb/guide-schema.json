@@ -1,0 +1,2951 @@
+{
+  "info": {
+    "name": "guide",
+    "default-cluster-id": 3,
+    "exporter-version": 12,
+    "engine-version": "3.0.32 - Veloce (build 68868260ca85ee997435395c9ef8c8f8f8029af1, branch UNKNOWN)",
+    "engine-build": "68868260ca85ee997435395c9ef8c8f8f8029af1",
+    "storage-config-version": 22,
+    "schema-version": 4,
+    "schemaRecordId": "#0:1",
+    "indexMgrRecordId": "#0:2"
+  },
+  "clusters": [
+    {
+      "name": "internal",
+      "id": 0
+    },
+    {
+      "name": "index",
+      "id": 1
+    },
+    {
+      "name": "manindex",
+      "id": 2
+    },
+    {
+      "name": "default",
+      "id": 3
+    },
+    {
+      "name": "orole",
+      "id": 4
+    },
+    {
+      "name": "ouser",
+      "id": 5
+    },
+    {
+      "name": "ofunction",
+      "id": 6
+    },
+    {
+      "name": "osequence",
+      "id": 7
+    },
+    {
+      "name": "oschedule",
+      "id": 8
+    },
+    {
+      "name": "v",
+      "id": 9
+    },
+    {
+      "name": "v_1",
+      "id": 10
+    },
+    {
+      "name": "v_2",
+      "id": 11
+    },
+    {
+      "name": "v_3",
+      "id": 12
+    },
+    {
+      "name": "v_4",
+      "id": 13
+    },
+    {
+      "name": "v_5",
+      "id": 14
+    },
+    {
+      "name": "e",
+      "id": 15
+    },
+    {
+      "name": "e_1",
+      "id": 16
+    },
+    {
+      "name": "e_2",
+      "id": 17
+    },
+    {
+      "name": "e_3",
+      "id": 18
+    },
+    {
+      "name": "e_4",
+      "id": 19
+    },
+    {
+      "name": "e_5",
+      "id": 20
+    },
+    {
+      "name": "_studio",
+      "id": 21
+    },
+    {
+      "name": "_studio_1",
+      "id": 22
+    },
+    {
+      "name": "_studio_2",
+      "id": 23
+    },
+    {
+      "name": "_studio_3",
+      "id": 24
+    },
+    {
+      "name": "_studio_4",
+      "id": 25
+    },
+    {
+      "name": "_studio_5",
+      "id": 26
+    },
+    {
+      "name": "location",
+      "id": 27
+    },
+    {
+      "name": "location_1",
+      "id": 28
+    },
+    {
+      "name": "location_2",
+      "id": 29
+    },
+    {
+      "name": "location_3",
+      "id": 30
+    },
+    {
+      "name": "location_4",
+      "id": 31
+    },
+    {
+      "name": "location_5",
+      "id": 32
+    },
+    {
+      "name": "path",
+      "id": 33
+    },
+    {
+      "name": "path_1",
+      "id": 34
+    },
+    {
+      "name": "path_2",
+      "id": 35
+    },
+    {
+      "name": "path_3",
+      "id": 36
+    },
+    {
+      "name": "path_4",
+      "id": 37
+    },
+    {
+      "name": "path_5",
+      "id": 38
+    }
+  ],
+  "schema": {
+    "version": 1,
+    "blob-clusters": [],
+    "classes": [
+      {
+        "name": "E",
+        "default-cluster-id": 15,
+        "cluster-ids": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "cluster-selection": "round-robin"
+      },
+      {
+        "name": "Location",
+        "default-cluster-id": 27,
+        "cluster-ids": [
+          27,
+          28,
+          29,
+          30,
+          31,
+          32
+        ],
+        "super-classes": [
+          "V"
+        ],
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "building",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "description",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "institute",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "key",
+            "type": "STRING",
+            "mandatory": true,
+            "not-null": true,
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OFunction",
+        "default-cluster-id": 6,
+        "cluster-ids": [
+          6
+        ],
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "code",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "idempotent",
+            "type": "BOOLEAN",
+            "collate": "default"
+          },
+          {
+            "name": "language",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "parameters",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "STRING",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OGeometryCollection",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "geometries",
+            "type": "EMBEDDEDLIST",
+            "linked-class": "OShape",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OIdentity",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin"
+      },
+      {
+        "name": "OLineString",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "coordinates",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "EMBEDDEDLIST",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OMultiLineString",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "coordinates",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "EMBEDDEDLIST",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OMultiPoint",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "coordinates",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "EMBEDDEDLIST",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OMultiPolygon",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "coordinates",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "EMBEDDEDLIST",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OPoint",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "coordinates",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "DOUBLE",
+            "min": "2",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OPolygon",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "coordinates",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "EMBEDDEDLIST",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "ORectangle",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "super-classes": [
+          "OShape"
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "coordinates",
+            "type": "EMBEDDEDLIST",
+            "linked-type": "DOUBLE",
+            "min": "4",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "ORestricted",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "_allow",
+            "type": "LINKSET",
+            "linked-class": "OIdentity",
+            "collate": "default"
+          },
+          {
+            "name": "_allowDelete",
+            "type": "LINKSET",
+            "linked-class": "OIdentity",
+            "collate": "default"
+          },
+          {
+            "name": "_allowRead",
+            "type": "LINKSET",
+            "linked-class": "OIdentity",
+            "collate": "default"
+          },
+          {
+            "name": "_allowUpdate",
+            "type": "LINKSET",
+            "linked-class": "OIdentity",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "ORole",
+        "default-cluster-id": 4,
+        "cluster-ids": [
+          4
+        ],
+        "super-classes": [
+          "OIdentity"
+        ],
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "inheritedRole",
+            "type": "LINK",
+            "linked-class": "ORole",
+            "collate": "default"
+          },
+          {
+            "name": "mode",
+            "type": "BYTE",
+            "collate": "default"
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "mandatory": true,
+            "not-null": true,
+            "collate": "ci"
+          },
+          {
+            "name": "rules",
+            "type": "EMBEDDEDMAP",
+            "linked-type": "BYTE",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OSchedule",
+        "default-cluster-id": 8,
+        "cluster-ids": [
+          8
+        ],
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "arguments",
+            "type": "EMBEDDEDMAP",
+            "collate": "default"
+          },
+          {
+            "name": "function",
+            "type": "LINK",
+            "mandatory": true,
+            "not-null": true,
+            "linked-class": "OFunction",
+            "collate": "default"
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "mandatory": true,
+            "not-null": true,
+            "collate": "default"
+          },
+          {
+            "name": "rule",
+            "type": "STRING",
+            "mandatory": true,
+            "not-null": true,
+            "collate": "default"
+          },
+          {
+            "name": "starttime",
+            "type": "DATETIME",
+            "collate": "default"
+          },
+          {
+            "name": "status",
+            "type": "STRING",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OSequence",
+        "default-cluster-id": 7,
+        "cluster-ids": [
+          7
+        ],
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "incr",
+            "type": "INTEGER",
+            "collate": "default"
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "start",
+            "type": "LONG",
+            "collate": "default"
+          },
+          {
+            "name": "type",
+            "type": "STRING",
+            "collate": "default"
+          },
+          {
+            "name": "value",
+            "type": "LONG",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "OShape",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin"
+      },
+      {
+        "name": "OTriggered",
+        "default-cluster-id": -1,
+        "cluster-ids": [
+          -1
+        ],
+        "abstract": true,
+        "cluster-selection": "round-robin"
+      },
+      {
+        "name": "OUser",
+        "default-cluster-id": 5,
+        "cluster-ids": [
+          5
+        ],
+        "super-classes": [
+          "OIdentity"
+        ],
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "name",
+            "type": "STRING",
+            "mandatory": true,
+            "not-null": true,
+            "min": "1",
+            "collate": "ci",
+            "regexp": "\\S+(.*\\S+)*"
+          },
+          {
+            "name": "password",
+            "type": "STRING",
+            "mandatory": true,
+            "not-null": true,
+            "collate": "default"
+          },
+          {
+            "name": "roles",
+            "type": "LINKSET",
+            "linked-class": "ORole",
+            "collate": "default"
+          },
+          {
+            "name": "status",
+            "type": "STRING",
+            "mandatory": true,
+            "not-null": true,
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "Path",
+        "default-cluster-id": 33,
+        "cluster-ids": [
+          33,
+          34,
+          35,
+          36,
+          37,
+          38
+        ],
+        "super-classes": [
+          "E"
+        ],
+        "cluster-selection": "round-robin",
+        "properties": [
+          {
+            "name": "a_barrier_free",
+            "type": "BOOLEAN",
+            "collate": "default"
+          },
+          {
+            "name": "a_length",
+            "type": "INTEGER",
+            "min": "0",
+            "collate": "default"
+          },
+          {
+            "name": "in",
+            "type": "LINK",
+            "linked-class": "Location",
+            "collate": "default"
+          },
+          {
+            "name": "out",
+            "type": "LINK",
+            "linked-class": "Location",
+            "collate": "default"
+          }
+        ]
+      },
+      {
+        "name": "V",
+        "default-cluster-id": 9,
+        "cluster-ids": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "cluster-selection": "round-robin"
+      },
+      {
+        "name": "_studio",
+        "default-cluster-id": 21,
+        "cluster-ids": [
+          21,
+          22,
+          23,
+          24,
+          25,
+          26
+        ],
+        "cluster-selection": "round-robin"
+      }
+    ]
+  },
+  "records": [
+    {
+      "@type": "b",
+      "@rid": "#0:0",
+      "@version": 1,
+      "value": "AAAAAA=="
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#0:1",
+      "@version": 197,
+      "schemaVersion": 4,
+      "classes": [
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 8,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            8
+          ],
+          "superClass": null,
+          "name": "OSchedule",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "status",
+              "globalId": 6,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "name",
+              "globalId": 0,
+              "description": null,
+              "type": 7,
+              "mandatory": true
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "OFunction",
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 21,
+              "description": null,
+              "type": 13,
+              "mandatory": true,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "function"
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "starttime",
+              "globalId": 22,
+              "description": null,
+              "type": 6,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "rule",
+              "globalId": 19,
+              "description": null,
+              "type": 7,
+              "mandatory": true
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "arguments",
+              "globalId": 20,
+              "description": null,
+              "type": 12,
+              "mandatory": false
+            }
+          ],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": null,
+          "name": "OShape",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "OPoint",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 23,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": "2",
+              "readonly": false,
+              "name": "coordinates",
+              "linkedType": 5
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 33,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            33,
+            34,
+            35,
+            36,
+            37,
+            38
+          ],
+          "superClass": "E",
+          "name": "Path",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "Location",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 26,
+              "description": null,
+              "type": 13,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "out"
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "a_barrier_free",
+              "globalId": 36,
+              "description": null,
+              "type": 0,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": "0",
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "a_length",
+              "globalId": 35,
+              "description": null,
+              "type": 1,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "Location",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 25,
+              "description": null,
+              "type": 13,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "in"
+            }
+          ],
+          "superClasses": [
+            "E"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "OLineString",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 23,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "coordinates",
+              "linkedType": 10
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 5,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            5
+          ],
+          "superClass": "OIdentity",
+          "name": "OUser",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "password",
+              "globalId": 4,
+              "description": null,
+              "type": 7,
+              "mandatory": true
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "status",
+              "globalId": 6,
+              "description": null,
+              "type": 7,
+              "mandatory": true
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "ORole",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 5,
+              "description": null,
+              "type": 15,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "roles"
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "regexp": "\\S+(.*\\S+)*",
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 0,
+              "description": null,
+              "type": 7,
+              "mandatory": true,
+              "collate": "ci",
+              "min": "1",
+              "readonly": false,
+              "name": "name"
+            }
+          ],
+          "superClasses": [
+            "OIdentity"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": null,
+          "name": "ORestricted",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "OIdentity",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 10,
+              "description": null,
+              "type": 15,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "_allowDelete"
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "OIdentity",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 8,
+              "description": null,
+              "type": 15,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "_allowRead"
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "OIdentity",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 9,
+              "description": null,
+              "type": 15,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "_allowUpdate"
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "OIdentity",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 7,
+              "description": null,
+              "type": 15,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "_allow"
+            }
+          ],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "OMultiPoint",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 23,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "coordinates",
+              "linkedType": 10
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "OMultiLineString",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 23,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "coordinates",
+              "linkedType": 10
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 27,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            27,
+            28,
+            29,
+            30,
+            31,
+            32
+          ],
+          "superClass": "V",
+          "name": "Location",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "building",
+              "globalId": 28,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "key",
+              "globalId": 29,
+              "description": null,
+              "type": 7,
+              "mandatory": true
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "description",
+              "globalId": 30,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "institute",
+              "globalId": 27,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            }
+          ],
+          "superClasses": [
+            "V"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": null,
+          "name": "OIdentity",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 9,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "superClass": null,
+          "name": "V",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "OPolygon",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 23,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "coordinates",
+              "linkedType": 10
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 4,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            4
+          ],
+          "superClass": "OIdentity",
+          "name": "ORole",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "mode",
+              "globalId": 1,
+              "description": null,
+              "type": 17,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 2,
+              "description": null,
+              "type": 12,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "rules",
+              "linkedType": 17
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "ORole",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 3,
+              "description": null,
+              "type": 13,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "inheritedRole"
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "ci",
+              "min": null,
+              "readonly": false,
+              "notNull": true,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "name",
+              "globalId": 0,
+              "description": null,
+              "type": 7,
+              "mandatory": true
+            }
+          ],
+          "superClasses": [
+            "OIdentity"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 15,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+          ],
+          "superClass": null,
+          "name": "E",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "OGeometryCollection",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "linkedClass": "OShape",
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 24,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "geometries"
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": null,
+          "name": "OTriggered",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 21,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            21,
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "superClass": null,
+          "name": "_studio",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 7,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            7
+          ],
+          "superClass": null,
+          "name": "OSequence",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "name",
+              "globalId": 0,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "value",
+              "globalId": 17,
+              "description": null,
+              "type": 3,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "start",
+              "globalId": 15,
+              "description": null,
+              "type": 3,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "incr",
+              "globalId": 16,
+              "description": null,
+              "type": 1,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "type",
+              "globalId": 18,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            }
+          ],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "ORectangle",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 23,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": "4",
+              "readonly": false,
+              "name": "coordinates",
+              "linkedType": 5
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": -1,
+          "strictMode": false,
+          "description": null,
+          "abstract": true,
+          "clusterIds": [
+            -1
+          ],
+          "superClass": "OShape",
+          "name": "OMultiPolygon",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 23,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "coordinates",
+              "linkedType": 10
+            }
+          ],
+          "superClasses": [
+            "OShape"
+          ],
+          "@fieldTypes": "overSize=f,properties=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "customFields": null,
+          "defaultClusterId": 6,
+          "strictMode": false,
+          "description": null,
+          "abstract": false,
+          "clusterIds": [
+            6
+          ],
+          "superClass": null,
+          "name": "OFunction",
+          "clusterSelection": "round-robin",
+          "shortName": null,
+          "overSize": 0.0,
+          "properties": [
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "language",
+              "globalId": 12,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "name",
+              "globalId": 0,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "idempotent",
+              "globalId": 13,
+              "description": null,
+              "type": 0,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "name": "code",
+              "globalId": 11,
+              "description": null,
+              "type": 7,
+              "mandatory": false
+            },
+            {
+              "@type": "d",
+              "@version": 0,
+              "notNull": false,
+              "max": null,
+              "defaultValue": null,
+              "customFields": null,
+              "globalId": 14,
+              "description": null,
+              "type": 10,
+              "mandatory": false,
+              "collate": "default",
+              "min": null,
+              "readonly": false,
+              "name": "parameters",
+              "linkedType": 7
+            }
+          ],
+          "superClasses": null,
+          "@fieldTypes": "overSize=f,properties=e"
+        }
+      ],
+      "globalProperties": [
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "name",
+          "id": 0,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "mode",
+          "id": 1,
+          "type": "BYTE"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "rules",
+          "id": 2,
+          "type": "EMBEDDEDMAP"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "inheritedRole",
+          "id": 3,
+          "type": "LINK"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "password",
+          "id": 4,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "roles",
+          "id": 5,
+          "type": "LINKSET"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "status",
+          "id": 6,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "_allow",
+          "id": 7,
+          "type": "LINKSET"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "_allowRead",
+          "id": 8,
+          "type": "LINKSET"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "_allowUpdate",
+          "id": 9,
+          "type": "LINKSET"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "_allowDelete",
+          "id": 10,
+          "type": "LINKSET"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "code",
+          "id": 11,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "language",
+          "id": 12,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "idempotent",
+          "id": 13,
+          "type": "BOOLEAN"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "parameters",
+          "id": 14,
+          "type": "EMBEDDEDLIST"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "start",
+          "id": 15,
+          "type": "LONG"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "incr",
+          "id": 16,
+          "type": "INTEGER"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "value",
+          "id": 17,
+          "type": "LONG"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "type",
+          "id": 18,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "rule",
+          "id": 19,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "arguments",
+          "id": 20,
+          "type": "EMBEDDEDMAP"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "function",
+          "id": 21,
+          "type": "LINK"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "starttime",
+          "id": 22,
+          "type": "DATETIME"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "coordinates",
+          "id": 23,
+          "type": "EMBEDDEDLIST"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "geometries",
+          "id": 24,
+          "type": "EMBEDDEDLIST"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "in",
+          "id": 25,
+          "type": "LINK"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "out",
+          "id": 26,
+          "type": "LINK"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "institute",
+          "id": 27,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "building",
+          "id": 28,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "key",
+          "id": 29,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "description",
+          "id": 30,
+          "type": "STRING"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "length",
+          "id": 31,
+          "type": "INTEGER"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "barrier_free",
+          "id": 32,
+          "type": "BOOLEAN"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "barrier_free",
+          "id": 33,
+          "type": "INTEGER"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "bla",
+          "id": 34,
+          "type": "INTEGER"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "a_length",
+          "id": 35,
+          "type": "INTEGER"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "name": "a_barrier_free",
+          "id": 36,
+          "type": "BOOLEAN"
+        }
+      ],
+      "blobClusters": [],
+      "@fieldTypes": "classes=e,blobClusters=e"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#0:2",
+      "@version": 6,
+      "indexes": [
+        {
+          "@type": "d",
+          "@version": 0,
+          "metadata": {
+            "@type": "d",
+            "@version": 0,
+            "trackMode": "FULL",
+            "durableInNonTxMode": true
+          },
+          "valueContainerAlgorithm": "NONE",
+          "name": "dictionary",
+          "indexVersion": 2,
+          "indexDefinition": {
+            "@type": "d",
+            "@version": 0,
+            "collate": "default",
+            "nullValuesIgnored": false,
+            "keyTypes": [
+              "STRING"
+            ]
+          },
+          "type": "DICTIONARY",
+          "indexDefinitionClass": "com.orientechnologies.orient.core.index.OSimpleKeyIndexDefinition",
+          "clusters": [],
+          "algorithm": "CELL_BTREE",
+          "@fieldTypes": "clusters=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "valueContainerAlgorithm": "NONE",
+          "name": "OFunction.name",
+          "indexVersion": 2,
+          "indexDefinition": {
+            "@type": "d",
+            "@version": 0,
+            "collate": "default",
+            "field": "name",
+            "nullValuesIgnored": false,
+            "className": "OFunction",
+            "keyType": "STRING"
+          },
+          "type": "UNIQUE_HASH_INDEX",
+          "indexDefinitionClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+          "clusters": [
+            "ofunction"
+          ],
+          "algorithm": "HASH_INDEX",
+          "@fieldTypes": "clusters=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "valueContainerAlgorithm": "NONE",
+          "name": "ORole.name",
+          "indexVersion": 2,
+          "indexDefinition": {
+            "@type": "d",
+            "@version": 0,
+            "collate": "ci",
+            "field": "name",
+            "nullValuesIgnored": false,
+            "className": "ORole",
+            "keyType": "STRING"
+          },
+          "type": "UNIQUE",
+          "indexDefinitionClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+          "clusters": [
+            "orole"
+          ],
+          "algorithm": "CELL_BTREE",
+          "@fieldTypes": "clusters=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "valueContainerAlgorithm": "NONE",
+          "name": "OUser.name",
+          "indexVersion": 2,
+          "indexDefinition": {
+            "@type": "d",
+            "@version": 0,
+            "collate": "ci",
+            "field": "name",
+            "nullValuesIgnored": false,
+            "className": "OUser",
+            "keyType": "STRING"
+          },
+          "type": "UNIQUE",
+          "indexDefinitionClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+          "clusters": [
+            "ouser"
+          ],
+          "algorithm": "CELL_BTREE",
+          "@fieldTypes": "clusters=e"
+        },
+        {
+          "@type": "d",
+          "@version": 0,
+          "valueContainerAlgorithm": "NONE",
+          "name": "Location.key",
+          "indexVersion": 2,
+          "indexDefinition": {
+            "@type": "d",
+            "@version": 0,
+            "collate": "default",
+            "field": "key",
+            "nullValuesIgnored": false,
+            "className": "Location",
+            "keyType": "STRING"
+          },
+          "type": "UNIQUE_HASH_INDEX",
+          "indexDefinitionClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+          "clusters": [
+            "location_1",
+            "location",
+            "location_4",
+            "location_5",
+            "location_2",
+            "location_3"
+          ],
+          "algorithm": "HASH_INDEX",
+          "@fieldTypes": "clusters=e"
+        }
+      ],
+      "@fieldTypes": "indexes=e"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#3:0",
+      "@version": 1,
+      "in": "#29:0",
+      "out": "#27:0",
+      "@fieldTypes": "in=x,out=x"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#3:1",
+      "@version": 1,
+      "in": "#28:0",
+      "out": "#27:0",
+      "@fieldTypes": "in=x,out=x"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#3:2",
+      "@version": 1,
+      "in": "#30:0",
+      "out": "#28:0",
+      "@fieldTypes": "in=x,out=x"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#3:3",
+      "@version": 1,
+      "in": "#31:0",
+      "out": "#30:0",
+      "@fieldTypes": "in=x,out=x"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#3:4",
+      "@version": 1,
+      "in": "#31:0",
+      "out": "#29:0",
+      "@fieldTypes": "in=x,out=x"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#4:0",
+      "@version": 2,
+      "@class": "ORole",
+      "mode": 1,
+      "name": "admin",
+      "rules": {
+        "database.bypassRestricted": 31
+      },
+      "inheritedRole": null,
+      "@fieldTypes": "mode=b"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#4:1",
+      "@version": 2,
+      "@class": "ORole",
+      "mode": 0,
+      "name": "reader",
+      "rules": {
+        "database.cluster.internal": 2,
+        "database.cluster.orole": 0,
+        "database": 2,
+        "database.function": 2,
+        "database.schema": 2,
+        "database.class.ouser": 0,
+        "database.cluster.ouser": 0,
+        "database.systemclusters": 0,
+        "database.cluster": 2,
+        "database.command": 2,
+        "database.hook.record": 2,
+        "database.class": 2
+      },
+      "inheritedRole": null,
+      "@fieldTypes": "mode=b"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#4:2",
+      "@version": 2,
+      "@class": "ORole",
+      "mode": 0,
+      "name": "writer",
+      "rules": {
+        "database.cluster.internal": 2,
+        "database.class.oschedule": 2,
+        "database.class.osequence": 2,
+        "database.class.ouser": 0,
+        "database.systemclusters": 0,
+        "database.hook.record": 31,
+        "database": 2,
+        "database.function": 2,
+        "database.schema": 7,
+        "database.class.otriggered": 2,
+        "database.cluster": 31,
+        "database.command": 31,
+        "database.class": 31
+      },
+      "inheritedRole": null,
+      "@fieldTypes": "mode=b"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#5:0",
+      "@version": 1,
+      "@class": "OUser",
+      "password": "{PBKDF2WithHmacSHA256}B64EF298219AA9B1E9568ECC899376C9835B6DF1CD083029:66A2D1018DD0D93FF4ED5BA0B828D568DE52FA5A5E0E1907:65536",
+      "roles": [
+        "#4:0"
+      ],
+      "name": "admin",
+      "status": "ACTIVE",
+      "@fieldTypes": "roles=n"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#5:1",
+      "@version": 1,
+      "@class": "OUser",
+      "password": "{PBKDF2WithHmacSHA256}8A34D5ECF32F4E960D2B25607248084023C9AAF5ED341397:3E812E59C08F25A6FBEC67766E25B53336F3A7B4B9E32EE5:65536",
+      "roles": [
+        "#4:1"
+      ],
+      "name": "reader",
+      "status": "ACTIVE",
+      "@fieldTypes": "roles=n"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#5:2",
+      "@version": 1,
+      "@class": "OUser",
+      "password": "{PBKDF2WithHmacSHA256}0DA5FF940738085CB573DE220F5BDBF62AAFC94BA5B798E0:744402915795F034C609D8A693635EDE1B05D9FE17608328:65536",
+      "roles": [
+        "#4:2"
+      ],
+      "name": "writer",
+      "status": "ACTIVE",
+      "@fieldTypes": "roles=n"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#5:3",
+      "@version": 1,
+      "@class": "OUser",
+      "password": "{PBKDF2WithHmacSHA256}217B16B86F70298F4466583C8BC91E8A91DB5038C65185DB:461769B0013F024B8C616D880B69378D96F780844906AF46:65536",
+      "roles": [
+        "#4:1",
+        "#4:2",
+        "#4:0"
+      ],
+      "name": "smbuser",
+      "status": "ACTIVE",
+      "@fieldTypes": "roles=n"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#6:0",
+      "@version": 1,
+      "@class": "OFunction",
+      "idempotent": null,
+      "code": "",
+      "name": "findPath",
+      "language": "javascript",
+      "parameters": [
+        "in",
+        "out",
+        "weightParam"
+      ]
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#21:0",
+      "@version": 1,
+      "@class": "_studio",
+      "type": "GraphConfig"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#21:1",
+      "@version": 4,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1346,
+        "height": 500,
+        "classes": {
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254",
+            "iconCss": null,
+            "icon": null,
+            "display": "key"
+          },
+          "Path": {
+            "stroke": "#6e98a0",
+            "display": "a_length"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#21:2",
+      "@version": 2,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1346,
+        "height": 500,
+        "classes": {
+          "Path": {
+            "stroke": "#6e98a0"
+          },
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#22:0",
+      "@version": 1,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "height": 500,
+        "width": 1200,
+        "classes": {},
+        "node": {
+          "r": 30
+        }
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#22:1",
+      "@version": 4,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1346,
+        "height": 500,
+        "classes": {
+          "Path": {
+            "stroke": "#6e98a0",
+            "display": "a_length",
+            "displayExpression": "{{a_length}} - {{a_barrier_free}}"
+          },
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254",
+            "iconCss": null,
+            "icon": null,
+            "display": "key"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#22:2",
+      "@version": 3,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1346,
+        "height": 500,
+        "classes": {
+          "Path": {
+            "stroke": "#6e98a0"
+          },
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254",
+            "iconCss": null,
+            "icon": null,
+            "display": "key"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#23:0",
+      "@version": 1,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "height": 500,
+        "width": 1200,
+        "classes": {},
+        "node": {
+          "r": 30
+        }
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#23:1",
+      "@version": 4,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1848,
+        "height": 500,
+        "classes": {
+          "Path": {
+            "stroke": "#6e98a0",
+            "display": "a_length"
+          },
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254",
+            "iconCss": null,
+            "icon": null,
+            "display": "key"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      },
+      "user": "#5:3",
+      "@fieldTypes": "user=x"
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#24:0",
+      "@version": 2,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1346,
+        "height": 500,
+        "classes": {
+          "Path": {
+            "stroke": "#6e98a0",
+            "display": "a_length"
+          },
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254",
+            "iconCss": null,
+            "icon": null,
+            "display": "key"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#25:0",
+      "@version": 2,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1346,
+        "height": 500,
+        "classes": {
+          "Path": {
+            "stroke": "#6e98a0"
+          },
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      }
+    },
+    ,
+    {
+      "@type": "d",
+      "@rid": "#26:0",
+      "@version": 3,
+      "@class": "_studio",
+      "type": "GraphConfig",
+      "config": {
+        "width": 1346,
+        "height": 500,
+        "classes": {
+          "Path": {
+            "stroke": "#6e98a0",
+            "display": "a_length"
+          },
+          "Location": {
+            "fill": "#ffbb78",
+            "stroke": "#b28254",
+            "iconCss": null,
+            "icon": null,
+            "display": "key"
+          }
+        },
+        "node": {
+          "r": 30
+        },
+        "linkDistance": 200,
+        "charge": -1000,
+        "friction": 0.9,
+        "gravity": 0.1
+      }
+    }
+  ],
+  "brokenRids": [],
+  "indexes": [
+    {
+      "name": "OFunction.name",
+      "type": "UNIQUE_HASH_INDEX",
+      "algorithm": "HASH_INDEX",
+      "clustersToIndex": [
+        "ofunction"
+      ],
+      "definition": {
+        "defClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+        "stream": {
+          "@type": "d",
+          "@version": 0,
+          "collate": "default",
+          "field": "name",
+          "nullValuesIgnored": false,
+          "className": "OFunction",
+          "keyType": "STRING"
+        }
+      }
+    },
+    {
+      "name": "dictionary",
+      "type": "DICTIONARY",
+      "algorithm": "CELL_BTREE",
+      "definition": {
+        "defClass": "com.orientechnologies.orient.core.index.OSimpleKeyIndexDefinition",
+        "stream": {
+          "@type": "d",
+          "@version": 0,
+          "collate": "default",
+          "nullValuesIgnored": false,
+          "keyTypes": [
+            "STRING"
+          ]
+        }
+      },
+      "metadata": {
+        "@type": "d",
+        "@version": 0,
+        "trackMode": "FULL",
+        "durableInNonTxMode": true
+      }
+    },
+    {
+      "name": "Location.key",
+      "type": "UNIQUE_HASH_INDEX",
+      "algorithm": "HASH_INDEX",
+      "clustersToIndex": [
+        "location_1",
+        "location",
+        "location_4",
+        "location_5",
+        "location_2",
+        "location_3"
+      ],
+      "definition": {
+        "defClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+        "stream": {
+          "@type": "d",
+          "@version": 0,
+          "collate": "default",
+          "field": "key",
+          "nullValuesIgnored": false,
+          "className": "Location",
+          "keyType": "STRING"
+        }
+      }
+    },
+    {
+      "name": "ORole.name",
+      "type": "UNIQUE",
+      "algorithm": "CELL_BTREE",
+      "clustersToIndex": [
+        "orole"
+      ],
+      "definition": {
+        "defClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+        "stream": {
+          "@type": "d",
+          "@version": 0,
+          "collate": "ci",
+          "field": "name",
+          "nullValuesIgnored": false,
+          "className": "ORole",
+          "keyType": "STRING"
+        }
+      }
+    },
+    {
+      "name": "OUser.name",
+      "type": "UNIQUE",
+      "algorithm": "CELL_BTREE",
+      "clustersToIndex": [
+        "ouser"
+      ],
+      "definition": {
+        "defClass": "com.orientechnologies.orient.core.index.OPropertyIndexDefinition",
+        "stream": {
+          "@type": "d",
+          "@version": 0,
+          "collate": "ci",
+          "field": "name",
+          "nullValuesIgnored": false,
+          "className": "OUser",
+          "keyType": "STRING"
+        }
+      }
+    }
+  ],
+  "manualIndexes": [
+    {
+      "name": "dictionary",
+      "content": []
+    }
+  ]
+}

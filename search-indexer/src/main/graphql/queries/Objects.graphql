@@ -1,0 +1,44 @@
+# Definition of the Object data struct
+fragment objectData on smb_objects {
+    id
+    createdAt:created_at
+    updatedAt:updated_at
+    exhibitionSpace:exhibition_space
+    attributes:attribute_translations (where: {language: {lang: {_eq: $lang} } }){
+        key:attribute_key
+        value
+        fqKey:fq_key
+    }
+    attachments {
+        name:attachment
+    }
+    highlights {
+        orgUnitId:org_unit_id
+    }
+}
+
+# Return an Object by id
+query FetchObject($id: bigint!) {
+    smb_objects_by_pk(id: $id) {
+        id
+    }
+}
+
+# Return an Object by id
+query FetchObjectWithAttributes($id: bigint!, $lang: String!) {
+    smb_objects_by_pk(id: $id) {
+        ...objectData
+    }
+}
+
+# Fetch a page of object ids
+query FetchObjects($startId: bigint!, $offset: Int!, $limit: Int!) {
+    smb_objects(
+        offset: $offset,
+        limit: $limit,
+        where: {id: {_gte: $startId}}
+        order_by: [{id: asc}])
+    {
+        id
+    }
+}

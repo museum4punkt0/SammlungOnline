@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  servlet:
+    context-path: "/"
+
+hasura:
+  endpoint: ${HASURA_ENDPOINT}
+  admin-secret: ${HASURA_SECRET}
+  unauthorized-role: ${HASURA_GRAPHQL_UNAUTHORIZED_ROLE:anonymous}
+  in-memory-cache-size: 4194304
+
+logging.level:
+  org.apache.catalina: WARN
+  org.springframework: WARN
+  com.xailabs: DEBUG

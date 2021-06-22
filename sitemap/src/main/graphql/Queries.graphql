@@ -1,0 +1,35 @@
+# Returns a page of Objects
+query FetchObjects($offset: Int!, $limit: Int!) {
+    smb_objects(offset: $offset, limit: $limit, order_by: [{id: asc}]) {
+        ...objectData
+    }
+    smb_objects_aggregate {
+        aggregate {
+            count
+        }
+    }
+}
+
+# Returns a page of Topics
+query FetchTopics($offset: Int!, $limit: Int!) {
+    smb_topics(offset: $offset, limit: $limit, order_by: [{id: asc}]) {
+        ...topicData
+    }
+    smb_topics_aggregate {
+        aggregate {
+            count
+        }
+    }
+}
+
+# Returns a page of Tours
+query FetchTours($offset: Int!, $limit: Int!) {
+    smb_tours(offset: $offset, limit: $limit, order_by: [{id: asc}]) {
+        ...tourData
+    }
+    smb_tours_aggregate {
+        aggregate {
+            count
+        }
+    }
+}

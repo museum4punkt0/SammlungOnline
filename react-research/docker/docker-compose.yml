@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+  smb-research:
+    build:
+      context: ./../
+      dockerfile: docker/Dockerfile
+    image: smb/research
+    container_name: smb-research
+    restart: unless-stopped
+
+    # only for development
+    ports:
+      - 9000:80
+    volumes:
+      - ../src:/opt/research/src
+      - ../public:/opt/research/public
+      - ../package.json:/opt/research/package.json
+      - ../yarn.lock:/opt/research/yarn.lock
+      - ./docker_entrypoint.sh:/docker_entrypoint.sh
+
+    # only to show dependency
+    external_links:
+      - smb-image-provider
+      - smb-reverse-proxy
+
+networks:
+  default:
+    name: smb-net

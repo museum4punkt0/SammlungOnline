@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  smb-hasura:
+    image: reg.xailabs.com/xailabs/hasura/graphql-engine:v1.3.2
+    container_name: smb-hasura
+    restart: unless-stopped
+    environment: 
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://smb-db-user:hdlsUAhXZBK6@smb-postgres:5432/smbonline
+      - HASURA_GRAPHQL_ACCESS_KEY=jcG8QBI5g8OX
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+      - HASURA_GRAPHQL_AUTH_HOOK=http://smb-hasura-auth:8080/login
+      - HASURA_GRAPHQL_AUTH_HOOK_MODE=GET
+    ports:
+      - 8081:8080
+    external_links:
+    - smb-postgres
+
+networks:
+  default:
+    name: smb-net

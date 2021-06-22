@@ -1,0 +1,12 @@
+logging.level:
+  de.smbonline: TRACE
+  org.springframework: ERROR
+
+server:
+  port: 23456
+
+graphql:
+  endpoint: http://localhost:8081/v1/graphql
+  in-memory-cache-size: 0
+  headers:
+    X-Hasura-Admin-Secret: jcG8QBI5g8OX

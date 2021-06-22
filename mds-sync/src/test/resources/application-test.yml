@@ -1,0 +1,27 @@
+logging.level:
+  de.smbonline: TRACE
+  org.springframework: ERROR
+
+server:
+  port: 12345
+
+scheduler:
+  jobs:
+    enabled: false
+
+mds-api:
+  base-url: https://de1.zetcom-group.de/MpWeb-mpBerlinStaatlicheMuseenTest
+  ssl-validation-enabled: false
+  auth:
+    header: Basic WGFpbGFic19NQjoxNkhKdTBDamNJajY=
+
+image-provider:
+  base-url: http://localhost:8090/images
+  user: smb-image-user
+  pass: 8ZhijO1jTvm6
+
+graphql:
+  endpoint: http://localhost:8081/v1/graphql
+  in-memory-cache-size: 0
+  headers:
+    X-Hasura-Admin-Secret: jcG8QBI5g8OX

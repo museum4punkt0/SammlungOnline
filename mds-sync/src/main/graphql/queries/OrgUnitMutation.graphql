@@ -1,0 +1,26 @@
+# Insert a new OrgUnit
+mutation InsertOrgUnit($orgUnitName: String!) {
+    insert_smb_org_unit_one(object: {
+        name: $orgUnitName
+    }) {
+        id
+    }
+}
+
+# Delte an OrgUnit by id
+mutation DeleteOrgUnit($orgUnitId: bigint!) {
+    delete_smb_org_unit_by_pk(id: $orgUnitId) {
+        id
+    }
+}
+
+# Delete an OrgUnit by name
+mutation DeleteOrgUnitByName($orgUnitName: String!) {
+    delete_smb_org_unit(where: {
+        name: {_eq: $orgUnitName}
+    }) {
+        returning {
+            id
+        }
+    }
+}

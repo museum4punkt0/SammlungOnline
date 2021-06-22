@@ -1,0 +1,140 @@
+{
+    "AKu": {
+        "key": "AKu",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "AMP": {
+        "key": "AMP",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "^.+\\((?<collection>ÄMP|AMP) */ *(?<building>NMU|Neues Museum) */ *(?<level>.+?) */ *(?<room>.+?) *\\) */ *(?<appendix>.*)$",
+        "excludes": null
+    },
+    "ÄMP": {
+        "key": "ÄMP",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "^.+\\((?<collection>ÄMP|AMP) */ *(?<building>NMU|Neues Museum) */ *(?<level>.+?) */ *(?<room>.+?) *\\) */ *(?<appendix>.*)$",
+        "excludes": "(?!NMU|Neues Museum)"
+    },
+    "ANT": {
+        "key": "ANT",
+        "field": "ObjNormalLocationVrt",
+        "includes": "^(?<room>.+?) *(?:\\(.*\\))? *\\(ANT */ *(?<building>.+?) */ *Ausstellung(?: */ *(?<level>.+) *)?\\) */ *(?<appendix>.*)$",
+        "excludes": "^(?:Museumsshop|.*\\(ANT.+(?:AM|Altes Museum).*Ausstellung.+(?:1\\. *Obergeschoss)\\)).*$"
+    },
+    "EM": {
+        "key": "EM",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "GG": {
+        "key": "GG",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "ISL": {
+        "key": "ISL",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "KB": {
+        "key": "KB",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "KGM": {
+        "key": "KGM",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "KK": {
+        "key": "KK",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "MK": {
+        "key": "MK",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "MEK": {
+        "key": "MEK",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "MIM": {
+        "key": "MIM",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "MVF": {
+        "key": "MVF",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "^(?<room>.+?) *(?:\\(.*\\))? *\\(MVF */ *(?<building>.+?)\\).*",
+        "excludes": null
+    },
+    "NG": {
+        "key": "NG",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "ANG": {
+        "key": "ANG",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "MSB": {
+        "key": "MSB",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "SKS": {
+        "key": "SKS",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "VAM": {
+        "key": "VAM",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "GF": {
+        "key": "GF",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "IFM": {
+        "key": "IFM",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "RaO": {
+        "key": "RaO",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
+    "ZA": {
+        "key": "ZA",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    }
+}

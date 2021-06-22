@@ -1,0 +1,33 @@
+logging.level:
+  de.smbonline: INFO
+  org.apache.catalina: WARN
+  org.springframework: WARN
+  performance: INFO
+
+server:
+  port: 8085
+
+graphql:
+  endpoint: ${HASURA_ENDPOINT:http://smb-hasura:8080/v1/graphql}
+  in-memory-cache-size: 0
+  headers:
+    X-Hasura-Admin-Secret: ${HASURA_SECRET}
+
+elastic:
+  base-url: ${ELASTICSEARCH_BASEURL:http://smb-elasticsearch:9200}
+  object-index: ${ELASTICSEARCH_INDEXNAME:objects}
+  suggestions-sort: counter
+spring:
+  elasticsearch:
+    rest:
+      uris: ${elastic.base-url}
+
+normalizers:
+  involved-parties-with-explicit-role: false
+  location-separator: ->
+  unknown-exhibition-space: UNKNOWN
+
+management:
+  endpoint:
+    health:
+      show-details: always

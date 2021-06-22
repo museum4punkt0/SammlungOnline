@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  smb-postgres:
+    image: reg.xailabs.com/xailabs/postgres:12.4
+    container_name: smb-postgres
+    restart: unless-stopped
+    
+    # only for development
+    volumes:
+      - ./data:/var/lib/postgresql/data/pgdata
+    environment: 
+      - POSTGRES_USER=smb-db-user
+      - POSTGRES_DB=smbonline
+      - POSTGRES_PASSWORD=hdlsUAhXZBK6
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+
+networks:
+  default:
+    name: smb-net

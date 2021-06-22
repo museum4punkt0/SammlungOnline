@@ -1,0 +1,13 @@
+# Fetch all OrgUnits
+query FetchOrgUnits {
+    smb_org_unit {
+        ...orgUnitData
+    }
+}
+
+# Fetch one OrgUnit by name
+query FetchOrgUnitByName($orgUnitName: String!) {
+    smb_org_unit(where: {name: {_eq: $orgUnitName}}) {
+        ...orgUnitData
+    }
+}

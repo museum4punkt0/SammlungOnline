@@ -1,0 +1,10 @@
+# Fetch info about the latest SyncCycle with the given type
+query FetchLastSyncCycle($cycleType:smb_sync_cycle_type_enum!) {
+    smb_sync_cycles(
+        where: {type: {_eq: $cycleType}},
+        limit: 1,
+        order_by: [{ timestamp: desc }]
+    ) {
+        ...syncCycleData
+    }
+}

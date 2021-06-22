@@ -1,0 +1,20 @@
+version: '3.5'
+
+services:
+  smb-mds-sync:
+    build:
+      context: ./../
+      dockerfile: docker/Dockerfile
+    image: smb/mds-sync
+    container_name: smb-mds-sync
+    restart: unless-stopped
+    environment:
+      - scheduler-jobs-enabled=false
+      - hasura-secret=jcG8QBI5g8OX
+
+    external_links:
+      - smb-hasura
+
+networks:
+  default:
+    name: smb-net

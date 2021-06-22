@@ -1,0 +1,6 @@
+# Return an Object by id
+query FetchObject($mdsId: bigint!) {
+    smb_objects_by_pk(id: $mdsId) {
+        ...objectData
+    }
+}

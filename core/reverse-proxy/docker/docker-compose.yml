@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  smb-reverse-proxy:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: smb/reverse-proxy
+    container_name: smb-reverse-proxy
+    restart: unless-stopped
+    volumes:
+      - ./default-local.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+    # only for development
+    ports:
+      - 8080:80
+
+networks:
+  default:
+    name: smb-net

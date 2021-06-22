@@ -1,0 +1,34 @@
+{
+  "properties": [
+    {
+      "name": "graphql.endpoint",
+      "type": "java.lang.String",
+      "description": "Required: Endpoint of Hasura API; source URL from where to fetch objects."
+    },
+    {
+      "name": "graphql.in-memory-cache-size",
+      "type": "java.lang.String",
+      "description": "GraphQL API cache size in MByte."
+    },
+    {
+      "name": "graphql.headers",
+      "type": "java.lang.String",
+      "description": "Map of key-value http headers to be passed along with any GraphQL call."
+    },
+    {
+      "name": "elastic.base-url",
+      "type": "java.lang.String",
+      "description": "Required: endpoint of Elasticsearch API; target URL to push search objects."
+    },
+    {
+      "name": "elastic.object-index",
+      "type": "java.lang.String",
+      "description": "Elasticsearch index for search objects."
+    },
+    {
+      "name": "elastic.index-path-template",
+      "type": "java.lang.String",
+      "description": "URL path template for a."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  smb-search-indexer:
+    build:
+      context: ./../
+      dockerfile: docker/Dockerfile
+    image: smb/sitemap
+    container_name: smb-sitemap
+    restart: unless-stopped
+    environment:
+      - hasura-secret=jcG8QBI5g8OX
+    ports:
+      - 8080:8080
+    external_links:
+      - smb-hasura
+networks:
+  default:
+    name: smb-net

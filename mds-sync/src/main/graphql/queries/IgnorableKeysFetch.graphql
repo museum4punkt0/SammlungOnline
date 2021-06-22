@@ -1,0 +1,6 @@
+# Return all ignorable keys
+query FetchAllIgnoreableKeys {
+    smb_ignoreable_keys {
+        ...ignorableKeyData
+    }
+}

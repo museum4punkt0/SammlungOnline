@@ -1,0 +1,4 @@
+# https://www.robotstxt.org/robotstxt.html
+Sitemap: https://recherche.smb.museum/sitemaps/research/sitemap.xml
+User-agent: *
+Disallow:

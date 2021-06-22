@@ -1,0 +1,6 @@
+# health check call
+query Ping {
+    smb_objects_aggregate(limit:1) {
+        aggregate {count}
+    }
+}

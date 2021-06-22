@@ -1,0 +1,41 @@
+# Insert and update AttributeTranslations in one go.
+mutation BulkInsertOrUpdateAttributeTranslations($attributes: [smb_attribute_translations_insert_input!]!) {
+    insert_smb_attribute_translations(
+        objects: $attributes,
+        on_conflict: {
+            constraint: attribute_translations_pkey
+            update_columns: [attribute_key, fq_key, language_id, object_id, value]
+        }
+    ) {
+        returning {
+            id
+        }
+    }
+}
+
+# Mutation to delete multiple AttributeTranslations by ids.
+mutation DeleteAttributeTranslations($attributeTranslationIds: [bigint!]!) {
+    delete_smb_attribute_translations(where: {id: {_in: $attributeTranslationIds}}) {
+        returning {
+            id
+        }
+    }
+}
+
+# Mutation to insert a new Attribute definition.
+mutation InsertOrUpdateAttribute(
+    $key: String!,
+    $datatype: String) {
+    insert_smb_attributes_one(
+        object: {
+            key: $key
+            datatype: $datatype
+        },
+        on_conflict: {
+            constraint: attributes_pkey
+            update_columns: [datatype]
+        }
+    ) {
+        key
+    }
+}

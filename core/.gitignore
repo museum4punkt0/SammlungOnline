@@ -1,0 +1,17 @@
+# ide
+**/.idea
+
+
+# production
+/build
+/**/data/*
+!/**/data/.gitkeep
+/**/images/*
+!/**/images/.gitkeep
+/**/backup/*
+!/**/backup/.gitkeep
+
+# misc
+.DS_Store
+/elsticsearch/docker/data
+var_lib_mysql

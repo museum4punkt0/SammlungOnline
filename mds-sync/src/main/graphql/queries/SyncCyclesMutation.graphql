@@ -1,0 +1,10 @@
+# Insert a new SyncCycle result
+mutation InsertSyncCycle($timestamp: timestamptz!, $cycleType: smb_sync_cycle_type_enum!, $debugInformation: String!) {
+    insert_smb_sync_cycles_one(object: {
+        timestamp: $timestamp,
+        type: $cycleType,
+        debug_information: $debugInformation
+    }) {
+        id
+    }
+}

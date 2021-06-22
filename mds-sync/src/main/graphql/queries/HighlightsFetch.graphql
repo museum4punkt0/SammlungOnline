@@ -1,0 +1,24 @@
+
+# Returns all highlights
+query FetchAllHighlights {
+    smb_highlights {
+        ...highlightData
+    }
+}
+
+query FetchHighlightsByOrgUnitId($orgUnitId: bigint!) {
+    smb_highlights(where: {org_unit_id: {_eq: $orgUnitId}}) {
+        ...highlightData
+    }
+}
+
+query FetchHightlightByOrgUnitIdAndObjectId($orgUnitId: bigint!, $objectId: bigint!) {
+    smb_highlights(where: {
+        _and: [
+            {org_unit_id: {_eq: $orgUnitId}},
+            {object_id: {_eq: $objectId}}
+        ]
+    }) {
+        ...highlightData
+    }
+}

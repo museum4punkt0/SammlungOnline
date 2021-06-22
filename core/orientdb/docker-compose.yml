@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  smb-orientdb:
+    image: reg.xailabs.com/xailabs/orientdb:3.0.32
+    container_name: smb-orientdb
+    restart: unless-stopped
+    
+    # only for development
+    volumes:
+      # - ./config:/orientdb/config
+      - ./data:/orientdb/databases
+      - ./backup:/orientdb/backup
+    environment: 
+      - ORIENTDB_ROOT_PASSWORD=d1WL36a3bdwX
+    ports:
+      - 2424:2424
+      - 2480:2480
+
+networks:
+  default:
+    name: smb-net

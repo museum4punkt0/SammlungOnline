@@ -1,0 +1,4 @@
+# https://www.robotstxt.org/robotstxt.html
+Sitemap: https://touren.smb.museum/sitemaps/guide/sitemap.xml
+User-agent: *
+Disallow:

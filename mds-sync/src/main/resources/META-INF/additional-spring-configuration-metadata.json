@@ -1,0 +1,54 @@
+{
+  "properties": [
+    {
+      "name": "image-provider.base-url",
+      "type": "java.lang.String",
+      "description": "Required: URL of image-provider; target location for webdav image uploads."
+    },
+    {
+      "name": "image-provider.user",
+      "type": "java.lang.String",
+      "description": "Required: htaccess user for image-provider."
+    },
+    {
+      "name": "image-provider.pass",
+      "type": "java.lang.String",
+      "description": "Required: htaccess password for image-provider."
+    },
+    {
+      "name": "graphql.endpoint",
+      "type": "java.lang.String",
+      "description": "Required: Endpoint of Hasura API; target URL to persist objects."
+    },
+    {
+      "name": "graphql.in-memory-cache-size",
+      "type": "java.lang.String",
+      "description": "GraphQL API cache size in MByte."
+    },
+    {
+      "name": "graphql.headers",
+      "type": "java.lang.String",
+      "description": "Map of key-value http headers to be passed along with any GraphQL call."
+    },
+    {
+      "name": "scheduler.jobs.enabled",
+      "type": "java.lang.String",
+      "description": "Optional: Defines if scheduler jobs should be enabled. Default: false."
+    },
+    {
+      "name": "scheduler.jobs.sync-incremental.cron",
+      "type": "java.lang.String",
+      "description": "Optional: CRON job definition for incremental sync."
+    },
+    {
+      "name": "scheduler.jobs.sync-deleted.cron",
+      "type": "java.lang.String",
+      "description": "Optional: CRON job definition for scheduler job to sync deleted objects."
+    },
+    {
+      "name": "scheduler.jobs.sync-highlights.cron",
+      "type": "java.lang.String",
+      "description": "Optional: CRON job definition for highlights-sync."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# Insert new Object if not exists
+mutation InsertOrUpdateObject($mdsId: bigint!, $exhibitionSpace: String) {
+    insert_smb_objects_one(object: {
+        id: $mdsId
+        exhibition_space: $exhibitionSpace
+    }, on_conflict: {
+        constraint: objects_pkey,
+        update_columns: [exhibition_space]
+    }) {
+        id
+    }
+}
+
+# Delete an Object by id
+mutation DeleteObject($mdsId: bigint!) {
+    delete_smb_objects_by_pk(id: $mdsId) {
+        id
+    }
+}

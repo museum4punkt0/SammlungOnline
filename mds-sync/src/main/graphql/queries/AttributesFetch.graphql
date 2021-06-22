@@ -1,0 +1,26 @@
+# Returns all AttributeTranslations of an Object filtered by Language
+query FetchAttributeTranslationsByObjectIdAndLanguage($objectId: bigint!, $lang: String!) {
+    smb_attribute_translations(where: {
+        object_id: { _eq: $objectId },
+        language: { lang: { _eq: $lang } }
+    }) {
+        ...attributeTranslationsData
+    }
+}
+
+# Returns only the ids for AttributeTranslations of an Object filtered by Language
+query FetchAttributeTranslationIdsByObjectIdAndLanguage($objectId: bigint!, $lang: String!) {
+    smb_attribute_translations(where: {
+        object_id: { _eq: $objectId },
+        language: { lang: { _eq: $lang } }
+    }) {
+        id
+    }
+}
+
+# Returns an attribute if existent
+query FetchAttribute($key: String!) {
+    smb_attributes_by_pk(key: $key) {
+        ...attributeData
+    }
+}

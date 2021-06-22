@@ -1,0 +1,27 @@
+version: '3.5'
+
+services:
+  smb-image-provider:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: smb/image-provider
+    container_name: smb-image-provider
+    restart: unless-stopped
+    
+    # only for development
+    volumes:
+      - ./images:/usr/share/nginx/html/images
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./htpasswd:/etc/nginx/htpasswd
+    ports:
+      - 8090:80
+
+    # only to show dependency
+    external_links:
+      - smb-reverse-proxy
+
+networks:
+  default:
+    name: smb-net

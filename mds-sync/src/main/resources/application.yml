@@ -1,0 +1,59 @@
+logging.level:
+  performance: INFO
+  sync-results: INFO # DON'T CHANGE THIS! results are always logged with INFO level
+  de.smbonline: INFO
+  #de.smbonline.mdssync.exec: DEBUG
+  org.apache.catalina: WARN
+  org.springframework: WARN
+
+server:
+  port: 8082
+
+scheduler:
+  jobs:
+    enabled: ${SCHEDULER_JOBS_ENABLED:false}
+    # from 05:00 to 01:00 o'clock every 15min on every day
+    sync-incremental.cron: 0 */15 5-23,0-1 * * *
+    # every night at 01:15
+    sync-deleted.cron: 0 15 1 * * *
+    # every morning at 04:00
+    sync-highlights.cron: 0 0 4 * * *
+
+mds-api:
+#  base-url: https://de1.zetcom-group.de/MpWeb-mpBerlinStaatlicheMuseenTest
+#  base-url: https://194.94.134.27:8181/MpWeb-mpBerlinStaatlicheMuseen
+  base-url: ${MDS_API_BASEURL}
+  module-path-template: /ria-ws/application/module/{moduleName}
+  ssl-validation-enabled: false
+  org-unit-deleted-objects: SysTrashBinOrgUnit_global
+  fields:
+    mds-id-field-name: __id
+    org-unit-field-name: __orgUnit
+    modified-timestamp-field: __lastModified
+    highlight-field-name: OgrNameTxt
+    deleted-filter: ${mds-api.fields.org-unit-field-name},${mds-api.org-unit-deleted-objects}
+  auth:
+    # either basic auth header or user/pass for basic authentication
+#    header: Basic ...
+    user: ${MDS_API_USER}
+    pass: ${MDS_API_PASSWORD}
+
+search-indexer:
+  should-update: ${SEARCH_INDEXER_SHOULD_UPDATE:false}
+  base-url: ${SEARCH_INDEXER_BASE_URL:http://smb-search-indexer:8085/index}
+
+image-provider:
+  base-url: ${IMGP_BASE_URL:http://smb-image-provider:80/images}
+  user: ${IMGP_USER}
+  pass: ${IMGP_PASS}
+
+graphql:
+  endpoint: ${HASURA_ENDPOINT:http://smb-hasura:8080/v1/graphql}
+  in-memory-cache-size: 65536
+  headers:
+    X-Hasura-Admin-Secret: ${HASURA_SECRET}
+
+management:
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,75 @@
+# common definition of fragments
+# ----------------------------------------------
+
+# data fragment of a Highlight
+fragment highlightData on smb_highlights {
+    id
+    object_id
+    org_unit {
+        id
+        name
+    }
+}
+
+# data fragment of a Language
+fragment languageData on smb_language {
+    id
+    lang
+}
+
+# data fragment of an IgnorableKey
+fragment ignorableKeyData on smb_ignoreable_keys {
+    id
+    key
+}
+
+# data fragment of an OrgUnit
+fragment orgUnitData on smb_org_unit {
+    id
+    name
+}
+
+# data fragment of an Object
+fragment objectData on smb_objects {
+    id
+    created_at
+    updated_at
+    attribute_translations {
+        ...attributeTranslationsData
+    }
+    attachments(order_by: [{ primary: desc }]) {
+        ...attachmentData
+    }
+}
+
+# data fragment for Attachment
+fragment attachmentData on smb_attachments {
+    id
+    object_id
+    attachment
+    primary
+    credits
+}
+
+# data fragment for an Attribute
+fragment attributeData on smb_attributes {
+    key
+    datatype
+}
+
+# data fragment for an AttributeTranslation
+fragment attributeTranslationsData on smb_attribute_translations {
+    id
+    attribute_key
+    fq_key
+    value
+    language {
+        lang
+    }
+}
+
+# data fragment for SyncCycle
+fragment syncCycleData on smb_sync_cycles {
+    timestamp
+    type
+}

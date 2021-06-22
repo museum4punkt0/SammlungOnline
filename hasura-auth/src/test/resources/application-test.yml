@@ -1,0 +1,9 @@
+logging.level:
+  de.smbonline: TRACE
+  org.springframework: ERROR
+
+graphql:
+  endpoint: http://localhost:8081/v1/graphql
+  admin-secret: jcG8QBI5g8OX
+  unauthorized-role: public
+  in-memory-cache-size: 512

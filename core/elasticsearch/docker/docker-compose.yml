@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+  smb-elasticsearch:
+    image: reg.xailabs.com/xailabs/elasticsearch:7.10.1
+    container_name: smb-elasticsearch
+    restart: unless-stopped
+    environment: 
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms256m -Xmx2g"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./data:/usr/share/elasticsearch/data
+networks:
+  default:
+    name: smb-net

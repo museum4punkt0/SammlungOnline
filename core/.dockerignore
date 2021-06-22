@@ -1,0 +1,10 @@
+# ide
+/.idea
+**/.git
+**/docker
+
+# production
+/build
+
+# misc
+.DS_Store

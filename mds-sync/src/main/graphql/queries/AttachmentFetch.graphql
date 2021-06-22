@@ -1,0 +1,16 @@
+# Return all Attachments of an Object
+query FetchAttachmentsByObjectId($objectId: bigint!) {
+    smb_attachments(
+        where: {object_id: {_eq: $objectId}},
+        order_by: [{ primary: asc }]
+    ) {
+        ...attachmentData
+    }
+}
+
+# Fetch a single Attachment by name
+query FetchAttachmentByFilename($filename: String!) {
+    smb_attachments(where: {attachment: {_eq: $filename}}) {
+        ...attachmentData
+    }
+}
