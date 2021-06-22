@@ -259,7 +259,7 @@ The base package of the application is `de.smbonline.mdssync`.
 | `de.smbonline.searchindexer.dto` | Data transfer objects |
 | `de.smbonline.searchindexer.log` | Logging utils |
 | `de.smbonline.searchindexer.norm` | Normalizer implementations |
-| `de.smbonline.searchindexer.rest` | Controller implementations and utilities shared betwenn Controllers |
+| `de.smbonline.searchindexer.rest` | Controller implementations and utilities shared between Controllers |
 | `de.smbonline.searchindexer.service` | Service implementations |
 
 ### Developer Guidelines and Code Conventions
