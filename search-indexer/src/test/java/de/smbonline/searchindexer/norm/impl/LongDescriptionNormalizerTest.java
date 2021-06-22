@@ -22,10 +22,14 @@ public class LongDescriptionNormalizerTest {
                 Triple.of("ObjTextOnlineGrp.TextClb", "[123].ObjTextOnlineGrp.item[1].TextClb", "falsch"),
                 Triple.of("ObjTextOnlineGrp.SortLnu", "[123].ObjTextOnlineGrp.item[1].SortLnu", "4"),
                 Triple.of("ObjTextOnlineGrp.TextClb", "[123].ObjTextOnlineGrp.item[2].TextClb", "falsch"),
-                Triple.of("ObjTextOnlineGrp.SortLnu", "[123].ObjTextOnlineGrp.item[2].SortLnu", "3"),
-                // expected hit, SortLnu=1
+                Triple.of("ObjTextOnlineGrp.SortLnu", "[123].ObjTextOnlineGrp.item[2].SortLnu", "1"),
+                Triple.of("ObjTextOnlineGrp.TextClb", "[123].ObjTextOnlineGrp.item[5].TextClb", "falsch"),
+                Triple.of("ObjTextOnlineGrp.SortLnu", "[123].ObjTextOnlineGrp.item[5].SortLnu", "5"),
+                Triple.of("ObjTextOnlineGrp.TypeVoc", "[123].ObjTextOnlineGrp.item[5].TypeVoc", "Online Beschreibung"),
+                // expected hit "Online Beschreibung", SortLnu=3
                 Triple.of("ObjTextOnlineGrp.TextClb", "[123].ObjTextOnlineGrp.item[3].TextClb", "richtig"),
-                Triple.of("ObjTextOnlineGrp.SortLnu", "[123].ObjTextOnlineGrp.item[3].SortLnu", "1"),
+                Triple.of("ObjTextOnlineGrp.SortLnu", "[123].ObjTextOnlineGrp.item[3].SortLnu", "3"),
+                Triple.of("ObjTextOnlineGrp.TypeVoc", "[123].ObjTextOnlineGrp.item[3].TypeVoc", "Online Beschreibung"),
                 Triple.of("ObjTextOnlineGrp.TextClb", "[123].ObjTextOnlineGrp.item[4].TextClb", "falsch"),
                 Triple.of("ObjTextOnlineGrp.SortLnu", "[123].ObjTextOnlineGrp.item[4].SortLnu", "2")
         );
@@ -40,7 +44,8 @@ public class LongDescriptionNormalizerTest {
     public void testNoDesciptionInfo() {
         // given
         ObjectData obj = createObject(
-                Triple.of("ObjTextOnlineGrp.TextClb", "[123].ObjTextOnlineGrp.item[1].TextClb", "")
+                Triple.of("ObjTextOnlineGrp.TextClb", "[123].ObjTextOnlineGrp.item[1].TextClb", ""),
+                Triple.of("ObjTextOnlineGrp.TypeVoc", "[123].ObjTextOnlineGrp.item[1].TypeVoc", "Online Beschreibung")
         );
         // when
         LongDescriptionNormalizer normalizer = new LongDescriptionNormalizer();
