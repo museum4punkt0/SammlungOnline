@@ -5,6 +5,7 @@ import de.smbonline.mdssync.dto.ImageDTO;
 import de.smbonline.mdssync.dto.Operation;
 import de.smbonline.mdssync.dto.WrapperDTO;
 import de.smbonline.mdssync.exc.MdsApiConnectionException;
+import de.smbonline.mdssync.log.ErrorLogging;
 import de.smbonline.mdssync.ruleset.AttachmentCreditsLineRule;
 import de.smbonline.mdssync.search.MdsApiClient;
 import de.smbonline.mdssync.search.MdsApiConfig;
@@ -16,7 +17,6 @@ import de.smbonline.mdssync.search.response.Module;
 import de.smbonline.mdssync.search.response.ModuleItem;
 import de.smbonline.mdssync.search.response.ModuleReference;
 import de.smbonline.mdssync.search.response.ModuleReferenceItem;
-import de.smbonline.mdssync.log.ErrorLogging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static de.smbonline.mdssync.util.Lookup.*;
@@ -42,14 +40,12 @@ public class AttachmentsResolver {
     private final DataQueue<WrapperDTO> imageQueue;
     private final MdsApiClient multimediaApiClient;
     private final SearchRequestHelper requestHelper;
-    private final Config config;
 
     @Autowired
     public AttachmentsResolver(final MdsApiConfig mdsConfig, final DataQueue<WrapperDTO> dataQueue) {
         this.multimediaApiClient = new MdsApiClient(mdsConfig, ATTACHMENTS_MODULE_NAME);
         this.requestHelper = new SearchRequestHelper(mdsConfig, ATTACHMENTS_MODULE_NAME);
         this.imageQueue = dataQueue;
-        this.config = new Config();
     }
 
     public void processAttachments(final ModuleItem objectItem) throws MdsApiConnectionException {
@@ -80,7 +76,7 @@ public class AttachmentsResolver {
                             findFirst(multimediaRef.getModuleReferenceItem(),
                                     ref -> ref.getModuleItemId().equals(mediaItem.getId()))
                     );
-                    String name = validImageFilename("", mediaItem); // TBD set object-id as prefix?
+                    String name = validImageFilename(mediaItem);
                     ImageDTO img = new ImageDTO(objectItem.getId());
                     img.setImageFileName(name);
                     img.setPrimary(isPrimaryAttachment(mediaRefItem));
@@ -100,28 +96,11 @@ public class AttachmentsResolver {
         }
     }
 
-    private String validImageFilename(final String prefix, final ModuleItem mediaItem) {
+    private String validImageFilename(final ModuleItem mediaItem) {
         Attachment attachment = mediaItem.getAttachment();
-
         String actualName = attachment.getName() == null ? ".jpg" : attachment.getName();
-        if (this.config.isUseSimpleImageNames()) {
-            return prefix + mediaItem.getId() + "." + actualName.substring(actualName.lastIndexOf('.') + 1);
-        }
-
-        String uniqueName = prefix + mediaItem.getId() + "_" + actualName;
-        String encodedName = URLEncoder.encode(uniqueName, StandardCharsets.ISO_8859_1);
-        String prettyName = encodedName
-                // The space character " " is converted into a plus sign "+". We don't want that.
-                .replace("+", "-")
-                // the slash is indeed required for path handling
-                .replace("%2F", "/")
-                // some chars are not critical - so keep those for better readability
-                .replace("%40", "@")
-                .replace("%2C", ",")
-                .replace("%28", "(")
-                .replace("%29", ")");
-        LOGGER.debug("Transformed attachment name '{}' to filename '{}'", attachment.getName(), prettyName);
-        return prettyName;
+        String suffix = actualName.substring(actualName.lastIndexOf('.') + 1).toLowerCase();
+        return mediaItem.getId() + "." + suffix;
     }
 
     private static String buildCreditsLine(final ModuleItem mediaItem) {
@@ -162,18 +141,5 @@ public class AttachmentsResolver {
             return null;
         });
         return wrapper;
-    }
-
-    public static class Config {
-
-        private boolean useSimpleImageNames = true;
-
-        public void setUseSimpleImageNames(final boolean flag) {
-            this.useSimpleImageNames = flag;
-        }
-
-        public boolean isUseSimpleImageNames() {
-            return this.useSimpleImageNames;
-        }
     }
 }

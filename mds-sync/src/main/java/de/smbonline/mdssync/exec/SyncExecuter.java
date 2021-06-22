@@ -77,7 +77,8 @@ public class SyncExecuter {
     private final SearchIndexerConfig indexerConfig;
     private final Config config;
     private final State state;
-    private final StopWatch watch;
+    private final StopWatch tasksWatch;
+    private final StopWatch syncWatch;
     private final SearchRequestHelper requestHelper;
 
     // lazy initialized members
@@ -97,7 +98,8 @@ public class SyncExecuter {
             final ObjectProvider<AttachmentsResolver> attachmentsResolverProvider) {
         this.config = new Config();
         this.state = new State();
-        this.watch = new StopWatch("Sync");
+        this.tasksWatch = new StopWatch("Tasks");
+        this.syncWatch = new StopWatch("Sync");
         this.requestHelper = new SearchRequestHelper(mdsConfig, "Object");
 
         this.mdsConfig = mdsConfig;
@@ -172,19 +174,29 @@ public class SyncExecuter {
         ensureSingleUsage();
 
         try {
+
             // prepare
+            this.syncWatch.start();
             LocalDateTime thisSyncStartTime = LocalDateTime.now();
             Search request = this.requestHelper.buildSearchDeletedPayload();
             Module response = mdsClient().search(request, null);
+
             // run
             Long[] ids = parseAndProcess(response, newObjectParser(getSupportedLanguages()[0]), false);
             this.state.processedIds = Set.of(ids);
+
             // done
             this.state.phase = State.Phase.FINISHED;
+            this.syncWatch.stop();
             saveSyncCycleSuccess(SyncCycleDTO.Type.DELETIONS, thisSyncStartTime);
             printStatistics();
+
         } catch (Exception exc) {
             handleException(exc);
+        } finally {
+            if (this.syncWatch.isRunning()) {
+                this.syncWatch.stop();
+            }
         }
 
         return createResultSnapshot();
@@ -196,6 +208,7 @@ public class SyncExecuter {
         SyncResult result = null;
         try {
 
+            this.syncWatch.start();
             LocalDateTime thisSyncStartTime = LocalDateTime.now();
             LOGGER.debug("Starting manually requested sync for {} ids.", mdsObjectIds.length);
 
@@ -211,6 +224,7 @@ public class SyncExecuter {
                 runSync(successfulIds, languages[i], false);
             }
 
+            this.syncWatch.stop();
             this.state.phase = State.Phase.FINISHED;
             LOGGER.debug("Manually requested sync finished.");
             result = createResultSnapshot();
@@ -226,9 +240,14 @@ public class SyncExecuter {
             printStatistics();
         } catch (Exception exc) {
             handleException(exc);
-            if (result == null) {
-                result = createResultSnapshot();
+        } finally {
+            if (this.syncWatch.isRunning()) {
+                this.syncWatch.stop();
             }
+        }
+
+        if (result == null) {
+            result = createResultSnapshot();
         }
         return result;
     }
@@ -237,17 +256,27 @@ public class SyncExecuter {
         ensureSingleUsage();
 
         try {
+
             // prepare
+            this.syncWatch.start();
             LocalDateTime lastSyncStartTime = getLastSyncDate(SyncCycleDTO.Type.INCREMENTAL);
             LocalDateTime thisSyncStartTime = LocalDateTime.now();
+
             // run
             runNewSync(lastSyncStartTime, thisSyncStartTime);
+
             // done
+            this.syncWatch.stop();
             this.state.phase = State.Phase.FINISHED;
             saveSyncCycleSuccess(SyncCycleDTO.Type.INCREMENTAL, thisSyncStartTime);
             printStatistics();
+
         } catch (Exception exc) {
             handleException(exc);
+        } finally {
+            if (this.syncWatch.isRunning()) {
+                this.syncWatch.stop();
+            }
         }
 
         return createResultSnapshot();
@@ -258,16 +287,26 @@ public class SyncExecuter {
         ensureStartBeforeEnd(start, end);
 
         try {
+
             // prepare
+            this.syncWatch.start();
             LocalDateTime thisSyncStartTime = LocalDateTime.now();
+
             // run
             runNewSync(start, end);
+
             // done
+            this.syncWatch.stop();
             this.state.phase = State.Phase.FINISHED;
             saveSyncCycleSuccess(SyncCycleDTO.Type.MANUAL, thisSyncStartTime);
             printStatistics();
+
         } catch (Exception exc) {
             handleException(exc);
+        } finally {
+            if (this.syncWatch.isRunning()) {
+                this.syncWatch.stop();
+            }
         }
 
         return createResultSnapshot();
@@ -492,18 +531,18 @@ public class SyncExecuter {
         wrapper.setOperation(op);
         wrapper.setAfterExecuteCommand(() -> {
             flagSuccessful(obj.getMdsId());
-            this.watch.stop();
-            LOGGER.info("MDS object {} {}. (duration={}ms)", obj.getMdsId(), (op == Operation.DELETE ? "deleted" : "updated"), watch.getLastTaskTimeMillis());
+            this.tasksWatch.stop();
+            LOGGER.info("MDS object {} {}. (duration={}ms)", obj.getMdsId(), (op == Operation.DELETE ? "deleted" : "updated"), tasksWatch.getLastTaskTimeMillis());
             return null;
         });
         wrapper.setBeforeExecuteCommand(() -> {
-            this.watch.start(String.valueOf(obj.getMdsId()));
+            this.tasksWatch.start(String.valueOf(obj.getMdsId()));
             LOGGER.debug("{} MDS object {}...", (op == Operation.DELETE ? "Deleting" : "Updating"), obj.getMdsId());
             return null;
         });
         wrapper.setOnError(exc -> {
             flagFailed(obj.getMdsId());
-            this.watch.stop();
+            this.tasksWatch.stop();
             ErrorLogging.log(exc, "Exception executing {} on MDS object {}", op, obj.getMdsId());
             return null;
         });
@@ -553,13 +592,13 @@ public class SyncExecuter {
     private void printStatistics() {
         StringBuilder sb = new StringBuilder(System.lineSeparator());
         sb.append("Sync of ")
-                .append(this.watch.getTaskCount())
+                .append(this.tasksWatch.getTaskCount())
                 .append(" Objects finished in ")
-                .append(String.format("%.2f", this.watch.getTotalTimeSeconds()))
+                .append(String.format("%.2f", this.tasksWatch.getTotalTimeSeconds()))
                 .append(" seconds. Avg: ")
-                .append(String.format("%.2f", (this.watch.getTotalTimeSeconds() / this.watch.getTaskCount())));
+                .append(String.format("%.2f", (this.tasksWatch.getTotalTimeSeconds() / this.tasksWatch.getTaskCount())));
 
-        StopWatch.TaskInfo[] tasks = this.watch.getTaskInfo();
+        StopWatch.TaskInfo[] tasks = this.tasksWatch.getTaskInfo();
         Arrays.sort(tasks, Comparator.comparing(StopWatch.TaskInfo::getTimeMillis).reversed());
         StopWatch.TaskInfo[] longestTasks = ArrayUtils.subarray(tasks, 0, 10);
         if (longestTasks.length > 0) {
@@ -585,7 +624,7 @@ public class SyncExecuter {
                     this.state.successfulIds.toArray(Long[]::new),
                     this.state.failedIds.toArray(Long[]::new),
                     skippedIds.toArray(Long[]::new),
-                    Duration.ofMillis(this.watch.getTotalTimeMillis())
+                    Duration.ofMillis(this.syncWatch.getTotalTimeMillis())
             );
         }
     }
@@ -595,7 +634,7 @@ public class SyncExecuter {
 
         StringBuilder sb = new StringBuilder()
                 .append("Duration: ")
-                .append(DurationFormatUtils.formatDurationHMS(this.watch.getTotalTimeMillis()));
+                .append(DurationFormatUtils.formatDurationHMS(this.syncWatch.getTotalTimeMillis()));
         if (type == SyncCycleDTO.Type.INCREMENTAL || type == SyncCycleDTO.Type.MANUAL) {
             int successful = this.state.successfulIds.size();
             if (successful > 20) {
