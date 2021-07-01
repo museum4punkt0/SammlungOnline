@@ -48,7 +48,7 @@ Um die Plattformen im Hintergrund mit den notwendigen Daten zu versorgen, sind w
 | mds-sync       | Service um den Daten-Index mit Änderungen im MDS zu synchronisieren                                            |
 | react-admin    | Administrations-UI für die Pflege von Website-Content (Textblöcke, Themen, Touren)                             |
 | search-indexer | Service für die Indizierung von Suchergebnissen mit Elasticsearch sowie Implementierung des Search-Webservices |
-| sitemap        | Generierung und Bereitstellung der Sitemaps für SMD Research, SMB Guide und SMB Topics (SEO)                   |
+| sitemap        | Generierung und Bereitstellung der Sitemaps für SMB Research, SMB Guide und SMB Topics (SEO)                   |
 
 ## Infrastruktur-Komponenten
 Im `core` befinden sich verwendete Docker-Container.
