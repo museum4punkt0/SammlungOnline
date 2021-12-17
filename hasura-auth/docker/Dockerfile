@@ -5,6 +5,7 @@ LABEL maintainer="Xailabs<it-support@xailabs.de>"
 WORKDIR /opt/hasura-auth
 COPY . .
 RUN sed -i -e 's/\r$//' ./gradlew
+RUN chmod +x ./gradlew
 RUN ./gradlew bootJar
 
 # Runnable Container
