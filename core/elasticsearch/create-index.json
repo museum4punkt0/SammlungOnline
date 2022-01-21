@@ -18,6 +18,15 @@ PUT /objects-de
             "@lastSynced": {
                 "type": "date"
             },
+            "acquisition": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
             "attachments": {
                 "type": "boolean"
             },
@@ -71,6 +80,18 @@ PUT /objects-de
                 }
             },
             "dimensionsAndWeight": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "exhibit": {
+                "type": "boolean"
+            },
+            "exhibitions": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -149,6 +170,24 @@ PUT /objects-de
                 }
             },
             "materialAndTechnique": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "provenance": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "provenanceEvaluation": {
                 "type": "text",
                 "fields": {
                     "keyword": {

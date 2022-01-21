@@ -25,6 +25,32 @@ SELECT setval('smb.language_id_seq', 2); -- MAX(id) + 1
 
 
 --
+-- Data for Name: licenses; Type: TABLE DATA; Schema: smb; Owner: smb-db-user
+--
+
+INSERT INTO smb.licenses(id, key, link) VALUES
+ (1, 'CC BY-NC-SA',                                    'https://creativecommons.org/licenses/by-nc-sa/4.0')
+,(2, 'VG Bild-Kunst',                                  'https://www.bildkunst.de')
+,(3, 'Nationalgalerie, Berlin / VG Bild-Kunst, Bonn',  'https://www.bildkunst.de')
+,(4, 'CC BY-NC-ND',                                    'https://creativecommons.org/licenses/by-nc-nd/4.0')
+;
+SELECT setval('smb.licenses_id_seq', 5); -- MAX(id) + 1
+
+
+--
+-- Data for Name: licenses_translation; Type: TABLE DATA; Schema: smb; Owner: smb-db-user
+--
+
+INSERT INTO smb.licenses_translation (id, license_id, language_id, content) VALUES
+ (1, 1, 1, 'CC BY-NC-SA 4.0')
+,(2, 2, 1, 'VG Bild-Kunst, Bonn 2021')
+,(3, 3, 1, 'VG Bild-Kunst, Bonn 2021')
+,(4, 4, 1, 'CC BY-NC-ND 4.0')
+;
+SELECT setval('smb.licenses_translation_id_seq', 5); -- MAX(id) + 1
+
+
+--
 -- Data for Name: sync_cycle_type; Type: TABLE DATA; Schema: smb; Owner: smb-db-user
 --
 
@@ -122,7 +148,6 @@ INSERT INTO smb.ignoreable_keys (key) VALUES
 ('ObjConservationTermsGrp.SecurityClb'),
 ('ObjConservationTermsGrp.StorageClb'),
 ('ObjConservationTermsGrp.TransportClb'),
-('ObjDimAllGrp.*'),
 ('ObjEditingGrp.*'),
 ('ObjEditorNotesGrp.NotesVoc'),
 ('ObjEditorNotesGrp.SortLnu'),

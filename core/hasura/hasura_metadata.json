@@ -1,4 +1,6 @@
 {
+  "resource_version": 1,
+  "metadata": {
   "version": 2,
   "tables": [
     {
@@ -6,6 +8,14 @@
         "schema": "smb",
         "name": "attachments"
       },
+      "object_relationships": [
+        {
+          "name": "license",
+          "using": {
+            "foreign_key_constraint_on": "license_id"
+          }
+        }
+      ],
       "select_permissions": [
         {
           "role": "editor",
@@ -137,115 +147,6 @@
             "columns": [
               "datatype",
               "key"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "header"
-      },
-      "array_relationships": [
-        {
-          "name": "header_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "header_id",
-              "table": {
-                "schema": "smb",
-                "name": "header_translations"
-              }
-            }
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "color",
-              "drawer_color",
-              "href",
-              "id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "color",
-              "drawer_color",
-              "href",
-              "id"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "color",
-              "drawer_color",
-              "href",
-              "id"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "header_translations"
-      },
-      "object_relationships": [
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "header_id",
-              "language_id",
-              "title",
-              "subtitle"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "subtitle",
-              "title"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "subtitle",
-              "title"
             ],
             "filter": {}
           }
@@ -865,7 +766,8 @@
           "permission": {
             "columns": [
               "id",
-              "key"
+              "key",
+              "link"
             ],
             "filter": {},
             "allow_aggregations": true
@@ -875,7 +777,8 @@
           "role": "public",
           "permission": {
             "columns": [
-              "key"
+              "key",
+              "link"
             ],
             "filter": {}
           }
@@ -884,7 +787,8 @@
           "role": "reader",
           "permission": {
             "columns": [
-              "key"
+              "key",
+              "link"
             ],
             "filter": {}
           }
@@ -1005,6 +909,28 @@
           }
         }
       ],
+      "computed_fields": [
+        {
+          "name": "compilation",
+          "definition": {
+            "function": {
+              "schema": "smb",
+              "name": "extract_compilation"
+            }
+          },
+          "comment": ""
+        },
+        {
+          "name": "collectionKey",
+          "definition": {
+            "function": {
+              "schema": "smb",
+              "name": "extract_collection_key"
+            }
+          },
+          "comment": ""
+        }
+      ],
       "select_permissions": [
         {
           "role": "editor",
@@ -1046,6 +972,21 @@
         }
       ],
       "event_triggers": [
+        {
+          "name": "delete-from-elastic",
+          "definition": {
+            "enable_manual": false,
+            "delete": {
+              "columns": "*"
+            }
+          },
+          "retry_conf": {
+            "num_retries": 1,
+            "interval_sec": 10,
+            "timeout_sec": 60
+          },
+          "webhook": "http://smb-search-indexer:8085/triggers/delete-event"
+        },
         {
           "name": "re-index",
           "definition": {
@@ -1944,4 +1885,5 @@
       ]
     }
   ]
+}
 }

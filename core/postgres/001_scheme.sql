@@ -108,6 +108,61 @@ CREATE INDEX attribute_translations_attribute_idx ON smb.attribute_translations 
 CREATE INDEX attribute_translations_object_idx ON smb.attribute_translations USING btree (object_id ASC NULLS LAST) TABLESPACE pg_default;
 CREATE INDEX attribute_translations_language_idx ON smb.attribute_translations USING btree (language_id ASC NULLS LAST) TABLESPACE pg_default;
 
+--
+-- Name: licenses; Type: TABLE; Schema: smb; Owner: smb-db-user
+--
+
+CREATE SEQUENCE smb.licenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE smb.licenses_id_seq OWNER TO "smb-db-user";
+
+CREATE TABLE smb.licenses (
+    id bigint NOT NULL DEFAULT nextval('smb.licenses_id_seq'::regclass),
+    key text NOT NULL,
+    link text NOT NULL,
+    CONSTRAINT licenses_pkey PRIMARY KEY (id),
+    CONSTRAINT licenses_key_key UNIQUE (key)
+);
+ALTER TABLE smb.licenses OWNER TO "smb-db-user";
+COMMENT ON TABLE smb.licenses IS 'License deeds for images';
+
+ALTER SEQUENCE smb.licenses_id_seq OWNED BY smb.licenses.id;
+
+
+--
+-- Name: licenses_translation; Type: TABLE; Schema: smb; Owner: smb-db-user
+--
+
+CREATE SEQUENCE smb.licenses_translation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE smb.licenses_translation_id_seq OWNER TO "smb-db-user";
+
+CREATE TABLE smb.licenses_translation (
+    id bigint NOT NULL DEFAULT nextval('smb.licenses_translation_id_seq'::regclass),
+    content text NOT NULL,
+    license_id bigint NOT NULL,
+    language_id bigint NOT NULL,
+    CONSTRAINT licenses_translation_pkey PRIMARY KEY (id),
+    CONSTRAINT licenses_translation_language_id_fkey FOREIGN KEY (language_id) 
+        REFERENCES smb.language(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT licenses_translation_license_id_fkey FOREIGN KEY (license_id) 
+        REFERENCES smb.licenses(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+ALTER TABLE smb.licenses_translation OWNER TO "smb-db-user";
+COMMENT ON TABLE smb.licenses_translation IS 'Unused - Supposed to store license deed translations';
+
+ALTER SEQUENCE smb.licenses_translation_id_seq OWNED BY smb.licenses_translation.id;
+
+CREATE INDEX licenses_translations_language_idx ON smb.licenses_translation USING btree (language_id ASC NULLS LAST) TABLESPACE pg_default;
+
 
 --
 -- Name: attachments; Type: TABLE; Schema: smb; Owner: smb-db-user
@@ -124,13 +179,16 @@ ALTER TABLE smb.attachments_id_seq OWNER TO "smb-db-user";
 CREATE TABLE smb.attachments (
     id bigint NOT NULL DEFAULT nextval('smb.attachments_id_seq'::regclass),
     attachment text NOT NULL,
-    object_id bigint NOT NULL,
-    credits text,
     "primary" boolean DEFAULT false,
+    object_id bigint NOT NULL,
+    license_id bigint,
+    credits text,
     CONSTRAINT attachments_pkey PRIMARY KEY (id),
     CONSTRAINT attachments_attachment_key UNIQUE (attachment),
     CONSTRAINT attachments_object_id_fkey FOREIGN KEY (object_id) 
-        REFERENCES smb.objects(id) ON UPDATE CASCADE ON DELETE CASCADE
+        REFERENCES smb.objects(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT attachments_license_id_fkey FOREIGN KEY (license_id) 
+        REFERENCES smb.licenses(id) ON UPDATE CASCADE ON DELETE SET NULL;
 );
 ALTER TABLE smb.attachments OWNER TO "smb-db-user";
 COMMENT ON TABLE smb.attachments IS 'Attachments of SMB objects fetched from MDS';
@@ -343,61 +401,6 @@ COMMENT ON TABLE smb.intro_text_module_translations IS 'Text module translations
 ALTER SEQUENCE smb.intro_text_module_translations_id_seq OWNED BY smb.intro_text_module_translations.id;
 
 CREATE INDEX intro_text_module_translations_language_idx ON smb.intro_text_module_translations USING btree (language_id ASC NULLS LAST) TABLESPACE pg_default;
-
---
--- Name: licenses; Type: TABLE; Schema: smb; Owner: smb-db-user
---
-
-CREATE SEQUENCE smb.licenses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-ALTER TABLE smb.licenses_id_seq OWNER TO "smb-db-user";
-
-CREATE TABLE smb.licenses (
-    id bigint NOT NULL DEFAULT nextval('smb.licenses_id_seq'::regclass),
-    key text NOT NULL,
-    link text NOT NULL,
-    CONSTRAINT licenses_pkey PRIMARY KEY (id),
-    CONSTRAINT licenses_key_key UNIQUE (key)
-);
-ALTER TABLE smb.licenses OWNER TO "smb-db-user";
-COMMENT ON TABLE smb.licenses IS 'Unused - Supposed to store license deeds for image downloads';
-
-ALTER SEQUENCE smb.licenses_id_seq OWNED BY smb.licenses.id;
-
-
---
--- Name: licenses_translation; Type: TABLE; Schema: smb; Owner: smb-db-user
---
-
-CREATE SEQUENCE smb.licenses_translation_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-ALTER TABLE smb.licenses_translation_id_seq OWNER TO "smb-db-user";
-
-CREATE TABLE smb.licenses_translation (
-    id bigint NOT NULL DEFAULT nextval('smb.licenses_translation_id_seq'::regclass),
-    content text NOT NULL,
-    license_id bigint NOT NULL,
-    language_id bigint NOT NULL,
-    CONSTRAINT licenses_translation_pkey PRIMARY KEY (id),
-    CONSTRAINT licenses_translation_language_id_fkey FOREIGN KEY (language_id) 
-        REFERENCES smb.language(id) ON UPDATE cascade ON DELETE restrict,
-    CONSTRAINT licenses_translation_license_id_fkey FOREIGN KEY (license_id) 
-        REFERENCES smb.licenses(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-ALTER TABLE smb.licenses_translation OWNER TO "smb-db-user";
-COMMENT ON TABLE smb.licenses_translation IS 'Unused - Supposed to store license deed translations';
-
-ALTER SEQUENCE smb.licenses_translation_id_seq OWNED BY smb.licenses_translation.id;
-
-CREATE INDEX licenses_translations_language_idx ON smb.licenses_translation USING btree (language_id ASC NULLS LAST) TABLESPACE pg_default;
 
 
 ---

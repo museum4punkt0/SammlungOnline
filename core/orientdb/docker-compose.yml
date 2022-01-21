@@ -1,14 +1,14 @@
+# only for development
+
 version: '3.5'
 
 services:
   smb-orientdb:
-    image: reg.xailabs.com/xailabs/orientdb:3.0.32
+    image: reg.xailabs.com/xailabs/orientdb:3.2.2
     container_name: smb-orientdb
-    restart: unless-stopped
-    
-    # only for development
+    restart: unless-stopped    
     volumes:
-      # - ./config:/orientdb/config
+      - ./config:/orientdb/config
       - ./data:/orientdb/databases
       - ./backup:/orientdb/backup
     environment: 
