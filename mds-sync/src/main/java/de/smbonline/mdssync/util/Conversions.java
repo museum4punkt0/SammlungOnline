@@ -1,6 +1,7 @@
 package de.smbonline.mdssync.util;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
 
 public final class Conversions {
 

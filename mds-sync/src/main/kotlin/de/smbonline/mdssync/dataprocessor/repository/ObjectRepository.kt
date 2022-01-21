@@ -16,10 +16,7 @@ import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
 @Repository
-class ObjectRepository {
-
-    @Autowired
-    private lateinit var graphQlClient: GraphQlClient
+class ObjectRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
 
     /**
      * Kotlin-2-Java bridge to run suspend function synchronously.

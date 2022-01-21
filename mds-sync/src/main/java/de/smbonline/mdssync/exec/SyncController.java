@@ -66,7 +66,7 @@ public class SyncController {
     }
 
     /**
-     * Requests to sync specific MDs objects by ids.
+     * Requests to sync specific MDS objects by ids.
      *
      * @param mdsIds MDS object ids
      * @return if sync was performed, {@code false} if another sync is already running
@@ -176,7 +176,7 @@ public class SyncController {
     }
 
     private boolean acquirePermit(final @Min(1) int timeout, final TimeUnit unit) {
-        int availablePermits = semaphore.availablePermits();
+        int availablePermits = this.semaphore.availablePermits();
         if (availablePermits > 1) {
             logger.warn("Unbalanced invocation of acquire/release. Available permits={}, expected=0|1", availablePermits);
         }

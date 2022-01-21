@@ -1,5 +1,13 @@
 package de.smbonline.mdssync.util;
 
+import de.smbonline.mdssync.jaxb.search.response.DataField;
+import de.smbonline.mdssync.jaxb.search.response.ModuleReference;
+import de.smbonline.mdssync.jaxb.search.response.RepeatableGroup;
+import de.smbonline.mdssync.jaxb.search.response.RepeatableGroupReference;
+import de.smbonline.mdssync.jaxb.search.response.SystemField;
+import de.smbonline.mdssync.jaxb.search.response.VirtualField;
+import de.smbonline.mdssync.jaxb.search.response.VocabularyReference;
+import de.smbonline.mdssync.jaxb.search.response.VocabularyReferenceItem;
 import org.springframework.lang.Nullable;
 
 import java.lang.reflect.Array;
@@ -7,18 +15,71 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-// Initial version copied from com.xailabs.common.Find 2020-10-09
+import java.util.stream.Stream;
 
 /**
- * Utility methods for finding and filtering elements from collections. Note that the implementation
- * requires streamable collections (Java 8) to function properly.
- *
- * @author remo.zellmer
+ * Utility methods for finding and filtering elements from collections.
  */
 public final class Lookup {
+
+    public static Throwable findRootCause(final Throwable throwable) {
+        Throwable cause = throwable;
+        while (cause.getCause() != null) {
+            cause = cause.getCause();
+        }
+        return cause;
+    }
+
+    // -- specifics --
+
+    public static @Nullable DataField findDataField(final Collection<DataField> fields, final String name) {
+        return findOne(fields, field -> name.equals(field.getName()));
+    }
+
+    public static @Nullable VirtualField findVrtField(final Collection<VirtualField> fields, final String name) {
+        return findOne(fields, field -> name.equals(field.getName()));
+    }
+
+    public static @Nullable SystemField findSysField(final Collection<SystemField> fields, final String name) {
+        return findOne(fields, field -> name.equals(field.getName()));
+    }
+
+    public static @Nullable RepeatableGroup findGroup(final Collection<RepeatableGroup> groups, final String name) {
+        return findOne(groups, group -> name.equals(group.getName()));
+    }
+
+    public static @Nullable RepeatableGroupReference findGroupRef(
+            final Collection<RepeatableGroupReference> refs, final String name) {
+        return findOne(refs, ref -> name.equals(ref.getName()));
+    }
+
+    public static @Nullable ModuleReference findModuleRef(final Collection<ModuleReference> refs, final String name) {
+        return findOne(refs, ref -> name.equals(ref.getName()));
+    }
+
+    public static @Nullable VocabularyReferenceItem findVocRefItem(
+            final Collection<VocabularyReference> refs, final String name) {
+        return findVocRefItem(refs, name, null);
+    }
+
+    public static @Nullable VocabularyReferenceItem findVocRefItem(
+            final Collection<VocabularyReference> refs, final String name, @Nullable final String value) {
+
+        Stream<VocabularyReferenceItem> items = refs.stream()
+                .filter(ref -> name.equals(ref.getName()))
+                .map(VocabularyReference::getVocabularyReferenceItem)
+                .filter(Objects::nonNull);
+        Optional<VocabularyReferenceItem> item = value == null
+                ? items.findAny()
+                : items.filter(ref -> value.equals(ValueExtractor.extractValue(ref))).findFirst();
+        return item.orElse(null);
+    }
+
+    // -- generics --
 
     /**
      * Filter the given array and returns first element matching the given predicate. Returns

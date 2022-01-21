@@ -5,11 +5,12 @@ import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository;
 import de.smbonline.mdssync.dto.WrapperDTO;
 import de.smbonline.mdssync.dto.ObjectDTO;
 import de.smbonline.mdssync.dto.Operation;
-import de.smbonline.mdssync.search.MdsApiClient;
-import de.smbonline.mdssync.search.MdsApiConfig;
-import de.smbonline.mdssync.search.SearchRequestHelper;
-import de.smbonline.mdssync.search.request.Search;
-import de.smbonline.mdssync.search.response.Module;
+import de.smbonline.mdssync.api.MdsApiClient;
+import de.smbonline.mdssync.api.MdsApiConfig;
+import de.smbonline.mdssync.api.MdsSessionHandler;
+import de.smbonline.mdssync.api.SearchRequestHelper;
+import de.smbonline.mdssync.jaxb.search.request.Search;
+import de.smbonline.mdssync.jaxb.search.response.Module;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ public class SyncExecuterIT {
     MdsApiConfig config;
 
     @Autowired
+    MdsSessionHandler sessionHandler;
+
+    @Autowired
     ObjectProvider<SyncExecuter> executerProvider;
 
     @Autowired
@@ -45,13 +49,12 @@ public class SyncExecuterIT {
         // ----
 
         Search trashBinSearch = new SearchRequestHelper(config, "Object").buildSearchDeletedPayload();
-        Module module = new MdsApiClient(config, "Object").search(trashBinSearch, null);
+        Module module = new MdsApiClient(config, "Object", sessionHandler).search(trashBinSearch, null);
         Assumptions.assumeFalse(module.getModuleItem().isEmpty(), "no deleted objects available that can be tested");
 
         Long id = module.getModuleItem().get(0).getId();
 
-        ObjectDTO object = new ObjectDTO(id);
-        object.setLanguage("de");
+        ObjectDTO object = new ObjectDTO(id, "de");
         WrapperDTO wrapper = new WrapperDTO(object);
         wrapper.setOperation(Operation.UPSERT);
         wrapper.setOnError(exc -> fail("exception"));

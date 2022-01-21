@@ -12,6 +12,6 @@ class LanguageService {
 
     fun getSupportedLanguages(): List<String> {
         val data = languageRepository.fetchLanguagesBlocking()
-        return data.map { it.lang }
+        return data.map { it.code }
     }
 }

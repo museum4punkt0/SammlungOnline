@@ -15,10 +15,7 @@ import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
 @Repository
-class OrgUnitRepository {
-
-    @Autowired
-    private lateinit var graphQlClient: GraphQlClient
+class OrgUnitRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
 
     /**
      * Fetches all orgUnits.

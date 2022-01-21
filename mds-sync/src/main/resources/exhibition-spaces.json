@@ -101,6 +101,12 @@
         "includes": "__TODO__",
         "excludes": "^.*$"
     },
+    "SBM": {
+        "key": "SBM",
+        "field": "ObjCurrentLocationVrt",
+        "includes": "__TODO__",
+        "excludes": "^.*$"
+    },
     "SKS": {
         "key": "SKS",
         "field": "ObjCurrentLocationVrt",

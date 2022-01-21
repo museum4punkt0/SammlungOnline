@@ -6,6 +6,7 @@ plugins {
     id("org.springframework.boot") version "2.3.1.RELEASE"
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
     id("com.apollographql.apollo") version "2.2.1"
+    id("jacoco")
     idea
     war
     kotlin("jvm") version "1.4.21"
@@ -14,7 +15,7 @@ plugins {
 
 description = "Sync for MDS objects, highlights and attachments."
 group = "de.smb-online"
-version = "1.5.1"
+version = "2.0.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
@@ -74,7 +75,24 @@ sonarqube {
         property("sonar.sources", "src/main/java,src/main/kotlin")
         property("sonar.exclusions", "src/main/java/de/smbonline/mdssync/search/request/*.java,src/main/java/de/smbonline/mdssync/search/response/*.java")
         property("sonar.junit.reportPaths", "build/test-results/test")
+        property("sonar.jacoco.reportPaths", "build/test-results/testjacoco")
     }
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(false)
+    }
+}
+
+plugins.withType<JacocoPlugin> {
+    tasks["test"].finalizedBy("jacocoTestReport")
 }
 
 tasks.withType<Test> {

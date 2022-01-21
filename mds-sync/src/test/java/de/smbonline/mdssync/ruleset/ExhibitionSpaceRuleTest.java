@@ -1,6 +1,6 @@
 package de.smbonline.mdssync.ruleset;
 
-import de.smbonline.mdssync.search.response.ModuleItem;
+import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 

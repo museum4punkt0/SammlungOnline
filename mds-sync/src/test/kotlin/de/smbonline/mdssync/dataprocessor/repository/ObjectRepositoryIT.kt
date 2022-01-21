@@ -24,7 +24,7 @@ class ObjectRepositoryIT {
 
         runBlocking {
             // ensure existing
-            val obj = ObjectDTO(existingId)
+            val obj = ObjectDTO(existingId, "foobar")
             obj.attributes = ArrayList()
             objectRepository.saveObject(obj)
             // ensure missing
@@ -57,9 +57,7 @@ class ObjectRepositoryIT {
 
         // run test
 
-        val obj1 = ObjectDTO(testId)
-        obj1.language = "de"
-        obj1.attributes = ArrayList()
+        val obj1 = ObjectDTO(testId, "de")
 
         val attr1 = AttributeDTO()
         attr1.datatype = "String"
@@ -75,8 +73,7 @@ class ObjectRepositoryIT {
         attr2.language = "de"
         attr2.value = "Value of testSaveObjects - attr2"
 
-        obj1.attributes.add(attr1)
-        obj1.attributes.add(attr2)
+        obj1.attributes = listOf(attr1, attr2)
 
         runBlocking {
             val result = objectRepository.saveObject(obj1)
@@ -89,5 +86,4 @@ class ObjectRepositoryIT {
             objectRepository.deleteObject(testId)
         }
     }
-
 }

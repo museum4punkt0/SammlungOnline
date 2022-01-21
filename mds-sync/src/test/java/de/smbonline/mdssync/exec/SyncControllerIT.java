@@ -26,9 +26,6 @@ public class SyncControllerIT {
 
     @Test
     public void runSyncByIds() {
-        LocalDateTime start = LocalDateTime.of(2019, 12, 14, 17, 0, 0);
-        LocalDateTime end = LocalDateTime.of(2019, 12, 14, 18, 0, 0);
-
         SyncResult result = syncController.syncUpdates(865040L, 867231L, 959003L);
         assertThat(result.getStatus()).isNotEqualTo(SyncResult.Status.ERROR);
         assertThat(result.getFailedIds()).isNullOrEmpty();

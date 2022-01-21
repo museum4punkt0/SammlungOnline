@@ -1,6 +1,7 @@
 package de.smbonline.mdssync.dataprocessor.service
 
 import de.smbonline.mdssync.dataprocessor.repository.SyncCycleRepository
+import de.smbonline.mdssync.dto.ObjectDTO
 import de.smbonline.mdssync.dto.Operation
 import de.smbonline.mdssync.dto.SyncCycleDTO
 import de.smbonline.mdssync.dto.WrapperDTO

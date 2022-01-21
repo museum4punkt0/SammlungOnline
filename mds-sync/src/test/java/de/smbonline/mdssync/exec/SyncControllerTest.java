@@ -1,13 +1,13 @@
 package de.smbonline.mdssync.exec;
 
 import de.smbonline.mdssync.dataprocessor.queue.DataQueue;
-import de.smbonline.mdssync.dataprocessor.repository.IgnorableKeyRepository;
-import de.smbonline.mdssync.dataprocessor.repository.SyncCycleRepository;
 import de.smbonline.mdssync.dataprocessor.service.IgnorableKeyService;
 import de.smbonline.mdssync.dataprocessor.service.LanguageService;
+import de.smbonline.mdssync.dataprocessor.service.ObjectService;
 import de.smbonline.mdssync.dataprocessor.service.SyncCycleService;
 import de.smbonline.mdssync.index.SearchIndexerConfig;
-import de.smbonline.mdssync.search.MdsApiConfig;
+import de.smbonline.mdssync.api.MdsApiClientFactory;
+import de.smbonline.mdssync.api.MdsApiConfig;
 import kotlin.Pair;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -129,7 +129,9 @@ public class SyncControllerTest {
     private SyncExecuter noopExecuter(final int noopDurationSeconds) {
         return new SyncExecuter(
                 Mockito.mock(MdsApiConfig.class),
+                Mockito.mock(MdsApiClientFactory.class),
                 Mockito.mock(SearchIndexerConfig.class),
+                Mockito.mock(ObjectService.class),
                 Mockito.mock(LanguageService.class),
                 Mockito.mock(SyncCycleService.class),
                 Mockito.mock(IgnorableKeyService.class),

@@ -4,3 +4,16 @@ query FetchObject($mdsId: bigint!) {
         ...objectData
     }
 }
+
+# Return an Object by id
+#query FetchFullObject($mdsId: bigint!) {
+#    smb_objects_by_pk(id: $mdsId) {
+#        ...objectData
+#        attribute_translations {
+#            ...attributeTranslationsData
+#        }
+#        attachments(order_by: [{ primary: desc }]) {
+#            ...attachmentData
+#        }
+#    }
+#}

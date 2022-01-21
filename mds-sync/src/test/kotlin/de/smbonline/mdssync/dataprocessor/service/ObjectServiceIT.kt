@@ -28,13 +28,12 @@ class ObjectServiceIT {
 
         runBlocking {
 
-            // TODO @Tom: better setup required to ensure object with attributes exists
+            // TODO better setup required to ensure object with attributes exists
             assumeThat(objectRepository.existsObject(mdsId)).isTrue
             val attrCountBeforeChange = attributesRepository.getAttributeIds(mdsId, "de").size
             assumeThat(attrCountBeforeChange).isGreaterThan(0)
 
-            val obj = ObjectDTO(mdsId)
-            obj.language = "de"
+            val obj = ObjectDTO(mdsId, "de")
             metadataService.save(obj)
 
             val attrCountAfterChange = attributesRepository.getAttributeIds(mdsId, "de").size

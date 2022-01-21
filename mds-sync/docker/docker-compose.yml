@@ -9,11 +9,24 @@ services:
     container_name: smb-mds-sync
     restart: unless-stopped
     environment:
-      - scheduler-jobs-enabled=false
-      - hasura-secret=jcG8QBI5g8OX
-
+      - SCHEDULER_JOBS_ENABLED=false
+      - HASURA_ENDPOINT=http://smb-hasura:8080/v1/graphql
+      - HASURA_SECRET=jcG8QBI5g8OX
+      - IMGP_BASE_URL=http://smb-image-provider/images
+      - IMGP_USER=smb-image-user
+      - IMGP_PASS=UNDEFINED
+      - MDS_API_BASEURL=https://194.94.134.27:8181/MpWeb-mpBerlinStaatlicheMuseen
+      - MDS_API_USER=UNDEFINED
+      - MDS_API_PASSWORD=UNDEFINED
+      - SEARCH_INDEXER_BASE_URL=http://smb-search-indexer:8085/search/index
+      - SEARCH_INDEXER_SHOULD_UPDATE=true
+      
+    ports:
+      - 8082:8082
     external_links:
       - smb-hasura
+      - smb-search-indexer
+      - smb-image-provider
 
 networks:
   default:

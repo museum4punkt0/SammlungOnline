@@ -2,10 +2,13 @@ logging.level:
   performance: INFO
   sync-results: INFO # DON'T CHANGE THIS! results are always logged with INFO level
   de.smbonline: INFO
-  #de.smbonline.mdssync.exec: DEBUG
+  de.smbonline.mdssync.exec: DEBUG
   org.apache.catalina: WARN
   org.springframework: WARN
 
+spring:
+  jmx:
+    enabled: true
 server:
   port: 8082
 
@@ -23,18 +26,15 @@ mds-api:
 #  base-url: https://de1.zetcom-group.de/MpWeb-mpBerlinStaatlicheMuseenTest
 #  base-url: https://194.94.134.27:8181/MpWeb-mpBerlinStaatlicheMuseen
   base-url: ${MDS_API_BASEURL}
-  module-path-template: /ria-ws/application/module/{moduleName}
+  webservice-path: /ria-ws/application
+  module-path-template: ${mds-api.webservice-path}/module/{moduleName}
   ssl-validation-enabled: false
-  org-unit-deleted-objects: SysTrashBinOrgUnit_global
+  approval-filter-enabled: true
+  token-lifetime: ${MDS_API_TOKEN_LIFETIME:20}
   fields:
-    mds-id-field-name: __id
-    org-unit-field-name: __orgUnit
-    modified-timestamp-field: __lastModified
     highlight-field-name: OgrNameTxt
-    deleted-filter: ${mds-api.fields.org-unit-field-name},${mds-api.org-unit-deleted-objects}
+    deleted-filter: __orgUnit,SysTrashBinOrgUnit_global
   auth:
-    # either basic auth header or user/pass for basic authentication
-#    header: Basic ...
     user: ${MDS_API_USER}
     pass: ${MDS_API_PASSWORD}
 

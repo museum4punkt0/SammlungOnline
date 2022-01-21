@@ -5,7 +5,7 @@ import de.smbonline.mdssync.exec.SyncController;
 import de.smbonline.mdssync.exec.SyncResult;
 import de.smbonline.mdssync.exec.SyncScheduler;
 import de.smbonline.mdssync.index.SearchIndexerConfig;
-import de.smbonline.mdssync.search.MdsApiConfig;
+import de.smbonline.mdssync.api.MdsApiConfig;
 import kotlin.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +46,8 @@ public class AdminRestController {
     public static final String SYNC_INCREMENTAL_PERMIT_ACQUISITION_TIMEOUT = "sync.incremental.permit.acquisition.timeout";
     public static final String SYNC_DELETE_PERMIT_ACQUISITION_TIMEOUT = "sync.delete.permit.acquisition.timeout";
     public static final String SEARCH_INDEXER_SHOULD_UPDATE = "search.indexer.should.update";
+    public static final String APPROVAL_FILTER_ENABLED = "mds.approval.filter.enabled";
+    public static final String MDS_TOKEN_LIFETIME = "mds.token.lifetime";
 
     // spring beans
     private final MdsApiConfig mdsApiConfig;
@@ -74,6 +76,8 @@ public class AdminRestController {
     public ResponseEntity<Any> getSupportedConfigurationKeys() {
         Any config = new Any()
                 .setAttribute(MDS_SSL_VALIDATION_ENABLED, this.mdsApiConfig.isSslValidationEnabled())
+                .setAttribute(APPROVAL_FILTER_ENABLED, this.mdsApiConfig.isApprovalFilterEnabled())
+                .setAttribute(MDS_TOKEN_LIFETIME, this.mdsApiConfig.getTokenLifetime())
                 .setAttribute(SCHEDULER_JOBS_ENABLED, this.syncScheduler.isEnabled())
                 .setAttribute(SYNC_INCREMENTAL_PERMIT_ACQUISITION_TIMEOUT, this.syncController.getConfig().getIncrementalTimeout().getFirst())
                 .setAttribute(SYNC_DELETE_PERMIT_ACQUISITION_TIMEOUT, this.syncController.getConfig().getDeleteTimeout().getFirst())
@@ -87,6 +91,14 @@ public class AdminRestController {
         if (config.hasAttribute(MDS_SSL_VALIDATION_ENABLED)) {
             this.mdsApiConfig.setSslValidationEnabled(toBoolean(config.getAttribute(MDS_SSL_VALIDATION_ENABLED)));
             config.removeAttribute(MDS_SSL_VALIDATION_ENABLED);
+        }
+        if (config.hasAttribute(APPROVAL_FILTER_ENABLED)) {
+            this.mdsApiConfig.setApprovalFilterEnabled(toBoolean(config.getAttribute(APPROVAL_FILTER_ENABLED)));
+            config.removeAttribute(APPROVAL_FILTER_ENABLED);
+        }
+        if (config.hasAttribute(MDS_TOKEN_LIFETIME)) {
+            this.mdsApiConfig.setTokenLifetime(toInteger(config.getAttribute(MDS_TOKEN_LIFETIME)));
+            config.removeAttribute(MDS_TOKEN_LIFETIME);
         }
         if (config.hasAttribute(SCHEDULER_JOBS_ENABLED)) {
             this.syncScheduler.setEnabled(toBoolean(config.getAttribute(SCHEDULER_JOBS_ENABLED)));

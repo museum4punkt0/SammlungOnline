@@ -1,26 +1,28 @@
 package de.smbonline.mdssync.dataprocessor.service
 
+import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.ObjectData
 import de.smbonline.mdssync.dataprocessor.repository.AttributeRepository
 import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository
-import de.smbonline.mdssync.dto.WrapperDTO
 import de.smbonline.mdssync.dto.ObjectDTO
 import de.smbonline.mdssync.dto.Operation
+import de.smbonline.mdssync.dto.WrapperDTO
 import de.smbonline.mdssync.pattern.cor.Engine
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.time.OffsetDateTime
 
 @Component
 class ObjectService : DataService<ObjectDTO>, Engine<WrapperDTO>() {
 
     @Autowired
-    private lateinit var objectRepository: ObjectRepository
+    lateinit var objectRepository: ObjectRepository
 
     @Autowired
-    private lateinit var attributeRepository: AttributeRepository
+    lateinit var attributeRepository: AttributeRepository
 
     @Autowired
-    private lateinit var attachmentService: AttachmentService
+    lateinit var attachmentService: AttachmentService
 
     override fun save(element: ObjectDTO) {
         runBlocking {
@@ -85,4 +87,12 @@ class ObjectService : DataService<ObjectDTO>, Engine<WrapperDTO>() {
         attachmentService.deleteAll(objectId)
     }
 
+    fun getLastUpdated(mdsId: Long): OffsetDateTime? {
+        var obj: ObjectData?
+        runBlocking {
+            obj = objectRepository.fetchObject(mdsId)
+        }
+        val timestamp = obj?.updatedAt ?: return null
+        return OffsetDateTime.parse(timestamp.toString())
+    }
 }

@@ -16,17 +16,14 @@ import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
 @Repository
-class HighlightRepository {
-
-    @Autowired
-    private lateinit var graphqlClient: GraphQlClient
+class HighlightRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
 
     /**
      * Fetches all Highlights.
      * @return data of all Highlights
      */
     suspend fun fetchAllHighlights(): List<HighlightData> {
-        val result = graphqlClient.client.query(
+        val result = graphQlClient.client.query(
                 FetchAllHighlightsQuery()
         ).toDeferred().await()
         return result.data?.smb_highlights?.map { it.fragments.highlightData }.orEmpty()
@@ -37,7 +34,7 @@ class HighlightRepository {
      * @param orgUnitId id of OrgUnit
      */
     suspend fun fetchHighlightsByOrgUnitId(orgUnitId: Long): List<HighlightData> {
-        val result = graphqlClient.client.query(
+        val result = graphQlClient.client.query(
                 FetchHighlightsByOrgUnitIdQuery(orgUnitId = orgUnitId)
         ).toDeferred().await()
         return result.data?.smb_highlights?.map { it.fragments.highlightData }.orEmpty()
@@ -60,7 +57,7 @@ class HighlightRepository {
      * @return id of the Highlight or null if OrgUnit-Object-combination is not found
      */
     suspend fun getHighlightId(orgUnitId: Long, objectId: Long): Long? {
-        val result = graphqlClient.client.query(
+        val result = graphQlClient.client.query(
                 FetchHightlightByOrgUnitIdAndObjectIdQuery(
                         orgUnitId = orgUnitId,
                         objectId = objectId
@@ -79,7 +76,7 @@ class HighlightRepository {
      * @throws SyncFailedException if new row could not be inserted
      */
     suspend fun saveHighlight(orgUnitId: Long, objectId: Long): Long {
-        val result = graphqlClient.client.mutate(
+        val result = graphQlClient.client.mutate(
                 InsertHighlightMutation(
                         orgUnitId = orgUnitId,
                         objectId = objectId
@@ -100,7 +97,7 @@ class HighlightRepository {
      * @return id of the deleted row, null if no row was deleted
      */
     suspend fun deleteHighlight(orgUnitId: Long, objectId: Long): Long? {
-        val result = graphqlClient.client.mutate(
+        val result = graphQlClient.client.mutate(
                 DeleteHightlightMutation(
                         orgUnitId = orgUnitId,
                         objectId = objectId
@@ -118,7 +115,7 @@ class HighlightRepository {
      * @return Ids of affected rows
      */
     suspend fun deleteHighlights(orgUnitId: Long): List<Long> {
-        val result = graphqlClient.client.mutate(
+        val result = graphQlClient.client.mutate(
                 DeleteHighlightsByOrgUnitIdMutation(
                         orgUnitId = orgUnitId
                 )

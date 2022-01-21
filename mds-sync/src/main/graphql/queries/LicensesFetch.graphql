@@ -1,0 +1,20 @@
+# Returns all Licenses
+query FetchLicenses {
+    smb_licenses {
+        ...licenseData
+    }
+}
+
+# Returns a License if existent
+query FetchLicense($id: bigint!) {
+    smb_licenses_by_pk(id: $id) {
+        ...licenseData
+    }
+}
+
+# Returns a License if existent
+query FetchLicenseByKey($key: String!) {
+    smb_licenses(where: {key:  {_eq: $key}}) {
+        ...licenseData
+    }
+}

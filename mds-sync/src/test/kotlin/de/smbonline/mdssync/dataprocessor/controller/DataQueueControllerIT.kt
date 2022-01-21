@@ -20,8 +20,7 @@ class DataQueueControllerIT {
         var afterCommandExecuted = false
         var onErrorExecuted = false
 
-        val obj = ObjectDTO(1234567890)
-        obj.language = "de"
+        val obj = ObjectDTO(1234567890,"de")
         val mdsDtoWrapper = WrapperDTO(obj)
         mdsDtoWrapper.operation = Operation.DELETE
         mdsDtoWrapper.beforeExecuteCommand = {

@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-class GraphQlClient {
-
-    @Autowired
-    private lateinit var graphQlProperties: GraphQlProperties
+class GraphQlClient @Autowired constructor(private val graphQlProperties: GraphQlProperties) {
 
     private var _client: ApolloClient? = null
 

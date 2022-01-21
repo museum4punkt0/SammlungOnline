@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 
 @Repository
-class IgnorableKeyRepository {
-
-    @Autowired
-    private lateinit var graphQlClient: GraphQlClient
+class IgnorableKeyRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
 
     /**
      * Kotlin-2-Java bridge to run suspend function synchronously.

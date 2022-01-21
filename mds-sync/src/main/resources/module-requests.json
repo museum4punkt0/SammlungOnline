@@ -1,0 +1,24 @@
+{
+  "Literature": {
+    "select": [
+      "__id",
+      "__lastModified",
+      "LitReferenceShortTxt",
+      "LitPublicationDateLnu",
+      "LitCitationClb"
+    ]
+  },
+  "Person": {
+    "select": [
+      "__id",
+      "__lastModified",
+      "PerNennformTxt",
+      "PerPersonVrt"
+    ]
+  },
+  "Registrar": {
+    "select": [
+      "RegExhibitionRef.moduleReferenceItem"
+    ]
+  }
+}

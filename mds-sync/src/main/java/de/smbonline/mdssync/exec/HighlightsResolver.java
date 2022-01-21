@@ -1,5 +1,9 @@
 package de.smbonline.mdssync.exec;
 
+import de.smbonline.mdssync.api.MdsApiClient;
+import de.smbonline.mdssync.api.MdsApiClientFactory;
+import de.smbonline.mdssync.api.MdsApiConfig;
+import de.smbonline.mdssync.api.SearchRequestHelper;
 import de.smbonline.mdssync.dataprocessor.queue.DataQueue;
 import de.smbonline.mdssync.dataprocessor.service.HighlightService;
 import de.smbonline.mdssync.dto.HighlightDTO;
@@ -7,21 +11,19 @@ import de.smbonline.mdssync.dto.Operation;
 import de.smbonline.mdssync.dto.SyncCycleDTO;
 import de.smbonline.mdssync.dto.WrapperDTO;
 import de.smbonline.mdssync.exc.MdsApiConnectionException;
+import de.smbonline.mdssync.exec.parser.HighlightsParser;
 import de.smbonline.mdssync.index.SearchIndexerClient;
 import de.smbonline.mdssync.index.SearchIndexerConfig;
+import de.smbonline.mdssync.jaxb.search.request.EndsWithField;
+import de.smbonline.mdssync.jaxb.search.request.ExpertSearchExpression;
+import de.smbonline.mdssync.jaxb.search.request.ObjectFactory;
+import de.smbonline.mdssync.jaxb.search.request.Search;
+import de.smbonline.mdssync.jaxb.search.request.Select;
+import de.smbonline.mdssync.jaxb.search.request.SelectField;
+import de.smbonline.mdssync.jaxb.search.request.StartsWithField;
+import de.smbonline.mdssync.jaxb.search.response.Module;
+import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
 import de.smbonline.mdssync.log.ErrorLogging;
-import de.smbonline.mdssync.search.MdsApiClient;
-import de.smbonline.mdssync.search.MdsApiConfig;
-import de.smbonline.mdssync.search.SearchRequestHelper;
-import de.smbonline.mdssync.search.request.EndsWithField;
-import de.smbonline.mdssync.search.request.ExpertSearchExpression;
-import de.smbonline.mdssync.search.request.ObjectFactory;
-import de.smbonline.mdssync.search.request.Search;
-import de.smbonline.mdssync.search.request.Select;
-import de.smbonline.mdssync.search.request.SelectField;
-import de.smbonline.mdssync.search.request.StartsWithField;
-import de.smbonline.mdssync.search.response.Module;
-import de.smbonline.mdssync.search.response.ModuleItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +36,14 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static de.smbonline.mdssync.log.Loggers.*;
+import static de.smbonline.mdssync.util.MdsConstants.*;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -53,36 +57,35 @@ public class HighlightsResolver {
     private final DataQueue<WrapperDTO> dataQueue;
     private final MdsApiConfig mdsConfig;
     private final SearchIndexerConfig indexerConfig;
+    private final MdsApiClientFactory clientFactory;
 
     private final List<Long> oldHighlightObjIds = new ArrayList<>();
     private final List<Long> newHighlightObjIds = new ArrayList<>();
 
     // lazy initialized members
 
-    private MdsApiClient highlightApiClient;
     private SearchIndexerClient searchIndexerClient;
 
     @Autowired
     public HighlightsResolver(
             final MdsApiConfig mdsConfig,
+            final MdsApiClientFactory clientFactory,
             final SearchIndexerConfig indexerConfig,
             final HighlightService highlightService,
             final DataQueue<WrapperDTO> dataQueue) {
         this.mdsConfig = mdsConfig;
+        this.clientFactory = clientFactory;
         this.indexerConfig = indexerConfig;
         this.highlightService = highlightService;
         this.dataQueue = dataQueue;
     }
 
     /*
-     * Lazy-init API client. Method is protected to allow overriding in test cases.
+     * Method is protected to allow overriding in test cases.
      * @return API client
      */
     protected MdsApiClient mdsClient() {
-        if (this.highlightApiClient == null) {
-            this.highlightApiClient = new MdsApiClient(this.mdsConfig, "ObjectGroup");
-        }
-        return this.highlightApiClient;
+        return this.clientFactory.getApiClient(MODULE_OBJECT_GROUPS);
     }
 
     /*
@@ -164,6 +167,8 @@ public class HighlightsResolver {
         } catch (MdsApiConnectionException exc) {
             ErrorLogging.log(exc, "Highlights sync failed.");
             return new SyncResult(SyncResult.Status.ERROR, Duration.between(start, LocalDateTime.now()));
+        } finally {
+            System.gc();
         }
     }
 
@@ -195,7 +200,7 @@ public class HighlightsResolver {
 
     protected HighlightsParser newHighlightsParser() {
         HighlightsParser parser = new HighlightsParser();
-        parser.getConfig().setOrgUnitFieldName(this.mdsConfig.getFields().getOrgUnitFieldName());
+        parser.getConfig().setOrgUnitFieldName(FIELD_ORG_UNIT);
         return parser;
     }
 
@@ -208,8 +213,8 @@ public class HighlightsResolver {
         });
         wrapper.setAfterExecuteCommand(() -> {
             LOGGER.info("{} MDS objects for {} marked as highlights.",
-                    highlight.getObjectIds().size(), highlight.getOrgUnitName());
-            this.newHighlightObjIds.addAll(highlight.getObjectIds());
+                    highlight.getObjectIds().length, highlight.getOrgUnitName());
+            this.newHighlightObjIds.addAll(Arrays.asList(highlight.getObjectIds()));
             return null;
         });
         wrapper.setOnError(exc -> {
@@ -241,7 +246,7 @@ public class HighlightsResolver {
         ObjectFactory factory = new ObjectFactory();
 
         SelectField orgUnitField = factory.createSelectField();
-        orgUnitField.setFieldPath(this.mdsConfig.getFields().getOrgUnitFieldName()); // "__orgUnit"
+        orgUnitField.setFieldPath(FIELD_ORG_UNIT);
         SelectField ogrNameField = factory.createSelectField();
         ogrNameField.setFieldPath(this.mdsConfig.getFields().getHighlightFieldName()); // "OgrNameTxt"
         SelectField objectRefsField = factory.createSelectField();

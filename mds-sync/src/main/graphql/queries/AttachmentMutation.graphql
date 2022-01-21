@@ -1,14 +1,14 @@
-
 # Insert or update an Attachment
-mutation InsertOrUpdateAttachment($filename: String!, $primary: Boolean!, $objectId: bigint!, $credits: String) {
+mutation InsertOrUpdateAttachment($filename: String!, $primary: Boolean!, $objectId: bigint!, $licenseId: bigint!, $credits: String) {
     insert_smb_attachments_one(object: {
         attachment: $filename,
         primary: $primary,
         object_id: $objectId,
+        license_id: $licenseId,
         credits: $credits,
     }, on_conflict: {
         constraint: attachments_attachment_key
-        update_columns: [primary, object_id, credits],
+        update_columns: [primary, object_id, license_id, credits],
     }) {
         id
     }

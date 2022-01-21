@@ -4,10 +4,10 @@ package de.smbonline.mdssync.dto
  * Describes an object that should be synced. The language attribute defines the common translation language
  * for all attributes.
  */
-data class ObjectDTO(val mdsId: Long) {
+data class ObjectDTO(override val mdsId: Long, var language: String) : MdsObject {
 
-    lateinit var language: String
-    var attributes: ArrayList<AttributeDTO> = ArrayList()
+    override val type: String = "Object"
+    override var attributes: List<AttributeDTO> = ArrayList()
     var exhibitionSpace: String? = null
 
     override fun toString(): String = "Object{id:$mdsId}"

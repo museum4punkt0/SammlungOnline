@@ -48,7 +48,7 @@ class HighlightService @Autowired constructor(
         runBlocking {
             data = highlightRepository.fetchAllHighlights()
         }
-        return data.map { it.org_unit.name }.distinct()
+        return data.map { it.orgUnit.key }.distinct()
     }
 
     fun getHighlightObjectIds(orgUnitName: String): List<Long> {
@@ -57,7 +57,7 @@ class HighlightService @Autowired constructor(
             val id = orgUnitRepository.getOrgUnitIdByOrgUnitName(orgUnitName)
             ids = if (id != null) {
                 highlightRepository.fetchHighlightsByOrgUnitId(id).map {
-                    (it.object_id as BigDecimal).longValueExact()
+                    (it.objectId as BigDecimal).longValueExact()
                 }
             } else emptyList()
         }
@@ -74,7 +74,7 @@ class HighlightService @Autowired constructor(
         val newHighlightIds = saveHighlightElements(orgUnitId, element.objectIds)
         val toBeDeletedHighlightIds = oldHighlightIds.filter { !newHighlightIds.contains(it) }
 
-        deleteHighlightsOfOrgUnit(orgUnitId, toBeDeletedHighlightIds)
+        deleteHighlightsOfOrgUnit(orgUnitId, toBeDeletedHighlightIds.toTypedArray())
     }
 
     /**
@@ -87,10 +87,10 @@ class HighlightService @Autowired constructor(
                 ?: orgUnitRepository.saveOrgUnit(orgUnitName)
     }
 
-    private suspend fun getHighlightIds(orgUnitId: Long): List<Long> {
+    private suspend fun getHighlightIds(orgUnitId: Long): Array<Long> {
         return highlightRepository.fetchHighlightsByOrgUnitId(orgUnitId).map {
             (it.id as BigDecimal).longValueExact()
-        }
+        }.toTypedArray()
     }
 
     /**
@@ -99,7 +99,7 @@ class HighlightService @Autowired constructor(
      * @param objectsMdsIds
      * @return list of saved ids
      */
-    private suspend fun saveHighlightElements(orgUnitId: Long, objectsMdsIds: List<Long>): List<Long> {
+    private suspend fun saveHighlightElements(orgUnitId: Long, objectsMdsIds: Array<Long>): Array<Long> {
         val savedHighlights = ArrayList<Long>()
         for (objectMdsId in objectsMdsIds) {
             // only mark this object as highlight if really available
@@ -110,7 +110,7 @@ class HighlightService @Autowired constructor(
                 highlightId.let { savedHighlights.add(highlightId) }
             }
         }
-        return savedHighlights
+        return savedHighlights.toTypedArray()
     }
 
     /**
@@ -118,7 +118,7 @@ class HighlightService @Autowired constructor(
      * @param orgUnitId id of OrgUnit
      * @param objectIds ids of Objects
      */
-    private suspend fun deleteHighlightsOfOrgUnit(orgUnitId: Long, objectIds: List<Long>) {
+    private suspend fun deleteHighlightsOfOrgUnit(orgUnitId: Long, objectIds: Array<Long>) {
         objectIds.forEach { highlightRepository.deleteHighlight(orgUnitId, it) }
     }
 

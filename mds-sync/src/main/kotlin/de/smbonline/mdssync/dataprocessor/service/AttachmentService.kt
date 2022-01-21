@@ -1,28 +1,26 @@
 package de.smbonline.mdssync.dataprocessor.service
 
 import de.smbonline.mdssync.dataprocessor.repository.AttachmentRepository
+import de.smbonline.mdssync.dataprocessor.repository.LicenseRepository
 import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository
 import de.smbonline.mdssync.dataprocessor.repository.WebDavRepository
 import de.smbonline.mdssync.dto.ImageDTO
-import de.smbonline.mdssync.dto.WrapperDTO
 import de.smbonline.mdssync.dto.Operation
+import de.smbonline.mdssync.dto.WrapperDTO
 import de.smbonline.mdssync.pattern.cor.Engine
+import de.smbonline.mdssync.util.Credits
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 
 @Component
-class AttachmentService : DataService<ImageDTO>, Engine<WrapperDTO>() {
-
-    @Autowired
-    private lateinit var objectRepository: ObjectRepository
-
-    @Autowired
-    private lateinit var attachmentRepository: AttachmentRepository
-
-    @Autowired
-    private lateinit var webDavRepository: WebDavRepository
+class AttachmentService @Autowired constructor(
+        private val objectRepository: ObjectRepository,
+        private val attachmentRepository: AttachmentRepository,
+        private val licenseRepository: LicenseRepository,
+        private val webDavRepository: WebDavRepository
+): DataService<ImageDTO>, Engine<WrapperDTO>() {
 
     override fun save(element: ImageDTO) {
         runBlocking {
@@ -58,13 +56,20 @@ class AttachmentService : DataService<ImageDTO>, Engine<WrapperDTO>() {
 
     private suspend fun saveOrUpdateImage(element: ImageDTO) {
         if (objectRepository.existsObject(element.objectId)) {
-            webDavRepository.insertOrUpdate(element.imageFileName, element.base64)
-            attachmentRepository.saveImage(element.imageFileName, element.primary, element.objectId, element.credits)
+            val licenseId = licenseRepository.fetchOrInsertLicense(element.credits.licenseKey)
+            webDavRepository.insertOrUpdate(element.imageFilePath, element.base64)
+            attachmentRepository.saveImage(
+                    element.imageFilePath,
+                    element.primary,
+                    element.objectId,
+                    licenseId,
+                    Credits.toCreditLine(element.credits)
+            )
         }
     }
 
     private suspend fun deleteImage(element: ImageDTO) {
-        val image = attachmentRepository.getAttachment(element.imageFileName) ?: return
+        val image = attachmentRepository.getAttachment(element.imageFilePath) ?: return
         val imageId = (image.id as BigDecimal).longValueExact()
         webDavRepository.delete(image.attachment)
         attachmentRepository.deleteAttachment(imageId)

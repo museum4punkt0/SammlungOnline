@@ -1,7 +1,7 @@
 package de.smbonline.mdssync.ruleset;
 
-import de.smbonline.mdssync.search.response.ModuleItem;
-import de.smbonline.mdssync.search.response.SystemField;
+import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
+import de.smbonline.mdssync.jaxb.search.response.SystemField;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +11,14 @@ import java.util.Map;
 
 import static de.smbonline.mdssync.ruleset.Mappings.*;
 import static de.smbonline.mdssync.util.Lookup.*;
+import static de.smbonline.mdssync.util.MdsConstants.*;
+import static de.smbonline.mdssync.util.ValueExtractor.*;
 
 /**
  * Transformation rule for the collections attribute. Takes into account the OrgUnit and fetches
  * a user-friendly representation of the technical value from a lookup table.
  */
-public class CollectionsNameRule implements TransformationRule {
+public class CollectionsNameRule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionsNameRule.class);
 
@@ -26,14 +28,13 @@ public class CollectionsNameRule implements TransformationRule {
      * @param item source item
      * @return collection
      */
-    @Override
     public @Nullable String apply(final ModuleItem item) {
-        SystemField orgUnitField = findFirst(item.getSystemField(), f -> "__orgUnit".equals(f.getName()));
-        if (orgUnitField == null || StringUtils.isBlank(orgUnitField.getValue())) {
+        SystemField orgUnitField = findSysField(item.getSystemField(), FIELD_ORG_UNIT);
+        String orgUnit = extractValue(orgUnitField);
+        if (StringUtils.isBlank(orgUnit)) {
             return null;
         }
-        String orgUnit = orgUnitField.getValue().trim();
-        for (Map.Entry<String, String> entry : COLLECTION_MAPPING.entrySet()) {
+        for (Map.Entry<String, String> entry : collectionMapping().entrySet()) {
             if (orgUnit.startsWith(entry.getKey())) {
                 return entry.getValue();
             }

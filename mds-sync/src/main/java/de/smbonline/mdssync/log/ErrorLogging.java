@@ -1,6 +1,7 @@
 package de.smbonline.mdssync.log;
 
 import de.smbonline.mdssync.util.Lookup;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,7 @@ public final class ErrorLogging {
 
     private static String determineInvokerClass() {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        stackTrace = ArrayUtils.remove(stackTrace, 0); // 0=java.lang.Thread
         StackTraceElement invoker = Lookup.findFirst(stackTrace, e ->
                 !ErrorLogging.class.getName().equals(e.getClassName())
         );

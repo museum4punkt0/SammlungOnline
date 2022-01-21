@@ -15,20 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
-// TODO fix documentation in Repositories
+// TODO add/fix documentation in Repositories
 
 @Repository
-class AttachmentRepository {
+class AttachmentRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
 
-    @Autowired
-    private lateinit var graphQlClient: GraphQlClient
-
-    suspend fun saveImage(filename: String, primary: Boolean, objectId: Long, credits: String): Long {
+    suspend fun saveImage(filename: String, primary: Boolean, objectId: Long, licenseId: Long, credits: String): Long {
         val result = graphQlClient.client.mutate(
                 InsertOrUpdateAttachmentMutation(
                         filename = filename,
                         primary = primary,
                         objectId = objectId,
+                        licenseId = licenseId,
                         credits = Input.optional(credits)
                 )
         ).toDeferred().await()

@@ -1,9 +1,9 @@
 package de.smbonline.mdssync.ruleset;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.smbonline.mdssync.jaxb.search.response.Field;
+import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
 import de.smbonline.mdssync.rest.Any;
-import de.smbonline.mdssync.search.response.Field;
-import de.smbonline.mdssync.search.response.ModuleItem;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,8 +17,9 @@ import java.util.regex.Pattern;
 
 import static de.smbonline.mdssync.ruleset.Mappings.*;
 import static de.smbonline.mdssync.util.Lookup.*;
+import static de.smbonline.mdssync.util.MdsConstants.*;
 
-public class ExhibitionSpaceRule implements TransformationRule {
+public class ExhibitionSpaceRule {
 
     public static final String SEPARATOR = " -> ";
     public static final String NO_DATA_AVAILABLE = ExhibitionState.UNKNOWN.name();
@@ -39,7 +40,6 @@ public class ExhibitionSpaceRule implements TransformationRule {
         }
     }
 
-    @Override
     public @Nullable String apply(final ModuleItem item) {
         String collectionKey = findCollectionKey(item);
         if (collectionKey == null) {
@@ -114,8 +114,8 @@ public class ExhibitionSpaceRule implements TransformationRule {
     }
 
     private static @Nullable String findCollectionKey(final ModuleItem source) {
-        String orgUnit = getAttributeValue(source, "__orgUnit");
-        return orgUnit == null ? null : COLLECTION_MAPPING
+        String orgUnit = getAttributeValue(source, FIELD_ORG_UNIT);
+        return orgUnit == null ? null : collectionMapping()
                 .keySet()
                 .stream()
                 .filter(orgUnit::startsWith)
@@ -126,11 +126,11 @@ public class ExhibitionSpaceRule implements TransformationRule {
     private static @Nullable String getAttributeValue(final ModuleItem source, final String attributeKey) {
         Field field;
         if (attributeKey.endsWith("Vrt")) {
-            field = findOne(source.getVirtualField(), f -> attributeKey.equals(f.getName()));
+            field = findVrtField(source.getVirtualField(), attributeKey);
         } else if (attributeKey.startsWith("__")) {
-            field = findOne(source.getSystemField(), f -> attributeKey.equals(f.getName()));
+            field = findSysField(source.getSystemField(), attributeKey);
         } else {
-            field = findOne(source.getDataField(), f -> attributeKey.equals(f.getName()));
+            field = findDataField(source.getDataField(), attributeKey);
         }
         return field == null ? null : field.getValue();
     }

@@ -24,7 +24,7 @@ public class SearchIndexerClient {
     private static RestTemplate initRestTemplate(final SearchIndexerConfig config) {
         return new RestTemplateBuilder()
                 .setConnectTimeout(Duration.ofSeconds(5))
-                .setReadTimeout(Duration.ofSeconds(10))
+                .setReadTimeout(Duration.ofSeconds(60))
                 .rootUri(config.getBaseUrl())
                 .build();
     }

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
 @Repository
-class LanguageRepository {
-
-    @Autowired
-    private lateinit var graphQlClient: GraphQlClient
+class LanguageRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
 
     fun fetchLanguagesBlocking(): List<LanguageData> {
         val result: List<LanguageData>

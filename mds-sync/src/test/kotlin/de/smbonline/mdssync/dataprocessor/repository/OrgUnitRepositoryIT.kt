@@ -41,11 +41,11 @@ class OrgUnitRepositoryIT {
             // fetch
             val fetch1 = orgUnitRepository.fetchOrgUnitByOrgUnitName(ORG_UNIT1)
             assertThat(fetch1).isNotNull
-            assertThat(fetch1!!.name).isEqualTo(ORG_UNIT1)
+            assertThat(fetch1!!.key).isEqualTo(ORG_UNIT1)
 
             val fetch2 = orgUnitRepository.fetchOrgUnitByOrgUnitName(ORG_UNIT2)
             assertThat(fetch2).isNotNull
-            assertThat(fetch2!!.name).isEqualTo(ORG_UNIT2)
+            assertThat(fetch2!!.key).isEqualTo(ORG_UNIT2)
 
             val fetchAll = orgUnitRepository.fetchAllOrgUnits()
             assertThat(fetchAll).isNotEmpty

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Repository
 import java.math.BigDecimal
 
 @Repository
-class SyncCycleRepository {
-
-    @Autowired
-    private lateinit var graphQlClient: GraphQlClient
+class SyncCycleRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
 
     suspend fun fetchLastSyncCycle(type: SyncCycleDTO.Type): SyncCycleData? {
         val result = graphQlClient.client.query(

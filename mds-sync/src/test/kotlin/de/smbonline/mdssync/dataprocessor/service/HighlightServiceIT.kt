@@ -32,14 +32,14 @@ class HighlightServiceIT {
         runBlocking {
             val highlightDto = HighlightDTO()
             highlightDto.orgUnitName = "OrgUnitTestCase1"
-            highlightDto.objectIds = arrayListOf(975447, 865040, 1576560, 1668818, 459698)
+            highlightDto.objectIds = arrayOf(975447, 865040, 1576560, 1668818, 459698)
             highlightService.save(highlightDto)
 
             val allHighlights = highlightsRepository.fetchAllHighlights()
             assertThat(allHighlights).isNotEmpty
 
             val orgUnitId = orgUnitRepository.getOrgUnitIdByOrgUnitName(highlightDto.orgUnitName)
-            assertThat(orgUnitId).isNotNull()
+            assertThat(orgUnitId).isNotNull
             val deletedHighlights = highlightsRepository.deleteHighlights(orgUnitId!!)
             assertThat(deletedHighlights).isNotEmpty
 

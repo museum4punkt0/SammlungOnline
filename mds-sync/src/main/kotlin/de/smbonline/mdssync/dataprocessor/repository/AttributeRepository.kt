@@ -14,23 +14,25 @@ import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.AttributeData
 import de.smbonline.mdssync.dataprocessor.graphql.queries.type.Smb_attribute_translations_insert_input
 import de.smbonline.mdssync.dataprocessor.repository.util.ensureNoError
 import de.smbonline.mdssync.dto.AttributeDTO
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.io.SyncFailedException
 import java.math.BigDecimal
-import java.util.*
+import java.util.ArrayList
 import kotlin.math.min
 
 // TODO remove access to LanguageRepository here. This should be done in service layer.
 
 @Repository
-class AttributeRepository {
-
-    @Autowired
-    private lateinit var graphQlClient: GraphQlClient
-
-    @Autowired
-    private lateinit var languageRepository: LanguageRepository
+class AttributeRepository @Autowired constructor(
+        private val graphQlClient: GraphQlClient,
+        private val languageRepository: LanguageRepository
+) {
+    companion object {
+        val LOGGER: Logger = LoggerFactory.getLogger(AttributeRepository::class.java)
+    }
 
     /**
      * Fetches all ids of AttributeTranslations for a given Object and Language.
@@ -54,6 +56,8 @@ class AttributeRepository {
      * @param lang key to be used for translation reference
      */
     suspend fun saveAttributeTranslations(attributes: List<AttributeDTO>, objectId: Long, lang: String): List<Long> {
+        LOGGER.debug("Saving ${attributes.size} attribute values for object $objectId.")
+
         if (attributes.isEmpty()) {
             return emptyList()
         }
@@ -61,7 +65,7 @@ class AttributeRepository {
         val languageId = languageRepository.fetchOrInsertLanguage(lang)
         val ids = mapToIds(attributes, objectId, lang)
         val results = ArrayList<Response<BulkInsertOrUpdateAttributeTranslationsMutation.Data>>()
-        val chunkSize = 250 // we run into OOM when we bulk-commit a lot of attributes, so we chunk them
+        val chunkSize = 150 // we run into OOM when we bulk-commit a lot of attributes, so we chunk them
 
         // first we have to insert attributes that are not existent yet
         ensureAttributesExist(attributes.filter { !ids.keys.contains(it.fqKey) }.distinctBy { it.key })
@@ -117,7 +121,7 @@ class AttributeRepository {
         ).toDeferred().await()
 
         val findIdForFqKey = fun(fqKey: String): Long? {
-            val attr = existing.data?.smb_attribute_translations?.find { it.fragments.attributeTranslationsData.fq_key == fqKey }
+            val attr = existing.data?.smb_attribute_translations?.find { it.fragments.attributeTranslationsData.fqKey == fqKey }
             return if (attr == null) null else (attr.fragments.attributeTranslationsData.id as BigDecimal).longValueExact()
         }
 
