@@ -2,34 +2,27 @@ import { IAuthError } from '../../interfaces/auth/auth-error.interface';
 import { IAuthProvider } from '../../interfaces/auth/auth-provider.interface';
 import { IAuthResponse } from '../../interfaces/auth/auth-response.interface';
 import { ILoginOptions } from '../../interfaces/auth/login-options.interface';
+import { IUserStorage } from '../user/user-storage.interface';
 
 export class AuthService implements IAuthProvider {
-    constructor(private readonly _domain: string) {}
-
-    private _authStorageKey = 'auth';
-    private _permissionsStorageKey = 'permissions';
+    constructor(private readonly _domain: string, private readonly _userStorage: IUserStorage) {}
 
     public async login({ username, password }: ILoginOptions): Promise<void> {
         try {
-            const auth = `${username}:${password}`;
+            const authorization = `${username}:${password}`;
 
             const requestOptions = new Request(`${this._domain}/login`, {
                 method: 'POST',
-                body: JSON.stringify({ authorization: auth }),
-                headers: new Headers({ authorization: auth, 'content-type': 'application/json' }),
+                body: JSON.stringify({ authorization: `Basic ${btoa(authorization)}` }),
+                headers: new Headers({ 'content-type': 'application/json' }),
             });
 
             const authResponse = await fetch(requestOptions);
             const authResponseInJson = ((await authResponse.json()) as unknown) as IAuthResponse;
 
-            /**
-             *  use instead of the plain username and password
-             */
-            const authentication = JSON.stringify(auth);
             const permissions = authResponseInJson['X-Hasura-Role-Scope'];
 
-            this._setAuthentication(authentication);
-            this._setPermissions(permissions);
+            this._userStorage.set({ token: authorization, permissions });
         } catch (error) {
             throw new Error('Credentials are invalid');
         }
@@ -40,60 +33,29 @@ export class AuthService implements IAuthProvider {
         const isAuthInvalid = INVALID_AUTH_STATUSES.some((invalidAuthStatus) => invalidAuthStatus === error?.status);
 
         if (isAuthInvalid) {
-            this._removeAuthentication();
+            this._userStorage.remove();
         }
     }
 
-    public checkAuth(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const isAuthenticated = this._getAuthentication();
+    public async checkAuth(): Promise<void> {
+        const isAuthenticated = this._userStorage.get();
 
-            if (isAuthenticated) {
-                return resolve();
-            }
-
-            return reject();
-        });
+        if (!isAuthenticated) {
+            throw new Error('User is not authenticated');
+        }
     }
 
     public async logout(): Promise<void> {
-        this._removeAuthentication();
-        this._removePermissions();
+        this._userStorage.remove();
     }
 
-    public getPermissions(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const permissions = this._getPermissions();
+    public async getPermissions(): Promise<string> {
+        const user = this._userStorage.get();
 
-            if (permissions) {
-                return resolve(permissions);
-            }
+        if (!user?.permissions) {
+            throw new Error('Permissions are absent');
+        }
 
-            return reject();
-        });
-    }
-
-    private _getAuthentication(): string | null {
-        return localStorage.getItem(this._authStorageKey);
-    }
-
-    private _getPermissions(): string | null {
-        return localStorage.getItem(this._permissionsStorageKey);
-    }
-
-    private _setAuthentication(authData: string): void {
-        localStorage.setItem(this._authStorageKey, authData);
-    }
-
-    private _setPermissions(permissions: string): void {
-        localStorage.setItem(this._permissionsStorageKey, permissions);
-    }
-
-    private _removeAuthentication(): void {
-        localStorage.removeItem(this._authStorageKey);
-    }
-
-    private _removePermissions(): void {
-        localStorage.removeItem(this._permissionsStorageKey);
+        return user.permissions;
     }
 }

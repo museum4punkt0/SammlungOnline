@@ -2,9 +2,13 @@ import { ApolloClient, InMemoryCache, NormalizedCacheObject } from 'apollo-boost
 import { DefaultOptions } from 'apollo-client/ApolloClient';
 
 import { createApolloLinkWithAuthentication } from '../../services/graphql-client/graphql-client.service';
+import { UserStorage } from '../../services/user/user-storage.service';
 
-export const graphQlClientFactory = (graphqlEndpoint: string): ApolloClient<NormalizedCacheObject> => {
-    const link = createApolloLinkWithAuthentication(graphqlEndpoint);
+export const graphQlClientFactory = (
+    graphqlEndpoint: string,
+    userStorage: UserStorage,
+): ApolloClient<NormalizedCacheObject> => {
+    const link = createApolloLinkWithAuthentication(graphqlEndpoint, userStorage);
 
     const defaultOptions: DefaultOptions = {
         watchQuery: {

@@ -1,5 +1,10 @@
 import { IConfiguration } from '../interfaces/config/config.interface';
 
+export const LOCAL: IConfiguration = {
+    DOMAIN: 'http://localhost:3000',
+    IMAGE_PROVIDER_DOMAIN: 'http://localhost:8090',
+    GRAPHQL_ENDPOINT: 'http://localhost:8081/v1/graphql',
+};
 export const DEV: IConfiguration = {
     DOMAIN: 'https://smb-admin.xailabs.dev',
     IMAGE_PROVIDER_DOMAIN: 'https://smb-admin.xailabs.dev',

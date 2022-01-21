@@ -12,18 +12,25 @@ import { graphQlClientFactory } from '../../factories/graphql-client/graphql-cli
 import i18nProviderFactory from '../../factories/i18n-provider/i18n-provider.factory';
 
 import { ImageUrlBuilderService } from '../../services/image-url-builder/image-url-builder.service';
+import { IUserStorage } from '../../services/user/user-storage.interface';
+import { UserStorage } from '../../services/user/user-storage.service';
+import { StorageService } from '../../services/storage/storage.service';
 
 export interface IDependencyContext {
     imageUrlBuilderService: ImageUrlBuilderService;
     authProvider: IAuthProvider;
     i18nProvider: I18nProvider;
     graphQlClient: ApolloClient<NormalizedCacheObject>;
+    userStorage: IUserStorage;
 }
 
 export const createDependencies = (configuration: IConfiguration): IDependencyContext => {
-    const authProvider = authProviderFactory(configuration.DOMAIN);
+    const localStorageService = new StorageService(localStorage);
+    const userStorage = new UserStorage('user', localStorageService);
+
+    const authProvider = authProviderFactory(configuration.DOMAIN, userStorage);
     const imageUrlBuilderService = new ImageUrlBuilderService(configuration.IMAGE_PROVIDER_DOMAIN);
-    const graphQlClient = graphQlClientFactory(configuration.GRAPHQL_ENDPOINT);
+    const graphQlClient = graphQlClientFactory(configuration.GRAPHQL_ENDPOINT, userStorage);
     const i18nProvider = i18nProviderFactory();
 
     return {
@@ -31,6 +38,7 @@ export const createDependencies = (configuration: IConfiguration): IDependencyCo
         authProvider,
         i18nProvider,
         graphQlClient,
+        userStorage,
     };
 };
 

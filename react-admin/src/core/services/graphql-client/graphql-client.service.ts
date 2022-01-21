@@ -1,8 +1,9 @@
 import { ApolloLink } from 'apollo-link';
 import { createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { IUserStorage } from '../user/user-storage.interface';
 
-export const createApolloLinkWithAuthentication = (graphqlEndpoint: string): ApolloLink => {
+export const createApolloLinkWithAuthentication = (graphqlEndpoint: string, userStorage: IUserStorage): ApolloLink => {
     const httpLink = createHttpLink({
         uri: graphqlEndpoint,
     });
@@ -11,7 +12,11 @@ export const createApolloLinkWithAuthentication = (graphqlEndpoint: string): Apo
         const nextHeaders = { ...previousHeaders };
 
         try {
-            nextHeaders.authorization = JSON.parse(localStorage.getItem('auth') ?? '');
+            const user = userStorage.get();
+
+            if (user) {
+                nextHeaders.authorization = `${user.token}`;
+            }
         } catch (error) {}
 
         return {
