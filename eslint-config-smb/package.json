@@ -1,6 +1,8 @@
 {
   "name": "eslint-config-smb",
   "version": "1.0.0",
+  "private": true,
+  "license": "GNU GPLv3",
   "description": "An npm module exporting recommended eslint and prettier configs for the smb project",
   "files": [
     "index.js",
@@ -15,8 +17,6 @@
     "prettier",
     "eslint"
   ],
-  "author": "Philo Pöllmann",
-  "license": "ISC",
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",

@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
-  "license": "UNLICENSED",
+  "license": "GNU GPLv3",
   "private": true,
   "engines": {
     "node": ">=8",
