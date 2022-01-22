@@ -1,0 +1,264 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LandingPage component render render Slider correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="makeStyles-sliderContainer-9"
+      >
+        <section
+          aria-label="carousel-slider"
+          class="slider"
+          role="region"
+          style="box-sizing: border-box; display: block; height: inherit; position: relative; width: 100%;"
+          tabindex="0"
+        >
+          <div
+            aria-atomic="true"
+            aria-live="polite"
+            style="position: absolute; width: 1px; height: 1px; overflow: hidden; padding: 0px; margin: -1px; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border: 0px;"
+            tabindex="-1"
+          >
+            Slide 1 of 1
+          </div>
+          <div
+            class="slider-frame"
+            style="box-sizing: border-box; display: block; height: 100%; margin: 0px; overflow: hidden; padding: 0px; position: relative; transform: translate3d(0, 0, 0);"
+          >
+            <div
+              class="slider-list"
+              style="box-sizing: border-box; cursor: pointer; display: block; height: 0px; margin: 0px 0px; padding: 0px; position: relative; transform: translate3d(0px, 0px, 0); width: auto; transition: 0s;"
+            >
+              <div
+                aria-label="slide 1 of 1"
+                class="slider-slide slide-visible slide-current"
+                role="group"
+                style="box-sizing: border-box; display: inline-block; height: auto; left: 0px; list-style-type: none; margin: auto 0px auto 0px; position: absolute; top: 0px; transform: scale(1); transition: transform .4s linear; vertical-align: top; width: 0px;"
+                tabindex="-1"
+              >
+                <div
+                  class="makeStyles-slide-14"
+                  style="background-image: url(https://smb-guide.xailabs.dev/images/3170732_2500x2500.jpg);"
+                >
+                  <div
+                    class="makeStyles-slideTintCover-4"
+                  >
+                    <div
+                      class="makeStyles-slideContentWrapper-5"
+                    >
+                      <div
+                        class="makeStyles-slideContent-6"
+                      >
+                        <span
+                          class="MuiTypography-root makeStyles-slideTitle-8 MuiTypography-overline MuiTypography-colorSecondary"
+                        >
+                          DER ZWEITE BLICK - Spielarten der Liebe.
+                        </span>
+                        <h2
+                          class="MuiTypography-root makeStyles-slideTitle-8 MuiTypography-h2"
+                        >
+                          In Liebe und Krieg
+                        </h2>
+                        <h5
+                          class="MuiTypography-root MuiTypography-h5"
+                        >
+                          Die erste Route spürt der Darstellung des heroischen Soldaten und den Grenzen zwischen männlicher Kühnheit und Bisexualität nach.
+                        </h5>
+                        <div
+                          aria-label="button play"
+                          class="makeStyles-playButton-15"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <h4
+                            class="MuiTypography-root makeStyles-playButtonTypo-16 MuiTypography-h4"
+                          >
+                            go to tour
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="slider-control-bottomcenter"
+            style="position: absolute; bottom: 0px; left: 50%; transform: translateX(-50%);"
+          >
+            <div
+              class="MuiGrid-root makeStyles-dotWrapper-11 MuiGrid-container MuiGrid-wrap-xs-nowrap"
+            >
+              <div
+                class="makeStyles-dot-12 makeStyles-dotActive-13"
+              />
+            </div>
+          </div>
+          <style
+            type="text/css"
+          >
+            .slider-slide &gt; img { width: 100%; display: block; }
+          .slider-slide &gt; img:focus { margin: auto; }
+          </style>
+        </section>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="makeStyles-sliderContainer-9"
+    >
+      <section
+        aria-label="carousel-slider"
+        class="slider"
+        role="region"
+        style="box-sizing: border-box; display: block; height: inherit; position: relative; width: 100%;"
+        tabindex="0"
+      >
+        <div
+          aria-atomic="true"
+          aria-live="polite"
+          style="position: absolute; width: 1px; height: 1px; overflow: hidden; padding: 0px; margin: -1px; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border: 0px;"
+          tabindex="-1"
+        >
+          Slide 1 of 1
+        </div>
+        <div
+          class="slider-frame"
+          style="box-sizing: border-box; display: block; height: 100%; margin: 0px; overflow: hidden; padding: 0px; position: relative; transform: translate3d(0, 0, 0);"
+        >
+          <div
+            class="slider-list"
+            style="box-sizing: border-box; cursor: pointer; display: block; height: 0px; margin: 0px 0px; padding: 0px; position: relative; transform: translate3d(0px, 0px, 0); width: auto; transition: 0s;"
+          >
+            <div
+              aria-label="slide 1 of 1"
+              class="slider-slide slide-visible slide-current"
+              role="group"
+              style="box-sizing: border-box; display: inline-block; height: auto; left: 0px; list-style-type: none; margin: auto 0px auto 0px; position: absolute; top: 0px; transform: scale(1); transition: transform .4s linear; vertical-align: top; width: 0px;"
+              tabindex="-1"
+            >
+              <div
+                class="makeStyles-slide-14"
+                style="background-image: url(https://smb-guide.xailabs.dev/images/3170732_2500x2500.jpg);"
+              >
+                <div
+                  class="makeStyles-slideTintCover-4"
+                >
+                  <div
+                    class="makeStyles-slideContentWrapper-5"
+                  >
+                    <div
+                      class="makeStyles-slideContent-6"
+                    >
+                      <span
+                        class="MuiTypography-root makeStyles-slideTitle-8 MuiTypography-overline MuiTypography-colorSecondary"
+                      >
+                        DER ZWEITE BLICK - Spielarten der Liebe.
+                      </span>
+                      <h2
+                        class="MuiTypography-root makeStyles-slideTitle-8 MuiTypography-h2"
+                      >
+                        In Liebe und Krieg
+                      </h2>
+                      <h5
+                        class="MuiTypography-root MuiTypography-h5"
+                      >
+                        Die erste Route spürt der Darstellung des heroischen Soldaten und den Grenzen zwischen männlicher Kühnheit und Bisexualität nach.
+                      </h5>
+                      <div
+                        aria-label="button play"
+                        class="makeStyles-playButton-15"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <h4
+                          class="MuiTypography-root makeStyles-playButtonTypo-16 MuiTypography-h4"
+                        >
+                          go to tour
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="slider-control-bottomcenter"
+          style="position: absolute; bottom: 0px; left: 50%; transform: translateX(-50%);"
+        >
+          <div
+            class="MuiGrid-root makeStyles-dotWrapper-11 MuiGrid-container MuiGrid-wrap-xs-nowrap"
+          >
+            <div
+              class="makeStyles-dot-12 makeStyles-dotActive-13"
+            />
+          </div>
+        </div>
+        <style
+          type="text/css"
+        >
+          .slider-slide &gt; img { width: 100%; display: block; }
+          .slider-slide &gt; img:focus { margin: auto; }
+        </style>
+      </section>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

@@ -1,0 +1,1530 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GuiderPage component render render MockTourDesktopComponent correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="makeStyles-content-1"
+        style="padding-top: 5rem;"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-space-between"
+            style="margin: 0px 0.5rem; max-width: 80rem;"
+          >
+            <div
+              class="MuiGrid-root MuiGrid-container MuiGrid-item"
+            >
+              <div
+                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                style="margin: 1rem 0px;"
+              >
+                <div
+                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-2"
+                >
+                  <button
+                    class="MuiButtonBase-root MuiIconButton-root makeStyles-backButton-10"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span
+                      class="MuiIconButton-label"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root makeStyles-iconHover-20 MuiSvgIcon-colorPrimary"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"
+                        />
+                      </svg>
+                      <span
+                        class="MuiTypography-root makeStyles-linkText-11 MuiTypography-overline"
+                      >
+                        back
+                      </span>
+                    </span>
+                  </button>
+                </div>
+                <div
+                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-space-between MuiGrid-grid-xs-3"
+                />
+              </div>
+              <div>
+                <div
+                  class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                  style="margin-top: 1rem; height: 100%;"
+                >
+                  <div
+                    class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-direction-xs-column MuiGrid-justify-content-xs-center"
+                    style="max-width: 80rem;"
+                  >
+                    <h5
+                      class="MuiTypography-root MuiTypography-h5 MuiTypography-colorPrimary"
+                    >
+                      DER ZWEITE BLICK - Spielarten der Liebe.
+                    </h5>
+                    <h1
+                      class="MuiTypography-root MuiTypography-h1"
+                    >
+                      Männliche Künstler und Homo­sexualität
+                    </h1>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root makeStyles-content-21 MuiGrid-container"
+                style="margin-bottom: 1rem;"
+              >
+                <div
+                  class="MuiGrid-root makeStyles-headerTitle-22 MuiGrid-item"
+                >
+                  <hr
+                    class="MuiDivider-root makeStyles-divider-23"
+                    style="margin-bottom: .5rem;"
+                  />
+                  <h3
+                    class="MuiTypography-root MuiTypography-h3"
+                  >
+                    start
+                    : 
+                    Männliche Künstler und Homo­sexualität
+                  </h3>
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-container"
+              >
+                <div
+                  id="5"
+                  style="width: 100%;"
+                >
+                  <div
+                    class="MuiGrid-root MuiGrid-container"
+                  >
+                    <div
+                      class="MuiCollapse-root MuiCollapse-entered"
+                      style="min-height: 0px; width: 100%;"
+                    >
+                      <div
+                        class="MuiCollapse-wrapper"
+                      >
+                        <div
+                          class="MuiCollapse-wrapperInner"
+                        >
+                          <div
+                            class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                            style="background-color: white; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                              style="min-height: 3.125rem;"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                >
+                                  <div
+                                    class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                                    style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                                  >
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                                      style="height: 100%;"
+                                    >
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                                      >
+                                        <div
+                                          class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-true"
+                                        >
+                                          <svg
+                                            aria-hidden="true"
+                                            class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                            focusable="false"
+                                            viewBox="0 0 24 24"
+                                          >
+                                            <path
+                                              d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"
+                                            />
+                                          </svg>
+                                        </div>
+                                        <div
+                                          class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                          style="padding-left: 1rem;"
+                                        >
+                                          <p
+                                            class="MuiTypography-root MuiTypography-body2 MuiTypography-colorPrimary"
+                                          >
+                                            open route description
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                                      >
+                                        <div
+                                          class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                          style="height: 3.125rem; margin-right: .5rem;"
+                                        >
+                                          <div
+                                            class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-flex-end"
+                                          >
+                                            <button
+                                              aria-label="show more"
+                                              class="MuiButtonBase-root MuiIconButton-root makeStyles-expandMap-57"
+                                              tabindex="0"
+                                              type="button"
+                                            >
+                                              <span
+                                                class="MuiIconButton-label"
+                                              >
+                                                <svg
+                                                  aria-hidden="true"
+                                                  class="MuiSvgIcon-root makeStyles-iconHover-66 MuiSvgIcon-colorPrimary"
+                                                  focusable="false"
+                                                  viewBox="0 0 24 24"
+                                                >
+                                                  <path
+                                                    d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"
+                                                  />
+                                                </svg>
+                                              </span>
+                                              <span
+                                                class="MuiTouchRipple-root"
+                                              />
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-1"
+                                style="height: 3.125rem; margin-right: .5rem;"
+                              >
+                                <button
+                                  aria-expanded="false"
+                                  aria-label="show more"
+                                  class="MuiButtonBase-root MuiIconButton-root makeStyles-expand-37"
+                                  style="padding: 0px;"
+                                  tabindex="0"
+                                  type="button"
+                                >
+                                  <span
+                                    class="MuiIconButton-label"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root makeStyles-iconHover-48 MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span
+                                    class="MuiTouchRipple-root"
+                                  />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiPaper-root MuiCard-root makeStyles-roomHeader-32 MuiPaper-elevation0 MuiPaper-rounded"
+                    style="height: 3.125rem; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                      style="height: 100%;"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-10"
+                      >
+                        <h3
+                          class="MuiTypography-root MuiTypography-h3 MuiTypography-colorSecondary"
+                          style="margin-left: .5rem;"
+                        >
+                          Raum 261 (Tiepolo-Raum)
+                        </h3>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                      >
+                        <h5
+                          class="MuiTypography-root MuiTypography-h5 MuiTypography-colorSecondary"
+                          style="margin-right: .5rem;"
+                        >
+                          1
+                           
+                          object
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                    style="background-color: white; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                      style="min-height: 3.125rem;"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item"
+                      >
+                        <div
+                          class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                        >
+                          <div
+                            class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                            style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                              style="height: 100%;"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                  style="padding-left: 1rem;"
+                                >
+                                  <h4
+                                    class="MuiTypography-root MuiTypography-h4"
+                                  >
+                                    Der Barberinische Faun
+                                  </h4>
+                                </div>
+                              </div>
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                  style="height: 3.125rem; margin-right: .5rem;"
+                                >
+                                  <div
+                                    class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-flex-end"
+                                  >
+                                    <button
+                                      class="makeStyles-checkboxButton-51"
+                                    >
+                                      <span
+                                        aria-disabled="false"
+                                        class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-67 MuiCheckbox-root makeStyles-root-53 MuiCheckbox-colorSecondary makeStyles-checkbox-52 MuiIconButton-colorSecondary"
+                                      >
+                                        <span
+                                          class="MuiIconButton-label"
+                                        >
+                                          <input
+                                            aria-label="uncontrolled-checkbox"
+                                            class="PrivateSwitchBase-input-70"
+                                            data-indeterminate="false"
+                                            tabindex="-1"
+                                            type="checkbox"
+                                            value=""
+                                          />
+                                          <svg
+                                            aria-hidden="true"
+                                            class="MuiSvgIcon-root"
+                                            focusable="false"
+                                            viewBox="0 0 24 24"
+                                          >
+                                            <path
+                                              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                                            />
+                                          </svg>
+                                        </span>
+                                        <span
+                                          class="MuiTouchRipple-root"
+                                        />
+                                      </span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiCollapse-root MuiCollapse-entered"
+                      style="min-height: 0px;"
+                    >
+                      <div
+                        class="MuiCollapse-wrapper"
+                      >
+                        <div
+                          class="MuiCollapse-wrapperInner"
+                        >
+                          <div
+                            class="MuiCardContent-root"
+                            style="padding: 0px;"
+                          >
+                            <div
+                              class="MuiCardContent-root"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-direction-xs-column MuiGrid-wrap-xs-nowrap"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-center"
+                                >
+                                  <div
+                                    class="MuiCardMedia-root"
+                                    style="background-image: url(https://smb-guide.xailabs.dev/images/2505540_580x580.jpg); height: 15.563rem; width: 11.188rem; background-position: top;"
+                                  />
+                                </div>
+                              </div>
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-direction-xs-column MuiGrid-align-content-xs-flex-start"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-item"
+                                  style="margin: 1rem 0px;"
+                                >
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body1"
+                                  />
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body1"
+                                  />
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body1"
+                                  />
+                                  <p
+                                    class="MuiTypography-root MuiTypography-body1"
+                                  />
+                                </div>
+                                <div
+                                  class="MuiGrid-root MuiGrid-item"
+                                >
+                                  <span
+                                    class="makeStyles-txtBold-41 makeStyles-txtElement-43"
+                                  >
+                                    Im 14. Jahrhundert verbreitete sich von Italien ausgehend in ganz Europa ein neues kulturelles Weltverständnis, das auf dem Wiederbeleben der klassischen Antike beruhte: der Humanismus. Eine neue Lesart antiker Literatur sowie ein erwachendes Interesse an klassischer Kunst, Philosophie und Wissenschaft rückten den Menschen in das Zentrum der Aufmerksamkeit. Die Welt wurde nun hinsichtlich menschlicher Werte betrachtet und der mittelalterliche Theozentrismus (Ausrichtung aller Lebensbereiche auf Gott als universalem Zentrum) verlor langsam an Bedeutung.
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-grid-xs-11"
+                      >
+                        <div
+                          class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                        >
+                          <div
+                            class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                            style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                              style="height: 100%;"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                  style="padding-left: 1rem;"
+                                >
+                                  <h4
+                                    class="MuiTypography-root MuiTypography-h4"
+                                  >
+                                    show more
+                                  </h4>
+                                </div>
+                              </div>
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-evenly MuiGrid-grid-xs-1"
+                        style="margin-right: .5rem;"
+                      >
+                        <div
+                          class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                          style="height: 3.125rem;"
+                        >
+                          <button
+                            aria-expanded="false"
+                            aria-label="show more"
+                            class="MuiButtonBase-root MuiIconButton-root makeStyles-expand-37"
+                            style="padding: 0px;"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="MuiIconButton-label"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                focusable="false"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                                />
+                              </svg>
+                            </span>
+                            <span
+                              class="MuiTouchRipple-root"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr
+                    class="MuiDivider-root makeStyles-divider-31"
+                  />
+                </div>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-center"
+              >
+                <div
+                  class="MuiGrid-root makeStyles-headerTitle-72 MuiGrid-item"
+                >
+                  <h3
+                    class="MuiTypography-root MuiTypography-h3"
+                  >
+                    end
+                    : 
+                    Männliche Künstler und Homo­sexualität
+                  </h3>
+                </div>
+                <div
+                  class="MuiGrid-root MuiGrid-container"
+                >
+                  <div
+                    class="MuiCollapse-root MuiCollapse-entered"
+                    style="min-height: 0px; width: 100%;"
+                  >
+                    <div
+                      class="MuiCollapse-wrapper"
+                    >
+                      <div
+                        class="MuiCollapse-wrapperInner"
+                      >
+                        <div
+                          class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                          style="background-color: white; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                            style="min-height: 3.125rem;"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                              >
+                                <div
+                                  class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                                  style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                                >
+                                  <div
+                                    class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                                    style="height: 100%;"
+                                  >
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                                    >
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-true"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                          focusable="false"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"
+                                          />
+                                        </svg>
+                                      </div>
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                        style="padding-left: 1rem;"
+                                      >
+                                        <p
+                                          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorPrimary"
+                                        >
+                                          open route description
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                                    >
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                        style="height: 3.125rem; margin-right: .5rem;"
+                                      >
+                                        <div
+                                          class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-flex-end"
+                                        >
+                                          <button
+                                            aria-label="show more"
+                                            class="MuiButtonBase-root MuiIconButton-root makeStyles-expandMap-57"
+                                            tabindex="0"
+                                            type="button"
+                                          >
+                                            <span
+                                              class="MuiIconButton-label"
+                                            >
+                                              <svg
+                                                aria-hidden="true"
+                                                class="MuiSvgIcon-root makeStyles-iconHover-66 MuiSvgIcon-colorPrimary"
+                                                focusable="false"
+                                                viewBox="0 0 24 24"
+                                              >
+                                                <path
+                                                  d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"
+                                                />
+                                              </svg>
+                                            </span>
+                                            <span
+                                              class="MuiTouchRipple-root"
+                                            />
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-1"
+                              style="height: 3.125rem; margin-right: .5rem;"
+                            >
+                              <button
+                                aria-expanded="false"
+                                aria-label="show more"
+                                class="MuiButtonBase-root MuiIconButton-root makeStyles-expand-37"
+                                style="padding: 0px;"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root makeStyles-iconHover-48 MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-returnTopButton-74 MuiButton-colorInherit"
+                  style="padding: 0px; margin-top: 4rem; margin-bottom: 1rem;"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="MuiButton-label"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-center"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                        />
+                      </svg>
+                      <h3
+                        class="MuiTypography-root MuiTypography-h3 MuiTypography-colorPrimary"
+                        style="margin-top: 1rem;"
+                      >
+                        return to tour start
+                      </h3>
+                    </div>
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root"
+          style="background-color: rgb(211, 211, 211); padding: 2rem;"
+        >
+          <div
+            class="makeStyles-container-79"
+          >
+            <div
+              class="makeStyles-headlineWrapper-76"
+            >
+              <div
+                class="makeStyles-headline-75"
+              >
+                <hr
+                  class="MuiDivider-root makeStyles-divider-78"
+                  style="background-color: rgb(242, 91, 91);"
+                />
+                <h1
+                  class="MuiTypography-root makeStyles-title-77 MuiTypography-h1"
+                  style="color: rgb(242, 91, 91);"
+                >
+                  <a
+                    class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorInherit"
+                    href="https://smb-guide.xailabs.dev"
+                  >
+                    guide carousel title
+                  </a>
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      ,
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="makeStyles-content-1"
+      style="padding-top: 5rem;"
+    >
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-space-between"
+          style="margin: 0px 0.5rem; max-width: 80rem;"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-container MuiGrid-item"
+          >
+            <div
+              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+              style="margin: 1rem 0px;"
+            >
+              <div
+                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-2"
+              >
+                <button
+                  class="MuiButtonBase-root MuiIconButton-root makeStyles-backButton-10"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="MuiIconButton-label"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root makeStyles-iconHover-20 MuiSvgIcon-colorPrimary"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"
+                      />
+                    </svg>
+                    <span
+                      class="MuiTypography-root makeStyles-linkText-11 MuiTypography-overline"
+                    >
+                      back
+                    </span>
+                  </span>
+                </button>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-space-between MuiGrid-grid-xs-3"
+              />
+            </div>
+            <div>
+              <div
+                class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                style="margin-top: 1rem; height: 100%;"
+              >
+                <div
+                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-direction-xs-column MuiGrid-justify-content-xs-center"
+                  style="max-width: 80rem;"
+                >
+                  <h5
+                    class="MuiTypography-root MuiTypography-h5 MuiTypography-colorPrimary"
+                  >
+                    DER ZWEITE BLICK - Spielarten der Liebe.
+                  </h5>
+                  <h1
+                    class="MuiTypography-root MuiTypography-h1"
+                  >
+                    Männliche Künstler und Homo­sexualität
+                  </h1>
+                </div>
+              </div>
+            </div>
+            <div
+              class="MuiGrid-root makeStyles-content-21 MuiGrid-container"
+              style="margin-bottom: 1rem;"
+            >
+              <div
+                class="MuiGrid-root makeStyles-headerTitle-22 MuiGrid-item"
+              >
+                <hr
+                  class="MuiDivider-root makeStyles-divider-23"
+                  style="margin-bottom: .5rem;"
+                />
+                <h3
+                  class="MuiTypography-root MuiTypography-h3"
+                >
+                  start
+                  : 
+                  Männliche Künstler und Homo­sexualität
+                </h3>
+              </div>
+            </div>
+            <div
+              class="MuiGrid-root MuiGrid-container"
+            >
+              <div
+                id="5"
+                style="width: 100%;"
+              >
+                <div
+                  class="MuiGrid-root MuiGrid-container"
+                >
+                  <div
+                    class="MuiCollapse-root MuiCollapse-entered"
+                    style="min-height: 0px; width: 100%;"
+                  >
+                    <div
+                      class="MuiCollapse-wrapper"
+                    >
+                      <div
+                        class="MuiCollapse-wrapperInner"
+                      >
+                        <div
+                          class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                          style="background-color: white; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                            style="min-height: 3.125rem;"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                              >
+                                <div
+                                  class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                                  style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                                >
+                                  <div
+                                    class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                                    style="height: 100%;"
+                                  >
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                                    >
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-true"
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                          focusable="false"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"
+                                          />
+                                        </svg>
+                                      </div>
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                        style="padding-left: 1rem;"
+                                      >
+                                        <p
+                                          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorPrimary"
+                                        >
+                                          open route description
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                                    >
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                        style="height: 3.125rem; margin-right: .5rem;"
+                                      >
+                                        <div
+                                          class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-flex-end"
+                                        >
+                                          <button
+                                            aria-label="show more"
+                                            class="MuiButtonBase-root MuiIconButton-root makeStyles-expandMap-57"
+                                            tabindex="0"
+                                            type="button"
+                                          >
+                                            <span
+                                              class="MuiIconButton-label"
+                                            >
+                                              <svg
+                                                aria-hidden="true"
+                                                class="MuiSvgIcon-root makeStyles-iconHover-66 MuiSvgIcon-colorPrimary"
+                                                focusable="false"
+                                                viewBox="0 0 24 24"
+                                              >
+                                                <path
+                                                  d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"
+                                                />
+                                              </svg>
+                                            </span>
+                                            <span
+                                              class="MuiTouchRipple-root"
+                                            />
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-1"
+                              style="height: 3.125rem; margin-right: .5rem;"
+                            >
+                              <button
+                                aria-expanded="false"
+                                aria-label="show more"
+                                class="MuiButtonBase-root MuiIconButton-root makeStyles-expand-37"
+                                style="padding: 0px;"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span
+                                  class="MuiIconButton-label"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="MuiSvgIcon-root makeStyles-iconHover-48 MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                    focusable="false"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="MuiPaper-root MuiCard-root makeStyles-roomHeader-32 MuiPaper-elevation0 MuiPaper-rounded"
+                  style="height: 3.125rem; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                >
+                  <div
+                    class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                    style="height: 100%;"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-10"
+                    >
+                      <h3
+                        class="MuiTypography-root MuiTypography-h3 MuiTypography-colorSecondary"
+                        style="margin-left: .5rem;"
+                      >
+                        Raum 261 (Tiepolo-Raum)
+                      </h3>
+                    </div>
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                    >
+                      <h5
+                        class="MuiTypography-root MuiTypography-h5 MuiTypography-colorSecondary"
+                        style="margin-right: .5rem;"
+                      >
+                        1
+                         
+                        object
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                  style="background-color: white; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                >
+                  <div
+                    class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                    style="min-height: 3.125rem;"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-item"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                      >
+                        <div
+                          class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                          style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                            style="height: 100%;"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                style="padding-left: 1rem;"
+                              >
+                                <h4
+                                  class="MuiTypography-root MuiTypography-h4"
+                                >
+                                  Der Barberinische Faun
+                                </h4>
+                              </div>
+                            </div>
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                style="height: 3.125rem; margin-right: .5rem;"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-flex-end"
+                                >
+                                  <button
+                                    class="makeStyles-checkboxButton-51"
+                                  >
+                                    <span
+                                      aria-disabled="false"
+                                      class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-67 MuiCheckbox-root makeStyles-root-53 MuiCheckbox-colorSecondary makeStyles-checkbox-52 MuiIconButton-colorSecondary"
+                                    >
+                                      <span
+                                        class="MuiIconButton-label"
+                                      >
+                                        <input
+                                          aria-label="uncontrolled-checkbox"
+                                          class="PrivateSwitchBase-input-70"
+                                          data-indeterminate="false"
+                                          tabindex="-1"
+                                          type="checkbox"
+                                          value=""
+                                        />
+                                        <svg
+                                          aria-hidden="true"
+                                          class="MuiSvgIcon-root"
+                                          focusable="false"
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                                          />
+                                        </svg>
+                                      </span>
+                                      <span
+                                        class="MuiTouchRipple-root"
+                                      />
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiCollapse-root MuiCollapse-entered"
+                    style="min-height: 0px;"
+                  >
+                    <div
+                      class="MuiCollapse-wrapper"
+                    >
+                      <div
+                        class="MuiCollapse-wrapperInner"
+                      >
+                        <div
+                          class="MuiCardContent-root"
+                          style="padding: 0px;"
+                        >
+                          <div
+                            class="MuiCardContent-root"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-direction-xs-column MuiGrid-wrap-xs-nowrap"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-justify-content-xs-center"
+                              >
+                                <div
+                                  class="MuiCardMedia-root"
+                                  style="background-image: url(https://smb-guide.xailabs.dev/images/2505540_580x580.jpg); height: 15.563rem; width: 11.188rem; background-position: top;"
+                                />
+                              </div>
+                            </div>
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-direction-xs-column MuiGrid-align-content-xs-flex-start"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-item"
+                                style="margin: 1rem 0px;"
+                              >
+                                <p
+                                  class="MuiTypography-root MuiTypography-body1"
+                                />
+                                <p
+                                  class="MuiTypography-root MuiTypography-body1"
+                                />
+                                <p
+                                  class="MuiTypography-root MuiTypography-body1"
+                                />
+                                <p
+                                  class="MuiTypography-root MuiTypography-body1"
+                                />
+                              </div>
+                              <div
+                                class="MuiGrid-root MuiGrid-item"
+                              >
+                                <span
+                                  class="makeStyles-txtBold-41 makeStyles-txtElement-43"
+                                >
+                                  Im 14. Jahrhundert verbreitete sich von Italien ausgehend in ganz Europa ein neues kulturelles Weltverständnis, das auf dem Wiederbeleben der klassischen Antike beruhte: der Humanismus. Eine neue Lesart antiker Literatur sowie ein erwachendes Interesse an klassischer Kunst, Philosophie und Wissenschaft rückten den Menschen in das Zentrum der Aufmerksamkeit. Die Welt wurde nun hinsichtlich menschlicher Werte betrachtet und der mittelalterliche Theozentrismus (Ausrichtung aller Lebensbereiche auf Gott als universalem Zentrum) verlor langsam an Bedeutung.
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                  >
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-grid-xs-11"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                      >
+                        <div
+                          class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                          style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                            style="height: 100%;"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                            >
+                              <div
+                                class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                style="padding-left: 1rem;"
+                              >
+                                <h4
+                                  class="MuiTypography-root MuiTypography-h4"
+                                >
+                                  show more
+                                </h4>
+                              </div>
+                            </div>
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-evenly MuiGrid-grid-xs-1"
+                      style="margin-right: .5rem;"
+                    >
+                      <div
+                        class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                        style="height: 3.125rem;"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-label="show more"
+                          class="MuiButtonBase-root MuiIconButton-root makeStyles-expand-37"
+                          style="padding: 0px;"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span
+                            class="MuiIconButton-label"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                              focusable="false"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                              />
+                            </svg>
+                          </span>
+                          <span
+                            class="MuiTouchRipple-root"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr
+                  class="MuiDivider-root makeStyles-divider-31"
+                />
+              </div>
+            </div>
+            <div
+              class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-center"
+            >
+              <div
+                class="MuiGrid-root makeStyles-headerTitle-72 MuiGrid-item"
+              >
+                <h3
+                  class="MuiTypography-root MuiTypography-h3"
+                >
+                  end
+                  : 
+                  Männliche Künstler und Homo­sexualität
+                </h3>
+              </div>
+              <div
+                class="MuiGrid-root MuiGrid-container"
+              >
+                <div
+                  class="MuiCollapse-root MuiCollapse-entered"
+                  style="min-height: 0px; width: 100%;"
+                >
+                  <div
+                    class="MuiCollapse-wrapper"
+                  >
+                    <div
+                      class="MuiCollapse-wrapperInner"
+                    >
+                      <div
+                        class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                        style="background-color: white; width: 100%; border-radius: 0px; margin-bottom: 1rem;"
+                      >
+                        <div
+                          class="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-space-between"
+                          style="min-height: 3.125rem;"
+                        >
+                          <div
+                            class="MuiGrid-root MuiGrid-container MuiGrid-item"
+                          >
+                            <div
+                              class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                            >
+                              <div
+                                class="MuiPaper-root MuiCard-root MuiPaper-elevation0 MuiPaper-rounded"
+                                style="background-color: white; width: 100%; height: 100%; border-radius: 0px;"
+                              >
+                                <div
+                                  class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-center"
+                                  style="height: 100%;"
+                                >
+                                  <div
+                                    class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-grid-xs-10"
+                                  >
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-true"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                        focusable="false"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"
+                                        />
+                                      </svg>
+                                    </div>
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                      style="padding-left: 1rem;"
+                                    >
+                                      <p
+                                        class="MuiTypography-root MuiTypography-body2 MuiTypography-colorPrimary"
+                                      >
+                                        open route description
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div
+                                    class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-wrap-xs-nowrap MuiGrid-justify-content-xs-flex-end MuiGrid-grid-xs-2"
+                                  >
+                                    <div
+                                      class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center"
+                                      style="height: 3.125rem; margin-right: .5rem;"
+                                    >
+                                      <div
+                                        class="MuiGrid-root MuiGrid-container MuiGrid-justify-content-xs-flex-end"
+                                      >
+                                        <button
+                                          aria-label="show more"
+                                          class="MuiButtonBase-root MuiIconButton-root makeStyles-expandMap-57"
+                                          tabindex="0"
+                                          type="button"
+                                        >
+                                          <span
+                                            class="MuiIconButton-label"
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              class="MuiSvgIcon-root makeStyles-iconHover-66 MuiSvgIcon-colorPrimary"
+                                              focusable="false"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"
+                                              />
+                                            </svg>
+                                          </span>
+                                          <span
+                                            class="MuiTouchRipple-root"
+                                          />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="MuiGrid-root MuiGrid-container MuiGrid-item MuiGrid-align-content-xs-center MuiGrid-grid-xs-1"
+                            style="height: 3.125rem; margin-right: .5rem;"
+                          >
+                            <button
+                              aria-expanded="false"
+                              aria-label="show more"
+                              class="MuiButtonBase-root MuiIconButton-root makeStyles-expand-37"
+                              style="padding: 0px;"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="MuiIconButton-label"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="MuiSvgIcon-root makeStyles-iconHover-48 MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                                  focusable="false"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                                  />
+                                </svg>
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root"
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-returnTopButton-74 MuiButton-colorInherit"
+                style="padding: 0px; margin-top: 4rem; margin-bottom: 1rem;"
+                tabindex="0"
+                type="button"
+              >
+                <span
+                  class="MuiButton-label"
+                >
+                  <div
+                    class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column MuiGrid-align-items-xs-center"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-colorPrimary MuiSvgIcon-fontSizeLarge"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                      />
+                    </svg>
+                    <h3
+                      class="MuiTypography-root MuiTypography-h3 MuiTypography-colorPrimary"
+                      style="margin-top: 1rem;"
+                    >
+                      return to tour start
+                    </h3>
+                  </div>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root"
+        style="background-color: rgb(211, 211, 211); padding: 2rem;"
+      >
+        <div
+          class="makeStyles-container-79"
+        >
+          <div
+            class="makeStyles-headlineWrapper-76"
+          >
+            <div
+              class="makeStyles-headline-75"
+            >
+              <hr
+                class="MuiDivider-root makeStyles-divider-78"
+                style="background-color: rgb(242, 91, 91);"
+              />
+              <h1
+                class="MuiTypography-root makeStyles-title-77 MuiTypography-h1"
+                style="color: rgb(242, 91, 91);"
+              >
+                <a
+                  class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorInherit"
+                  href="https://smb-guide.xailabs.dev"
+                >
+                  guide carousel title
+                </a>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    ,
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

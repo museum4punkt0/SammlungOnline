@@ -18,8 +18,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src", "src/View/Components/GuideComponents/TourHeader/.ts", "codegen.js"
+    "src",
+    "src/View/Components/GuideComponents/TourHeader/.ts",
+    "codegen.js"
   ]
 }
