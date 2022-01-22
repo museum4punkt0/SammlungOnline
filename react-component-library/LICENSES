@@ -1724,7 +1724,7 @@
 │  ├─ path: /builds/smb/react-component-library-2/node_modules/@sindresorhus/is
 │  └─ licenseFile: node_modules/@sindresorhus/is/license
 ├─ @smb/smb-react-components-library@1.3.0
-│  ├─ licenses: UNLICENSED
+│  ├─ licenses: GNU GPLv3
 │  ├─ private: true
 │  ├─ path: /builds/smb/react-component-library-2
 │  └─ licenseFile: README.md
