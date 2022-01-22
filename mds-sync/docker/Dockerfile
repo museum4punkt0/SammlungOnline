@@ -6,6 +6,8 @@ LABEL maintainer="xailabs<it-support@xailabs.de>"
 
 WORKDIR /opt/mds-sync
 COPY . .
+RUN sed -i 's/\r$//' gradlew
+RUN chmod +x gradlew
 RUN ./gradlew bootWar
 
 

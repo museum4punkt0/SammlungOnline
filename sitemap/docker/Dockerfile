@@ -4,6 +4,7 @@ LABEL maintainer="Xailabs<it-support@xailabs.de>"
 
 WORKDIR /opt/smb-sitemap
 COPY . .
+RUN sed -i 's/\r$//' gradlew
 RUN chmod +x gradlew
 RUN ./gradlew bootJar
 

@@ -4,7 +4,7 @@ LABEL maintainer="xailabs<it-support@xailabs.de>"
 
 WORKDIR /opt/search-indexer
 COPY . .
-RUN sed -i -e 's/\r$//' ./gradlew
+RUN sed -i 's/\r$//' gradlew
 RUN chmod +x gradlew
 RUN ./gradlew bootWar
 
