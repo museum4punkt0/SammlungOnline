@@ -23,7 +23,7 @@ public class TitlesNormalizer extends MultipleHitsSortedNormalizer<String> {
     }
 
     @Override
-    protected @Nullable String[] pickValues(final Data[] items) {
+    protected String[] pickValues(final Data[] items) {
         return Arrays.stream(items)
                 .map(item -> StringUtils.trim(item.getTypedAttribute("TitleTxt")))
                 .toArray(String[]::new);

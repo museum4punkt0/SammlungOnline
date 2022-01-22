@@ -29,6 +29,7 @@ public class ExhibitNormalizer implements Normalizer<Boolean> {
 
     /**
      * Returns true if exhibited, false if not exhibited and null if exhibition state is unknown.
+     *
      * @param source source object providing input for calculation
      * @return exhibition state
      */

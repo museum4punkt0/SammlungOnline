@@ -4,20 +4,32 @@ import de.smbonline.searchindexer.api.GraphQlAPI
 import de.smbonline.searchindexer.conf.ALL_RELEVANT_ATTRIBUTES
 import de.smbonline.searchindexer.conf.NormalizerConfig
 import de.smbonline.searchindexer.conf.NormalizerConfigurer
+import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData
 import de.smbonline.searchindexer.norm.impl.TestData
+import io.mockk.coEvery
+import io.mockk.mockk
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.assertj.core.api.Assertions.*;
-import io.mockk.*
+
 class GraphQlServiceTest {
+
+    @Test
+    fun test965869() {
+        val obj = TestData.create("965869")
+        val api = mockAPI(obj)
+        val reg = NormalizerConfigurer(NormalizerConfig()).initConverterRegistry()
+        val service = GraphQlService(api, reg)
+        // no assertions, just ensure we don't run into exception
+        val searchObject = service.resolveObjectById(965869, "de")!!
+        println(searchObject)
+    }
 
     @Test
     fun testTransformSearchObject() {
         // given
-        val api = mockk<GraphQlAPI>()
-        val obj = TestData.createRichObject();
+        val obj = TestData.createRichObject()
         val id = (obj.id as Number).toLong()
-        coEvery { api.existsObject(id) } returns true
-        coEvery { api.loadObject(id, "de") } returns obj
+        val api = mockAPI(obj)
 
         // when
         val cfg = NormalizerConfig()
@@ -38,5 +50,13 @@ class GraphQlServiceTest {
             assertThat(searchObject.attributes.attributes).containsKey(attrKey);
         }
         assertThat(searchObject.attributes.attributes).containsOnlyKeys(*ALL_RELEVANT_ATTRIBUTES, "@id", "@initialImport", "@lastSynced");
+    }
+
+    private fun mockAPI(obj:ObjectData): GraphQlAPI {
+        val api = mockk<GraphQlAPI>()
+        val id = (obj.id as Number).toLong()
+        coEvery { api.existsObject(id) } returns true
+        coEvery { api.loadObject(id, "de") } returns obj
+        return api
     }
 }

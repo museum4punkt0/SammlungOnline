@@ -34,6 +34,13 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
      */
     private static final Pattern REGULAR_DATE_PATTERN = Pattern.compile(
             "^\\s*(\\d{1,2})\\.(\\d{1,2})\\.(-?\\d{1,4})(?: \\d{1,2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?)?\\s*$");
+
+    /**
+     * "yyyy-MM-dd"
+     */
+    private static final Pattern ISO_DATE_PATTERN = Pattern.compile(
+            "^\\s*(\\d{1,4})-(\\d{1,2})-(\\d{1,2})\\s*$");
+
     /**
      * "yyyy"
      */
@@ -165,6 +172,17 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
             String from = firstDayOfYear(Integer.parseInt(matcher.group(1)));
             String to = lastDayOfYear(Integer.parseInt(matcher.group(1)));
             return createDayRange(from, to);
+        }
+
+        // ISO "yyyy-MM-dd"
+        pattern = ISO_DATE_PATTERN;
+        matcher = pattern.matcher(dateText);
+        if (matcher.matches()) {
+            int year = Integer.parseInt(matcher.group(1));
+            int month = Integer.parseInt(matcher.group(2));
+            int day = Integer.parseInt(matcher.group(3));
+            String date = isoDate(year, month, day);
+            return createDayRange(date, date);
         }
 
         // "vor yyyy"

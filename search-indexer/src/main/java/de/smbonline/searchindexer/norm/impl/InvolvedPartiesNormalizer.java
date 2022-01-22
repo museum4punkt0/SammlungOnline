@@ -11,11 +11,6 @@ import static de.smbonline.searchindexer.conf.ConstKt.*;
 
 public class InvolvedPartiesNormalizer extends MultipleHitsSortedNormalizer<String> {
 
-    private static final String MODULE_REFERENCE = "ObjPerAssociationRef";
-    // super class uses the ref-key itself as attribute key
-    private static final String VIRTUAL_NAME_ATTRIBUTE = "ObjPerAssociationRef";
-    private static final String ROLE_VOC_ATTRIBUTE = "RoleVoc";
-
     private static final List<String> ROLES_BLACKLIST = Arrays.asList(
             "", "Leihgeber", "Mäzen", "Nachlasser", "Person", "Veräußerer", "Vorbesitzer"
     );
@@ -23,7 +18,7 @@ public class InvolvedPartiesNormalizer extends MultipleHitsSortedNormalizer<Stri
     private final boolean withExplicitRole;
 
     public InvolvedPartiesNormalizer(final boolean withExplicitRole) {
-        super(INVOLVED_PARTIES_ATTRIBUTE, MODULE_REFERENCE);
+        super(INVOLVED_PARTIES_ATTRIBUTE, "ObjPerAssociationRef");
         this.withExplicitRole = withExplicitRole;
     }
 
@@ -35,15 +30,15 @@ public class InvolvedPartiesNormalizer extends MultipleHitsSortedNormalizer<Stri
     protected Data[] applyFilter(final Data[] items) {
         return Arrays.stream(items)
                 .filter(item -> {
-                    String value = item.getTypedAttribute(VIRTUAL_NAME_ATTRIBUTE);
+                    String value = item.getTypedAttribute(VIRTUAL_ATTRIBUTE_NAME);
                     if (StringUtils.isBlank(value)) {
                         return false;
                     }
-                    String roleVgr = item.getTypedAttribute(ROLE_VOC_ATTRIBUTE);
-                    if (StringUtils.isBlank(roleVgr)) {
-                        roleVgr = StringUtils.substringAfterLast(value, ", ");
+                    String roleVoc = item.getTypedAttribute("RoleVoc");
+                    if (StringUtils.isBlank(roleVoc)) {
+                        roleVoc = StringUtils.substringAfterLast(value, ", ");
                     }
-                    return !ROLES_BLACKLIST.contains(roleVgr);
+                    return !ROLES_BLACKLIST.contains(roleVoc);
                 })
                 .toArray(Data[]::new);
     }
@@ -54,13 +49,12 @@ public class InvolvedPartiesNormalizer extends MultipleHitsSortedNormalizer<Stri
     }
 
     private String extractPartyInfo(final Data item) {
-        return this.withExplicitRole
-                ? buildPartyInfo(item) : StringUtils.trim(item.getTypedAttribute(VIRTUAL_NAME_ATTRIBUTE));
+        return this.withExplicitRole ? buildPartyInfo(item) : StringUtils.trim(item.getTypedAttribute(VIRTUAL_ATTRIBUTE_NAME));
     }
 
     private static String buildPartyInfo(final Data item) {
-        String person = item.getTypedAttribute(VIRTUAL_NAME_ATTRIBUTE);
-        String role = item.getTypedAttribute(ROLE_VOC_ATTRIBUTE);
+        String person = item.getTypedAttribute(VIRTUAL_ATTRIBUTE_NAME);
+        String role = item.getTypedAttribute("RoleVoc");
 
         boolean hasPerson = StringUtils.isNotBlank(person);
         boolean hasRole = StringUtils.isNotBlank(role);

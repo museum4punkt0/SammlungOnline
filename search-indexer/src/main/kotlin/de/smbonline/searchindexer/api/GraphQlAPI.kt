@@ -59,8 +59,8 @@ class GraphQlAPI @Autowired constructor(private val config: GraphQlConfig) {
     }
 
     @LogExecutionTime
-    suspend fun fetchObjectIds(startId:Long, offset: Int, limit: Int): Array<Long> {
-        val result = client.query(FetchObjectsQuery(startId, offset, limit))
+    suspend fun fetchObjectIds(startId:Long, endId:Long, offset: Int, limit: Int): Array<Long> {
+        val result = client.query(FetchObjectsQuery(startId, endId, offset, limit))
                 .toDeferred()
                 .await()
         return result.data?.smb_objects?.map { (it.id as BigDecimal).longValueExact() }.orEmpty().toTypedArray()

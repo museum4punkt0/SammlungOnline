@@ -12,8 +12,7 @@ class SearchTest {
         assertThat(search.searchTerm).isEqualTo("*")
         assertThat(search.offset).isEqualTo(0)
         assertThat(search.limit).isCloseTo(20, Offset.offset(5))
-        assertThat(search.sort.size).isEqualTo(1)
-        assertThat(search.sort[0]).isEqualTo(Pair("_score", false))
+        assertThat(search.sort).isEmpty()
         assertThat(search.advancedSearch).isNull()
     }
 
@@ -82,7 +81,7 @@ class SearchTest {
     }
 
     @Test
-    fun testEmptyAdvancedSearchIsConverterToNull() {
+    fun testEmptyAdvancedSearchIsConvertedToNull() {
         val data = Data().setAttribute("q_advanced", emptyList<Data>())
         val search = Search.fromPayload(data)
         assertThat(search.advancedSearch).isNull()

@@ -20,7 +20,8 @@ public class DatingNormalizerTest {
     public void testMappingSingle() {
         // given
         ObjectData obj = createObject(
-                Triple.of("ObjDateGrp.DateTxt", "[123].ObjDateGrp.item[1].DateTxt", "text"),
+                Triple.of("ObjDateGrp.PreviewVrt", "[123].ObjDateGrp.item[1].PreviewVrt", "text"),
+                Triple.of("ObjDateGrp.DateTxt", "[123].ObjDateGrp.item[1].DateTxt", "nicht-das-hier"),
                 Triple.of("ObjDateGrp.TypeVoc", "[123].ObjDateGrp.item[1].TypeVoc", "type")
         );
         // when
@@ -29,17 +30,20 @@ public class DatingNormalizerTest {
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
-        assertThat(value[0]).isEqualTo("type text");
+        assertThat(value[0]).isEqualTo("type: text");
     }
 
     @Test
     public void testMappingSingle_TextOnly() {
         // given
-        ObjectData obj = createObject(123L, Pair.of("ObjDateGrp.DateTxt", "text"));
+        ObjectData obj = createObject(
+                Triple.of("ObjDateGrp.PreviewVrt", "[123].ObjDateGrp.item[1].PreviewVrt", "text")
+        );
         // when
         DatingNormalizer normalizer = new DatingNormalizer();
         String[] value = normalizer.resolveAttributeValue(obj);
         // then
+        assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
         assertThat(value[0]).isEqualTo("text");
     }
@@ -47,7 +51,9 @@ public class DatingNormalizerTest {
     @Test
     public void testMappingSingle_TypeOnly() {
         // given
-        ObjectData obj = createObject(123L, Pair.of("ObjDateGrp.TypeVoc", "type"));
+        ObjectData obj = createObject(
+                Triple.of("ObjDateGrp.TypeVoc", "[123].ObjDateGrp.item[1].TypeVoc", "type")
+        );
         // when
         DatingNormalizer normalizer = new DatingNormalizer();
         String[] value = normalizer.resolveAttributeValue(obj);

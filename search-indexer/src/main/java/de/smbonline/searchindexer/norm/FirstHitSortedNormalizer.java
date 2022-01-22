@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
@@ -45,7 +46,10 @@ public abstract class FirstHitSortedNormalizer<T> extends NormalizerBase<T> {
         String itemAttributeFqKey = group
                 .stream()
                 .filter(a -> a.getKey().endsWith("." + SORTING_FIELDNAME))
-                .min(Comparator.comparingInt(attr -> Integer.parseInt(Objects.requireNonNull(attr.getValue()))))
+                .min(Comparator.comparingInt(attr -> {
+                    Optional<String> sort = Optional.ofNullable(StringUtils.defaultIfBlank(attr.getValue(), null));
+                    return sort.map(Integer::parseInt).orElse(Integer.MAX_VALUE);
+                }))
                 .orElseGet(() -> group.get(0))
                 .getFqKey();
         // from the found attribute, extract the prefix that is the common prefix for all attributes of the respective item

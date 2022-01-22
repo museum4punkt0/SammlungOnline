@@ -17,10 +17,10 @@ class GraphQlService @Autowired constructor(
         private val registry: NormalizerRegistry
 ) {
 
-    fun fetchObjectIds(startId: Long?, offset: Int, limit: Int): Array<out Long> {
+    fun fetchObjectIds(startId: Long?, endId: Long?, offset: Int, limit: Int): Array<out Long> {
         var result: Array<Long>
         runBlocking {
-            result = graphQlAPI.fetchObjectIds(startId?:0, offset, limit)
+            result = graphQlAPI.fetchObjectIds(startId ?: 0, endId ?: Long.MAX_VALUE, offset, limit)
         }
         return result
     }

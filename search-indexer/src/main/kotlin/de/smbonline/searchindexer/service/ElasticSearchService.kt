@@ -1,15 +1,11 @@
 package de.smbonline.searchindexer.service
 
 import de.smbonline.searchindexer.api.ElasticSearchAPI
-import de.smbonline.searchindexer.conf.COLLECTION_KEY_ATTRIBUTE
-import de.smbonline.searchindexer.conf.DATE_RANGE_ATTRIBUTE
 import de.smbonline.searchindexer.conf.ID_ATTRIBUTE
 import de.smbonline.searchindexer.dto.Data
-import de.smbonline.searchindexer.dto.JsonAttr.*
 import de.smbonline.searchindexer.dto.Search
 import de.smbonline.searchindexer.dto.SearchObject
 import de.smbonline.searchindexer.dto.SearchSuggest
-import de.smbonline.searchindexer.norm.impl.CollectionKeyNormalizer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -29,7 +25,14 @@ class ElasticSearchService @Autowired constructor(val api: ElasticSearchAPI) {
         return api.delete(objectId)
     }
 
+    fun delete(objectId: Long, language: String): Data {
+        return api.delete(objectId, language)
+    }
+
     fun search(request: Search, language: String): Data {
+        if (request.sort.isEmpty()) {
+            request.sort = getDefaultSort(request)
+        }
         return api.search(request, language)
     }
 
@@ -41,5 +44,15 @@ class ElasticSearchService @Autowired constructor(val api: ElasticSearchAPI) {
         val obj = SearchObject(data.getTypedAttribute<Number>(ID_ATTRIBUTE)!!.toLong(), language)
         data.attributes.forEach { (key, value) -> obj.attributes.setAttribute(key, value) }
         return obj
+    }
+
+    private fun getDefaultSort(request: Search): Array<Pair<String, Boolean>> {
+        // special case for searches without any search term:
+        // there is no sense in sorting by score so we retrieve the newest objects first instead
+        return if ((request.searchTerm.isBlank() || request.searchTerm == "*") && request.advancedSearch == null) {
+            arrayOf(Pair("@lastSynced", false))
+        } else {
+            arrayOf(Pair("_score", false))
+        }
     }
 }

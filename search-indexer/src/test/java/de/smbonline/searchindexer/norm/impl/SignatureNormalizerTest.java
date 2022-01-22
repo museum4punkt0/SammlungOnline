@@ -24,13 +24,16 @@ public class SignatureNormalizerTest {
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextMClb",
                         "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343311]._UserOalTextMClb",
                         "Bez. rechts unten (am Pilastersockel): C.B.F.1850"),
+                Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSTxt",
+                        "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343311]._UserOalTextSTxt",
+                        "Signaturen und Inschriften"),
 
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalSortierungLLnu",
                         "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343312]._UserOalSortierungLLnu",
                         "1"),
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextMClb",
                         "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343312]._UserOalTextMClb",
-                        "Bez. links unten: C.Blechen 1825"),
+                        "C.Blechen 1825"),
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSTxt",
                         "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343312]._UserOalTextSTxt",
                         "Signaturen und Inschriften"),
@@ -59,12 +62,10 @@ public class SignatureNormalizerTest {
 
         // then
         assertThat(value).isNotNull();
-        assertThat(value.length).isEqualTo(4);
+        assertThat(value.length).isEqualTo(2);
         assertThat(value).containsExactly(
-                "Signaturen und Inschriften: Bez. links unten: C.Blechen 1825",
-                "Bez. rechts unten: Stolberg d. 16. Juni 18[…]",
-                "Bez. rechts unten (am Pilastersockel): C.B.F.1850",
-                "Fremde Beschriftungen: Beschriftet auf der Rückseite von fremder Hand: Adrian Ludwig Richter"
+                "C.Blechen 1825",
+                "Bez. rechts unten (am Pilastersockel): C.B.F.1850"
         );
     }
 }

@@ -20,10 +20,10 @@ public class IdentNumberNormalizerTest {
     public void testMapping() {
         // given
         ObjectData obj = createObject(
-                Triple.of("ObjObjectNumberGrp.InventarNrSTxt", "[123].ObjObjectNumberGrp.item[1].InventarNrSTxt", "123"),
-                Triple.of("ObjObjectNumberGrp.InventarNrSTxt", "[123].ObjObjectNumberGrp.item[2].InventarNrSTxt", "ABC"),
-                Triple.of("ObjObjectNumberGrp.InventarNrSTxt", "[123].ObjObjectNumberGrp.item[3].InventarNrSTxt", "XYZ"),
-                Triple.of("ObjObjectNumberGrp.InventarNrSTxt", "[123].ObjObjectNumberGrp.item[4].InventarNrSTxt", "000")
+                Triple.of("ObjObjectNumberGrp.NumberVrt", "[123].ObjObjectNumberGrp.item[1].NumberVrt", "123"),
+                Triple.of("ObjObjectNumberGrp.NumberVrt", "[123].ObjObjectNumberGrp.item[2].NumberVrt", "ABC"),
+                Triple.of("ObjObjectNumberGrp.NumberVrt", "[123].ObjObjectNumberGrp.item[3].NumberVrt", "XYZ"),
+                Triple.of("ObjObjectNumberGrp.NumberVrt", "[123].ObjObjectNumberGrp.item[4].NumberVrt", "000")
         );
         // when
         IdentNumberNormalizer normalizer = new IdentNumberNormalizer();

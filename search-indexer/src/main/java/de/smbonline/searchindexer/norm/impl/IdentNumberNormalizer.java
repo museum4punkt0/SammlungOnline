@@ -15,6 +15,6 @@ public class IdentNumberNormalizer extends FirstHitSortedNormalizer<String> {
 
     @Override
     protected @Nullable String pickValue(final Data item) {
-        return StringUtils.trimToNull(item.getTypedAttribute("InventarNrSTxt"));
+        return StringUtils.trimToNull(item.getTypedAttribute("NumberVrt"));
     }
 }

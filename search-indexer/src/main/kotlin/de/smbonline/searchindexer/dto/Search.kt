@@ -14,20 +14,21 @@ class Search : Cloneable {
 
     var searchTerm: String = "*"
     var advancedSearch: Array<FieldSearch>? = null
-    var sort: Array<Pair<String, Boolean>> = arrayOf(Pair("_score", false))
+    var sort: Array<Pair<String, Boolean>> = emptyArray()
     var offset: Int = 0
     var limit: Int = 20
 
+    @Suppress("UNCHECKED_CAST")
     companion object {
 
-        private const val MAX_LIMIT = 100;
+        private const val MAX_LIMIT = 100
 
         fun fromQueryParams(params: Map<String, String>): Search {
             val search = Search()
             if (params.containsKey(SEARCHQUERY_PARAMETER)) {
                 search.searchTerm = cleanupSearchTerm(params.getValue(SEARCHQUERY_PARAMETER))
                 if (search.searchTerm.contains("$DATE_RANGE_ATTRIBUTE:")) {
-                    search.searchTerm = adjustDateRangeSearch(search.searchTerm);
+                    search.searchTerm = adjustDateRangeSearch(search.searchTerm)
                 }
             }
             if (params.containsKey(SORT_PARAMETER)) {
@@ -37,13 +38,19 @@ class Search : Cloneable {
                 search.offset = max(0, params.getValue(OFFSET_PARAMETER).toInt())
             }
             if (params.containsKey(LIMIT_PARAMETER)) {
-                search.limit = min(params.getValue(LIMIT_PARAMETER).toInt(), MAX_LIMIT)
+                val limit = params.getValue(LIMIT_PARAMETER)
+                // developer feature: allow exclamation mark to suppress limitation
+                if (limit.endsWith('!')) {
+                    search.limit = limit.substring(0, limit.length-1).toInt()
+                } else {
+                    search.limit = min(limit.toInt(), MAX_LIMIT)
+                }
             }
             return search
         }
 
         fun fromPayload(request: Data): Search {
-            return merge(Search(), request);
+            return merge(Search(), request)
         }
 
         fun merge(defaults: Search, overrides: Data): Search {
@@ -51,7 +58,7 @@ class Search : Cloneable {
             if (overrides.hasAttribute(ATTR_SEARCHQUERY)) {
                 search.searchTerm = cleanupSearchTerm(overrides.getTypedAttribute(ATTR_SEARCHQUERY)!!)
                 if (search.searchTerm.contains("$DATE_RANGE_ATTRIBUTE:")) {
-                    search.searchTerm = adjustDateRangeSearch(search.searchTerm);
+                    search.searchTerm = adjustDateRangeSearch(search.searchTerm)
                 }
             }
             if (overrides.hasAttribute(ATTR_ADVANCED_SEARCHQUERY)) {
@@ -95,24 +102,25 @@ class Search : Cloneable {
             return searchTerm.replace(givenDateSearch, adjustDateRangeSearchValue(givenDateSearch))
         }
 
-        // given is some kind of date, we need to adjust it to millis
+        // given is some kind of date, we need to adjust it to seconds
         private fun adjustDateRangeSearchValue(dateRangeString: String): String {
             val range = StringUtils.substringBetween(dateRangeString, "[", "]")
             var from = range.substringBefore("TO").trim()
-            var to = range.substringAfter("TO").trim();
+            var to = range.substringAfter("TO").trim()
             if (from != "*") {
-                from = (startDate(from).time/1000).toString()
+                from = (startDate(from).time / 1000).toString()
             }
             if (to != "*") {
-                to = (endDate(to).time/1000).toString()
+                to = (endDate(to).time / 1000).toString()
             }
             return "[$from TO $to]"
         }
 
         private fun startDate(str: String): Date {
             val cal = GregorianCalendar()
-            cal.set(Calendar.YEAR, 0);
-            cal.set(Calendar.MONTH, 0)
+            cal.set(Calendar.YEAR, 200000) // far far back in time
+            cal.set(Calendar.ERA, GregorianCalendar.BC)
+            cal.set(Calendar.MONTH, Calendar.JANUARY)
             cal.set(Calendar.DAY_OF_MONTH, 1)
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
@@ -123,8 +131,8 @@ class Search : Cloneable {
 
         private fun endDate(str: String): Date {
             val cal = GregorianCalendar()
-            cal.set(Calendar.YEAR, 0)
-            cal.set(Calendar.MONTH, 12)
+            cal.set(Calendar.YEAR, 3000) // good enough for the future
+            cal.set(Calendar.MONTH, Calendar.DECEMBER)
             cal.set(Calendar.DAY_OF_MONTH, 31)
             cal.set(Calendar.HOUR_OF_DAY, 23)
             cal.set(Calendar.MINUTE, 59)
@@ -139,9 +147,10 @@ class Search : Cloneable {
             val parts = source.split(Regex("[-]"))
 
             // year
-            val year = Integer.parseInt(parts[0])
-            cal.set(Calendar.YEAR, year);
-            cal.set(Calendar.ERA, if (isBC) GregorianCalendar.BC else GregorianCalendar.AD)
+            if (parts.isNotEmpty()) {
+                cal.set(Calendar.YEAR, Integer.parseInt(parts[0]))
+                cal.set(Calendar.ERA, if (isBC) GregorianCalendar.BC else GregorianCalendar.AD)
+            }
             // month
             if (parts.size > 1) {
                 cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1)
@@ -173,22 +182,22 @@ class Search : Cloneable {
             return pairs.toTypedArray()
         }
 
-        fun cleanupSearchTerm(searchTerm: String): String {
+        fun cleanupSearchTerm(searchTerm: String, trim: Boolean = true): String {
             var cleaned = searchTerm
                     .replace("\\\"", "<ESCAPED_QUOTE>")
                     .replace(Regex("[()/]"), " ")
                     .replace(Regex("\\s+"), " ")
-                    .trim()
-            // ensure balanced quotes
+            if (trim) cleaned = cleaned.trim()
             cleaned = balanced("<ESCAPED_QUOTE>", cleaned)
             cleaned = balanced("\"", cleaned)
+            if (trim) cleaned = cleaned.trim()
             return cleaned.replace("<ESCAPED_QUOTE>", "\\\"")
         }
 
         private fun balanced(str: String, source: String): String {
             return if (StringUtils.countMatches(source, str) % 2 != 0) {
                 return if (source.endsWith(str)) {
-                    source.substring(0, source.length - 1);
+                    source.substring(0, source.length - str.length)
                 } else {
                     source.plus(str)
                 }

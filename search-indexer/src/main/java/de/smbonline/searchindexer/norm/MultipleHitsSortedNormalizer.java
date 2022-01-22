@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 public abstract class MultipleHitsSortedNormalizer<T> extends NormalizerBase<T[]> {
 
     protected final String repeatableGroup;
+    protected final ItemSort sorting;
 
     /**
      * Creates a new instance.
@@ -14,13 +15,24 @@ public abstract class MultipleHitsSortedNormalizer<T> extends NormalizerBase<T[]
      * @param repeatableGroup MDS repeatableGroup or moduleRef name
      */
     protected MultipleHitsSortedNormalizer(final String attributeKey, final String repeatableGroup) {
+        this(attributeKey, repeatableGroup, NormalizerBase::defaultSorting);
+    }
+
+    /**
+     * Creates a new instance.
+     * @param attributeKey target attribute name
+     * @param repeatableGroup MDS repeatableGroup or moduleRef name
+     * @param sorting sorting function
+     */
+    protected MultipleHitsSortedNormalizer(final String attributeKey, final String repeatableGroup, final ItemSort sorting) {
         super(attributeKey);
         this.repeatableGroup = repeatableGroup;
+        this.sorting = sorting;
     }
 
     @Override
     public @Nullable T[] resolveAttributeValue(final ObjectData source) {
-        Data[] data = findGroupItems(source, this.repeatableGroup);
+        Data[] data = findGroupItems(source, this.repeatableGroup, this.sorting);
         data = applyFilter(data);
         return data.length == 0 ? null : pickValues(data);
     }

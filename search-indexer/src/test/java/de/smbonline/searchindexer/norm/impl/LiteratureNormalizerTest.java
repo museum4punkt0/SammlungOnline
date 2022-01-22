@@ -20,20 +20,34 @@ public class LiteratureNormalizerTest {
         // given
         ObjectData obj = createObject(
                 Triple.of("ObjLiteratureRef", "[2260468].ObjLiteratureRef.moduleReferenceItem[222263#0]", "Anton von Werner: Erlebnisse und Eindrücke 1870-1890, 1913, Kat.-Nr. S. 130-131"),
-                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[222263#0].CatalogueNumberTxt", "S. 130-131"),
-                Triple.of("ObjLiteratureRef.NotesClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[222263#0].NotesClb", "(zur Miniaturensammlung Loewe)"),
+                Triple.of("ObjLiteratureRef.LitCitationClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[222263#0].LitCitationClb", "CLB#0"),
+                Triple.of("ObjLiteratureRef.LitReferenceShortTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[222263#0].LitReferenceShortTxt", "Erlebnisse und Eindrücke"),
+                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[222263#0].CatalogueNumberTxt", "Bd. II, S. 134, Kat.-Nr. 277, Farbtaf. 44"),
 
                 Triple.of("ObjLiteratureRef", "[2260468].ObjLiteratureRef.moduleReferenceItem[268795#2]", "Hannelore Nützmann: Der Bilderrahmen als Kunstwerk, 1991, Kat.-Nr. S. 208"),
-                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[268795#2].CatalogueNumberTxt", "S. S. 208"),
-                Triple.of("ObjLiteratureRef.NotesClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[268795#2].NotesClb", "(zur Miniaturensammlung Loewe)"),
+                Triple.of("ObjLiteratureRef.LitCitationClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[268795#2].LitCitationClb", "CLB#2"),
+                Triple.of("ObjLiteratureRef.LitReferenceShortTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[268795#2].LitReferenceShortTxt", "Der Bilderrahmen als Kunstwerk"),
+                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[268795#2].CatalogueNumberTxt", "Kat.-Nr. 277"),
+                Triple.of("ObjLiteratureRef.LitPublicationDateLnu", "[2260468].ObjLiteratureRef.moduleReferenceItem[268795#2].LitPublicationDateLnu", "2000"),
+
+                Triple.of("ObjLiteratureRef", "[2260468].ObjLiteratureRef.moduleReferenceItem[54541#5]", "Hannelore Nützmann: Der Bilderrahmen als Kunstwerk, 1991, Kat.-Nr. S. 208"),
+                Triple.of("ObjLiteratureRef.LitCitationClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[54541#5].LitCitationClb", "CLB#5"),
+                Triple.of("ObjLiteratureRef.LitReferenceShortTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[54541#5].LitReferenceShortTxt", "Der Bilderrahmen als Kunstwerk"),
+                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[54541#5].CatalogueNumberTxt", "Kat.-Nr. 277"),
+                Triple.of("ObjLiteratureRef.LitPublicationDateLnu", "[2260468].ObjLiteratureRef.moduleReferenceItem[54541#5].LitPublicationDateLnu", "1989"),
 
                 Triple.of("ObjLiteratureRef", "[2260468].ObjLiteratureRef.moduleReferenceItem[249281#1]", "Rolf H. Johannsen und Uta Barbara Ulrich: Staatliche Museen zu Berlin."),
-                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[249281#1].CatalogueNumberTxt", "S. 55-56, F.B. 90  "),
-                Triple.of("ObjLiteratureRef.NotesClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[249281#1].NotesClb", "(Miniaturensammlung Loewe dort fälschlich als Fremdbesitz unbekannter Herkunft erfaßt)"),
+                Triple.of("ObjLiteratureRef.LitCitationClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[249281#1].LitCitationClb", "CLB#1"),
+                Triple.of("ObjLiteratureRef.LitReferenceShortTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[249281#1].LitReferenceShortTxt", "Staatliche Museen zu Berlin"),
+                Triple.of("ObjLiteratureRef.PicturePageTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[249281#1].PicturePageTxt", "Farbtaf. 44"),
+                Triple.of("ObjLiteratureRef.PageRefTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[249281#1].PageRefTxt", "Bd. II, S. 134"),
 
                 Triple.of("ObjLiteratureRef", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3]", "Cella-Margaretha Girardet: Jüdische Mäzene für die Preußischen Museen zu Berlin."),
-                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3].CatalogueNumberTxt", "S. 184"),
-                Triple.of("ObjLiteratureRef.NotesClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3].NotesClb", "(zur Miniaturensammlung Loewe)")
+                Triple.of("ObjLiteratureRef.LitCitationClb", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3].LitCitationClb", "CLB#3"),
+                Triple.of("ObjLiteratureRef.LitReferenceShortTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3].LitReferenceShortTxt", "Jüdische Mäzene"),
+                Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3].CatalogueNumberTxt", "Kat.-Nr. 277"),
+                Triple.of("ObjLiteratureRef.PicturePageTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3].PicturePageTxt", "Farbtaf. 44"),
+                Triple.of("ObjLiteratureRef.PageRefTxt", "[2260468].ObjLiteratureRef.moduleReferenceItem[269286#3].PageRefTxt", "Bd. II, S. 134")
         );
 
         // when
@@ -42,10 +56,11 @@ public class LiteratureNormalizerTest {
 
         // then
         assertThat(value).isNotNull();
-        assertThat(value).hasSize(4);
-        assertThat(value[0]).isEqualTo("Anton von Werner: Erlebnisse und Eindrücke 1870-1890, 1913, Kat.-Nr. S. 130-131");
-        assertThat(value[1]).isEqualTo("Rolf H. Johannsen und Uta Barbara Ulrich: Staatliche Museen zu Berlin.");
-        assertThat(value[2]).isEqualTo("Hannelore Nützmann: Der Bilderrahmen als Kunstwerk, 1991, Kat.-Nr. S. 208");
-        assertThat(value[3]).isEqualTo("Cella-Margaretha Girardet: Jüdische Mäzene für die Preußischen Museen zu Berlin.");
+        assertThat(value).hasSize(5);
+        assertThat(value[0]).isEqualTo("Der Bilderrahmen als Kunstwerk: CLB#5, Kat.-Nr. 277");
+        assertThat(value[1]).isEqualTo("Der Bilderrahmen als Kunstwerk: CLB#2, Kat.-Nr. 277");
+        assertThat(value[2]).isEqualTo("Erlebnisse und Eindrücke: CLB#0, Bd. II, S. 134, Kat.-Nr. 277, Farbtaf. 44");
+        assertThat(value[3]).isEqualTo("Jüdische Mäzene: CLB#3, Bd. II, S. 134, Farbtaf. 44, Kat.-Nr. 277");
+        assertThat(value[4]).isEqualTo("Staatliche Museen zu Berlin: CLB#1, Bd. II, S. 134, Farbtaf. 44");
     }
 }

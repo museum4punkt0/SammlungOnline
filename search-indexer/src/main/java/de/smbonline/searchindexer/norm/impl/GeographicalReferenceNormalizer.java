@@ -1,15 +1,22 @@
 package de.smbonline.searchindexer.norm.impl;
 
-import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
 import de.smbonline.searchindexer.dto.Data;
+import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
+import io.reactivex.rxjava3.annotations.Nullable;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
 
 public class GeographicalReferenceNormalizer extends MultipleHitsSortedNormalizer<String> {
+
+    private static final List<String> TYPES_BLACKLIST = Arrays.asList(
+            "",
+            "Statistischer Bezug",
+            "Fundort Ausgabe", "Fundort aktuell", "Fundort historisch 1800", "Fundort historisch 1900", "Fundort historisch 2000", "Fundort normiert", "Fundort Variante"
+    );
 
     public GeographicalReferenceNormalizer() {
         super(GEOGRAPHICAL_REFERENCES_ATTRIBUTE, "ObjGeograficGrp");
@@ -18,20 +25,26 @@ public class GeographicalReferenceNormalizer extends MultipleHitsSortedNormalize
     @Override
     protected Data[] applyFilter(final Data[] items) {
         return Arrays.stream(items)
-                .filter(item -> hasAttributeValue(item,"PlaceVoc") || hasAttributeValue(item,"DetailTxt"))
+                .filter(item -> {
+                    String type = item.getTypedAttribute("TypeVoc");
+                    if (TYPES_BLACKLIST.contains(type)) {
+                        return false;
+                    }
+                    return hasAttributeValue(item, "DetailsTxt") || hasPlaceVoc(item);
+                })
                 .toArray(Data[]::new);
     }
 
     @Override
-    protected @Nullable String[] pickValues(final Data[] items) {
+    protected String[] pickValues(final Data[] items) {
         return Arrays.stream(items)
                 .map(GeographicalReferenceNormalizer::extractGeoInfo)
                 .toArray(String[]::new);
     }
 
     private static String extractGeoInfo(final Data item) {
-        String place = item.getTypedAttribute("PlaceVoc");
-        String details = item.getTypedAttribute("DetailTxt");
+        String place = extractPlaceVoc(item);
+        String details = item.getTypedAttribute("DetailsTxt");
         String type = item.getTypedAttribute("TypeVoc");
         String geopol = item.getTypedAttribute("GeopolVoc");
 
@@ -57,5 +70,24 @@ public class GeographicalReferenceNormalizer extends MultipleHitsSortedNormalize
             sb.append(' ').append('(').append(geopol.trim()).append(')');
         }
         return sb.toString().trim();
+    }
+
+    private static boolean hasPlaceVoc(final Data item) {
+        return extractPlaceVoc(item) != null;
+    }
+
+    private static @Nullable String extractPlaceVoc(final Data item) {
+        String[] candidates = {
+                "PlaceILSVoc",  // ISL - yes, ILS typo is correct here
+                "PlaceEgyptVoc", // ÄMP
+                "PlaceAntiqueVoc", // ANT
+                "PlaceVoc"
+        };
+        for (String candidate : candidates) {
+            if (hasAttributeValue(item, candidate)) {
+                return item.getTypedAttribute(candidate);
+            }
+        }
+        return null;
     }
 }

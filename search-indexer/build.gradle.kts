@@ -13,7 +13,7 @@ plugins {
 
 description = "Service to update elastic search index with objects and attributes."
 group = "de.smb-online"
-version = "1.5.15"
+version = "2.0.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {

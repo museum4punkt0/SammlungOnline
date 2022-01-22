@@ -3,7 +3,6 @@ package de.smbonline.searchindexer.norm.impl;
 import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 
@@ -17,20 +16,20 @@ public class DimensionsAndWeightNormalizer extends MultipleHitsSortedNormalizer<
 
     @Override
     protected Data[] applyFilter(final Data[] items) {
-        return primaryItem(items).orElse(Arrays.stream(items)
+        return  Arrays.stream(primaryItems(items).orElse(items))
                 .filter(item -> hasAttributeValue(item, "PreviewVrt"))
-                .toArray(Data[]::new));
+                .toArray(Data[]::new);
     }
 
     @Override
-    protected @Nullable String[] pickValues(final Data[] repeatableGroupItems) {
+    protected String[] pickValues(final Data[] repeatableGroupItems) {
         return Arrays.stream(repeatableGroupItems)
                 .map(DimensionsAndWeightNormalizer::extractDimensionsAndWeightInfo)
                 .toArray(String[]::new);
     }
 
     private static String extractDimensionsAndWeightInfo(final Data item) {
-        String type = item.getTypedAttribute("TypeDimRef");
+        String type = item.getNestedTypedAttribute("TypeDimRef.item");
         String text = item.getTypedAttribute("PreviewVrt");
 
         boolean hasType = StringUtils.isNotBlank(type);

@@ -21,10 +21,10 @@ public class InvolvedPartiesNormalizerTest {
         ObjectData obj = createObject(
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[1]", "Remo, Superstar"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[2]", "Frank, Warmduscher"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[2].RoleVoc", "Warmduscher"),
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[2].RoleVoc[2].item[2]", "Warmduscher"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[3]", "Mehmet, Zeichner"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[4]", "Üzgür, Maler"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[4].RoleVoc", "Maler")
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[4].RoleVoc[4].item[4]", "Maler")
         );
 
         // when
@@ -47,19 +47,19 @@ public class InvolvedPartiesNormalizerTest {
         // given
         ObjectData obj = createObject(
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[2]", "Herr Brand"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[2].RoleVoc", "Mäzen"),
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[2].RoleVoc[1].item[1]", "Mäzen"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[1]", "Tante Erna"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[1].RoleVoc", "Leihgeber"),
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[1].RoleVoc[2].item[2]", "Leihgeber"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[3]", "Edgar"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[3].RoleVoc", ""),
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[3].RoleVoc[3].item[3]", ""),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[4]", "Bernd"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[4].RoleVoc", "Nachlasser"),
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[4].RoleVoc[4].item[4]", "Nachlasser"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[5]", "Arno Nühm"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[5].RoleVoc", "Person"),
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[5].RoleVoc[5].item[5]", "Person"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[6]", "Jim Panse"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[6].RoleVoc", "Veräußerer"),
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[6].RoleVoc[6].item[6]", "Veräußerer"),
                 Triple.of("ObjPerAssociationRef", "[123].ObjPerAssociationRef.item[7]", "Peter Lustig"),
-                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[7].RoleVoc", "Vorbesitzer")
+                Triple.of("ObjPerAssociationRef.RoleVoc", "[123].ObjPerAssociationRef.item[7].RoleVoc[7].item[7]", "Vorbesitzer")
         );
         // when
         InvolvedPartiesNormalizer normalizer = new InvolvedPartiesNormalizer(true);

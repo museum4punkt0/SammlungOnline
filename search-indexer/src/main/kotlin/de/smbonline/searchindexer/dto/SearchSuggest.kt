@@ -15,10 +15,10 @@ data class SearchSuggest(val searchTerm: String) {
             val suggest: SearchSuggest
             val separator = q.indexOf(':')
             if (separator > 0) {
-                suggest = SearchSuggest(Search.cleanupSearchTerm(q.substring(separator + 1)))
+                suggest = SearchSuggest(Search.cleanupSearchTerm(q.substring(separator + 1), false))
                 suggest.field = q.substring(0, separator)
             } else {
-                suggest = SearchSuggest(Search.cleanupSearchTerm(q))
+                suggest = SearchSuggest(Search.cleanupSearchTerm(q, false))
             }
             return suggest
         }

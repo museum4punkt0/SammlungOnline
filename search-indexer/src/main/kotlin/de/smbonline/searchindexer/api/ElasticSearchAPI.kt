@@ -1,6 +1,7 @@
 package de.smbonline.searchindexer.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import de.smbonline.searchindexer.conf.ACQUISITION_ATTRIBUTE
 import de.smbonline.searchindexer.conf.ALL_RELEVANT_ATTRIBUTES
 import de.smbonline.searchindexer.conf.COLLECTION_ATTRIBUTE
 import de.smbonline.searchindexer.conf.COLLECTION_KEY_ATTRIBUTE
@@ -8,6 +9,7 @@ import de.smbonline.searchindexer.conf.COMPILATION_ATTRIBUTE
 import de.smbonline.searchindexer.conf.CREDIT_LINE
 import de.smbonline.searchindexer.conf.DEFAULT_LANGUAGE
 import de.smbonline.searchindexer.conf.DIMENSIONS_AND_WEIGHT_ATTRIBUTE
+import de.smbonline.searchindexer.conf.EXHIBITIONS_ATTRIBUTE
 import de.smbonline.searchindexer.conf.EXHIBITION_SPACE_ATTRIBUTE
 import de.smbonline.searchindexer.conf.ElasticSearchConfig
 import de.smbonline.searchindexer.conf.GEOGRAPHICAL_REFERENCES_ATTRIBUTE
@@ -19,6 +21,7 @@ import de.smbonline.searchindexer.conf.LOCATION_ATTRIBUTE
 import de.smbonline.searchindexer.conf.LONG_DESCRIPTION_ATTRIBUTE
 import de.smbonline.searchindexer.conf.MATERIAL_AND_TECHNIQUE_ATTRIBUTE
 import de.smbonline.searchindexer.conf.PROVENANCE_ATTRIBUTE
+import de.smbonline.searchindexer.conf.PROVENANCE_EVALUATION_ATTRIBUTE
 import de.smbonline.searchindexer.conf.SIGNATURES_ATTRIBUTE
 import de.smbonline.searchindexer.conf.TECHNICAL_TERM_ATTRIBUTE
 import de.smbonline.searchindexer.conf.TITLES_ATTRIBUTE
@@ -38,7 +41,9 @@ import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.RequestOptions
+import org.elasticsearch.client.Response
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.common.xcontent.StatusToXContentObject
 import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.Operator
 import org.elasticsearch.index.query.QueryBuilder
@@ -63,18 +68,22 @@ class ElasticSearchAPI @Autowired constructor(
     private companion object {
         val LOGGER: Logger = LoggerFactory.getLogger(ElasticSearchAPI::class.java)
         val SORTABLE_TEXT_FIELDS = arrayOf(
+                ACQUISITION_ATTRIBUTE,
                 COLLECTION_ATTRIBUTE, COLLECTION_KEY_ATTRIBUTE, COMPILATION_ATTRIBUTE, CREDIT_LINE,
                 DIMENSIONS_AND_WEIGHT_ATTRIBUTE,
+                EXHIBITIONS_ATTRIBUTE,
                 EXHIBITION_SPACE_ATTRIBUTE,
                 GEOGRAPHICAL_REFERENCES_ATTRIBUTE,
                 IDENT_NUMBER_ATTRIBUTE, INVOLVED_PARTIES_ATTRIBUTE,
                 LOCATION_ATTRIBUTE,
                 MATERIAL_AND_TECHNIQUE_ATTRIBUTE,
-                PROVENANCE_ATTRIBUTE,
+                PROVENANCE_EVALUATION_ATTRIBUTE,
                 TECHNICAL_TERM_ATTRIBUTE, TITLES_ATTRIBUTE
         )
         val SUGGESTION_FIELDS = arrayOf(
+                ACQUISITION_ATTRIBUTE,
                 COLLECTION_ATTRIBUTE, COMPILATION_ATTRIBUTE, CREDIT_LINE,
+                EXHIBITIONS_ATTRIBUTE,
                 GEOGRAPHICAL_REFERENCES_ATTRIBUTE,
                 IDENT_NUMBER_ATTRIBUTE, ID_ATTRIBUTE, INVOLVED_PARTIES_ATTRIBUTE,
                 LOCATION_ATTRIBUTE,
@@ -124,19 +133,38 @@ class ElasticSearchAPI @Autowired constructor(
     }
 
     /**
-     * Delete object if exists.
+     * Delete object from all indexes if exists.
      */
+    @LogExecutionTime
     fun delete(objectId: Long): Data {
         return if (exists(objectId)) remove(objectId)
         else Data().setAttribute("$objectId", DocWriteResponse.Result.NOT_FOUND)
     }
 
-    @LogExecutionTime
     private fun remove(objectId: Long): Data {
         val de = DeleteRequest("${config.objectIndex}-de", "$objectId")
         val en = DeleteRequest("${config.objectIndex}-en", "$objectId")
         val request = BulkRequest().add(de).add(en)
         val response = this.client.bulk(request, RequestOptions.DEFAULT)
+        return handleDeletedResponse(response, objectId);
+    }
+
+    /**
+     * Delete object from index if exists.
+     */
+    @LogExecutionTime
+    fun delete(objectId: Long, language: String): Data {
+        return if (exists(objectId, language)) remove(objectId, language)
+        else Data().setAttribute("$objectId", DocWriteResponse.Result.NOT_FOUND)
+    }
+
+    private fun remove(objectId: Long, language: String): Data {
+        val request = DeleteRequest("${config.objectIndex}-$language", "$objectId")
+        val response = this.client.delete(request, RequestOptions.DEFAULT)
+        return handleDeletedResponse(response, objectId);
+    }
+
+    private fun handleDeletedResponse(response: StatusToXContentObject, objectId: Long): Data {
         return if (HttpStatus.valueOf(response.status().status).is2xxSuccessful) {
             LOGGER.debug("Deleted Object: <{}, {}>", objectId, DocWriteResponse.Result.DELETED)
             Data().setAttribute("$objectId", DocWriteResponse.Result.DELETED.name)
@@ -349,7 +377,10 @@ class ElasticSearchAPI @Autowired constructor(
             return field
         }
         // do not sort by long texts
-        if (LITERATURE_ATTRIBUTE == field || LONG_DESCRIPTION_ATTRIBUTE == field || SIGNATURES_ATTRIBUTE == field) {
+        if (LITERATURE_ATTRIBUTE == field
+                || LONG_DESCRIPTION_ATTRIBUTE == field
+                || PROVENANCE_ATTRIBUTE == field
+                || SIGNATURES_ATTRIBUTE == field) {
             return null
         }
         // do not try sorting on missing attribute

@@ -32,11 +32,11 @@ query FetchObjectWithAttributes($id: bigint!, $lang: String!) {
 }
 
 # Fetch a page of object ids
-query FetchObjects($startId: bigint!, $offset: Int!, $limit: Int!) {
+query FetchObjects($startId: bigint!, $endId: bigint!, $offset: Int!, $limit: Int!) {
     smb_objects(
         offset: $offset,
         limit: $limit,
-        where: {id: {_gte: $startId}}
+        where: {_and: [ {id: {_gte: $startId}}, {id: {_lte: $endId}} ]}
         order_by: [{id: asc}])
     {
         id

@@ -57,17 +57,23 @@ public class IndexController {
     @PostMapping(path = "/force-full-reindex", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> fullReindex(
             final @RequestParam(name = "startId", defaultValue = "1") Long startId,
+            final @RequestParam(name = "endId", defaultValue = "999999999999999") Long endId,
             final @RequestParam(name = LANGUAGE_PARAMETER, defaultValue = DEFAULT_LANGUAGE) String lang) {
 
         CompletableFuture.runAsync(() -> {
-            for (int offset = 0, pageSize = 2000; ; offset += pageSize) {
-                Long[] ids = this.graphQl.fetchObjectIds(startId, offset, pageSize);
+            int pageSize = 1000;
+            long nextId = startId;
+            while (true) {
+                // we always start at index 0 and change the id-range instead of the paging info
+                // this is for performance reasons (id check is better than high offsets)
+                Long[] ids = this.graphQl.fetchObjectIds(nextId, endId, 0, pageSize);
                 for (Long id : ids) {
-                    handlePushId(id, lang);
+                    handlePushId(id, lang, true);
                 }
                 if (ids.length < pageSize) {
                     break;
                 }
+                nextId = ids[ids.length - 1] + 1;
             }
         }).whenComplete((success, failure) -> {
             if (failure != null) {
@@ -81,12 +87,14 @@ public class IndexController {
      * Pass an object id or an array of object ids and let this service resolve all relevant attributes.
      *
      * @param request json with "id":number or ids:[number] or ids:["id..id"] attribute
+     * @param force   true (default) if indexed object should be removed before update
      * @param lang    desired language code for indexing
      * @return http response
      */
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> pushObjectsById(
             final @RequestBody Data request,
+            final @RequestParam(name = FORCED_UPDATE_PARAMETER, defaultValue = "true") boolean force,
             final @RequestParam(name = LANGUAGE_PARAMETER, defaultValue = DEFAULT_LANGUAGE) String lang) {
 
         Data response = new Data();
@@ -94,43 +102,52 @@ public class IndexController {
             if (request.hasAttribute(ATTR_ID)) {
                 Number id = Objects.requireNonNull(request.getTypedAttribute(ATTR_ID));
                 LOGGER.info("Received search-index update request for {}", id);
-                response = handlePushId(id.longValue(), lang);
+                response = handlePushId(id.longValue(), lang, force);
             } else if (request.hasAttribute(ATTR_IDS)) {
                 Collection<?> payloadIds = Objects.requireNonNull(request.getTypedAttribute(ATTR_IDS));
                 Long[] ids = collectIdsAsLongArray(payloadIds);
                 LOGGER.info("Received search-index update request for {} ids", ids.length);
-                response = handlePushIds(ids, lang);
+                response = handlePushIds(ids, lang, force);
             }
         } catch (Exception exc) {
             LOGGER.error("Failed: {}", exc.toString());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.error("", exc);
             }
-            response = new Data().setAttribute(RESPONSE_ERROR_ATTRIBUTE, exc.toString());
+            response = new Data().setAttribute(ATTR_ERROR, exc.toString());
         }
         return handleDataResponse(response);
     }
 
-    private Data handlePushIds(final Long[] ids, final String lang) {
+    private Data handlePushIds(final Long[] ids, final String lang, final boolean force) {
         Data collectedResponse = new Data();
         Arrays.stream(ids).forEach(id -> {
-            Data partialResponse = handlePushId(id, lang);
+            Data partialResponse = handlePushId(id, lang, force);
             collectedResponse.setAttribute("" + id, partialResponse);
         });
         return collectedResponse;
     }
 
-    private Data handlePushId(final Long id, final String lang) {
+    private Data handlePushId(final Long id, final String lang, final boolean force) {
+        Data result = null;
+
         LOGGER.debug("Updating search-index for {}", id);
+        if (force) {
+            // make sure old fields are removed - a push will only upsert but not delete fields
+            result = this.elasticSearch.delete(id, lang);
+        }
         SearchObject objectData = this.graphQl.resolveObjectById(id, lang);
-        if (objectData == null) {
+        if (objectData == null && !force) {
             LOGGER.info("Skipped indexing of object {} - object not found.", id);
-            return new Data()
+            result = new Data()
                     .setAttribute("" + id, "NOOP")
                     .setAttribute("message", "Object not found");
         }
-        Data result = this.elasticSearch.push(objectData);
+        if (objectData != null) {
+            result = this.elasticSearch.push(objectData);
+        }
         LOGGER.info("Search-index updated for {} (Status: {})", id, result.getAttribute("" + id));
+
         return result;
     }
 
@@ -138,20 +155,27 @@ public class IndexController {
      * Pass a full object with all attributes that should be indexed.
      *
      * @param fullObjectData object that should be indexed
+     * @param force          true if indexed object should be removed before update (default: false)
      * @param lang           language for attribute translation values contained in the payload
      * @return http response
      */
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> pushObject(
             final @RequestBody Data fullObjectData,
+            final @RequestParam(name = FORCED_UPDATE_PARAMETER, defaultValue = "false") boolean force,
             final @RequestParam(name = LANGUAGE_PARAMETER, defaultValue = DEFAULT_LANGUAGE) String lang) {
 
         try {
-            LOGGER.info("Received search-index update request for {}", fullObjectData.getAttribute(ATTR_ID));
+            Long id = extractId(fullObjectData);
+            LOGGER.info("Received search-index update request for {}", id);
+            if (force) {
+                // make sure old fields are removed - a push will only upsert but not delete fields
+                this.elasticSearch.delete(id, lang);
+            }
             Data response = this.elasticSearch.push(toSearchObject(fullObjectData, lang));
             return handleDataResponse(response);
         } catch (Exception exc) {
-            return handleDataResponse(new Data().setAttribute(RESPONSE_ERROR_ATTRIBUTE, exc.toString()));
+            return handleDataResponse(new Data().setAttribute(ATTR_ERROR, exc.toString()));
         }
     }
 
@@ -168,7 +192,7 @@ public class IndexController {
             Data response = this.elasticSearch.delete(objectId);
             return handleDataResponse(response);
         } catch (Exception exc) {
-            return handleDataResponse(new Data().setAttribute(RESPONSE_ERROR_ATTRIBUTE, exc.toString()));
+            return handleDataResponse(new Data().setAttribute(ATTR_ERROR, exc.toString()));
         }
     }
 

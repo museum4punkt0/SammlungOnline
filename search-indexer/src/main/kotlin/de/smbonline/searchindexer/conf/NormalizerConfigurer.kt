@@ -12,6 +12,7 @@ class NormalizerConfigurer @Autowired constructor(val props: NormalizerConfig) {
     @Bean
     fun initConverterRegistry(): NormalizerRegistry {
         return NormalizerRegistry()
+                .register(AcquisitionNormalizer())
                 .register(AttachmentsNormalizer())
                 .register(CollectionNormalizer())
                 .register(CollectionKeyNormalizer())
@@ -21,6 +22,7 @@ class NormalizerConfigurer @Autowired constructor(val props: NormalizerConfig) {
                 .register(DatingNormalizer())
                 .register(DimensionsAndWeightNormalizer())
                 .register(exhibitNormalizer())
+                .register(ExhibitionsNormalizer())
                 .register(ExhibitionSpaceNormalizer(props.locationSeparator))
                 .register(GeographicalReferenceNormalizer())
                 .register(HighlightsNormalizer())
@@ -32,6 +34,7 @@ class NormalizerConfigurer @Autowired constructor(val props: NormalizerConfig) {
                 .register(LongDescriptionNormalizer())
                 .register(MaterialAndTechniqueNormalizer())
                 .register(ProvenanceNormalizer())
+                .register(ProvenanceEvaluationNormalizer())
                 .register(SignatureNormalizer())
                 .register(TechnicalTermNormalizer())
                 .register(TitlesNormalizer())

@@ -50,6 +50,7 @@ public final class Mappings {
         ORGUNIT_COLLECTION_MAPPING.put("MVF", "Museum für Vor- und Frühgeschichte");
         ORGUNIT_COLLECTION_MAPPING.put("NG", "Nationalgalerie");
         ORGUNIT_COLLECTION_MAPPING.put("RaO", "Rathgen Forschungslabor");
+        ORGUNIT_COLLECTION_MAPPING.put("SBM", "Skulpturensammlung und Museum für Byzantinische Kunst");
         ORGUNIT_COLLECTION_MAPPING.put("SKS", "Skulpturensammlung und Museum für Byzantinische Kunst");
         ORGUNIT_COLLECTION_MAPPING.put("VAM", "Vorderasiatisches Museum");
         ORGUNIT_COLLECTION_MAPPING.put("ZA", "Zentralarchiv");
@@ -69,7 +70,7 @@ public final class Mappings {
         ORGUNIT_COMPILATION_MAPPING.put("EMMusikethnologie", "Musikethnologie");
         ORGUNIT_COMPILATION_MAPPING.put("EMOstundNordasien", "Ost- und Nordasien");
         ORGUNIT_COMPILATION_MAPPING.put("EMPhonogrammArchiv", "Phonogramm-Archiv");
-        ORGUNIT_COMPILATION_MAPPING.put("EMSudseeAustralien", "Südsee und Australien");
+        ORGUNIT_COMPILATION_MAPPING.put("EMSudseeAustralien", "Ozeanien");
         ORGUNIT_COMPILATION_MAPPING.put("EMSudundSudostasien", "Süd- und Südostasien");
         ORGUNIT_COMPILATION_MAPPING.put("KBArchitekturzeichnung", "Sammlung Architektur");
         ORGUNIT_COMPILATION_MAPPING.put("KBBuchkunstundNeueMedien", "Sammlung Buchkunst und Neue Medien");
@@ -119,18 +120,27 @@ public final class Mappings {
         ORGUNIT_COMPILATION_MAPPING.put("NGMuseumBerggruen", "Museum Berggruen");
         ORGUNIT_COMPILATION_MAPPING.put("NGNeueNationalgalerie", "Neue Nationalgalerie");
         ORGUNIT_COMPILATION_MAPPING.put("NGSammlungScharfGerstenberg", "Sammlung Scharf-Gerstenberg");
+        ORGUNIT_COMPILATION_MAPPING.put("SBMKFMV", "Skulpturensammlung");
         ORGUNIT_COMPILATION_MAPPING.put("SKSSkulpturen", "Skulpturensammlung");
         ORGUNIT_COMPILATION_MAPPING.put("ZAFotosammlung2", "Fotosammlung");
 
         BUILDING_ABBREV_MAPPING.put("ANG", "Alte Nationalgalerie");
         BUILDING_ABBREV_MAPPING.put("AM", "Altes Museum");
         BUILDING_ABBREV_MAPPING.put("BM", "Bode-Museum");
-        BUILDING_ABBREV_MAPPING.put("__FK?", "Friedrichswerdersche Kirche"); // TODO tbd
+        BUILDING_ABBREV_MAPPING.put("FWK", "Friedrichswerdersche Kirche");
+        BUILDING_ABBREV_MAPPING.put("FWK (NG)", "Friedrichswerdersche Kirche");
         BUILDING_ABBREV_MAPPING.put("GG", "Gemäldegalerie");
         BUILDING_ABBREV_MAPPING.put("HBF", "Hamburger Bahnhof - Museum für Gegenwart - Berlin");
+        BUILDING_ABBREV_MAPPING.put("HUF", "Humboldt Forum");
         BUILDING_ABBREV_MAPPING.put("JSG", "James-Simon-Galerie");
         BUILDING_ABBREV_MAPPING.put("KB", "Kunstbibliothek");
         BUILDING_ABBREV_MAPPING.put("KGM", "Kunstgewerbemuseum");
+        BUILDING_ABBREV_MAPPING.put("KGM Köpenick", "Schloss Köpenick");
+        BUILDING_ABBREV_MAPPING.put("KGM Schloss Köpenick", "Schloss Köpenick");
+        BUILDING_ABBREV_MAPPING.put("KGM im Schloss Köpenick", "Schloss Köpenick");
+        BUILDING_ABBREV_MAPPING.put("KGM Schloß Köpenick", "Schloss Köpenick");
+        BUILDING_ABBREV_MAPPING.put("KGM im Schloß Köpenick", "Schloss Köpenick");
+        BUILDING_ABBREV_MAPPING.put("KGM/Köpenick", "Schloss Köpenick");
         BUILDING_ABBREV_MAPPING.put("KK", "Kupferstichkabinett");
         BUILDING_ABBREV_MAPPING.put("MB", "Museum Berggruen");
         BUILDING_ABBREV_MAPPING.put("MEK", "Museum Europäischer Kulturen");
@@ -138,9 +148,9 @@ public final class Mappings {
         BUILDING_ABBREV_MAPPING.put("NNG", "Neue Nationalgalerie");
         BUILDING_ABBREV_MAPPING.put("NMU", "Neues Museum");
         BUILDING_ABBREV_MAPPING.put("PMU", "Pergamonmuseum");
-        BUILDING_ABBREV_MAPPING.put("__PMU?", "Pergamonmuseum. Das Panorama"); // TODO tbd
+        BUILDING_ABBREV_MAPPING.put("PMI", "Pergamonmuseum. Das Panorama");
+        BUILDING_ABBREV_MAPPING.put("SMB - KGM/Köpenick", "Schloss Köpenick");
         BUILDING_ABBREV_MAPPING.put("SSG", "Sammlung Scharf-Gerstenberg");
-        BUILDING_ABBREV_MAPPING.put("__SK?", "Schloss Köpenick"); // TODO tbd
 
         // --
 
@@ -148,6 +158,8 @@ public final class Mappings {
         EPOCH_DATERANGE_MAPPING.put("Späte Präklassik", ImmutablePair.of(-400, 250));
         EPOCH_DATERANGE_MAPPING.put("Frühe Postklassik", ImmutablePair.of(900, 1200));
         EPOCH_DATERANGE_MAPPING.put("Postklassik", ImmutablePair.of(900, 1697));
+
+        EPOCH_DATERANGE_MAPPING.put("kolonial", ImmutablePair.of(1500, 1945));
 
         EPOCH_DATERANGE_MAPPING.put("Ming-Dynastie", ImmutablePair.of(1368, 1644));
         EPOCH_DATERANGE_MAPPING.put("Späte Ming-Dynastie", ImmutablePair.of(1580, 1644));

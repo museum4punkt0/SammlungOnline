@@ -26,7 +26,7 @@ public class NormalizerBaseTest {
                 .setAttribute("attribute2", "attribute2Value")
                 .setAttribute("SortLnu", "4"));
 
-        Data[] sorted = NormalizerBase.sortedItems(items);
+        Data[] sorted = NormalizerBase.defaultSorting(items);
         assertThat(sorted).isNotNull();
         assertThat(sorted).hasSize(3);
         assertThat(sorted[0].getAttribute("SortLnu")).isEqualTo("1");
@@ -50,7 +50,7 @@ public class NormalizerBaseTest {
                 .setAttribute("CatalogueNumberTxt", "S. 30-31")
                 .setAttribute("NotesClb", "(zur Miniaturensammlung Loewe)"));
 
-        Data[] sorted = NormalizerBase.sortedItems(items);
+        Data[] sorted = NormalizerBase.defaultSorting(items);
 
         assertThat(sorted).isNotNull();
         assertThat(sorted).hasSize(3);

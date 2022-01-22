@@ -9,7 +9,7 @@ services:
     container_name: smb-search-indexer
     restart: unless-stopped
     environment:
-      - hasura-secret=jcG8QBI5g8OX
+      - HASURA_SECRET=jcG8QBI5g8OX
     ports:
       - 8085:8085
     external_links:

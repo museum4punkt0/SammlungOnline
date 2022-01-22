@@ -19,7 +19,7 @@ public class GeographicalReferenceNormalizerTest {
     public void testMappingSingle() {
         // given
         ObjectData obj = createObject(
-                Triple.of("ObjGeograficGrp.DetailTxt", "[123].ObjGeograficGrp.item[1].DetailTxt", "details"),
+                Triple.of("ObjGeograficGrp.DetailsTxt", "[123].ObjGeograficGrp.item[1].DetailsTxt", "details"),
                 Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.item[1].TypeVoc", "type"),
                 Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[1].PlaceVoc", "place"),
                 Triple.of("ObjGeograficGrp.GeopolVoc", "[123].ObjGeograficGrp.item[1].GeopolVoc", "geopol")
@@ -34,19 +34,44 @@ public class GeographicalReferenceNormalizerTest {
     }
 
     @Test
+    public void testSpecificPlaceVovPreferredOverCommonPlaceVoc() {
+        // given
+        ObjectData obj = createObject(
+                Triple.of("ObjGeograficGrp.PlaceILSVoc", "[123].ObjGeograficGrp.item[1].PlaceILSVoc", "ISL"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[1].PlaceVoc", "PlaceVoc"),
+                Triple.of("ObjGeograficGrp.PlaceEgyptVoc", "[123].ObjGeograficGrp.item[2].PlaceEgyptVoc", "ÄMP"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[2].PlaceVoc", "PlaceVoc"),
+                Triple.of("ObjGeograficGrp.PlaceAntiqueVoc", "[123].ObjGeograficGrp.item[3].PlaceAntiqueVoc", "ANT"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[3].PlaceVoc", "PlaceVoc"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[4].PlaceVoc", "Default")
+        );
+        // when
+        GeographicalReferenceNormalizer normalizer = new GeographicalReferenceNormalizer();
+        String[] value = normalizer.resolveAttributeValue(obj);
+        // then
+        assertThat(value).isNotNull();
+        assertThat(value).containsExactlyInAnyOrder(
+                "ISL", // item 1
+                "ÄMP", // item 2
+                "ANT", // item 3
+                "Default" // item 4
+        );
+    }
+
+    @Test
     public void testMappingMultiple() {
         // given
         ObjectData obj = createObject(
                 // alle 4
-                Triple.of("ObjGeograficGrp.DetailTxt", "[123].ObjGeograficGrp.item[1].DetailTxt", "Seestr"),
+                Triple.of("ObjGeograficGrp.DetailsTxt", "[123].ObjGeograficGrp.item[1].DetailsTxt", "Seestr"),
                 Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[1].PlaceVoc", "Berlin"),
                 Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.item[1].TypeVoc", "Wohnsitz"),
                 Triple.of("ObjGeograficGrp.GeopolVoc", "[123].ObjGeograficGrp.item[1].GeopolVoc", "nebenan"),
                 // nur details
-                Triple.of("ObjGeograficGrp.DetailTxt", "[123].ObjGeograficGrp.item[2].DetailTxt", "Hönow"),
+                Triple.of("ObjGeograficGrp.DetailsTxt", "[123].ObjGeograficGrp.item[2].DetailsTxt", "Hönow"),
                 // 3, kein geopol
                 Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.item[3].TypeVoc", "Region"),
-                Triple.of("ObjGeograficGrp.DetailTxt", "[123].ObjGeograficGrp.item[3].DetailTxt", "Ostküste"),
+                Triple.of("ObjGeograficGrp.DetailsTxt", "[123].ObjGeograficGrp.item[3].DetailsTxt", "Ostküste"),
                 Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[3].PlaceVoc", "Mexico"),
                 // nur geopol - soll ignoriert werden
                 Triple.of("ObjGeograficGrp.GeopolVoc", "[123].ObjGeograficGrp.item[4].GeopolVoc", "egal"),
@@ -54,12 +79,12 @@ public class GeographicalReferenceNormalizerTest {
                 Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.item[5].TypeVoc", "egal"),
                 // type und place
                 Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.item[6].TypeVoc", "Land"),
-                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[6].PlaceVoc", "China"),
+                Triple.of("ObjGeograficGrp.PlaceILSVoc", "[123].ObjGeograficGrp.item[6].PlaceILSVoc", "China"),
                 // type und details
                 Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.item[7].TypeVoc", "Stadt"),
-                Triple.of("ObjGeograficGrp.DetailTxt", "[123].ObjGeograficGrp.item[7].DetailTxt", "Frankfurt"),
+                Triple.of("ObjGeograficGrp.DetailsTxt", "[123].ObjGeograficGrp.item[7].DetailsTxt", "Frankfurt"),
                 // place und geopol
-                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.item[8].PlaceVoc", "London"),
+                Triple.of("ObjGeograficGrp.PlaceEgyptVoc", "[123].ObjGeograficGrp.item[8].PlaceEgyptVoc", "London"),
                 Triple.of("ObjGeograficGrp.GeopolVoc", "[123].ObjGeograficGrp.item[8].GeopolVoc", "Stadt")
         );
         // when
@@ -73,7 +98,7 @@ public class GeographicalReferenceNormalizerTest {
                 "Region: Mexico, Ostküste", // 3
                 "Land: China", // 6
                 "Stadt: Frankfurt",  // 7
-                "London (Stadt)" // u
+                "London (Stadt)" // 8
         );
     }
 }

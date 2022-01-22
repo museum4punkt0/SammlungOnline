@@ -44,8 +44,8 @@ public class DateRangeNormalizerTest {
         // then
         assertThat(value).isNotNull();
         //
-        assertThat(value.getGte()).isEqualTo(datetimeMillis("1805-01-01 AD 00:00:00.000"));
-        assertThat(value.getLte()).isEqualTo(datetimeMillis("2022-12-31 AD 23:59:59.999"));
+        assertThat(value.getGte()).isEqualTo(datetimeSeconds("1805-01-01 AD 00:00:00.000"));
+        assertThat(value.getLte()).isEqualTo(datetimeSeconds("2022-12-31 AD 23:59:59.999"));
     }
 
     @Test
@@ -65,8 +65,8 @@ public class DateRangeNormalizerTest {
         value = normalizer.resolveAttributeValue(obj);
         // then
         assertThat(value).isNotNull();
-        assertThat(value.getGte()).isEqualTo(datetimeMillis("0700-01-01 BC 00:00:00.000"));
-        assertThat(value.getLte()).isEqualTo(datetimeMillis("0680-12-31 BC 23:59:59.999"));
+        assertThat(value.getGte()).isEqualTo(datetimeSeconds("0700-01-01 BC 00:00:00.000"));
+        assertThat(value.getLte()).isEqualTo(datetimeSeconds("0680-12-31 BC 23:59:59.999"));
 
         // -- check different months --
 
@@ -79,8 +79,8 @@ public class DateRangeNormalizerTest {
         value = normalizer.resolveAttributeValue(obj);
         // then
         assertThat(value).isNotNull();
-        assertThat(value.getGte()).isEqualTo(datetimeMillis("0216-03-15 BC 00:00:00.000"));
-        assertThat(value.getLte()).isEqualTo(datetimeMillis("0216-04-13 BC 23:59:59.999"));
+        assertThat(value.getGte()).isEqualTo(datetimeSeconds("0216-03-15 BC 00:00:00.000"));
+        assertThat(value.getLte()).isEqualTo(datetimeSeconds("0216-04-13 BC 23:59:59.999"));
 
         // -- check different days --
 
@@ -93,8 +93,8 @@ public class DateRangeNormalizerTest {
         value = normalizer.resolveAttributeValue(obj);
         // then
         assertThat(value).isNotNull();
-        assertThat(value.getGte()).isEqualTo(datetimeMillis("0232-04-13 BC 00:00:00.000"));
-        assertThat(value.getLte()).isEqualTo(datetimeMillis("0232-04-18 BC 23:59:59.999"));
+        assertThat(value.getGte()).isEqualTo(datetimeSeconds("0232-04-13 BC 00:00:00.000"));
+        assertThat(value.getLte()).isEqualTo(datetimeSeconds("0232-04-18 BC 23:59:59.999"));
     }
 
     @Test
@@ -109,8 +109,8 @@ public class DateRangeNormalizerTest {
         DateRange value = normalizer.resolveAttributeValue(obj);
         // then
         assertThat(value).isNotNull();
-        assertThat(value.getGte()).isEqualTo(datetimeMillis("0010-01-01 BC 00:00:00.000"));
-        assertThat(value.getLte()).isEqualTo(datetimeMillis("0020-12-31 AD 23:59:59.999"));
+        assertThat(value.getGte()).isEqualTo(datetimeSeconds("0010-01-01 BC 00:00:00.000"));
+        assertThat(value.getLte()).isEqualTo(datetimeSeconds("0020-12-31 AD 23:59:59.999"));
     }
 
     @Test
@@ -143,8 +143,8 @@ public class DateRangeNormalizerTest {
         value = normalizer.resolveAttributeValue(obj);
         // then
         assertThat(value).isNotNull();
-        assertThat(value.getGte()).isEqualTo(datetimeMillis("1888-01-01 AD 00:00:00.000"));
-        assertThat(value.getLte()).isEqualTo(datetimeMillis("1890-12-31 AD 23:59:59.999"));
+        assertThat(value.getGte()).isEqualTo(datetimeSeconds("1888-01-01 AD 00:00:00.000"));
+        assertThat(value.getLte()).isEqualTo(datetimeSeconds("1890-12-31 AD 23:59:59.999"));
     }
 
     @Test
@@ -189,73 +189,73 @@ public class DateRangeNormalizerTest {
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("1234");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("1234-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("1234-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("1234-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("1234-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("1234/5678\t");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("1234-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("5678-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("1234-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("5678-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("\n956 - 1012");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("0956-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("1012-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("0956-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("1012-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("zwischen 800 und 850");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("0800-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("0850-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("0800-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("0850-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("\twohl um 12");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isGreaterThanOrEqualTo(datetimeMillis("0000-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isLessThanOrEqualTo(datetimeMillis("0022-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isGreaterThanOrEqualTo(datetimeSeconds("0000-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isLessThanOrEqualTo(datetimeSeconds("0022-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("1.4.2001 12:03:55.672");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("2001-04-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("2001-04-01 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("2001-04-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("2001-04-01 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("wohl um 2010/20");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("2010-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("2020-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("2010-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("2020-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("1843/44");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("1843-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("1844-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("1843-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("1844-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("1901/2");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("1901-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("1902-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("1901-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("1902-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("19. Jhd");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("1800-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("1899-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("1800-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("1899-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("Volksrepublik China, um 1958");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isGreaterThanOrEqualTo(datetimeMillis("1950-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isLessThanOrEqualTo(datetimeMillis("1968-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isGreaterThanOrEqualTo(datetimeSeconds("1950-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isLessThanOrEqualTo(datetimeSeconds("1968-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("12. - 13. Jahrhundert");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("1100-01-01 AD 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("1299-12-31 AD 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("1100-01-01 AD 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("1299-12-31 AD 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("2800-2700 vor Christus, Djemdet-Nasr-zeitlich");
         assertThat(dateRange).isNotNull();
-        assertThat(dateRange.getGte()).isEqualTo(datetimeMillis("2800-01-01 BC 00:00:00.000"));
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("2700-12-31 BC 23:59:59.999"));
+        assertThat(dateRange.getGte()).isEqualTo(datetimeSeconds("2800-01-01 BC 00:00:00.000"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("2700-12-31 BC 23:59:59.999"));
 
         dateRange = DateRangeNormalizer.tryGuessDateRange("\twohl vor 300 v.Chr.");
         assertThat(dateRange).isNotNull();
         assertThat(dateRange.getGte()).isNull();
-        assertThat(dateRange.getLte()).isEqualTo(datetimeMillis("0301-12-31 BC 23:59:59.999"));
+        assertThat(dateRange.getLte()).isEqualTo(datetimeSeconds("0301-12-31 BC 23:59:59.999"));
     }
 
     @Test
@@ -271,11 +271,12 @@ public class DateRangeNormalizerTest {
         DateRange value = normalizer.resolveAttributeValue(obj);
         // then
         assertThat(value).isNotNull();
-        assertThat(value.getGte()).isEqualTo(datetimeMillis("1992-02-29 AD 00:00:00.000"));
-        assertThat(value.getLte()).isEqualTo(datetimeMillis("1992-03-31 AD 23:59:59.999"));
+        assertThat(value.getGte()).isEqualTo(datetimeSeconds("1992-02-29 AD 00:00:00.000"));
+        assertThat(value.getLte()).isEqualTo(datetimeSeconds("1992-03-31 AD 23:59:59.999"));
     }
 
-    private long datetimeMillis(final String str) throws Exception {
-        return FastDateFormat.getInstance("yyyy-MM-dd G HH:mm:ss.SSS", Locale.ENGLISH).parse(str).getTime();
+    private long datetimeSeconds(final String str) throws Exception {
+        long millis = FastDateFormat.getInstance("yyyy-MM-dd G HH:mm:ss.SSS", Locale.ENGLISH).parse(str).getTime();
+        return millis/1000;
     }
 }
