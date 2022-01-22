@@ -39,7 +39,16 @@
         "imprint": "Impressum",
         "privacy": "Datenschutz",
         "accessibility": "Barrierefreiheit",
-        "contact": "Kontakt"
+        "contact": "Kontakt",
+        "contactSection":{
+          "title":"Kontakt",
+          "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
+          "link":{
+            "href":"mailto:smb-digital@smb.spk-berlin.de",
+            "text": "Fragen Sie uns"
+          }
+        }
     },
     "go to collection": "Weiter, um die Sammlung zu erforschen",
     "go to detail": "Weiter zu Details über {{title}}",
@@ -62,7 +71,7 @@
     "object attribute involvedParties": "Beteiligte",
     "object attribute location": "Standort",
     "object attribute materialAndTechnique": "Material und Technik",
-    "object attribute provenance": "Provenienz und Erwerbung",
+    "object attribute provenance": "Provenienz",
     "object attribute technicalTerm": "Sachbegriff",
     "object attribute titles": "Titel",
     "play button": "Abspielen",
@@ -106,17 +115,17 @@
             "compilation": "Bestand",
             "notExhibited": "Nicht ausgestellt",
             "attributes": {
-                "dimensionsAndWeight": "Abmessungen und Gewicht",
+                "dimensionsAndWeight": "Abmessungen",
                 "description": "Objektbeschreibung",
                 "noData": "Keine Daten vorhanden.",
                 "geographicalReferences": "Geografische Bezüge",
-                "involvedParties": "Beteiligte",
+                "involvedParties": " ",
                 "identNumber": "Ident. Nr.",
                 "datingFromTo": "Datierung von/bis",
                 "dating": "Datierung",
                 "location": "Standort",
                 "materialAndTechnique": "Material und Technik",
-                "provenance": "Provenienz und Erwerbung",
+                "provenance": "Provenienz",
                 "technicalTerm": "Sachbegriff",
                 "literature": "Literatur",
                 "signatures": "Signaturen und Inschriften",

@@ -1,0 +1,2280 @@
+# This file was generated based on "schema.json". Do not edit manually.
+
+schema {
+  query: query_root
+  subscription: subscription_root
+}
+
+"query root"
+type query_root {
+  "fetch data from the table: \"smb.attachments\""
+  smb_attachments(
+    "distinct select on columns"
+    distinct_on: [smb_attachments_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attachments_order_by!]
+    "filter the rows returned"
+    where: smb_attachments_bool_exp
+  ): [smb_attachments!]!
+  "fetch data from the table: \"smb.attachments\" using primary key columns"
+  smb_attachments_by_pk(id: bigint!): smb_attachments
+  "fetch data from the table: \"smb.attribute_translations\""
+  smb_attribute_translations(
+    "distinct select on columns"
+    distinct_on: [smb_attribute_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attribute_translations_order_by!]
+    "filter the rows returned"
+    where: smb_attribute_translations_bool_exp
+  ): [smb_attribute_translations!]!
+  "fetch data from the table: \"smb.attribute_translations\" using primary key columns"
+  smb_attribute_translations_by_pk(id: bigint!): smb_attribute_translations
+  "fetch data from the table: \"smb.attributes\""
+  smb_attributes(
+    "distinct select on columns"
+    distinct_on: [smb_attributes_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attributes_order_by!]
+    "filter the rows returned"
+    where: smb_attributes_bool_exp
+  ): [smb_attributes!]!
+  "fetch data from the table: \"smb.attributes\" using primary key columns"
+  smb_attributes_by_pk(key: String!): smb_attributes
+  "execute function \"smb.autocomplete_search\" which returns \"smb.search_suggestions\""
+  smb_autocomplete_search(
+    "input parameters for function \"smb.autocomplete_search\""
+    args: smb_autocomplete_search_args!
+    "distinct select on columns"
+    distinct_on: [smb_search_suggestions_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_search_suggestions_order_by!]
+    "filter the rows returned"
+    where: smb_search_suggestions_bool_exp
+  ): [smb_search_suggestions!]!
+  "execute function \"smb.filter_objects\" which returns \"smb.objects\""
+  smb_filter_objects(
+    "input parameters for function \"smb.filter_objects\""
+    args: smb_filter_objects_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "execute function \"smb.filter_objects\" and query aggregates on result of table type \"smb.objects\""
+  smb_filter_objects_aggregate(
+    "input parameters for function \"smb.filter_objects\""
+    args: smb_filter_objects_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "fetch data from the table: \"smb.header\""
+  smb_header(
+    "distinct select on columns"
+    distinct_on: [smb_header_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_header_order_by!]
+    "filter the rows returned"
+    where: smb_header_bool_exp
+  ): [smb_header!]!
+  "fetch data from the table: \"smb.header\" using primary key columns"
+  smb_header_by_pk(id: bigint!): smb_header
+  "fetch data from the table: \"smb.header_translations\""
+  smb_header_translations(
+    "distinct select on columns"
+    distinct_on: [smb_header_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_header_translations_order_by!]
+    "filter the rows returned"
+    where: smb_header_translations_bool_exp
+  ): [smb_header_translations!]!
+  "fetch data from the table: \"smb.header_translations\" using primary key columns"
+  smb_header_translations_by_pk(id: bigint!): smb_header_translations
+  "fetch data from the table: \"smb.highlights\""
+  smb_highlights(
+    "distinct select on columns"
+    distinct_on: [smb_highlights_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_highlights_order_by!]
+    "filter the rows returned"
+    where: smb_highlights_bool_exp
+  ): [smb_highlights!]!
+  "fetch aggregated fields from the table: \"smb.highlights\""
+  smb_highlights_aggregate(
+    "distinct select on columns"
+    distinct_on: [smb_highlights_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_highlights_order_by!]
+    "filter the rows returned"
+    where: smb_highlights_bool_exp
+  ): smb_highlights_aggregate!
+  "fetch data from the table: \"smb.highlights\" using primary key columns"
+  smb_highlights_by_pk(id: bigint!): smb_highlights
+  "fetch data from the table: \"smb.intro_slide_translations\""
+  smb_intro_slide_translations(
+    "distinct select on columns"
+    distinct_on: [smb_intro_slide_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_slide_translations_order_by!]
+    "filter the rows returned"
+    where: smb_intro_slide_translations_bool_exp
+  ): [smb_intro_slide_translations!]!
+  "fetch data from the table: \"smb.intro_slide_translations\" using primary key columns"
+  smb_intro_slide_translations_by_pk(id: bigint!): smb_intro_slide_translations
+  "fetch data from the table: \"smb.intro_slides\""
+  smb_intro_slides(
+    "distinct select on columns"
+    distinct_on: [smb_intro_slides_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_slides_order_by!]
+    "filter the rows returned"
+    where: smb_intro_slides_bool_exp
+  ): [smb_intro_slides!]!
+  "fetch data from the table: \"smb.intro_slides\" using primary key columns"
+  smb_intro_slides_by_pk(id: bigint!): smb_intro_slides
+  "fetch data from the table: \"smb.intro_text_module_translations\""
+  smb_intro_text_module_translations(
+    "distinct select on columns"
+    distinct_on: [smb_intro_text_module_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_text_module_translations_order_by!]
+    "filter the rows returned"
+    where: smb_intro_text_module_translations_bool_exp
+  ): [smb_intro_text_module_translations!]!
+  "fetch data from the table: \"smb.intro_text_module_translations\" using primary key columns"
+  smb_intro_text_module_translations_by_pk(
+    id: bigint!
+  ): smb_intro_text_module_translations
+  "fetch data from the table: \"smb.intro_text_module_type\""
+  smb_intro_text_module_type(
+    "distinct select on columns"
+    distinct_on: [smb_intro_text_module_type_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_text_module_type_order_by!]
+    "filter the rows returned"
+    where: smb_intro_text_module_type_bool_exp
+  ): [smb_intro_text_module_type!]!
+  "fetch data from the table: \"smb.intro_text_module_type\" using primary key columns"
+  smb_intro_text_module_type_by_pk(value: String!): smb_intro_text_module_type
+  "fetch data from the table: \"smb.intro_text_modules\""
+  smb_intro_text_modules(
+    "distinct select on columns"
+    distinct_on: [smb_intro_text_modules_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_text_modules_order_by!]
+    "filter the rows returned"
+    where: smb_intro_text_modules_bool_exp
+  ): [smb_intro_text_modules!]!
+  "fetch data from the table: \"smb.intro_text_modules\" using primary key columns"
+  smb_intro_text_modules_by_pk(id: bigint!): smb_intro_text_modules
+  "fetch data from the table: \"smb.language\""
+  smb_language(
+    "distinct select on columns"
+    distinct_on: [smb_language_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_language_order_by!]
+    "filter the rows returned"
+    where: smb_language_bool_exp
+  ): [smb_language!]!
+  "fetch data from the table: \"smb.language\" using primary key columns"
+  smb_language_by_pk(id: bigint!): smb_language
+  "fetch data from the table: \"smb.licenses\""
+  smb_licenses(
+    "distinct select on columns"
+    distinct_on: [smb_licenses_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_licenses_order_by!]
+    "filter the rows returned"
+    where: smb_licenses_bool_exp
+  ): [smb_licenses!]!
+  "fetch data from the table: \"smb.licenses\" using primary key columns"
+  smb_licenses_by_pk(id: bigint!): smb_licenses
+  "fetch data from the table: \"smb.licenses_translation\""
+  smb_licenses_translation(
+    "distinct select on columns"
+    distinct_on: [smb_licenses_translation_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_licenses_translation_order_by!]
+    "filter the rows returned"
+    where: smb_licenses_translation_bool_exp
+  ): [smb_licenses_translation!]!
+  "fetch data from the table: \"smb.licenses_translation\" using primary key columns"
+  smb_licenses_translation_by_pk(id: bigint!): smb_licenses_translation
+  "fetch data from the table: \"smb.objects\""
+  smb_objects(
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "fetch aggregated fields from the table: \"smb.objects\""
+  smb_objects_aggregate(
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "fetch data from the table: \"smb.objects\" using primary key columns"
+  smb_objects_by_pk(id: bigint!): smb_objects
+  "execute function \"smb.search_object\" which returns \"smb.objects\""
+  smb_search_object(
+    "input parameters for function \"smb.search_object\""
+    args: smb_search_object_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "execute function \"smb.search_object\" and query aggregates on result of table type \"smb.objects\""
+  smb_search_object_aggregate(
+    "input parameters for function \"smb.search_object\""
+    args: smb_search_object_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "execute function \"smb.search_object_aggregate\" and query aggregates on result of table type \"smb.objects\""
+  smb_search_object_aggregate_aggregate(
+    "input parameters for function \"smb.search_object_aggregate\""
+    args: smb_search_object_aggregate_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "execute function \"smb.search_object_combined\" which returns \"smb.objects\""
+  smb_search_object_combined(
+    "input parameters for function \"smb.search_object_combined\""
+    args: smb_search_object_combined_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "execute function \"smb.search_object_combined\" and query aggregates on result of table type \"smb.objects\""
+  smb_search_object_combined_aggregate(
+    "input parameters for function \"smb.search_object_combined\""
+    args: smb_search_object_combined_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "fetch data from the table: \"smb.search_suggestions\""
+  smb_search_suggestions(
+    "distinct select on columns"
+    distinct_on: [smb_search_suggestions_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_search_suggestions_order_by!]
+    "filter the rows returned"
+    where: smb_search_suggestions_bool_exp
+  ): [smb_search_suggestions!]!
+  "fetch data from the table: \"smb.topics\""
+  smb_topics(
+    "distinct select on columns"
+    distinct_on: [smb_topics_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_order_by!]
+    "filter the rows returned"
+    where: smb_topics_bool_exp
+  ): [smb_topics!]!
+  "fetch data from the table: \"smb.topics\" using primary key columns"
+  smb_topics_by_pk(id: bigint!): smb_topics
+  "fetch data from the table: \"smb.topics_objects\""
+  smb_topics_objects(
+    "distinct select on columns"
+    distinct_on: [smb_topics_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_objects_order_by!]
+    "filter the rows returned"
+    where: smb_topics_objects_bool_exp
+  ): [smb_topics_objects!]!
+  "fetch data from the table: \"smb.topics_objects\" using primary key columns"
+  smb_topics_objects_by_pk(id: bigint!): smb_topics_objects
+  "fetch data from the table: \"smb.topics_translations\""
+  smb_topics_translations(
+    "distinct select on columns"
+    distinct_on: [smb_topics_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_translations_order_by!]
+    "filter the rows returned"
+    where: smb_topics_translations_bool_exp
+  ): [smb_topics_translations!]!
+  "fetch data from the table: \"smb.topics_translations\" using primary key columns"
+  smb_topics_translations_by_pk(id: bigint!): smb_topics_translations
+  "fetch data from the table: \"smb.user\""
+  smb_user(
+    "distinct select on columns"
+    distinct_on: [smb_user_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_user_order_by!]
+    "filter the rows returned"
+    where: smb_user_bool_exp
+  ): [smb_user!]!
+  "fetch data from the table: \"smb.user\" using primary key columns"
+  smb_user_by_pk(id: uuid!): smb_user
+}
+
+"columns and relationships of \"smb.attachments\""
+type smb_attachments {
+  attachment: String!
+  "An object relationship"
+  object: smb_objects!
+  primary: Boolean
+}
+
+"columns and relationships of \"smb.attribute_translations\""
+type smb_attribute_translations {
+  "An object relationship"
+  attribute: smb_attributes
+  attribute_key: String
+  "An object relationship"
+  language: smb_language!
+  "An object relationship"
+  object: smb_objects!
+  value: String
+}
+
+"columns and relationships of \"smb.attributes\""
+type smb_attributes {
+  "An array relationship"
+  attribute_translations(
+    "distinct select on columns"
+    distinct_on: [smb_attribute_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attribute_translations_order_by!]
+    "filter the rows returned"
+    where: smb_attribute_translations_bool_exp
+  ): [smb_attribute_translations!]!
+  datatype: String!
+  key: String!
+  relevant: Boolean
+}
+
+"columns and relationships of \"smb.header\""
+type smb_header {
+  color: String!
+  drawer_color: String!
+  "An array relationship"
+  header_translations(
+    "distinct select on columns"
+    distinct_on: [smb_header_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_header_translations_order_by!]
+    "filter the rows returned"
+    where: smb_header_translations_bool_exp
+  ): [smb_header_translations!]!
+  href: String
+  id: bigint!
+}
+
+"columns and relationships of \"smb.header_translations\""
+type smb_header_translations {
+  header_id: bigint!
+  id: bigint!
+  "An object relationship"
+  language: smb_language!
+  language_id: bigint!
+  subtitle: String!
+  title: String!
+}
+
+"columns and relationships of \"smb.highlights\""
+type smb_highlights {
+  "An object relationship"
+  object: smb_objects!
+  object_id: bigint!
+}
+
+"aggregated selection of \"smb.highlights\""
+type smb_highlights_aggregate {
+  aggregate: smb_highlights_aggregate_fields
+  nodes: [smb_highlights!]!
+}
+
+"aggregate fields of \"smb.highlights\""
+type smb_highlights_aggregate_fields {
+  avg: smb_highlights_avg_fields
+  count(columns: [smb_highlights_select_column!], distinct: Boolean): Int
+  max: smb_highlights_max_fields
+  min: smb_highlights_min_fields
+  stddev: smb_highlights_stddev_fields
+  stddev_pop: smb_highlights_stddev_pop_fields
+  stddev_samp: smb_highlights_stddev_samp_fields
+  sum: smb_highlights_sum_fields
+  var_pop: smb_highlights_var_pop_fields
+  var_samp: smb_highlights_var_samp_fields
+  variance: smb_highlights_variance_fields
+}
+
+"aggregate avg on columns"
+type smb_highlights_avg_fields {
+  object_id: Float
+}
+
+"aggregate max on columns"
+type smb_highlights_max_fields {
+  object_id: bigint
+}
+
+"aggregate min on columns"
+type smb_highlights_min_fields {
+  object_id: bigint
+}
+
+"aggregate stddev on columns"
+type smb_highlights_stddev_fields {
+  object_id: Float
+}
+
+"aggregate stddev_pop on columns"
+type smb_highlights_stddev_pop_fields {
+  object_id: Float
+}
+
+"aggregate stddev_samp on columns"
+type smb_highlights_stddev_samp_fields {
+  object_id: Float
+}
+
+"aggregate sum on columns"
+type smb_highlights_sum_fields {
+  object_id: bigint
+}
+
+"aggregate var_pop on columns"
+type smb_highlights_var_pop_fields {
+  object_id: Float
+}
+
+"aggregate var_samp on columns"
+type smb_highlights_var_samp_fields {
+  object_id: Float
+}
+
+"aggregate variance on columns"
+type smb_highlights_variance_fields {
+  object_id: Float
+}
+
+"columns and relationships of \"smb.intro_slide_translations\""
+type smb_intro_slide_translations {
+  "An object relationship"
+  language: smb_language!
+  title: String!
+}
+
+"columns and relationships of \"smb.intro_slides\""
+type smb_intro_slides {
+  image: String!
+  "An array relationship"
+  intro_slide_translations(
+    "distinct select on columns"
+    distinct_on: [smb_intro_slide_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_slide_translations_order_by!]
+    "filter the rows returned"
+    where: smb_intro_slide_translations_bool_exp
+  ): [smb_intro_slide_translations!]!
+}
+
+"columns and relationships of \"smb.intro_text_module_translations\""
+type smb_intro_text_module_translations {
+  content: String!
+  "An object relationship"
+  language: smb_language!
+  link_caption: String!
+  subtitle: String!
+  title: String!
+}
+
+"columns and relationships of \"smb.intro_text_module_type\""
+type smb_intro_text_module_type {
+  value: String!
+}
+
+"columns and relationships of \"smb.intro_text_modules\""
+type smb_intro_text_modules {
+  "An array relationship"
+  intro_text_module_translations(
+    "distinct select on columns"
+    distinct_on: [smb_intro_text_module_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_text_module_translations_order_by!]
+    "filter the rows returned"
+    where: smb_intro_text_module_translations_bool_exp
+  ): [smb_intro_text_module_translations!]!
+  "An object relationship"
+  intro_text_module_type: smb_intro_text_module_type!
+  link: String
+  module_background_color: String!
+  text_area_color: String!
+  text_color: String!
+  title_color: String!
+}
+
+"columns and relationships of \"smb.language\""
+type smb_language {
+  "An array relationship"
+  attribute_translations(
+    "distinct select on columns"
+    distinct_on: [smb_attribute_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attribute_translations_order_by!]
+    "filter the rows returned"
+    where: smb_attribute_translations_bool_exp
+  ): [smb_attribute_translations!]!
+  lang: String!
+}
+
+"columns and relationships of \"smb.licenses\""
+type smb_licenses {
+  id: bigint!
+  key: String!
+  "An array relationship"
+  licenses_translations(
+    "distinct select on columns"
+    distinct_on: [smb_licenses_translation_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_licenses_translation_order_by!]
+    "filter the rows returned"
+    where: smb_licenses_translation_bool_exp
+  ): [smb_licenses_translation!]!
+}
+
+"columns and relationships of \"smb.licenses_translation\""
+type smb_licenses_translation {
+  content: String!
+  id: bigint!
+  "An object relationship"
+  language: smb_language!
+  license_id: bigint!
+}
+
+"""
+objects of smb
+
+
+columns and relationships of "smb.objects"
+"""
+type smb_objects {
+  "An array relationship"
+  attachments(
+    "distinct select on columns"
+    distinct_on: [smb_attachments_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attachments_order_by!]
+    "filter the rows returned"
+    where: smb_attachments_bool_exp
+  ): [smb_attachments!]!
+  "An array relationship"
+  attribute_translations(
+    "distinct select on columns"
+    distinct_on: [smb_attribute_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attribute_translations_order_by!]
+    "filter the rows returned"
+    where: smb_attribute_translations_bool_exp
+  ): [smb_attribute_translations!]!
+  created_at: timestamptz!
+  "An array relationship"
+  highlights(
+    "distinct select on columns"
+    distinct_on: [smb_highlights_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_highlights_order_by!]
+    "filter the rows returned"
+    where: smb_highlights_bool_exp
+  ): [smb_highlights!]!
+  "An aggregated array relationship"
+  highlights_aggregate(
+    "distinct select on columns"
+    distinct_on: [smb_highlights_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_highlights_order_by!]
+    "filter the rows returned"
+    where: smb_highlights_bool_exp
+  ): smb_highlights_aggregate!
+  id: bigint!
+  updated_at: timestamptz!
+}
+
+"aggregated selection of \"smb.objects\""
+type smb_objects_aggregate {
+  aggregate: smb_objects_aggregate_fields
+  nodes: [smb_objects!]!
+}
+
+"aggregate fields of \"smb.objects\""
+type smb_objects_aggregate_fields {
+  avg: smb_objects_avg_fields
+  count(columns: [smb_objects_select_column!], distinct: Boolean): Int
+  max: smb_objects_max_fields
+  min: smb_objects_min_fields
+  stddev: smb_objects_stddev_fields
+  stddev_pop: smb_objects_stddev_pop_fields
+  stddev_samp: smb_objects_stddev_samp_fields
+  sum: smb_objects_sum_fields
+  var_pop: smb_objects_var_pop_fields
+  var_samp: smb_objects_var_samp_fields
+  variance: smb_objects_variance_fields
+}
+
+"aggregate avg on columns"
+type smb_objects_avg_fields {
+  id: Float
+}
+
+"aggregate max on columns"
+type smb_objects_max_fields {
+  created_at: timestamptz
+  id: bigint
+  updated_at: timestamptz
+}
+
+"aggregate min on columns"
+type smb_objects_min_fields {
+  created_at: timestamptz
+  id: bigint
+  updated_at: timestamptz
+}
+
+"aggregate stddev on columns"
+type smb_objects_stddev_fields {
+  id: Float
+}
+
+"aggregate stddev_pop on columns"
+type smb_objects_stddev_pop_fields {
+  id: Float
+}
+
+"aggregate stddev_samp on columns"
+type smb_objects_stddev_samp_fields {
+  id: Float
+}
+
+"aggregate sum on columns"
+type smb_objects_sum_fields {
+  id: bigint
+}
+
+"aggregate var_pop on columns"
+type smb_objects_var_pop_fields {
+  id: Float
+}
+
+"aggregate var_samp on columns"
+type smb_objects_var_samp_fields {
+  id: Float
+}
+
+"aggregate variance on columns"
+type smb_objects_variance_fields {
+  id: Float
+}
+
+"columns and relationships of \"smb.search_suggestions\""
+type smb_search_suggestions {
+  counter: bigint
+  value: String
+}
+
+"columns and relationships of \"smb.topics\""
+type smb_topics {
+  has_slide: Boolean!
+  id: bigint!
+  "An array relationship"
+  objects(
+    "distinct select on columns"
+    distinct_on: [smb_topics_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_objects_order_by!]
+    "filter the rows returned"
+    where: smb_topics_objects_bool_exp
+  ): [smb_topics_objects!]!
+  preview_image: String!
+  "An array relationship"
+  topics_translations(
+    "distinct select on columns"
+    distinct_on: [smb_topics_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_translations_order_by!]
+    "filter the rows returned"
+    where: smb_topics_translations_bool_exp
+  ): [smb_topics_translations!]!
+}
+
+"columns and relationships of \"smb.topics_objects\""
+type smb_topics_objects {
+  created_at: timestamptz!
+  id: bigint!
+  "An object relationship"
+  object: smb_objects!
+  objects_id: bigint!
+  "An object relationship"
+  topic: smb_topics!
+  topics_id: bigint!
+  updated_at: timestamptz!
+}
+
+"columns and relationships of \"smb.topics_translations\""
+type smb_topics_translations {
+  description: String
+  id: bigint!
+  "An object relationship"
+  language: smb_language!
+  title: String!
+}
+
+"columns and relationships of \"smb.user\""
+type smb_user {
+  email: String!
+}
+
+"subscription root"
+type subscription_root {
+  "fetch data from the table: \"smb.attachments\""
+  smb_attachments(
+    "distinct select on columns"
+    distinct_on: [smb_attachments_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attachments_order_by!]
+    "filter the rows returned"
+    where: smb_attachments_bool_exp
+  ): [smb_attachments!]!
+  "fetch data from the table: \"smb.attachments\" using primary key columns"
+  smb_attachments_by_pk(id: bigint!): smb_attachments
+  "fetch data from the table: \"smb.attribute_translations\""
+  smb_attribute_translations(
+    "distinct select on columns"
+    distinct_on: [smb_attribute_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attribute_translations_order_by!]
+    "filter the rows returned"
+    where: smb_attribute_translations_bool_exp
+  ): [smb_attribute_translations!]!
+  "fetch data from the table: \"smb.attribute_translations\" using primary key columns"
+  smb_attribute_translations_by_pk(id: bigint!): smb_attribute_translations
+  "fetch data from the table: \"smb.attributes\""
+  smb_attributes(
+    "distinct select on columns"
+    distinct_on: [smb_attributes_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_attributes_order_by!]
+    "filter the rows returned"
+    where: smb_attributes_bool_exp
+  ): [smb_attributes!]!
+  "fetch data from the table: \"smb.attributes\" using primary key columns"
+  smb_attributes_by_pk(key: String!): smb_attributes
+  "execute function \"smb.autocomplete_search\" which returns \"smb.search_suggestions\""
+  smb_autocomplete_search(
+    "input parameters for function \"smb.autocomplete_search\""
+    args: smb_autocomplete_search_args!
+    "distinct select on columns"
+    distinct_on: [smb_search_suggestions_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_search_suggestions_order_by!]
+    "filter the rows returned"
+    where: smb_search_suggestions_bool_exp
+  ): [smb_search_suggestions!]!
+  "execute function \"smb.filter_objects\" which returns \"smb.objects\""
+  smb_filter_objects(
+    "input parameters for function \"smb.filter_objects\""
+    args: smb_filter_objects_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "execute function \"smb.filter_objects\" and query aggregates on result of table type \"smb.objects\""
+  smb_filter_objects_aggregate(
+    "input parameters for function \"smb.filter_objects\""
+    args: smb_filter_objects_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "fetch data from the table: \"smb.header\""
+  smb_header(
+    "distinct select on columns"
+    distinct_on: [smb_header_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_header_order_by!]
+    "filter the rows returned"
+    where: smb_header_bool_exp
+  ): [smb_header!]!
+  "fetch data from the table: \"smb.header\" using primary key columns"
+  smb_header_by_pk(id: bigint!): smb_header
+  "fetch data from the table: \"smb.header_translations\""
+  smb_header_translations(
+    "distinct select on columns"
+    distinct_on: [smb_header_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_header_translations_order_by!]
+    "filter the rows returned"
+    where: smb_header_translations_bool_exp
+  ): [smb_header_translations!]!
+  "fetch data from the table: \"smb.header_translations\" using primary key columns"
+  smb_header_translations_by_pk(id: bigint!): smb_header_translations
+  "fetch data from the table: \"smb.highlights\""
+  smb_highlights(
+    "distinct select on columns"
+    distinct_on: [smb_highlights_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_highlights_order_by!]
+    "filter the rows returned"
+    where: smb_highlights_bool_exp
+  ): [smb_highlights!]!
+  "fetch aggregated fields from the table: \"smb.highlights\""
+  smb_highlights_aggregate(
+    "distinct select on columns"
+    distinct_on: [smb_highlights_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_highlights_order_by!]
+    "filter the rows returned"
+    where: smb_highlights_bool_exp
+  ): smb_highlights_aggregate!
+  "fetch data from the table: \"smb.highlights\" using primary key columns"
+  smb_highlights_by_pk(id: bigint!): smb_highlights
+  "fetch data from the table: \"smb.intro_slide_translations\""
+  smb_intro_slide_translations(
+    "distinct select on columns"
+    distinct_on: [smb_intro_slide_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_slide_translations_order_by!]
+    "filter the rows returned"
+    where: smb_intro_slide_translations_bool_exp
+  ): [smb_intro_slide_translations!]!
+  "fetch data from the table: \"smb.intro_slide_translations\" using primary key columns"
+  smb_intro_slide_translations_by_pk(id: bigint!): smb_intro_slide_translations
+  "fetch data from the table: \"smb.intro_slides\""
+  smb_intro_slides(
+    "distinct select on columns"
+    distinct_on: [smb_intro_slides_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_slides_order_by!]
+    "filter the rows returned"
+    where: smb_intro_slides_bool_exp
+  ): [smb_intro_slides!]!
+  "fetch data from the table: \"smb.intro_slides\" using primary key columns"
+  smb_intro_slides_by_pk(id: bigint!): smb_intro_slides
+  "fetch data from the table: \"smb.intro_text_module_translations\""
+  smb_intro_text_module_translations(
+    "distinct select on columns"
+    distinct_on: [smb_intro_text_module_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_text_module_translations_order_by!]
+    "filter the rows returned"
+    where: smb_intro_text_module_translations_bool_exp
+  ): [smb_intro_text_module_translations!]!
+  "fetch data from the table: \"smb.intro_text_module_translations\" using primary key columns"
+  smb_intro_text_module_translations_by_pk(
+    id: bigint!
+  ): smb_intro_text_module_translations
+  "fetch data from the table: \"smb.intro_text_module_type\""
+  smb_intro_text_module_type(
+    "distinct select on columns"
+    distinct_on: [smb_intro_text_module_type_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_text_module_type_order_by!]
+    "filter the rows returned"
+    where: smb_intro_text_module_type_bool_exp
+  ): [smb_intro_text_module_type!]!
+  "fetch data from the table: \"smb.intro_text_module_type\" using primary key columns"
+  smb_intro_text_module_type_by_pk(value: String!): smb_intro_text_module_type
+  "fetch data from the table: \"smb.intro_text_modules\""
+  smb_intro_text_modules(
+    "distinct select on columns"
+    distinct_on: [smb_intro_text_modules_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_intro_text_modules_order_by!]
+    "filter the rows returned"
+    where: smb_intro_text_modules_bool_exp
+  ): [smb_intro_text_modules!]!
+  "fetch data from the table: \"smb.intro_text_modules\" using primary key columns"
+  smb_intro_text_modules_by_pk(id: bigint!): smb_intro_text_modules
+  "fetch data from the table: \"smb.language\""
+  smb_language(
+    "distinct select on columns"
+    distinct_on: [smb_language_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_language_order_by!]
+    "filter the rows returned"
+    where: smb_language_bool_exp
+  ): [smb_language!]!
+  "fetch data from the table: \"smb.language\" using primary key columns"
+  smb_language_by_pk(id: bigint!): smb_language
+  "fetch data from the table: \"smb.licenses\""
+  smb_licenses(
+    "distinct select on columns"
+    distinct_on: [smb_licenses_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_licenses_order_by!]
+    "filter the rows returned"
+    where: smb_licenses_bool_exp
+  ): [smb_licenses!]!
+  "fetch data from the table: \"smb.licenses\" using primary key columns"
+  smb_licenses_by_pk(id: bigint!): smb_licenses
+  "fetch data from the table: \"smb.licenses_translation\""
+  smb_licenses_translation(
+    "distinct select on columns"
+    distinct_on: [smb_licenses_translation_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_licenses_translation_order_by!]
+    "filter the rows returned"
+    where: smb_licenses_translation_bool_exp
+  ): [smb_licenses_translation!]!
+  "fetch data from the table: \"smb.licenses_translation\" using primary key columns"
+  smb_licenses_translation_by_pk(id: bigint!): smb_licenses_translation
+  "fetch data from the table: \"smb.objects\""
+  smb_objects(
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "fetch aggregated fields from the table: \"smb.objects\""
+  smb_objects_aggregate(
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "fetch data from the table: \"smb.objects\" using primary key columns"
+  smb_objects_by_pk(id: bigint!): smb_objects
+  "execute function \"smb.search_object\" which returns \"smb.objects\""
+  smb_search_object(
+    "input parameters for function \"smb.search_object\""
+    args: smb_search_object_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "execute function \"smb.search_object\" and query aggregates on result of table type \"smb.objects\""
+  smb_search_object_aggregate(
+    "input parameters for function \"smb.search_object\""
+    args: smb_search_object_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "execute function \"smb.search_object_aggregate\" and query aggregates on result of table type \"smb.objects\""
+  smb_search_object_aggregate_aggregate(
+    "input parameters for function \"smb.search_object_aggregate\""
+    args: smb_search_object_aggregate_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "execute function \"smb.search_object_combined\" which returns \"smb.objects\""
+  smb_search_object_combined(
+    "input parameters for function \"smb.search_object_combined\""
+    args: smb_search_object_combined_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): [smb_objects!]!
+  "execute function \"smb.search_object_combined\" and query aggregates on result of table type \"smb.objects\""
+  smb_search_object_combined_aggregate(
+    "input parameters for function \"smb.search_object_combined\""
+    args: smb_search_object_combined_args!
+    "distinct select on columns"
+    distinct_on: [smb_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_objects_order_by!]
+    "filter the rows returned"
+    where: smb_objects_bool_exp
+  ): smb_objects_aggregate!
+  "fetch data from the table: \"smb.search_suggestions\""
+  smb_search_suggestions(
+    "distinct select on columns"
+    distinct_on: [smb_search_suggestions_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_search_suggestions_order_by!]
+    "filter the rows returned"
+    where: smb_search_suggestions_bool_exp
+  ): [smb_search_suggestions!]!
+  "fetch data from the table: \"smb.topics\""
+  smb_topics(
+    "distinct select on columns"
+    distinct_on: [smb_topics_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_order_by!]
+    "filter the rows returned"
+    where: smb_topics_bool_exp
+  ): [smb_topics!]!
+  "fetch data from the table: \"smb.topics\" using primary key columns"
+  smb_topics_by_pk(id: bigint!): smb_topics
+  "fetch data from the table: \"smb.topics_objects\""
+  smb_topics_objects(
+    "distinct select on columns"
+    distinct_on: [smb_topics_objects_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_objects_order_by!]
+    "filter the rows returned"
+    where: smb_topics_objects_bool_exp
+  ): [smb_topics_objects!]!
+  "fetch data from the table: \"smb.topics_objects\" using primary key columns"
+  smb_topics_objects_by_pk(id: bigint!): smb_topics_objects
+  "fetch data from the table: \"smb.topics_translations\""
+  smb_topics_translations(
+    "distinct select on columns"
+    distinct_on: [smb_topics_translations_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_topics_translations_order_by!]
+    "filter the rows returned"
+    where: smb_topics_translations_bool_exp
+  ): [smb_topics_translations!]!
+  "fetch data from the table: \"smb.topics_translations\" using primary key columns"
+  smb_topics_translations_by_pk(id: bigint!): smb_topics_translations
+  "fetch data from the table: \"smb.user\""
+  smb_user(
+    "distinct select on columns"
+    distinct_on: [smb_user_select_column!]
+    "limit the number of rows returned"
+    limit: Int
+    "skip the first n rows. Use only with order_by"
+    offset: Int
+    "sort the rows by one or more columns"
+    order_by: [smb_user_order_by!]
+    "filter the rows returned"
+    where: smb_user_bool_exp
+  ): [smb_user!]!
+  "fetch data from the table: \"smb.user\" using primary key columns"
+  smb_user_by_pk(id: uuid!): smb_user
+}
+
+"column ordering options"
+enum order_by {
+  "in the ascending order, nulls last"
+  asc
+  "in the ascending order, nulls first"
+  asc_nulls_first
+  "in the ascending order, nulls last"
+  asc_nulls_last
+  "in the descending order, nulls first"
+  desc
+  "in the descending order, nulls first"
+  desc_nulls_first
+  "in the descending order, nulls last"
+  desc_nulls_last
+}
+
+"select columns of table \"smb.attachments\""
+enum smb_attachments_select_column {
+  "column name"
+  attachment
+  "column name"
+  primary
+}
+
+"select columns of table \"smb.attribute_translations\""
+enum smb_attribute_translations_select_column {
+  "column name"
+  attribute_key
+  "column name"
+  value
+}
+
+"select columns of table \"smb.attributes\""
+enum smb_attributes_select_column {
+  "column name"
+  datatype
+  "column name"
+  key
+  "column name"
+  relevant
+}
+
+"select columns of table \"smb.header\""
+enum smb_header_select_column {
+  "column name"
+  color
+  "column name"
+  drawer_color
+  "column name"
+  href
+  "column name"
+  id
+}
+
+"select columns of table \"smb.header_translations\""
+enum smb_header_translations_select_column {
+  "column name"
+  header_id
+  "column name"
+  id
+  "column name"
+  language_id
+  "column name"
+  subtitle
+  "column name"
+  title
+}
+
+"select columns of table \"smb.highlights\""
+enum smb_highlights_select_column {
+  "column name"
+  object_id
+}
+
+"select columns of table \"smb.intro_slide_translations\""
+enum smb_intro_slide_translations_select_column {
+  "column name"
+  title
+}
+
+"select columns of table \"smb.intro_slides\""
+enum smb_intro_slides_select_column {
+  "column name"
+  image
+}
+
+"select columns of table \"smb.intro_text_module_translations\""
+enum smb_intro_text_module_translations_select_column {
+  "column name"
+  content
+  "column name"
+  link_caption
+  "column name"
+  subtitle
+  "column name"
+  title
+}
+
+"select columns of table \"smb.intro_text_module_type\""
+enum smb_intro_text_module_type_select_column {
+  "column name"
+  value
+}
+
+"select columns of table \"smb.intro_text_modules\""
+enum smb_intro_text_modules_select_column {
+  "column name"
+  link
+  "column name"
+  module_background_color
+  "column name"
+  text_area_color
+  "column name"
+  text_color
+  "column name"
+  title_color
+}
+
+"select columns of table \"smb.language\""
+enum smb_language_select_column {
+  "column name"
+  lang
+}
+
+"select columns of table \"smb.licenses\""
+enum smb_licenses_select_column {
+  "column name"
+  id
+  "column name"
+  key
+}
+
+"select columns of table \"smb.licenses_translation\""
+enum smb_licenses_translation_select_column {
+  "column name"
+  content
+  "column name"
+  id
+  "column name"
+  license_id
+}
+
+"select columns of table \"smb.objects\""
+enum smb_objects_select_column {
+  "column name"
+  created_at
+  "column name"
+  id
+  "column name"
+  updated_at
+}
+
+"select columns of table \"smb.search_suggestions\""
+enum smb_search_suggestions_select_column {
+  "column name"
+  counter
+  "column name"
+  value
+}
+
+"select columns of table \"smb.topics_objects\""
+enum smb_topics_objects_select_column {
+  "column name"
+  created_at
+  "column name"
+  id
+  "column name"
+  objects_id
+  "column name"
+  topics_id
+  "column name"
+  updated_at
+}
+
+"select columns of table \"smb.topics\""
+enum smb_topics_select_column {
+  "column name"
+  has_slide
+  "column name"
+  id
+  "column name"
+  preview_image
+}
+
+"select columns of table \"smb.topics_translations\""
+enum smb_topics_translations_select_column {
+  "column name"
+  description
+  "column name"
+  id
+  "column name"
+  title
+}
+
+"select columns of table \"smb.user\""
+enum smb_user_select_column {
+  "column name"
+  email
+}
+
+"expression to compare columns of type Boolean. All fields are combined with logical 'AND'."
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"expression to compare columns of type String. All fields are combined with logical 'AND'."
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
+}
+
+"expression to compare columns of type bigint. All fields are combined with logical 'AND'."
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
+}
+
+"Boolean expression to filter rows from the table \"smb.attachments\". All fields are combined with a logical 'AND'."
+input smb_attachments_bool_exp {
+  _and: [smb_attachments_bool_exp]
+  _not: smb_attachments_bool_exp
+  _or: [smb_attachments_bool_exp]
+  attachment: String_comparison_exp
+  object: smb_objects_bool_exp
+  primary: Boolean_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.attachments\""
+input smb_attachments_order_by {
+  attachment: order_by
+  object: smb_objects_order_by
+  primary: order_by
+}
+
+"primary key columns input for table: \"smb.attachments\""
+input smb_attachments_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.attribute_translations\". All fields are combined with a logical 'AND'."
+input smb_attribute_translations_bool_exp {
+  _and: [smb_attribute_translations_bool_exp]
+  _not: smb_attribute_translations_bool_exp
+  _or: [smb_attribute_translations_bool_exp]
+  attribute: smb_attributes_bool_exp
+  attribute_key: String_comparison_exp
+  language: smb_language_bool_exp
+  object: smb_objects_bool_exp
+  value: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.attribute_translations\""
+input smb_attribute_translations_order_by {
+  attribute: smb_attributes_order_by
+  attribute_key: order_by
+  language: smb_language_order_by
+  object: smb_objects_order_by
+  value: order_by
+}
+
+"primary key columns input for table: \"smb.attribute_translations\""
+input smb_attribute_translations_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.attributes\". All fields are combined with a logical 'AND'."
+input smb_attributes_bool_exp {
+  _and: [smb_attributes_bool_exp]
+  _not: smb_attributes_bool_exp
+  _or: [smb_attributes_bool_exp]
+  attribute_translations: smb_attribute_translations_bool_exp
+  datatype: String_comparison_exp
+  key: String_comparison_exp
+  relevant: Boolean_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.attributes\""
+input smb_attributes_order_by {
+  datatype: order_by
+  key: order_by
+  relevant: order_by
+}
+
+"primary key columns input for table: \"smb.attributes\""
+input smb_attributes_pk_columns_input {
+  key: String!
+}
+
+input smb_autocomplete_search_args {
+  attributekeys: _varchar
+  attributelimit: Int
+  filterlang: String
+  searchterm: String
+}
+
+input smb_filter_objects_args {
+  attachment: Boolean
+  exhibited: Boolean
+  highlight: Boolean
+  qlimit: Int
+  qoffset: Int
+}
+
+"Boolean expression to filter rows from the table \"smb.header\". All fields are combined with a logical 'AND'."
+input smb_header_bool_exp {
+  _and: [smb_header_bool_exp]
+  _not: smb_header_bool_exp
+  _or: [smb_header_bool_exp]
+  color: String_comparison_exp
+  drawer_color: String_comparison_exp
+  header_translations: smb_header_translations_bool_exp
+  href: String_comparison_exp
+  id: bigint_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.header\""
+input smb_header_order_by {
+  color: order_by
+  drawer_color: order_by
+  href: order_by
+  id: order_by
+}
+
+"primary key columns input for table: \"smb.header\""
+input smb_header_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.header_translations\". All fields are combined with a logical 'AND'."
+input smb_header_translations_bool_exp {
+  _and: [smb_header_translations_bool_exp]
+  _not: smb_header_translations_bool_exp
+  _or: [smb_header_translations_bool_exp]
+  header_id: bigint_comparison_exp
+  id: bigint_comparison_exp
+  language: smb_language_bool_exp
+  language_id: bigint_comparison_exp
+  subtitle: String_comparison_exp
+  title: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.header_translations\""
+input smb_header_translations_order_by {
+  header_id: order_by
+  id: order_by
+  language: smb_language_order_by
+  language_id: order_by
+  subtitle: order_by
+  title: order_by
+}
+
+"primary key columns input for table: \"smb.header_translations\""
+input smb_header_translations_pk_columns_input {
+  id: bigint!
+}
+
+"order by aggregate values of table \"smb.highlights\""
+input smb_highlights_aggregate_order_by {
+  avg: smb_highlights_avg_order_by
+  count: order_by
+  max: smb_highlights_max_order_by
+  min: smb_highlights_min_order_by
+  stddev: smb_highlights_stddev_order_by
+  stddev_pop: smb_highlights_stddev_pop_order_by
+  stddev_samp: smb_highlights_stddev_samp_order_by
+  sum: smb_highlights_sum_order_by
+  var_pop: smb_highlights_var_pop_order_by
+  var_samp: smb_highlights_var_samp_order_by
+  variance: smb_highlights_variance_order_by
+}
+
+"order by avg() on columns of table \"smb.highlights\""
+input smb_highlights_avg_order_by {
+  object_id: order_by
+}
+
+"Boolean expression to filter rows from the table \"smb.highlights\". All fields are combined with a logical 'AND'."
+input smb_highlights_bool_exp {
+  _and: [smb_highlights_bool_exp]
+  _not: smb_highlights_bool_exp
+  _or: [smb_highlights_bool_exp]
+  object: smb_objects_bool_exp
+  object_id: bigint_comparison_exp
+}
+
+"order by max() on columns of table \"smb.highlights\""
+input smb_highlights_max_order_by {
+  object_id: order_by
+}
+
+"order by min() on columns of table \"smb.highlights\""
+input smb_highlights_min_order_by {
+  object_id: order_by
+}
+
+"ordering options when selecting data from \"smb.highlights\""
+input smb_highlights_order_by {
+  object: smb_objects_order_by
+  object_id: order_by
+}
+
+"primary key columns input for table: \"smb.highlights\""
+input smb_highlights_pk_columns_input {
+  id: bigint!
+}
+
+"order by stddev() on columns of table \"smb.highlights\""
+input smb_highlights_stddev_order_by {
+  object_id: order_by
+}
+
+"order by stddev_pop() on columns of table \"smb.highlights\""
+input smb_highlights_stddev_pop_order_by {
+  object_id: order_by
+}
+
+"order by stddev_samp() on columns of table \"smb.highlights\""
+input smb_highlights_stddev_samp_order_by {
+  object_id: order_by
+}
+
+"order by sum() on columns of table \"smb.highlights\""
+input smb_highlights_sum_order_by {
+  object_id: order_by
+}
+
+"order by var_pop() on columns of table \"smb.highlights\""
+input smb_highlights_var_pop_order_by {
+  object_id: order_by
+}
+
+"order by var_samp() on columns of table \"smb.highlights\""
+input smb_highlights_var_samp_order_by {
+  object_id: order_by
+}
+
+"order by variance() on columns of table \"smb.highlights\""
+input smb_highlights_variance_order_by {
+  object_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "smb.intro_slide_translations".
+All fields are combined with a logical 'AND'.
+"""
+input smb_intro_slide_translations_bool_exp {
+  _and: [smb_intro_slide_translations_bool_exp]
+  _not: smb_intro_slide_translations_bool_exp
+  _or: [smb_intro_slide_translations_bool_exp]
+  language: smb_language_bool_exp
+  title: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.intro_slide_translations\""
+input smb_intro_slide_translations_order_by {
+  language: smb_language_order_by
+  title: order_by
+}
+
+"primary key columns input for table: \"smb.intro_slide_translations\""
+input smb_intro_slide_translations_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.intro_slides\". All fields are combined with a logical 'AND'."
+input smb_intro_slides_bool_exp {
+  _and: [smb_intro_slides_bool_exp]
+  _not: smb_intro_slides_bool_exp
+  _or: [smb_intro_slides_bool_exp]
+  image: String_comparison_exp
+  intro_slide_translations: smb_intro_slide_translations_bool_exp
+}
+
+"ordering options when selecting data from \"smb.intro_slides\""
+input smb_intro_slides_order_by {
+  image: order_by
+}
+
+"primary key columns input for table: \"smb.intro_slides\""
+input smb_intro_slides_pk_columns_input {
+  id: bigint!
+}
+
+"""
+Boolean expression to filter rows from the table
+"smb.intro_text_module_translations". All fields are combined with a logical 'AND'.
+"""
+input smb_intro_text_module_translations_bool_exp {
+  _and: [smb_intro_text_module_translations_bool_exp]
+  _not: smb_intro_text_module_translations_bool_exp
+  _or: [smb_intro_text_module_translations_bool_exp]
+  content: String_comparison_exp
+  language: smb_language_bool_exp
+  link_caption: String_comparison_exp
+  subtitle: String_comparison_exp
+  title: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.intro_text_module_translations\""
+input smb_intro_text_module_translations_order_by {
+  content: order_by
+  language: smb_language_order_by
+  link_caption: order_by
+  subtitle: order_by
+  title: order_by
+}
+
+"primary key columns input for table: \"smb.intro_text_module_translations\""
+input smb_intro_text_module_translations_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.intro_text_module_type\". All fields are combined with a logical 'AND'."
+input smb_intro_text_module_type_bool_exp {
+  _and: [smb_intro_text_module_type_bool_exp]
+  _not: smb_intro_text_module_type_bool_exp
+  _or: [smb_intro_text_module_type_bool_exp]
+  value: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.intro_text_module_type\""
+input smb_intro_text_module_type_order_by {
+  value: order_by
+}
+
+"primary key columns input for table: \"smb.intro_text_module_type\""
+input smb_intro_text_module_type_pk_columns_input {
+  value: String!
+}
+
+"Boolean expression to filter rows from the table \"smb.intro_text_modules\". All fields are combined with a logical 'AND'."
+input smb_intro_text_modules_bool_exp {
+  _and: [smb_intro_text_modules_bool_exp]
+  _not: smb_intro_text_modules_bool_exp
+  _or: [smb_intro_text_modules_bool_exp]
+  intro_text_module_translations: smb_intro_text_module_translations_bool_exp
+  intro_text_module_type: smb_intro_text_module_type_bool_exp
+  link: String_comparison_exp
+  module_background_color: String_comparison_exp
+  text_area_color: String_comparison_exp
+  text_color: String_comparison_exp
+  title_color: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.intro_text_modules\""
+input smb_intro_text_modules_order_by {
+  intro_text_module_type: smb_intro_text_module_type_order_by
+  link: order_by
+  module_background_color: order_by
+  text_area_color: order_by
+  text_color: order_by
+  title_color: order_by
+}
+
+"primary key columns input for table: \"smb.intro_text_modules\""
+input smb_intro_text_modules_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.language\". All fields are combined with a logical 'AND'."
+input smb_language_bool_exp {
+  _and: [smb_language_bool_exp]
+  _not: smb_language_bool_exp
+  _or: [smb_language_bool_exp]
+  attribute_translations: smb_attribute_translations_bool_exp
+  lang: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.language\""
+input smb_language_order_by {
+  lang: order_by
+}
+
+"primary key columns input for table: \"smb.language\""
+input smb_language_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.licenses\". All fields are combined with a logical 'AND'."
+input smb_licenses_bool_exp {
+  _and: [smb_licenses_bool_exp]
+  _not: smb_licenses_bool_exp
+  _or: [smb_licenses_bool_exp]
+  id: bigint_comparison_exp
+  key: String_comparison_exp
+  licenses_translations: smb_licenses_translation_bool_exp
+}
+
+"ordering options when selecting data from \"smb.licenses\""
+input smb_licenses_order_by {
+  id: order_by
+  key: order_by
+}
+
+"primary key columns input for table: \"smb.licenses\""
+input smb_licenses_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.licenses_translation\". All fields are combined with a logical 'AND'."
+input smb_licenses_translation_bool_exp {
+  _and: [smb_licenses_translation_bool_exp]
+  _not: smb_licenses_translation_bool_exp
+  _or: [smb_licenses_translation_bool_exp]
+  content: String_comparison_exp
+  id: bigint_comparison_exp
+  language: smb_language_bool_exp
+  license_id: bigint_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.licenses_translation\""
+input smb_licenses_translation_order_by {
+  content: order_by
+  id: order_by
+  language: smb_language_order_by
+  license_id: order_by
+}
+
+"primary key columns input for table: \"smb.licenses_translation\""
+input smb_licenses_translation_pk_columns_input {
+  id: bigint!
+}
+
+"order by aggregate values of table \"smb.objects\""
+input smb_objects_aggregate_order_by {
+  avg: smb_objects_avg_order_by
+  count: order_by
+  max: smb_objects_max_order_by
+  min: smb_objects_min_order_by
+  stddev: smb_objects_stddev_order_by
+  stddev_pop: smb_objects_stddev_pop_order_by
+  stddev_samp: smb_objects_stddev_samp_order_by
+  sum: smb_objects_sum_order_by
+  var_pop: smb_objects_var_pop_order_by
+  var_samp: smb_objects_var_samp_order_by
+  variance: smb_objects_variance_order_by
+}
+
+"order by avg() on columns of table \"smb.objects\""
+input smb_objects_avg_order_by {
+  id: order_by
+}
+
+"Boolean expression to filter rows from the table \"smb.objects\". All fields are combined with a logical 'AND'."
+input smb_objects_bool_exp {
+  _and: [smb_objects_bool_exp]
+  _not: smb_objects_bool_exp
+  _or: [smb_objects_bool_exp]
+  attachments: smb_attachments_bool_exp
+  attribute_translations: smb_attribute_translations_bool_exp
+  created_at: timestamptz_comparison_exp
+  highlights: smb_highlights_bool_exp
+  id: bigint_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"order by max() on columns of table \"smb.objects\""
+input smb_objects_max_order_by {
+  created_at: order_by
+  id: order_by
+  updated_at: order_by
+}
+
+"order by min() on columns of table \"smb.objects\""
+input smb_objects_min_order_by {
+  created_at: order_by
+  id: order_by
+  updated_at: order_by
+}
+
+"ordering options when selecting data from \"smb.objects\""
+input smb_objects_order_by {
+  created_at: order_by
+  highlights_aggregate: smb_highlights_aggregate_order_by
+  id: order_by
+  updated_at: order_by
+}
+
+"primary key columns input for table: \"smb.objects\""
+input smb_objects_pk_columns_input {
+  id: bigint!
+}
+
+"order by stddev() on columns of table \"smb.objects\""
+input smb_objects_stddev_order_by {
+  id: order_by
+}
+
+"order by stddev_pop() on columns of table \"smb.objects\""
+input smb_objects_stddev_pop_order_by {
+  id: order_by
+}
+
+"order by stddev_samp() on columns of table \"smb.objects\""
+input smb_objects_stddev_samp_order_by {
+  id: order_by
+}
+
+"order by sum() on columns of table \"smb.objects\""
+input smb_objects_sum_order_by {
+  id: order_by
+}
+
+"order by var_pop() on columns of table \"smb.objects\""
+input smb_objects_var_pop_order_by {
+  id: order_by
+}
+
+"order by var_samp() on columns of table \"smb.objects\""
+input smb_objects_var_samp_order_by {
+  id: order_by
+}
+
+"order by variance() on columns of table \"smb.objects\""
+input smb_objects_variance_order_by {
+  id: order_by
+}
+
+input smb_search_object_aggregate_args {
+  attachment: Boolean
+  attributekeys: _varchar
+  filterlang: String
+  highlight: Boolean
+  searchterm: String
+}
+
+input smb_search_object_args {
+  attachment: Boolean
+  attributekeys: _varchar
+  filterlang: String
+  highlight: Boolean
+  objectlimit: Int
+  objectoffset: Int
+  searchterm: String
+}
+
+input smb_search_object_combined_args {
+  and_search_values: _search_tuple
+  attachment: Boolean
+  attributekeys: _varchar
+  filterlang: String
+  highlight: Boolean
+  not_search_values: _search_tuple
+  or_search_values: _search_tuple
+  searchterm: String
+}
+
+"Boolean expression to filter rows from the table \"smb.search_suggestions\". All fields are combined with a logical 'AND'."
+input smb_search_suggestions_bool_exp {
+  _and: [smb_search_suggestions_bool_exp]
+  _not: smb_search_suggestions_bool_exp
+  _or: [smb_search_suggestions_bool_exp]
+  counter: bigint_comparison_exp
+  value: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.search_suggestions\""
+input smb_search_suggestions_order_by {
+  counter: order_by
+  value: order_by
+}
+
+"Boolean expression to filter rows from the table \"smb.topics\". All fields are combined with a logical 'AND'."
+input smb_topics_bool_exp {
+  _and: [smb_topics_bool_exp]
+  _not: smb_topics_bool_exp
+  _or: [smb_topics_bool_exp]
+  has_slide: Boolean_comparison_exp
+  id: bigint_comparison_exp
+  objects: smb_topics_objects_bool_exp
+  preview_image: String_comparison_exp
+  topics_translations: smb_topics_translations_bool_exp
+}
+
+"Boolean expression to filter rows from the table \"smb.topics_objects\". All fields are combined with a logical 'AND'."
+input smb_topics_objects_bool_exp {
+  _and: [smb_topics_objects_bool_exp]
+  _not: smb_topics_objects_bool_exp
+  _or: [smb_topics_objects_bool_exp]
+  created_at: timestamptz_comparison_exp
+  id: bigint_comparison_exp
+  object: smb_objects_bool_exp
+  objects_id: bigint_comparison_exp
+  topic: smb_topics_bool_exp
+  topics_id: bigint_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.topics_objects\""
+input smb_topics_objects_order_by {
+  created_at: order_by
+  id: order_by
+  object: smb_objects_order_by
+  objects_id: order_by
+  topic: smb_topics_order_by
+  topics_id: order_by
+  updated_at: order_by
+}
+
+"primary key columns input for table: \"smb.topics_objects\""
+input smb_topics_objects_pk_columns_input {
+  id: bigint!
+}
+
+"ordering options when selecting data from \"smb.topics\""
+input smb_topics_order_by {
+  has_slide: order_by
+  id: order_by
+  preview_image: order_by
+}
+
+"primary key columns input for table: \"smb.topics\""
+input smb_topics_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.topics_translations\". All fields are combined with a logical 'AND'."
+input smb_topics_translations_bool_exp {
+  _and: [smb_topics_translations_bool_exp]
+  _not: smb_topics_translations_bool_exp
+  _or: [smb_topics_translations_bool_exp]
+  description: String_comparison_exp
+  id: bigint_comparison_exp
+  language: smb_language_bool_exp
+  title: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.topics_translations\""
+input smb_topics_translations_order_by {
+  description: order_by
+  id: order_by
+  language: smb_language_order_by
+  title: order_by
+}
+
+"primary key columns input for table: \"smb.topics_translations\""
+input smb_topics_translations_pk_columns_input {
+  id: bigint!
+}
+
+"Boolean expression to filter rows from the table \"smb.user\". All fields are combined with a logical 'AND'."
+input smb_user_bool_exp {
+  _and: [smb_user_bool_exp]
+  _not: smb_user_bool_exp
+  _or: [smb_user_bool_exp]
+  email: String_comparison_exp
+}
+
+"ordering options when selecting data from \"smb.user\""
+input smb_user_order_by {
+  email: order_by
+}
+
+"primary key columns input for table: \"smb.user\""
+input smb_user_pk_columns_input {
+  id: uuid!
+}
+
+"expression to compare columns of type timestamptz. All fields are combined with logical 'AND'."
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+scalar timestamptz
+
+scalar bigint
+
+scalar _varchar
+
+scalar _search_tuple
+
+scalar uuid

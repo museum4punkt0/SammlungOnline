@@ -14,7 +14,6 @@ export type Scalars = {
   uuid: any;
 };
 
-
 /** expression to compare columns of type bigint. All fields are combined with logical 'AND'. */
 export type BigintComparisonExp = {
   _eq?: Maybe<Scalars['bigint']>;
@@ -67,7 +66,7 @@ export enum OrderBy {
   /** in the descending order, nulls first */
   DESC_NULLS_FIRST = 'desc_nulls_first',
   /** in the descending order, nulls last */
-  DESC_NULLS_LAST = 'desc_nulls_last'
+  DESC_NULLS_LAST = 'desc_nulls_last',
 }
 
 /** query root */
@@ -171,7 +170,6 @@ export type QueryRoot = {
   smb_user_by_pk?: Maybe<SmbUser>;
 };
 
-
 /** query root */
 export type QueryRootSmbAttachmentsArgs = {
   distinct_on?: Maybe<Array<SmbAttachmentsSelectColumn>>;
@@ -181,12 +179,10 @@ export type QueryRootSmbAttachmentsArgs = {
   where?: Maybe<SmbAttachmentsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbAttachmentsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbAttributeTranslationsArgs = {
@@ -197,12 +193,10 @@ export type QueryRootSmbAttributeTranslationsArgs = {
   where?: Maybe<SmbAttributeTranslationsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbAttributeTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbAttributesArgs = {
@@ -213,12 +207,10 @@ export type QueryRootSmbAttributesArgs = {
   where?: Maybe<SmbAttributesBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbAttributesByPkArgs = {
   key: Scalars['String'];
 };
-
 
 /** query root */
 export type QueryRootSmbHeaderArgs = {
@@ -229,12 +221,10 @@ export type QueryRootSmbHeaderArgs = {
   where?: Maybe<SmbHeaderBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbHeaderByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbHeaderTranslationsArgs = {
@@ -245,12 +235,10 @@ export type QueryRootSmbHeaderTranslationsArgs = {
   where?: Maybe<SmbHeaderTranslationsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbHeaderTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbHighlightsArgs = {
@@ -261,7 +249,6 @@ export type QueryRootSmbHighlightsArgs = {
   where?: Maybe<SmbHighlightsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbHighlightsAggregateArgs = {
   distinct_on?: Maybe<Array<SmbHighlightsSelectColumn>>;
@@ -271,12 +258,10 @@ export type QueryRootSmbHighlightsAggregateArgs = {
   where?: Maybe<SmbHighlightsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbHighlightsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbIntroSlideTranslationsArgs = {
@@ -287,12 +272,10 @@ export type QueryRootSmbIntroSlideTranslationsArgs = {
   where?: Maybe<SmbIntroSlideTranslationsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbIntroSlideTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbIntroSlidesArgs = {
@@ -303,12 +286,10 @@ export type QueryRootSmbIntroSlidesArgs = {
   where?: Maybe<SmbIntroSlidesBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbIntroSlidesByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbIntroTextModuleTranslationsArgs = {
@@ -319,12 +300,10 @@ export type QueryRootSmbIntroTextModuleTranslationsArgs = {
   where?: Maybe<SmbIntroTextModuleTranslationsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbIntroTextModuleTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbIntroTextModuleTypeArgs = {
@@ -335,12 +314,10 @@ export type QueryRootSmbIntroTextModuleTypeArgs = {
   where?: Maybe<SmbIntroTextModuleTypeBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbIntroTextModuleTypeByPkArgs = {
   value: Scalars['String'];
 };
-
 
 /** query root */
 export type QueryRootSmbIntroTextModulesArgs = {
@@ -351,12 +328,10 @@ export type QueryRootSmbIntroTextModulesArgs = {
   where?: Maybe<SmbIntroTextModulesBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbIntroTextModulesByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbLanguageArgs = {
@@ -367,12 +342,10 @@ export type QueryRootSmbLanguageArgs = {
   where?: Maybe<SmbLanguageBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbLanguageByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbLicensesArgs = {
@@ -383,12 +356,10 @@ export type QueryRootSmbLicensesArgs = {
   where?: Maybe<SmbLicensesBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbLicensesByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbLicensesTranslationArgs = {
@@ -399,12 +370,10 @@ export type QueryRootSmbLicensesTranslationArgs = {
   where?: Maybe<SmbLicensesTranslationBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbLicensesTranslationByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbObjectsArgs = {
@@ -415,7 +384,6 @@ export type QueryRootSmbObjectsArgs = {
   where?: Maybe<SmbObjectsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbObjectsAggregateArgs = {
   distinct_on?: Maybe<Array<SmbObjectsSelectColumn>>;
@@ -425,12 +393,10 @@ export type QueryRootSmbObjectsAggregateArgs = {
   where?: Maybe<SmbObjectsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbObjectsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbTopicsArgs = {
@@ -441,12 +407,10 @@ export type QueryRootSmbTopicsArgs = {
   where?: Maybe<SmbTopicsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbTopicsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbTopicsObjectsArgs = {
@@ -457,12 +421,10 @@ export type QueryRootSmbTopicsObjectsArgs = {
   where?: Maybe<SmbTopicsObjectsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbTopicsObjectsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbTopicsTranslationsArgs = {
@@ -473,12 +435,10 @@ export type QueryRootSmbTopicsTranslationsArgs = {
   where?: Maybe<SmbTopicsTranslationsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbTopicsTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbToursArgs = {
@@ -489,12 +449,10 @@ export type QueryRootSmbToursArgs = {
   where?: Maybe<SmbToursBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbToursByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbToursObjectsArgs = {
@@ -505,12 +463,10 @@ export type QueryRootSmbToursObjectsArgs = {
   where?: Maybe<SmbToursObjectsBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbToursObjectsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbToursObjectsTranslationArgs = {
@@ -521,12 +477,10 @@ export type QueryRootSmbToursObjectsTranslationArgs = {
   where?: Maybe<SmbToursObjectsTranslationBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbToursObjectsTranslationByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbToursTranslationArgs = {
@@ -537,12 +491,10 @@ export type QueryRootSmbToursTranslationArgs = {
   where?: Maybe<SmbToursTranslationBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbToursTranslationByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** query root */
 export type QueryRootSmbUserArgs = {
@@ -553,12 +505,10 @@ export type QueryRootSmbUserArgs = {
   where?: Maybe<SmbUserBoolExp>;
 };
 
-
 /** query root */
 export type QueryRootSmbUserByPkArgs = {
   id: Scalars['uuid'];
 };
-
 
 /** expression to compare columns of type smallint. All fields are combined with logical 'AND'. */
 export type SmallintComparisonExp = {
@@ -610,7 +560,7 @@ export enum SmbAttachmentsSelectColumn {
   /** column name */
   CREDITS = 'credits',
   /** column name */
-  PRIMARY = 'primary'
+  PRIMARY = 'primary',
 }
 
 /** columns and relationships of "smb.attribute_translations" */
@@ -653,7 +603,7 @@ export enum SmbAttributeTranslationsSelectColumn {
   /** column name */
   ATTRIBUTE_KEY = 'attribute_key',
   /** column name */
-  VALUE = 'value'
+  VALUE = 'value',
 }
 
 /** columns and relationships of "smb.attributes" */
@@ -688,7 +638,7 @@ export enum SmbAttributesSelectColumn {
   /** column name */
   DATATYPE = 'datatype',
   /** column name */
-  KEY = 'key'
+  KEY = 'key',
 }
 
 /** columns and relationships of "smb.header" */
@@ -701,7 +651,6 @@ export type SmbHeader = {
   href?: Maybe<Scalars['String']>;
   id: Scalars['bigint'];
 };
-
 
 /** columns and relationships of "smb.header" */
 export type SmbHeaderHeaderTranslationsArgs = {
@@ -746,7 +695,7 @@ export enum SmbHeaderSelectColumn {
   /** column name */
   HREF = 'href',
   /** column name */
-  ID = 'id'
+  ID = 'id',
 }
 
 /** columns and relationships of "smb.header_translations" */
@@ -785,7 +734,7 @@ export enum SmbHeaderTranslationsSelectColumn {
   /** column name */
   SUBTITLE = 'subtitle',
   /** column name */
-  TITLE = 'title'
+  TITLE = 'title',
 }
 
 /** columns and relationships of "smb.highlights" */
@@ -818,7 +767,6 @@ export type SmbHighlightsAggregateFields = {
   var_samp?: Maybe<SmbHighlightsVarSampFields>;
   variance?: Maybe<SmbHighlightsVarianceFields>;
 };
-
 
 /** aggregate fields of "smb.highlights" */
 export type SmbHighlightsAggregateFieldsCountArgs = {
@@ -897,7 +845,7 @@ export type SmbHighlightsPkColumnsInput = {
 /** select columns of table "smb.highlights" */
 export enum SmbHighlightsSelectColumn {
   /** column name */
-  OBJECT_ID = 'object_id'
+  OBJECT_ID = 'object_id',
 }
 
 /** aggregate stddev on columns */
@@ -1011,7 +959,7 @@ export type SmbIntroSlideTranslationsPkColumnsInput = {
 /** select columns of table "smb.intro_slide_translations" */
 export enum SmbIntroSlideTranslationsSelectColumn {
   /** column name */
-  TITLE = 'title'
+  TITLE = 'title',
 }
 
 /** columns and relationships of "smb.intro_slides" */
@@ -1021,7 +969,6 @@ export type SmbIntroSlides = {
   /** An array relationship */
   intro_slide_translations: Array<SmbIntroSlideTranslations>;
 };
-
 
 /** columns and relationships of "smb.intro_slides" */
 export type SmbIntroSlidesIntroSlideTranslationsArgs = {
@@ -1054,7 +1001,7 @@ export type SmbIntroSlidesPkColumnsInput = {
 /** select columns of table "smb.intro_slides" */
 export enum SmbIntroSlidesSelectColumn {
   /** column name */
-  IMAGE = 'image'
+  IMAGE = 'image',
 }
 
 /** columns and relationships of "smb.intro_text_module_translations" */
@@ -1106,7 +1053,7 @@ export enum SmbIntroTextModuleTranslationsSelectColumn {
   /** column name */
   SUBTITLE = 'subtitle',
   /** column name */
-  TITLE = 'title'
+  TITLE = 'title',
 }
 
 /** columns and relationships of "smb.intro_text_module_type" */
@@ -1116,7 +1063,6 @@ export type SmbIntroTextModuleType = {
   intro_text_modules: Array<SmbIntroTextModules>;
   value: Scalars['String'];
 };
-
 
 /** columns and relationships of "smb.intro_text_module_type" */
 export type SmbIntroTextModuleTypeIntroTextModulesArgs = {
@@ -1144,7 +1090,7 @@ export enum SmbIntroTextModuleTypeEnum {
   /** Simple text module. */
   TEXT = 'TEXT',
   /** Module for topic platform. */
-  TOPIC = 'TOPIC'
+  TOPIC = 'TOPIC',
 }
 
 /** expression to compare columns of type smb_intro_text_module_type_enum. All fields are combined with logical 'AND'. */
@@ -1169,7 +1115,7 @@ export type SmbIntroTextModuleTypePkColumnsInput = {
 /** select columns of table "smb.intro_text_module_type" */
 export enum SmbIntroTextModuleTypeSelectColumn {
   /** column name */
-  VALUE = 'value'
+  VALUE = 'value',
 }
 
 /** columns and relationships of "smb.intro_text_modules" */
@@ -1187,7 +1133,6 @@ export type SmbIntroTextModules = {
   text_color: Scalars['String'];
   title_color: Scalars['String'];
 };
-
 
 /** columns and relationships of "smb.intro_text_modules" */
 export type SmbIntroTextModulesIntroTextModuleTranslationsArgs = {
@@ -1246,7 +1191,7 @@ export enum SmbIntroTextModulesSelectColumn {
   /** column name */
   TEXT_COLOR = 'text_color',
   /** column name */
-  TITLE_COLOR = 'title_color'
+  TITLE_COLOR = 'title_color',
 }
 
 /** columns and relationships of "smb.language" */
@@ -1276,7 +1221,7 @@ export type SmbLanguagePkColumnsInput = {
 /** select columns of table "smb.language" */
 export enum SmbLanguageSelectColumn {
   /** column name */
-  LANG = 'lang'
+  LANG = 'lang',
 }
 
 /** columns and relationships of "smb.licenses" */
@@ -1287,7 +1232,6 @@ export type SmbLicenses = {
   /** An array relationship */
   licenses_translations: Array<SmbLicensesTranslation>;
 };
-
 
 /** columns and relationships of "smb.licenses" */
 export type SmbLicensesLicensesTranslationsArgs = {
@@ -1324,7 +1268,7 @@ export enum SmbLicensesSelectColumn {
   /** column name */
   ID = 'id',
   /** column name */
-  KEY = 'key'
+  KEY = 'key',
 }
 
 /** columns and relationships of "smb.licenses_translation" */
@@ -1358,13 +1302,13 @@ export type SmbLicensesTranslationPkColumnsInput = {
 /** select columns of table "smb.licenses_translation" */
 export enum SmbLicensesTranslationSelectColumn {
   /** column name */
-  CONTENT = 'content'
+  CONTENT = 'content',
 }
 
 /**
  * objects of smb
- * 
- * 
+ *
+ *
  * columns and relationships of "smb.objects"
  */
 export type SmbObjects = {
@@ -1387,11 +1331,10 @@ export type SmbObjects = {
   updated_at: Scalars['timestamptz'];
 };
 
-
 /**
  * objects of smb
- * 
- * 
+ *
+ *
  * columns and relationships of "smb.objects"
  */
 export type SmbObjectsAttachmentsArgs = {
@@ -1402,11 +1345,10 @@ export type SmbObjectsAttachmentsArgs = {
   where?: Maybe<SmbAttachmentsBoolExp>;
 };
 
-
 /**
  * objects of smb
- * 
- * 
+ *
+ *
  * columns and relationships of "smb.objects"
  */
 export type SmbObjectsAttributeTranslationsArgs = {
@@ -1417,11 +1359,10 @@ export type SmbObjectsAttributeTranslationsArgs = {
   where?: Maybe<SmbAttributeTranslationsBoolExp>;
 };
 
-
 /**
  * objects of smb
- * 
- * 
+ *
+ *
  * columns and relationships of "smb.objects"
  */
 export type SmbObjectsHighlightsArgs = {
@@ -1432,11 +1373,10 @@ export type SmbObjectsHighlightsArgs = {
   where?: Maybe<SmbHighlightsBoolExp>;
 };
 
-
 /**
  * objects of smb
- * 
- * 
+ *
+ *
  * columns and relationships of "smb.objects"
  */
 export type SmbObjectsHighlightsAggregateArgs = {
@@ -1447,11 +1387,10 @@ export type SmbObjectsHighlightsAggregateArgs = {
   where?: Maybe<SmbHighlightsBoolExp>;
 };
 
-
 /**
  * objects of smb
- * 
- * 
+ *
+ *
  * columns and relationships of "smb.objects"
  */
 export type SmbObjectsTopicsObjectsArgs = {
@@ -1462,11 +1401,10 @@ export type SmbObjectsTopicsObjectsArgs = {
   where?: Maybe<SmbTopicsObjectsBoolExp>;
 };
 
-
 /**
  * objects of smb
- * 
- * 
+ *
+ *
  * columns and relationships of "smb.objects"
  */
 export type SmbObjectsToursObjectsArgs = {
@@ -1499,7 +1437,6 @@ export type SmbObjectsAggregateFields = {
   var_samp?: Maybe<SmbObjectsVarSampFields>;
   variance?: Maybe<SmbObjectsVarianceFields>;
 };
-
 
 /** aggregate fields of "smb.objects" */
 export type SmbObjectsAggregateFieldsCountArgs = {
@@ -1606,7 +1543,7 @@ export enum SmbObjectsSelectColumn {
   /** column name */
   ID = 'id',
   /** column name */
-  UPDATED_AT = 'updated_at'
+  UPDATED_AT = 'updated_at',
 }
 
 /** aggregate stddev on columns */
@@ -1698,7 +1635,6 @@ export type SmbTopics = {
   topics_translations: Array<SmbTopicsTranslations>;
 };
 
-
 /** columns and relationships of "smb.topics" */
 export type SmbTopicsObjectsArgs = {
   distinct_on?: Maybe<Array<SmbTopicsObjectsSelectColumn>>;
@@ -1707,7 +1643,6 @@ export type SmbTopicsObjectsArgs = {
   order_by?: Maybe<Array<SmbTopicsObjectsOrderBy>>;
   where?: Maybe<SmbTopicsObjectsBoolExp>;
 };
-
 
 /** columns and relationships of "smb.topics" */
 export type SmbTopicsTopicsTranslationsArgs = {
@@ -1785,7 +1720,7 @@ export enum SmbTopicsObjectsSelectColumn {
   /** column name */
   TOPICS_ID = 'topics_id',
   /** column name */
-  UPDATED_AT = 'updated_at'
+  UPDATED_AT = 'updated_at',
 }
 
 /** ordering options when selecting data from "smb.topics" */
@@ -1807,7 +1742,7 @@ export enum SmbTopicsSelectColumn {
   /** column name */
   ID = 'id',
   /** column name */
-  PREVIEW_IMAGE = 'preview_image'
+  PREVIEW_IMAGE = 'preview_image',
 }
 
 /** columns and relationships of "smb.topics_translations" */
@@ -1846,7 +1781,7 @@ export enum SmbTopicsTranslationsSelectColumn {
   /** column name */
   DESCRIPTION = 'description',
   /** column name */
-  TITLE = 'title'
+  TITLE = 'title',
 }
 
 /** columns and relationships of "smb.tours" */
@@ -1864,7 +1799,6 @@ export type SmbTours = {
   tours_translations: Array<SmbToursTranslation>;
 };
 
-
 /** columns and relationships of "smb.tours" */
 export type SmbToursToursObjectsArgs = {
   distinct_on?: Maybe<Array<SmbToursObjectsSelectColumn>>;
@@ -1873,7 +1807,6 @@ export type SmbToursToursObjectsArgs = {
   order_by?: Maybe<Array<SmbToursObjectsOrderBy>>;
   where?: Maybe<SmbToursObjectsBoolExp>;
 };
-
 
 /** columns and relationships of "smb.tours" */
 export type SmbToursToursTranslationsArgs = {
@@ -1913,7 +1846,6 @@ export type SmbToursObjects = {
   /** An array relationship */
   tours_objects_translations: Array<SmbToursObjectsTranslation>;
 };
-
 
 /** columns and relationships of "smb.tours_objects" */
 export type SmbToursObjectsToursObjectsTranslationsArgs = {
@@ -1962,7 +1894,7 @@ export enum SmbToursObjectsSelectColumn {
   /** column name */
   SEQUENCE = 'sequence',
   /** column name */
-  TOUR_ID = 'tour_id'
+  TOUR_ID = 'tour_id',
 }
 
 /** columns and relationships of "smb.tours_objects_translation" */
@@ -2004,7 +1936,7 @@ export enum SmbToursObjectsTranslationSelectColumn {
   /** column name */
   ABSTRACT = 'abstract',
   /** column name */
-  DESCRIPTION = 'description'
+  DESCRIPTION = 'description',
 }
 
 /** ordering options when selecting data from "smb.tours" */
@@ -2035,7 +1967,7 @@ export enum SmbToursSelectColumn {
   /** column name */
   NUMBER = 'number',
   /** column name */
-  PREVIEW_IMAGE = 'preview_image'
+  PREVIEW_IMAGE = 'preview_image',
 }
 
 /** columns and relationships of "smb.tours_translation" */
@@ -2084,7 +2016,7 @@ export enum SmbToursTranslationSelectColumn {
   /** column name */
   SUBTITLE = 'subtitle',
   /** column name */
-  TITLE = 'title'
+  TITLE = 'title',
 }
 
 /** columns and relationships of "smb.user" */
@@ -2114,7 +2046,7 @@ export type SmbUserPkColumnsInput = {
 /** select columns of table "smb.user" */
 export enum SmbUserSelectColumn {
   /** column name */
-  EMAIL = 'email'
+  EMAIL = 'email',
 }
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
@@ -2237,7 +2169,6 @@ export type SubscriptionRoot = {
   smb_user_by_pk?: Maybe<SmbUser>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbAttachmentsArgs = {
   distinct_on?: Maybe<Array<SmbAttachmentsSelectColumn>>;
@@ -2247,12 +2178,10 @@ export type SubscriptionRootSmbAttachmentsArgs = {
   where?: Maybe<SmbAttachmentsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbAttachmentsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbAttributeTranslationsArgs = {
@@ -2263,12 +2192,10 @@ export type SubscriptionRootSmbAttributeTranslationsArgs = {
   where?: Maybe<SmbAttributeTranslationsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbAttributeTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbAttributesArgs = {
@@ -2279,12 +2206,10 @@ export type SubscriptionRootSmbAttributesArgs = {
   where?: Maybe<SmbAttributesBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbAttributesByPkArgs = {
   key: Scalars['String'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbHeaderArgs = {
@@ -2295,12 +2220,10 @@ export type SubscriptionRootSmbHeaderArgs = {
   where?: Maybe<SmbHeaderBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbHeaderByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbHeaderTranslationsArgs = {
@@ -2311,12 +2234,10 @@ export type SubscriptionRootSmbHeaderTranslationsArgs = {
   where?: Maybe<SmbHeaderTranslationsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbHeaderTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbHighlightsArgs = {
@@ -2327,7 +2248,6 @@ export type SubscriptionRootSmbHighlightsArgs = {
   where?: Maybe<SmbHighlightsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbHighlightsAggregateArgs = {
   distinct_on?: Maybe<Array<SmbHighlightsSelectColumn>>;
@@ -2337,12 +2257,10 @@ export type SubscriptionRootSmbHighlightsAggregateArgs = {
   where?: Maybe<SmbHighlightsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbHighlightsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbIntroSlideTranslationsArgs = {
@@ -2353,12 +2271,10 @@ export type SubscriptionRootSmbIntroSlideTranslationsArgs = {
   where?: Maybe<SmbIntroSlideTranslationsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbIntroSlideTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbIntroSlidesArgs = {
@@ -2369,12 +2285,10 @@ export type SubscriptionRootSmbIntroSlidesArgs = {
   where?: Maybe<SmbIntroSlidesBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbIntroSlidesByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbIntroTextModuleTranslationsArgs = {
@@ -2385,12 +2299,10 @@ export type SubscriptionRootSmbIntroTextModuleTranslationsArgs = {
   where?: Maybe<SmbIntroTextModuleTranslationsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbIntroTextModuleTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbIntroTextModuleTypeArgs = {
@@ -2401,12 +2313,10 @@ export type SubscriptionRootSmbIntroTextModuleTypeArgs = {
   where?: Maybe<SmbIntroTextModuleTypeBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbIntroTextModuleTypeByPkArgs = {
   value: Scalars['String'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbIntroTextModulesArgs = {
@@ -2417,12 +2327,10 @@ export type SubscriptionRootSmbIntroTextModulesArgs = {
   where?: Maybe<SmbIntroTextModulesBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbIntroTextModulesByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbLanguageArgs = {
@@ -2433,12 +2341,10 @@ export type SubscriptionRootSmbLanguageArgs = {
   where?: Maybe<SmbLanguageBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbLanguageByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbLicensesArgs = {
@@ -2449,12 +2355,10 @@ export type SubscriptionRootSmbLicensesArgs = {
   where?: Maybe<SmbLicensesBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbLicensesByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbLicensesTranslationArgs = {
@@ -2465,12 +2369,10 @@ export type SubscriptionRootSmbLicensesTranslationArgs = {
   where?: Maybe<SmbLicensesTranslationBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbLicensesTranslationByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbObjectsArgs = {
@@ -2481,7 +2383,6 @@ export type SubscriptionRootSmbObjectsArgs = {
   where?: Maybe<SmbObjectsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbObjectsAggregateArgs = {
   distinct_on?: Maybe<Array<SmbObjectsSelectColumn>>;
@@ -2491,12 +2392,10 @@ export type SubscriptionRootSmbObjectsAggregateArgs = {
   where?: Maybe<SmbObjectsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbObjectsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbTopicsArgs = {
@@ -2507,12 +2406,10 @@ export type SubscriptionRootSmbTopicsArgs = {
   where?: Maybe<SmbTopicsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbTopicsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbTopicsObjectsArgs = {
@@ -2523,12 +2420,10 @@ export type SubscriptionRootSmbTopicsObjectsArgs = {
   where?: Maybe<SmbTopicsObjectsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbTopicsObjectsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbTopicsTranslationsArgs = {
@@ -2539,12 +2434,10 @@ export type SubscriptionRootSmbTopicsTranslationsArgs = {
   where?: Maybe<SmbTopicsTranslationsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbTopicsTranslationsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbToursArgs = {
@@ -2555,12 +2448,10 @@ export type SubscriptionRootSmbToursArgs = {
   where?: Maybe<SmbToursBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbToursByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbToursObjectsArgs = {
@@ -2571,12 +2462,10 @@ export type SubscriptionRootSmbToursObjectsArgs = {
   where?: Maybe<SmbToursObjectsBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbToursObjectsByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbToursObjectsTranslationArgs = {
@@ -2587,12 +2476,10 @@ export type SubscriptionRootSmbToursObjectsTranslationArgs = {
   where?: Maybe<SmbToursObjectsTranslationBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbToursObjectsTranslationByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbToursTranslationArgs = {
@@ -2603,12 +2490,10 @@ export type SubscriptionRootSmbToursTranslationArgs = {
   where?: Maybe<SmbToursTranslationBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbToursTranslationByPkArgs = {
   id: Scalars['bigint'];
 };
-
 
 /** subscription root */
 export type SubscriptionRootSmbUserArgs = {
@@ -2619,12 +2504,10 @@ export type SubscriptionRootSmbUserArgs = {
   where?: Maybe<SmbUserBoolExp>;
 };
 
-
 /** subscription root */
 export type SubscriptionRootSmbUserByPkArgs = {
   id: Scalars['uuid'];
 };
-
 
 /** expression to compare columns of type timestamptz. All fields are combined with logical 'AND'. */
 export type TimestamptzComparisonExp = {
@@ -2638,6 +2521,3 @@ export type TimestamptzComparisonExp = {
   _neq?: Maybe<Scalars['timestamptz']>;
   _nin?: Maybe<Array<Scalars['timestamptz']>>;
 };
-
-
-

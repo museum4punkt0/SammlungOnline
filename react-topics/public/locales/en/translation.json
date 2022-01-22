@@ -141,5 +141,29 @@
             "title": "Touren",
             "subtitle": "Wege in die Sammlung"
         }
-    }
+    },
+	"footer": {
+        "blog": "Blog",
+        "intro": "Intro",
+        "newsletter": "Newsletter",
+        "research": "Research",
+        "staatliche": "Staatliche Museen zu Berlin",
+        "topics": "Topics",
+        "routes": "Routes",
+        "webshop": "Webshop",
+        "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
+        "imprint": "Imprint",
+        "privacy": "Privacy",
+        "accessibility": "Accessibility",
+        "contact": "Contact",
+		"contactSection":{
+		  "title":"Contact",
+		  "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
+		  "link":{
+			"href":"mailto:smb-digital@smb.spk-berlin.de",
+			"text": "Fragen Sie uns"
+		  }
+		}
+	}
 }
