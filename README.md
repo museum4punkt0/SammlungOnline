@@ -80,6 +80,12 @@ SMB Admin erlaubt die Content-Pflege für die einzelen Plattformen. Der Content 
 
 Die Museumsgrundriss-Informationen für die Touren werden in einer Graph-DB (`core/orientdb`) hinterlegt. Dieser Container muss für die Administration der Touren demnach zusätzlich gestartet werden.
 
+**Hinweis**: Die Verwendung des Admin UI ist nur für Administratoren und Redakteure möglich. Bei Verwendung einer eigenen Instanz, muss daher zuvor ein Benutzer mit der Rolle "admin" oder "editor" angelegt werden. Es gibt zurzeit weder eine Registrierung noch die Möglichkeit sein Passwort selbst zu vergeben. Ein Administrator muss sich mit dem Admin Secret in die Hasura Admin-Console einloggen und den Benutzer in der Datenbank anlegen. Um ein Passwort zu erzeugen, werden die Postgres-Funktionen crypt und gen_salt (Blowfish Algorithmus 'bf') verwendet. Die Rechte des Redakteurs werden über die Spalte "editor_scope" definiert. Gültige Werte sind INTRO, TOPICS, GUIDE und SYSTEM - auch beliebig kombinierbar mit Pipe-Symbol getrennt.
+
+_Beispiel_
+
+`INSERT INTO smb.user (email, password, role_id, editor_scope) VALUES ('max.muster', crypt('hier-steht-das-passwort', gen_salt('bf', 10)), 1, 'TOPICS|GUIDE');`
+
 ### Intro
 
 SMB Intro nutzt keine zusätzlichen Services. Alle notwendigen Container sind oben beschrieben. Startsequenz:
