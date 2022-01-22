@@ -1,21 +1,18 @@
 # Development container
-FROM node:12.16-alpine
+# ---------------------
+
+FROM node:14-alpine
 
 WORKDIR /opt/research
 
-ARG REACT_APP_APP_STAGE
-
 # install node_modules
 COPY ./package.json ./package.json
-COPY ./yarn.lock ./yarn.lock
-RUN npm config set @bit:registry https://node.bit.dev \
-    && yarn install
+COPY ./package-lock.json ./package-lock.json
+RUN npm install
 
 COPY ./docker/docker_entrypoint.sh /docker_entrypoint.sh
-
 # see .dockerignore for excludes
 COPY ./ ./
-
 
 ENV PORT 80
 ENV PUBLIC_URL /

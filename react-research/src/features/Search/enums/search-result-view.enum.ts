@@ -1,4 +1,4 @@
 export enum ESearchResultView {
-    GRID = 'GRID',
-    LIST = 'LIST',
+  GRID = 'GRID',
+  LIST = 'LIST',
 }

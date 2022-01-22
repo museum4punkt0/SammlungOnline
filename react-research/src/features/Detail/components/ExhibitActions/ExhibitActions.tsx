@@ -8,22 +8,29 @@ import ZoomInOutlinedIcon from '@material-ui/icons/ZoomInOutlined';
 import useStyles from './exhibitActions.jss';
 
 interface IExhibitActionsProps {
-    classNames?: string;
-    showImageActions?: boolean;
-    zoomActionLabel?: string;
-    downloadActionLabel?: string;
-    onZoom?: () => void;
-    onDownload?: () => void;
+  classNames?: string;
+  showImageActions?: boolean;
+  zoomActionLabel?: string;
+  downloadActionLabel?: string;
+  onZoom?: () => void;
+  onDownload?: () => void;
 }
 
 const ExhibitActions: React.FC<IExhibitActionsProps> = (props) => {
-    const { classNames, showImageActions = false, zoomActionLabel, downloadActionLabel, onZoom, onDownload } = props;
+  const {
+    classNames,
+    showImageActions = false,
+    zoomActionLabel,
+    downloadActionLabel,
+    onZoom,
+    onDownload,
+  } = props;
 
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <div className={clsx(classes.actionsContainer, classNames)}>
-            {/* 
+  return (
+    <div className={clsx(classes.actionsContainer, classNames)}>
+      {/*
             <IconButton color={'inherit'} onClick={objectContextData.emailButtonPressed}>
                 <EmailOutlinedIcon />
             </IconButton>
@@ -34,28 +41,28 @@ const ExhibitActions: React.FC<IExhibitActionsProps> = (props) => {
                 <InsertDriveFileOutlinedIcon />
             </IconButton>
             */}
-            {showImageActions && (
-                <IconButton
-                    color="inherit"
-                    aria-label={downloadActionLabel || 'download'}
-                    data-cy={'object-actions-download'}
-                    onClick={() => onDownload && onDownload()}
-                >
-                    <SaveAltOutlinedIcon />
-                </IconButton>
-            )}
-            {showImageActions && (
-                <IconButton
-                    color="inherit"
-                    aria-label={zoomActionLabel || 'zoom'}
-                    data-cy={'object-actions-zoom'}
-                    onClick={() => onZoom && onZoom()}
-                >
-                    <ZoomInOutlinedIcon />
-                </IconButton>
-            )}
-        </div>
-    );
+      {showImageActions && (
+        <IconButton
+          color="inherit"
+          aria-label={downloadActionLabel || 'download'}
+          data-testid={'object-actions-download'}
+          onClick={() => onDownload && onDownload()}
+        >
+          <SaveAltOutlinedIcon />
+        </IconButton>
+      )}
+      {showImageActions && (
+        <IconButton
+          color="inherit"
+          aria-label={zoomActionLabel || 'zoom'}
+          data-testid={'object-actions-zoom'}
+          onClick={() => onZoom && onZoom()}
+        >
+          <ZoomInOutlinedIcon />
+        </IconButton>
+      )}
+    </div>
+  );
 };
 
 export default ExhibitActions;

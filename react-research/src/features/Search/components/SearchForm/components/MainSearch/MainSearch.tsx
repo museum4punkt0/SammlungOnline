@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from 'react-hook-form';
 
@@ -11,44 +11,64 @@ import { useCreateSearchFormChangeEvent } from '../../search-form.context';
 import { ESearchFormFields } from '../../enums/search-form-fields.enum';
 
 import useStyles from './mainSearch.jss';
+import { useWindowDimensions } from '@smb/smb-react-components-library';
 
 interface IMainSearchProps {
-    search?: string;
+  search?: string;
 }
 
 const MainSearch: React.FC<IMainSearchProps> = ({ search }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
+  const [searchValue, setSearchValue] = useState(search); //
+  const { width } = useWindowDimensions();
 
-    const { setValue } = useFormContext();
-    const createSearchFormChangeEvent = useCreateSearchFormChangeEvent();
+  const { setValue } = useFormContext();
+  const createSearchFormChangeEvent = useCreateSearchFormChangeEvent();
 
-    const classes = useStyles();
+  // Make the same behavior as user click Enter
+  const handleSelectValue = (value: string) => {
+    // try avoid rendering if value don`t change
+    if (searchValue !== value) {
+      setValue(ESearchFormFields.question, value);
+      setSearchValue(value);
+      createSearchFormChangeEvent();
+    }
+  };
 
-    return (
-        <Grid style={{ margin: '5px 0' }} container spacing={0}>
-            <div className={classes.searchInput}>
-                <SearchInput
-                    variant="outlined"
-                    defaultValue={search}
-                    label={t('searchForm.labels.search')}
-                    onSelect={createSearchFormChangeEvent}
-                    onChange={(value) => {
-                        setValue(ESearchFormFields.question, value);
-                    }}
-                />
-            </div>
-            <div className={classes.searchIconContainer}>
-                <IconButton
-                    type="submit"
-                    className={classes.button}
-                    aria-label={t('start search')}
-                    onClick={createSearchFormChangeEvent}
-                >
-                    <SearchOutlinedIcon color="secondary" fontSize="large" className={classes.searchIcon} />
-                </IconButton>
-            </div>
-        </Grid>
-    );
+  const classes = useStyles();
+
+  return (
+    <Grid style={{ margin: '5px 0' }} container spacing={0}>
+      <div className={classes.searchInput}>
+        <SearchInput
+          id="search_id"
+          variant="outlined"
+          defaultValue={search}
+          label={t(
+            width < 900 ? 'searchForm.labels.search' : 'searchForm.labels.searchLong',
+          )}
+          onSelect={handleSelectValue}
+          onChange={(value) => {
+            setValue(ESearchFormFields.question, value);
+          }}
+        />
+      </div>
+      <div className={classes.searchIconContainer}>
+        <IconButton
+          type="submit"
+          className={classes.button}
+          aria-label={t('start search')}
+          onClick={createSearchFormChangeEvent}
+        >
+          <SearchOutlinedIcon
+            color="secondary"
+            fontSize="large"
+            className={classes.searchIcon}
+          />
+        </IconButton>
+      </div>
+    </Grid>
+  );
 };
 
 export default MainSearch;

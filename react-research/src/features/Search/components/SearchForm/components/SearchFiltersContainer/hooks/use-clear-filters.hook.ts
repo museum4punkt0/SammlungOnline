@@ -7,28 +7,30 @@ import { IVirtualSearchFilterGroup } from '../../../interfaces/virtual-filter-gr
 import { ESearchFormFields } from '../../../enums/search-form-fields.enum';
 
 const useClearFilters = () => {
-    const { reset, getValues } = useFormContext<ISearchFormData>();
+  const { reset, getValues } = useFormContext<ISearchFormData>();
 
-    return useCallback(() => {
-        const _advancedFilters = getValues<string, IVirtualSearchFilterGroup[]>(ESearchFormFields.advancedFilters);
+  return useCallback(() => {
+    const _advancedFilters = getValues<string, IVirtualSearchFilterGroup[]>(
+      ESearchFormFields.advancedFilters,
+    );
 
-        const advancedFilters = _advancedFilters?.map((advancedFilter) => {
-            const filters = advancedFilter.filters.map((_filter) => {
-                const options = _filter.options.map((option) => {
-                    return { ...option, virtualValue: false };
-                });
-
-                return { ..._filter, options, virtualValue: false };
-            });
-
-            return { ...advancedFilter, filters };
+    const advancedFilters = _advancedFilters?.map((advancedFilter) => {
+      const filters = advancedFilter.filters.map((_filter) => {
+        const options = _filter.options.map((option) => {
+          return { ...option, virtualValue: false };
         });
 
-        reset({
-            advancedFilters,
-            searchControls: getValues(ESearchFormFields.searchControls),
-        });
-    }, [reset, getValues]);
+        return { ..._filter, options, virtualValue: false };
+      });
+
+      return { ...advancedFilter, filters };
+    });
+
+    reset({
+      advancedFilters,
+      searchControls: getValues(ESearchFormFields.searchControls),
+    });
+  }, [reset, getValues]);
 };
 
 export default useClearFilters;

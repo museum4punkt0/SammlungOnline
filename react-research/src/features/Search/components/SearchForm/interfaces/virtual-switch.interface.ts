@@ -1,5 +1,5 @@
 export interface IVirtualSearchSwitch {
-    name: string;
-    label: string;
-    value: boolean;
+  name: string;
+  label: string;
+  value: boolean;
 }

@@ -1,3 +1,5 @@
+import { scrollToBottom } from '../support/helpers';
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -23,3 +25,18 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+import '@testing-library/cypress/add-commands';
+import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command';
+import 'cypress-plugin-snapshots/commands';
+
+Cypress.Commands.add('waitAndScroll', (PAGE_LOADING_SPINNER, DEFAULT_LOADING_SPINNER) => {
+  // Make sure the page is not loading anymore
+  cy.findByTestId(PAGE_LOADING_SPINNER).should('not.exist');
+  // Scroll to the bottom of the page slowly (to trigger lazy loading)
+  cy.window().then(async ($window) => {
+    await scrollToBottom({ remoteWindow: $window });
+  });
+  //  Wait for all Image Loading Spinners to be gone
+  cy.findAllByTestId(DEFAULT_LOADING_SPINNER).should('not.exist');
+});
+addMatchImageSnapshotCommand();

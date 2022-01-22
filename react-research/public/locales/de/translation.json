@@ -6,7 +6,9 @@
     "searchForm": {
         "advancedSearch": "Erweiterte Suche",
         "labels": {
-            "search": "Suche"
+            "search": "Suchen",
+            "searchLong": "Suchen Sie nach Personen oder Begriffen"
+
         },
         "actions": {
             "clear": "Löschen",
@@ -23,16 +25,34 @@
                 "highlight": "Highlights"
             },
             "attributes": {
-                "datingFromTo": "Datierung von/bis",
-                "geographicalReferences": "Geografische Bezüge",
-                "involvedParties": "Beteiligte",
-                "identNumber": "Ident. Nr.",
-                "datingTo": "Datierung bis",
-                "datingFrom": "Datierung von",
+                "attachments": "Abbildungen",
+                "acquisition": "Erwerbung",
+                "collection": "Sammlung",
+                "collectionKey": "Sammlung",
+                "compilation": "Bestand",
+                "creditLine": "Beschaffung",
                 "dating": "Datierung",
+                "datingFrom": "Datierung von",
+                "datingFromTo": "Datierung von/bis",
+                "datingTo": "Datierung bis",
+                "dateRange": "Datum",
+                "dimensionsAndWeight": "Abmessungen",
+                "exhibit": "Ausgestellt",
+                "exhibitions": "Ausstellungen",
+                "exhibitionSpace": "Standort",
+                "fulltext": "Volltext",
+                "geographicalReferences": "Geografische Bezüge",
+                "id": "Id",
+                "identNumber": "Ident. Nr.",
+                "involvedParties": "Beteiligte",
+                "literature": "Literatur",
                 "location": "Standort",
-                "materialAndTechnique": "Material und Technik",
-                "provenance": "Provenienz und Erwerbung",
+                "longDescription": "Beschreibung",
+                "highlight": "Highlight",
+                "materialAndTechnique": "Material / Technik",
+                "provenance": "Provenienz",
+                "provenanceEvaluation": "Provenienz",
+                "signatures": "Signaturen und Inschriften",
                 "technicalTerm": "Sachbegriff",
                 "titles": "Titel"
             },
@@ -66,21 +86,23 @@
             "compilation": "Bestand",
             "notExhibited": "Nicht ausgestellt",
             "attributes": {
-                "dimensionsAndWeight": "Abmessungen und Gewicht",
-                "description": "Objektbeschreibung",
-                "noData": "Keine Daten vorhanden.",
-                "geographicalReferences": "Geografische Bezüge",
-                "involvedParties": "Beteiligte",
-                "identNumber": "Ident. Nr.",
-                "datingFromTo": "Datierung von/bis",
-                "dating": "Datierung",
-                "location": "Standort",
-                "materialAndTechnique": "Material und Technik",
-                "provenance": "Provenienz und Erwerbung",
-                "technicalTerm": "Sachbegriff",
-                "literature": "Literatur",
-                "signatures": "Signaturen und Inschriften",
+                "acquisition": "Erwerbung",
                 "collection": "Sammlung",
+                "dating": "Datierung",
+                "datingFromTo": "Datierung von/bis",
+                "description": "Objektbeschreibung",
+                "dimensionsAndWeight": "Abmessungen",
+                "exhibitions": "Ausstellungen",
+                "geographicalReferences": "Geografische Bezüge",
+                "identNumber": "Ident. Nr.",
+                "involvedParties": " ",
+                "literature": "Literatur",
+                "location": "Standort",
+                "materialAndTechnique": "Material / Technik",
+                "noData": "Keine Daten vorhanden.",
+                "provenance": "Provenienz",
+                "signatures": "Signaturen und Inschriften",
+                "technicalTerm": "Sachbegriff",
                 "titles": "Titel"
             }
         }
@@ -98,8 +120,18 @@
         "imprint": "Impressum",
         "privacy": "Datenschutz",
         "accessibility": "Barrierefreiheit",
-        "contact": "Kontakt"
-    },
+        "contact": "Kontakt",
+        "contactSection":{
+          "title":"Kontakt",
+          "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
+          "link":{
+            "href":"mailto:smb-digital@smb.spk-berlin.de",
+            "text": "Fragen Sie uns"
+          }
+        }
+    
+      },
     "details": {
         "aside": {
             "contact": "Kontakt",

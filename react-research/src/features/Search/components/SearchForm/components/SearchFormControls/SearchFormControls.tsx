@@ -12,31 +12,40 @@ import useStyles from './searchFormControls.jss';
 import { useCreateSearchFormChangeEvent } from '../../search-form.context';
 
 const SearchFormControls = () => {
-    const { fields: searchFormControlFields } = useFieldArray({ name: ESearchFormFields.searchControls });
-    const createSearchFormChangeEvent = useCreateSearchFormChangeEvent();
+  const { fields: searchFormControlFields } = useFieldArray({
+    name: ESearchFormFields.searchControls,
+  });
+  const createSearchFormChangeEvent = useCreateSearchFormChangeEvent();
 
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <Grid container className={classes.container} alignItems="center" justify="flex-start" direction="row-reverse">
-            {searchFormControlFields?.map(({ id, label, value }, index) => {
-                const valueKey = `${ESearchFormFields.searchControls}[${index}].value`;
+  return (
+    <Grid
+      container
+      className={classes.container}
+      alignItems="center"
+      justify="flex-start"
+      direction="row-reverse"
+      data-testid="grid-searchControls-switcher-wrapper"
+    >
+      {searchFormControlFields?.map(({ id, label, value }, index) => {
+        const valueKey = `${ESearchFormFields.searchControls}[${index}].value`;
 
-                return (
-                    <SearchSwitch
-                        key={id}
-                        name={valueKey}
-                        label={t(label)}
-                        value={value}
-                        defaultValue={value}
-                        onChange={createSearchFormChangeEvent}
-                    />
-                );
-            })}
-        </Grid>
-    );
+        return (
+          <SearchSwitch
+            key={id}
+            name={valueKey}
+            label={t(label)}
+            value={value}
+            defaultValue={value}
+            onChange={createSearchFormChangeEvent}
+          />
+        );
+      })}
+    </Grid>
+  );
 };
 
 export default SearchFormControls;

@@ -6,64 +6,64 @@ import useStyles from './searchSwitch.jss';
 import { useController, useFormContext } from 'react-hook-form';
 
 export interface ISearchSwitchProps {
-    name: string;
-    label: string;
-    value: boolean;
-    defaultValue?: boolean;
-    onChange?: () => void;
+  name: string;
+  label: string;
+  value: boolean;
+  defaultValue?: boolean;
+  onChange?: () => void;
 }
 
 const SearchSwitch: React.FC<ISearchSwitchProps> = (props) => {
-    const { label, name, defaultValue, onChange } = props;
+  const { label, name, defaultValue, onChange } = props;
 
-    const { control } = useFormContext();
-    const { field: switchField } = useController({ name, control, defaultValue });
+  const { control } = useFormContext();
+  const { field: switchField } = useController({ name, control, defaultValue });
 
-    const renderLabel = () => {
-        return (
-            <Typography variant="overline" color="textSecondary">
-                {label}
-            </Typography>
-        );
-    };
-
-    const renderControl = () => {
-        return (
-            <Switch
-                {...switchField}
-                tabIndex={-1}
-                name={name}
-                checked={switchField.value}
-                classes={{
-                    root: classes.root,
-                    switchBase: classes.switchBase,
-                    checked: classes.checked,
-                    disabled: classes.disabled,
-                    track: classes.track,
-                }}
-                onChange={(event: any) => {
-                    onChange && onChange();
-                    switchField.onChange(event.target.checked);
-                }}
-            />
-        );
-    };
-
-    const classes = useStyles();
-    const classesOverrides = { root: classes.focus };
-
+  const renderLabel = () => {
     return (
-        <FormControlLabel
-            tabIndex={0}
-            label={renderLabel()}
-            control={renderControl()}
-            classes={classesOverrides}
-            onKeyPress={() => {
-                onChange && onChange();
-                switchField.onChange(!switchField.value);
-            }}
-        />
+      <Typography variant="overline" color="textSecondary">
+        {label}
+      </Typography>
     );
+  };
+
+  const renderControl = () => {
+    return (
+      <Switch
+        {...switchField}
+        tabIndex={-1}
+        name={name}
+        checked={switchField.value}
+        classes={{
+          root: classes.root,
+          switchBase: classes.switchBase,
+          checked: classes.checked,
+          disabled: classes.disabled,
+          track: classes.track,
+        }}
+        onChange={(event: any) => {
+          onChange && onChange();
+          switchField.onChange(event.target.checked);
+        }}
+      />
+    );
+  };
+
+  const classes = useStyles();
+  const classesOverrides = { root: classes.focus };
+
+  return (
+    <FormControlLabel
+      tabIndex={0}
+      label={renderLabel()}
+      control={renderControl()}
+      classes={classesOverrides}
+      onKeyPress={() => {
+        onChange && onChange();
+        switchField.onChange(!switchField.value);
+      }}
+    />
+  );
 };
 
 export default SearchSwitch;

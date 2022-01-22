@@ -1,25 +1,29 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import QueryParamsService from '../../../../../core/services/query-params/query-params.service';
+import QueryParamsService from '../../../../../utils/query-params/query-params.service';
 
 const exhibitOffsetQueryParamsKey = 'exhibitOverviewOffset';
 
 export const useCurrentExhibitOffset = () => {
-    const history = useHistory();
+  const history = useHistory();
 
-    const queryParamsManagerService = new QueryParamsService(history.location.search);
-    const defaultExhibitOverviewOffset = Number(queryParamsManagerService.get(exhibitOffsetQueryParamsKey));
+  const queryParamsManagerService = new QueryParamsService(history.location.search);
+  const defaultExhibitOverviewOffset = Number(
+    queryParamsManagerService.get(exhibitOffsetQueryParamsKey),
+  );
 
-    const [offset, setOffset] = useState(defaultExhibitOverviewOffset);
+  const [offset, setOffset] = useState(defaultExhibitOverviewOffset);
 
-    useEffect(() => {
-        return history.listen((location) => {
-            const queryParamsManagerService = new QueryParamsService(location.search);
-            const exhibitOverviewOffset = Number(queryParamsManagerService.get(exhibitOffsetQueryParamsKey));
-            setOffset(exhibitOverviewOffset);
-        });
-    }, [history]);
+  useEffect(() => {
+    return history.listen(location => {
+      const queryParamsManagerService = new QueryParamsService(location.search);
+      const exhibitOverviewOffset = Number(
+        queryParamsManagerService.get(exhibitOffsetQueryParamsKey),
+      );
+      setOffset(exhibitOverviewOffset);
+    });
+  }, [history]);
 
-    return offset;
+  return offset;
 };

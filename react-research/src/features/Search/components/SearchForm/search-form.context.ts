@@ -1,17 +1,17 @@
 import { createContext, useContext } from 'react';
 
 export interface ISearchFormContext {
-    onSearchFormChange: () => void;
+  onSearchFormChange: () => void;
 }
 
 const initialContextValue: ISearchFormContext = {
-    onSearchFormChange: () => {
-        throw new Error('should define onSearchFormChange');
-    },
+  onSearchFormChange: () => {
+    throw new Error('should define onSearchFormChange');
+  },
 };
 
 export const SearchFormContext = createContext<ISearchFormContext>(initialContextValue);
 
 export const useCreateSearchFormChangeEvent = (): (() => void) => {
-    return useContext(SearchFormContext).onSearchFormChange;
+  return useContext(SearchFormContext).onSearchFormChange;
 };

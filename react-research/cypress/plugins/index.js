@@ -15,7 +15,23 @@
 /**
  * @type {Cypress.PluginConfig}
  */
-module.exports = (on, config) => {
-    // `on` is used to hook into various events Cypress emits
-    // `config` is the resolved Cypress config
+import { addMatchImageSnapshotPlugin } from 'cypress-image-snapshot/plugin';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { initPlugin } = require('cypress-plugin-snapshots/plugin');
+
+export default (on, config) => {
+  addMatchImageSnapshotPlugin(on, config);
+  on('task', {
+    log(message) {
+      message.forEach((element) => {
+        // eslint-disable-next-line no-console
+        console.log('\x1b[33m%s\x1b[0m', element);
+      });
+
+      return null;
+    },
+  });
+  initPlugin(on, config);
+  return config;
 };

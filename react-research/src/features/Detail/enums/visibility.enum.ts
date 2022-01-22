@@ -1,4 +1,4 @@
 export enum EVisibility {
-    VISIBLE,
-    VISIBLE_IF_AVAILABLE,
+  VISIBLE,
+  VISIBLE_IF_AVAILABLE,
 }

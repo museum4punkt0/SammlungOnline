@@ -6,21 +6,32 @@ import { TopicsCarousel } from './components/TopicsCarousel/TopicsCarousel';
 import SearchContainer from './components/SearchContainer/SearchContainer';
 
 import useStyles from './searchPage.jss';
+import {
+  IntroService,
+  Sections,
+  TextModuleType,
+  TextSectionContextData,
+  useConfigLoader,
+} from '@smb/smb-react-components-library';
 
 const SearchPage: React.FC = () => {
-    const classes = useStyles();
+  const classes = useStyles();
+  const { config } = useConfigLoader();
 
-    return (
-        <div className={classes.content}>
-            <SearchContainer />
-            <Grid className={classes.topicsCarousel}>
-                <TopicsCarousel />
-            </Grid>
-            <Grid className={classes.toursCarousel}>
-                <ToursCarousel />
-            </Grid>
-        </div>
-    );
+  const introService = new IntroService(config);
+  const { contextData } = introService.getIntroContextData();
+  const textSectionContext: TextSectionContextData = {
+    sections: contextData.textModulesContextData,
+  };
+  return (
+    <div className={classes.content}>
+      <SearchContainer />
+      <Sections
+        sections={textSectionContext.sections}
+        allowedSectionTypes={[TextModuleType.TOPIC, TextModuleType.GUIDE]}
+      ></Sections>
+    </div>
+  );
 };
 
 export default SearchPage;

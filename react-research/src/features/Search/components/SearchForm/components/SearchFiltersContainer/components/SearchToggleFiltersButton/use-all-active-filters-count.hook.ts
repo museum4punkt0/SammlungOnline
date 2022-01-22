@@ -8,41 +8,47 @@ import { IVirtualSearchFilterGroup } from '../../../../interfaces/virtual-filter
 import { IVirtualSearchFilter } from '../../../../interfaces/virtual-filter.interface';
 
 const useAllActiveFiltersCount = (): number => {
-    const { control } = useFormContext();
+  const { control } = useFormContext();
 
-    const watchedConditions = useWatch<IVirtualSearchAttributeCondition[]>({
-        name: ESearchFormFields.conditions,
-        control,
-    });
+  const watchedConditions = useWatch<IVirtualSearchAttributeCondition[]>({
+    name: ESearchFormFields.conditions,
+    control,
+  });
+  let activeConditionsCount = 0;
+  if (watchedConditions && watchedConditions?.length > 0) {
+      activeConditionsCount = watchedConditions?.filter(condition => {return condition.value != ''}).length ?? 0;
+  }
 
-    const activeConditionsCount = watchedConditions?.length ?? 0;
+  const watchedAdvancedFilters = useWatch<IVirtualSearchFilterGroup[]>({
+    name: ESearchFormFields.advancedFilters,
+    control,
+  });
 
-    const watchedAdvancedFilters = useWatch<IVirtualSearchFilterGroup[]>({
-        name: ESearchFormFields.advancedFilters,
-        control,
-    });
+  const countActiveFilters = (
+    previousFilterNumber: number,
+    { virtualValue, options }: IVirtualSearchFilter,
+  ) => {
+    if (virtualValue) {
+      const activeOptionsCount =
+        options?.filter(({ virtualValue }) => virtualValue).length ?? 0;
 
-    const countActiveFilters = (previousFilterNumber: number, { virtualValue, options }: IVirtualSearchFilter) => {
-        if (virtualValue) {
-            const activeOptionsCount = options?.filter(({ virtualValue }) => virtualValue).length ?? 0;
+      return previousFilterNumber + activeOptionsCount + 1;
+    }
 
-            return previousFilterNumber + activeOptionsCount + 1;
-        }
+    return previousFilterNumber;
+  };
 
-        return previousFilterNumber;
-    };
+  const activeFiltersCount = useMemo(() => {
+    if (!watchedAdvancedFilters?.length) {
+      return 0;
+    }
 
-    const activeFiltersCount = useMemo(() => {
-        if (!watchedAdvancedFilters?.length) {
-            return 0;
-        }
+    return watchedAdvancedFilters?.reduce((previousValue: number, { filters }) => {
+      return filters?.reduce(countActiveFilters, previousValue);
+    }, 0);
+  }, [watchedAdvancedFilters]);
 
-        return watchedAdvancedFilters?.reduce((previousValue: number, { filters }) => {
-            return filters?.reduce(countActiveFilters, previousValue);
-        }, 0);
-    }, [watchedAdvancedFilters]);
-
-    return activeFiltersCount + activeConditionsCount;
+  return activeFiltersCount + activeConditionsCount;
 };
 
 export default useAllActiveFiltersCount;

@@ -5,22 +5,23 @@ import Backend from 'i18next-xhr-backend';
 
 const defaultLanguage = 'de';
 
-i18n.use(Backend)
-    .use(detector)
-    .use(initReactI18next)
-    .init({
-        lng: defaultLanguage,
-        fallbackLng: defaultLanguage,
-        debug: false,
-        backend: {
-            loadPath: '/locales/{{lng}}/{{ns}}.json',
-        },
-        interpolation: {
-            escapeValue: false,
-        },
-        react: {
-            useSuspense: false,
-        },
-    });
+i18n
+  .use(Backend)
+  .use(detector)
+  .use(initReactI18next)
+  .init({
+    lng: defaultLanguage,
+    fallbackLng: defaultLanguage,
+    debug: false,
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
 
 export default i18n;

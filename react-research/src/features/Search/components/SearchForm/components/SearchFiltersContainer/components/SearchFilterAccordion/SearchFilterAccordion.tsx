@@ -9,21 +9,33 @@ import { IVirtualSearchFilterGroup } from '../../../../interfaces/virtual-filter
 import useStyles from './searchFilterAccordion.jss';
 
 interface ISearchFilterAccordionProps {
-    formBaseName: string;
-    advancedFilter: IVirtualSearchFilterGroup;
+  formBaseName: string;
+  advancedFilter: IVirtualSearchFilterGroup;
 }
 
 const SearchFilterAccordion: React.FC<ISearchFilterAccordionProps> = (props) => {
-    const { formBaseName, advancedFilter } = props;
+  const { formBaseName, advancedFilter } = props;
 
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <Accordion key={formBaseName} className={classes.advancedSearchAccordion}>
-            <SearchFilterAccordionSummary name={formBaseName} filterName={advancedFilter.label} />
-            <SearchFilterAccordionDetails filters={advancedFilter.filters ?? []} formBaseName={formBaseName} />
-        </Accordion>
-    );
+  return (
+    <Accordion
+      key={formBaseName}
+      className={classes.advancedSearchAccordion}
+      data-testid={'search_filter_accordion_wrapper'}
+    >
+      <SearchFilterAccordionSummary
+        name={formBaseName}
+        filterName={advancedFilter.label}
+        data-testid={'search_filter_accordion_summary'}
+      />
+      <SearchFilterAccordionDetails
+        filters={advancedFilter.filters ?? []}
+        formBaseName={formBaseName}
+        data-testid={'search_filter_accordion_details'}
+      />
+    </Accordion>
+  );
 };
 
 export default SearchFilterAccordion;

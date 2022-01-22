@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
 export interface IUseShowFiltersHandlers {
-    toggle: () => void;
+  toggle: () => void;
 }
 
 const useShowFilters = (): [boolean, IUseShowFiltersHandlers] => {
-    const [showFilters, setShowFilters] = useState(false);
-    const toggleFilters = () => setShowFilters(!showFilters);
+  const [showFilters, setShowFilters] = useState(false);
+  const toggleFilters = () => setShowFilters(!showFilters);
 
-    return [showFilters, { toggle: toggleFilters }];
+  return [showFilters, { toggle: toggleFilters }];
 };
 
 export default useShowFilters;

@@ -9,28 +9,30 @@ import { IVirtualSearchFilterGroup } from '../../../../../../interfaces/virtual-
 import { ISearchFormData } from '../../../../../../interfaces/form-data.interface';
 
 export interface ISearchMuseumFiltersProps {
-    advancedFilters?: IVirtualSearchFilterGroup[];
+  advancedFilters?: IVirtualSearchFilterGroup[];
 }
 
 const SearchFilterAccordionList: React.FC<ISearchMuseumFiltersProps> = () => {
-    const { getValues } = useFormContext<ISearchFormData>();
-    const advancedFilters = getValues(ESearchFormFields.advancedFilters) as IVirtualSearchFilterGroup[];
+  const { getValues } = useFormContext<ISearchFormData>();
+  const advancedFilters = getValues(
+    ESearchFormFields.advancedFilters,
+  ) as IVirtualSearchFilterGroup[];
 
-    return (
-        <>
-            {advancedFilters?.map((advancedFilter, i: number) => {
-                const formBaseName = `${ESearchFormFields.advancedFilters}[${i}]`;
+  return (
+    <>
+      {advancedFilters?.map((advancedFilter, i: number) => {
+        const formBaseName = `${ESearchFormFields.advancedFilters}[${i}]`;
 
-                return (
-                    <SearchFilterAccordion
-                        key={formBaseName}
-                        formBaseName={formBaseName}
-                        advancedFilter={advancedFilter}
-                    />
-                );
-            })}
-        </>
-    );
+        return (
+          <SearchFilterAccordion
+            key={formBaseName}
+            formBaseName={formBaseName}
+            advancedFilter={advancedFilter}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export default SearchFilterAccordionList;

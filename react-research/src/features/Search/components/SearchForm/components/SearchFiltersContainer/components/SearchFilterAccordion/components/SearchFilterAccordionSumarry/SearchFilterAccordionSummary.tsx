@@ -7,22 +7,28 @@ import { AccordionSummary, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 interface ISearchFilterAccordionSummaryProps {
-    filterName: string;
-    name: string;
+  filterName: string;
+  name: string;
 }
 
-const SearchFilterAccordionSummary: React.FC<ISearchFilterAccordionSummaryProps> = ({ filterName, name }) => {
-    const { t } = useTranslation();
+const SearchFilterAccordionSummary: React.FC<ISearchFilterAccordionSummaryProps> = ({
+  filterName,
+  name,
+}) => {
+  const { t } = useTranslation();
 
-    const activeFiltersCount = useActiveFiltersCount(name);
+  const activeFiltersCount = useActiveFiltersCount(name);
 
-    return (
-        <AccordionSummary expandIcon={<ExpandMoreIcon fontSize="large" color="primary" />}>
-            <Typography component="div" variant="h5">
-                {t(filterName)} ({activeFiltersCount})
-            </Typography>
-        </AccordionSummary>
-    );
+  return (
+    <AccordionSummary
+      expandIcon={<ExpandMoreIcon fontSize="large" color="primary" />}
+      data-testid={'search_filter_accordion_collection_wrapper'}
+    >
+      <Typography component="div" variant="h5">
+        {t(filterName)} ({activeFiltersCount})
+      </Typography>
+    </AccordionSummary>
+  );
 };
 
 export default SearchFilterAccordionSummary;

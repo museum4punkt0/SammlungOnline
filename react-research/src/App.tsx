@@ -2,45 +2,48 @@ import React, { ReactElement } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import SmbResearchTheme from './Themes/SmbResearchTheme';
+import SmbResearchTheme from './context/Themes/SmbResearchTheme';
 
-import { useConfig } from './core/hooks/use-config.hook';
-import { CoreContext } from './core/store/core.context';
+import { CoreContext } from './context/core.context';
 
-import { LoadingSpinner } from 'smb-react-components-library';
-import SmbLayout from './core/components/SmbLayout/SmbLayout';
+import { LoadingSpinner, useConfigLoader } from '@smb/smb-react-components-library';
+import SmbLayout from './components/SmbLayout/SmbLayout';
 
 import './i18n';
 
-import { createDependencies, DependencyContext } from './core/store/dependency.context';
+import { createDependencies, DependencyContext } from './context/dependency.context';
 
 import useStyles from './app.jss';
 
 function App(): ReactElement {
-    const configuration = useConfig();
-    const classes = useStyles();
+  const { config } = useConfigLoader();
+  const classes = useStyles();
 
-    if (!configuration) {
-        return (
-            <div className={classes.loadingWrapper}>
-                <LoadingSpinner styleClasses={classes.loadingSpinner} />
-            </div>
-        );
-    }
+  if (self != top) {
+    return <div>Embedding this page is not allowed.</div>;
+  }
 
-    const dependencyContext = createDependencies(configuration);
-
+  if (!config) {
     return (
-        <ApolloProvider client={dependencyContext.apolloClient}>
-            <MuiThemeProvider theme={SmbResearchTheme}>
-                <CoreContext.Provider value={{ configuration }}>
-                    <DependencyContext.Provider value={dependencyContext}>
-                        <SmbLayout />
-                    </DependencyContext.Provider>
-                </CoreContext.Provider>
-            </MuiThemeProvider>
-        </ApolloProvider>
+      <div className={classes.loadingWrapper}>
+        <LoadingSpinner styleClasses={classes.loadingSpinner} data-testid="spinner" />
+      </div>
     );
+  }
+
+  const dependencyContext = createDependencies(config);
+
+  return (
+    <ApolloProvider client={dependencyContext.apolloClient}>
+      <MuiThemeProvider theme={SmbResearchTheme}>
+        <CoreContext.Provider value={{ configuration: config }}>
+          <DependencyContext.Provider value={dependencyContext}>
+            <SmbLayout data-testid="smb-layout" />
+          </DependencyContext.Provider>
+        </CoreContext.Provider>
+      </MuiThemeProvider>
+    </ApolloProvider>
+  );
 }
 
 export default App;
