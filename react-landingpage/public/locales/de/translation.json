@@ -18,7 +18,7 @@
   "object desc geographical references title": "Geografische Bezüge",
   "object desc dimensions and weight title": "Abmessungen und Gewicht",
   "object desc material and technique title": "Material und Technik",
-  "object desc provenance title": "Provenienz und Erwerbung",
+  "object desc provenance title": "Provenienz",
   "object desc labels title": "Objektbeschriftungen",
   "object desc norm data title": "Normdaten",
   "object desc picture credits title": "Fotonachweis",
@@ -50,7 +50,17 @@
     "imprint": "Impressum",
     "privacy": "Datenschutz",
     "accessibility": "Barrierefreiheit",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "contactSection":{
+      "title":"Kontakt",
+      "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
+      "link":{
+        "href":"mailto:smb-digital@smb.spk-berlin.de",
+        "text": "Fragen Sie uns"
+      }
+    }
+
   },
   "routes in the collection": "Touren aus den Sammlungen",
   "highlights from the collection": "Highlights aus den Sammlungen",
