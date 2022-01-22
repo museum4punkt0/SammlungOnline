@@ -64,7 +64,7 @@ public class SitemapGenerationJob {
     public void generateGuideSitemap() {
         LOGGER.info("Generating Guide Sitemap...");
         long start = System.currentTimeMillis();
-        execute(sitemapConfig.getGuideBaseUrl(), this.guideService, "guide");
+        execute(this.sitemapConfig.getGuideBaseUrl(), this.guideService, "guide");
         long end = System.currentTimeMillis();
         LOGGER.info("Guide Sitemap Generation took {}s", (end - start) / 1000);
     }
@@ -74,7 +74,7 @@ public class SitemapGenerationJob {
     public void generateTopicsSitemap() {
         LOGGER.info("Generating Topics Sitemap...");
         long start = System.currentTimeMillis();
-        execute(sitemapConfig.getTopicsBaseUrl(), this.topicsService, "topics");
+        execute(this.sitemapConfig.getTopicsBaseUrl(), this.topicsService, "topics");
         long end = System.currentTimeMillis();
         LOGGER.info("Topics Sitemap Generation took {}s", (end - start) / 1000);
     }
@@ -84,7 +84,7 @@ public class SitemapGenerationJob {
     public void generateResearchSitemap() {
         LOGGER.info("Generating Research Sitemap...");
         long start = System.currentTimeMillis();
-        execute(sitemapConfig.getResearchBaseUrl(), this.researchService, "research");
+        execute(this.sitemapConfig.getResearchBaseUrl(), this.researchService, "research");
         long end = System.currentTimeMillis();
         LOGGER.info("Research Sitemap Generation took {}s", (end - start) / 1000);
     }

@@ -3,6 +3,8 @@ package de.smbonline.sitemap.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Objects;
+
 @Configuration
 @ConfigurationProperties(prefix = "sitemap")
 public class SitemapConfig {
@@ -17,7 +19,7 @@ public class SitemapConfig {
     }
 
     public void setSitemapLocation(final String loc) {
-        this.sitemapLocation = loc;
+        this.sitemapLocation = Objects.requireNonNull(loc);
     }
 
     public String getResearchBaseUrl() {
@@ -25,7 +27,7 @@ public class SitemapConfig {
     }
 
     public void setResearchBaseUrl(final String loc) {
-        this.researchBaseUrl = loc;
+        this.researchBaseUrl = Objects.requireNonNull(loc);
     }
 
     public String getTopicsBaseUrl() {
@@ -33,7 +35,7 @@ public class SitemapConfig {
     }
 
     public void setTopicsBaseUrl(final String loc) {
-        this.topicsBaseUrl = loc;
+        this.topicsBaseUrl = Objects.requireNonNull(loc);
     }
 
     public String getGuideBaseUrl() {
@@ -41,6 +43,6 @@ public class SitemapConfig {
     }
 
     public void setGuideBaseUrl(final String loc) {
-        this.guideBaseUrl = loc;
+        this.guideBaseUrl = Objects.requireNonNull(loc);
     }
 }

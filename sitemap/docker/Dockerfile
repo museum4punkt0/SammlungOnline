@@ -1,5 +1,5 @@
 # Build Container
-FROM openjdk:11.0.9-slim as builder
+FROM openjdk:11.0-slim as builder
 LABEL maintainer="Xailabs<it-support@xailabs.de>"
 
 WORKDIR /opt/smb-sitemap
@@ -8,7 +8,7 @@ RUN chmod +x gradlew
 RUN ./gradlew bootJar
 
 # Runnable Container
-FROM openjdk:11.0.9-slim as server
+FROM openjdk:11.0-slim as server
 LABEL maintainer="Xailabs<it-support@xailabs.de>"
 
 WORKDIR /opt/smb-sitemap

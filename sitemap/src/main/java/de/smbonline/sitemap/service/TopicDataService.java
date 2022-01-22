@@ -41,11 +41,13 @@ public class TopicDataService implements DataService {
     private String buildIdSegment(final TopicData item) {
         StringBuilder sb = new StringBuilder(DETAIL_PATH);
         sb.append(item.getId().toString());
-        item.getTitles().stream().findFirst().ifPresent(title -> {
-            if (!StringUtils.isBlank(title.getValue())) {
-                sb.append("/").append(URLEncoder.encode(title.getValue(), StandardCharsets.UTF_8));
-            }
-        });
+        item.getTitles().stream()
+                .filter(title -> !StringUtils.isBlank(title.getValue()))
+                .findFirst()
+                .ifPresent(title -> {
+                    String encodedTitle = URLEncoder.encode(title.getValue(), StandardCharsets.UTF_8);
+                    sb.append("/").append(encodedTitle);
+                });
         return sb.toString();
     }
 }
