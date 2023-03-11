@@ -1,12 +1,21 @@
-# SMB Online Sammlungen
+# Sammlungen Online
 
-Die Online Sammlungen der SMB zeigen derzeit mehr als 250.000 Datensätze zu Objekten aus den unterschiedlichsten Epochen und Regionen der Welt.
+Die Sammlungen Online der Staatlichen Museen zu Berlin (SMB) zeigen derzeit über 280.000 Datensätze zu Objekten aus den unterschiedlichsten Epochen und Regionen der Welt.
 Die Neugestaltung der Online Sammlungen verfolgt dabei folgende Ziele:
 1. Die Objekte der Staatlichen Museen sollen im Digitalen Raum und international angemessen zeitgemäß zugänglich und recherchierbar gemacht werden.
 2. Die Sichtbarkeit der SMB im Digitalen Raum soll erhöht werden.
 3. Die Diversität der Online BesucherInnen soll verstärkt und die Zahl der Online BesucherInnen erhöht werden.
 
 Beim Besuch der Online Sammlungen weisen BesucherInnen individuelle und spezifischen Motivationen und Bedürfnisse auf. Um diesen individuellen Zugriffen auf die Objekte der Online Sammlung gerecht zu werden, stehen die Objekte der Sammlungen im Mittelpunkt. Durch verschiedene Themenformate, werden für die individuellen Motivationen der Online BesucherInnen, individuelle Zugänge zu den Objekten geschaffen. Die Online Sammlungen wurden modular wachsend sowie mit der Möglichkeit der mehrsprachigen Nutzung geplant.
+
+# Entstehungskontext
+Die Plattform Sammlungen Online ist initial entstanden im Verbundprojekt [museum4punkt0 – Digitale Strategien für das Museum der Zukunft](https://www.museum4punkt0.de) im Teilprojekt [Visitor Journeys neu gedacht – digitale Erweiterung des Museumsbesuchs](https://www.museum4punkt0.de/teilprojekt/visitor-journeys-neu-gedacht-digitale-erweiterung-des-museumsbesuchs/) der Staatlichen Museen zu Berlin – Preußischer Kulturbesitz. Die Plattform wurde über die beiden weiteren Förderphasen des Verbundprojekts museum4punkt0 im Projekt [(De-)Coding Culture. Kulturelle Kompetenz im digitalen Raum](https://www.museum4punkt0.de/teilprojekt/de-coding-culture-kulturelle-kompetenz-im-digitalen-raum/) der Staatlichen Museen zu Berlin um weitere Funktionen und Module erweitert.
+
+# Förderung
+Das Projekt museum4punkt0 wird gefördert durch die Beauftragte der Bundesregierung für Kultur und Medien aufgrund eines Beschlusses des Deutschen Bundestages.
+
+![BKM-Logo](https://github.com/museum4punkt0/Object-by-Object/blob/77bba25aa5a7f9948d4fd6f0b59f5bfb56ae89e2/04%20Logos/BKM_Fz_2017_Web_de.gif)
+![NeustartKultur](https://github.com/museum4punkt0/Object-by-Object/blob/22f4e86d4d213c87afdba45454bf62f4253cada1/04%20Logos/BKM_Neustart_Kultur_Wortmarke_pos_RGB_RZ_web.jpg)
 
 ## Plattformen
 
