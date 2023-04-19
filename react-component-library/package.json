@@ -18,7 +18,7 @@
     "generateGraphQL": "graphql-codegen --config codegen.js",
     "lint-fix": "eslint src/**/* --ext .ts,.tsx --fix",
     "lint": "eslint src/**/* --ext .ts,.tsx",
-    "prepare": "npm run build && husky install",
+    "prepare": "npm run build",
     "prettier-watch": "onchange 'src/**/*' -- prettier --write {{changed}}",
     "start": "rollup -c -w && npm run prettier-watch",
     "storybook": "start-storybook -p 6006",

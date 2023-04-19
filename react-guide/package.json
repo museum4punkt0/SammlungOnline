@@ -1,6 +1,6 @@
 {
   "name": "guide",
-  "version": "2.0.0-SNAPSHOT",
+  "version": "1.5.0",
   "private": true,
   "license": "GNU GPLv3",
   "dependencies": {
@@ -35,7 +35,7 @@
     "react-i18next": "^11.7.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
-    "@smb/smb-react-components-library": "git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git",
+    "@smb/smb-react-components-library": "git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git#f1852293ef6e56ef14df357b9e998a06fefced0e",
     "subscriptions-transport-ws": "^0.9.0",
     "use-constant": "^1.0.0",
     "use-open-seadragon": "^1.0.0"
@@ -80,7 +80,6 @@
     "generateGraphQL": "graphql-codegen --config codegen.js",
     "lint-fix": "eslint '*/**/*.{js,ts,tsx}' --fix",
     "lint": "eslint '*/**/*.{js,ts,tsx}'",
-    "prepare": "husky install",
     "start": "react-app-rewired start",
     "test": "react-app-rewired test",
     "cypress:open": "cypress open",

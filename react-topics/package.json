@@ -1,6 +1,6 @@
 {
   "name": "topics",
-  "version": "2.0.0-SNAPSHOT",
+  "version": "1.5.0",
   "private": true,
   "license": "GNU GPLv3",
   "dependencies": {
@@ -9,7 +9,7 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "^4.10.0",
-    "@smb/smb-react-components-library": "git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git",
+    "@smb/smb-react-components-library": "git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git#f1852293ef6e56ef14df357b9e998a06fefced0e",
     "@types/react-collapse": "^5.0.0",
     "@types/react-lazy-load-image-component": "^1.5.1",
     "apollo-boost": "^0.4.9",
@@ -48,8 +48,6 @@
     "eject": "react-scripts eject",
     "generateGraphQL": "graphql-codegen --config codegen.js",
     "parseTranslations": "i18next './src/**/*.{ts,tsx}'",
-    "prepare": "husky install",
-    "sonar": "node xailabs_intern/sonar-project.js",
     "start": "react-app-rewired start",
     "test": "react-app-rewired test",
     "cypress:open": "cypress open",
