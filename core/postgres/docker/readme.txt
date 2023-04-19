@@ -1,4 +1,4 @@
-Vor dem ersten Start muss ein Ordner "data" angelegt werden, der als Volume gemountet wird.
+Vor dem ersten Start muss ein LEERER Ordner "data" angelegt werden, der als Volume gemountet wird.
 Siehe docker-compose.yml
 
 ACHTUNG WINDOWS USER

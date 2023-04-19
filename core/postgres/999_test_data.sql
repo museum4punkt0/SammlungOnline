@@ -1,5 +1,5 @@
 INSERT INTO smb.user (email, password, editor_scope, role_id) VALUES 
- ('administrator', public.crypt('xailabs$123', public.gen_salt('bf', 10)), 'INTRO|TOPICS|GUIDE|SYSTEM', 2)
+ ('administrator', public.crypt('UNDEFINED', public.gen_salt('bf', 10)), 'INTRO|TOPICS|GUIDE|SYSTEM', 2)
 ;
 INSERT INTO smb.user (email, password, editor_scope, role_id) VALUES
  ('admin-intro',  '$2a$10$z/2wgBIpi.a0Uts.1r/J8umrEw069gBngeNv6o8d5HIGdEoJANN46', 'INTRO',  3)

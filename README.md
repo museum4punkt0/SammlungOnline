@@ -71,6 +71,8 @@ Essentiell für die Nutzung *jedes* Dienstes ist die API `core/hasura`. Diese er
 3. core/hasura
 4. hasura-auth
 
+Nach dem ersten Start von Hasura, müssen inital das Postgres-Schema aus `core/postgres/001_scheme.sql` und die entsprechenden Metadaten aus `core/hasura/hasura_metadata.json` importiert werden. Für einen besseren Start empfiehlt sich auch der Import von `core/postgres/002_base_data.sql`. Weitere Informationen dazu gibt es in `core/howto-init-datamodel.txt`.
+
 Matomo `core/matomo` wird für das User-Tracking auf den einzelnen Plattformen verwendet. Die Tracking-Daten werden in einer relationalen Datenbank `core/mysql` gespeichert. Soll vom Tracking in einer eigenen Matomo-Instanz Gebrauch gemacht werden, müssen diese Container zusätzlich in folgender Reihenfolge gestartet werden:
 1. core/mysql
 2. core/matomo

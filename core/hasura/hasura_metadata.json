@@ -909,28 +909,6 @@
           }
         }
       ],
-      "computed_fields": [
-        {
-          "name": "compilation",
-          "definition": {
-            "function": {
-              "schema": "smb",
-              "name": "extract_compilation"
-            }
-          },
-          "comment": ""
-        },
-        {
-          "name": "collectionKey",
-          "definition": {
-            "function": {
-              "schema": "smb",
-              "name": "extract_collection_key"
-            }
-          },
-          "comment": ""
-        }
-      ],
       "select_permissions": [
         {
           "role": "editor",

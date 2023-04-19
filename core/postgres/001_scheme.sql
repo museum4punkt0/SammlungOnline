@@ -188,7 +188,7 @@ CREATE TABLE smb.attachments (
     CONSTRAINT attachments_object_id_fkey FOREIGN KEY (object_id) 
         REFERENCES smb.objects(id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT attachments_license_id_fkey FOREIGN KEY (license_id) 
-        REFERENCES smb.licenses(id) ON UPDATE CASCADE ON DELETE SET NULL;
+        REFERENCES smb.licenses(id) ON UPDATE CASCADE ON DELETE SET NULL
 );
 ALTER TABLE smb.attachments OWNER TO "smb-db-user";
 COMMENT ON TABLE smb.attachments IS 'Attachments of SMB objects fetched from MDS';
