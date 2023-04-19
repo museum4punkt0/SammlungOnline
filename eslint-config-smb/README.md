@@ -7,7 +7,7 @@
 Eslint-config-smb can be installed by simply running:
 
 ```
-npm install git+https://gitlab.xailabs.com/smb/eslint-config-smb.git
+npm install git+https://gitsrv01.xailabs.dev/smb/eslint-config-smb.git
 ```
 
 ## Project Configuration

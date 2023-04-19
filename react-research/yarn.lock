@@ -16528,9 +16528,9 @@ smartwrap@^1.2.3:
     wcwidth "^1.0.1"
     yargs "^15.1.0"
 
-"@smb/smb-react-components-library@git+https://gitlab.xailabs.com/smb/mui-component-library.git#5ba763af5de299f231a922d7e4e630c9b5b3a8cb":
+"@smb/smb-react-components-library@git+https://gitsrv01.xailabs.dev/smb/mui-component-library.git#5ba763af5de299f231a922d7e4e630c9b5b3a8cb":
   version "2.0.0-SNAPSHOT"
-  resolved "git+https://gitlab.xailabs.com/smb/mui-component-library.git#5ba763af5de299f231a922d7e4e630c9b5b3a8cb"
+  resolved "git+https://gitsrv01.xailabs.dev/smb/mui-component-library.git#5ba763af5de299f231a922d7e4e630c9b5b3a8cb"
   dependencies:
     "@rollup/plugin-json" "^4.1.0"
     husky "^7.0.1"

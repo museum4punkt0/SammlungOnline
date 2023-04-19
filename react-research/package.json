@@ -27,7 +27,7 @@
         "react-i18next": "^11.7.0",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^4.0.3",
-        "@smb/smb-react-components-library": "git+https://gitlab.xailabs.com/smb/react-component-library-2.git",
+        "@smb/smb-react-components-library": "git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git",
         "use-open-seadragon": "^1.0.0"
     },
     "scripts": {
@@ -80,7 +80,7 @@
         "cypress": "^8.0.0",
         "cypress-image-snapshot": "^4.0.1",
         "cypress-plugin-snapshots": "^1.4.4",
-        "eslint-config-smb": "git+https://gitlab.xailabs.com/smb/eslint-config-smb.git",
+        "eslint-config-smb": "git+https://gitsrv01.xailabs.dev/smb/eslint-config-smb.git",
         "graphql-codegen-hasura-client-config": "^4.9.1",
         "graphql-codegen-hasura-core": "^4.9.1",
         "graphql-codegen-hasura-gql": "^4.9.1",

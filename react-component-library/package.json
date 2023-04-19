@@ -94,7 +94,7 @@
     "babel-eslint": "10.0.2",
     "babel-loader": "^8.0.6",
     "clsx": "^1.0.4",
-    "eslint-config-smb": "git+https://gitlab.xailabs.com/smb/eslint-config-smb.git",
+    "eslint-config-smb": "git+https://gitsrv01.xailabs.dev/smb/eslint-config-smb.git",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-json": "^2.1.2",
     "graphql": "^14.7.0",
