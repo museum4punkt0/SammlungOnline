@@ -4,7 +4,7 @@ const currentExtension =
 
 const envs = [
   { extension: 'dev', name: 'dev' },
-  { extension: 'com', name: 'stage' },
+  { extension: 'net', name: 'stage' },
   { extension: 'museum', name: 'production' },
 ];
 
@@ -16,10 +16,10 @@ const domains = {
     '*.touren.smb.museum',
   ],
   stage: [
-    '*.smb-landingpage.xailabs.com',
-    '*.smb-guide.xailabs.com',
-    '*.smb-research.xailabs.com',
-    '*.smb-topics.xailabs.com',
+    '*.smb-landingpage.xaidev.net',
+    '*.smb-guide.xaidev.net',
+    '*.smb-research.xaidev.net',
+    '*.smb-topics.xaidev.net',
   ],
   dev: [
     '*.smb-landingpage.xailabs.dev',
@@ -37,13 +37,13 @@ const siteID = {
 
 const trackingDomains = {
   production: '//admin.smb.museum/matomo/',
-  stage: '//smb-admin.xailabs.com/matomo/',
-  dev: '//smb-matomo.xailabs.dev',
+  stage: '//smb-admin.xaidev.net/matomo/',
+  dev: '//smb-matomo.xailabs.dev/',
 };
 
 const cookieUrls = {
   production: '*.sammlung.smb.museum',
-  stage: '*.smb-landingpage.xailabs.com',
+  stage: '*.smb-landingpage.xaidev.net',
   dev: '*.smb-landingpage.xailabs.dev',
 };
 

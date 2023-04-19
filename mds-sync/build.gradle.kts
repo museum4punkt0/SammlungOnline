@@ -15,7 +15,7 @@ plugins {
 
 description = "Sync for MDS objects, highlights and attachments."
 group = "de.smb-online"
-version = "2.0.0-SNAPSHOT"
+version = "1.5.0"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {

@@ -12,7 +12,7 @@ plugins {
 
 description = "Service to create and host sitemap xmls."
 group = "de.smb-online"
-version = "2.0.0-SNAPSHOT"
+version = "1.5.0"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {

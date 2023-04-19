@@ -16,14 +16,14 @@ const DEV: IConfiguration = {
 const STAGE: IConfiguration = {
   stage: AppStage.STAGE,
   PRODUCTION_READY: true,
-  IMAGE_PROVIDER_DOMAIN: 'https://smb-research.xailabs.com',
-  IMAGE_PROVIDER_ENDPOINT: 'https://smb-research.xailabs.com/images',
-  GRAPHQL_ENDPOINT: 'https://smb-api.xailabs.com/v1/graphql',
-  ELASTIC_API_URL: 'https://smb-api.xailabs.com/search',
-  INTRO_DOMAIN: 'https://smb-landingpage.xailabs.com',
-  TOPICS_DOMAIN: 'https://smb-topics.xailabs.com',
-  RESEARCH_DOMAIN: 'https://smb-research.xailabs.com',
-  GUIDE_DOMAIN: 'https://smb-guide.xailabs.com',
+  IMAGE_PROVIDER_DOMAIN: 'https://smb-research.xaidev.net',
+  IMAGE_PROVIDER_ENDPOINT: 'https://smb-research.xaidev.net/images',
+  GRAPHQL_ENDPOINT: 'https://smb-api.xaidev.net/v1/graphql',
+  ELASTIC_API_URL: 'https://smb-api.xaidev.net/search',
+  INTRO_DOMAIN: 'https://smb-landingpage.xaidev.net',
+  TOPICS_DOMAIN: 'https://smb-topics.xaidev.net',
+  RESEARCH_DOMAIN: 'https://smb-research.xaidev.net',
+  GUIDE_DOMAIN: 'https://smb-guide.xaidev.net',
 };
 const PRODUCTION: IConfiguration = {
   stage: AppStage.PRODUCTION,

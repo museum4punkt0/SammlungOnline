@@ -13,7 +13,6 @@ module.exports = {
     otherGlobal: true
   },
   ignorePatterns:[
-    "xailabs_intern/*",
     "src/generated/*"
   ],
   parser: "@typescript-eslint/parser",

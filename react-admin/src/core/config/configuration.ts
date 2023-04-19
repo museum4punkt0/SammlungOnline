@@ -11,12 +11,12 @@ export const DEV: IConfiguration = {
     GRAPHQL_ENDPOINT: 'https://smb-api.xailabs.dev/v1/graphql',
 };
 export const STAGE: IConfiguration = {
-    DOMAIN: 'https://smb-admin.xailabs.com',
-    IMAGE_PROVIDER_DOMAIN: 'https://smb-admin.xailabs.com',
-    GRAPHQL_ENDPOINT: 'https://smb-api.xailabs.com/v1/graphql',
+    DOMAIN: 'https://smb-admin.xaidev.net',
+    IMAGE_PROVIDER_DOMAIN: 'https://smb-research.xaidev.net',
+    GRAPHQL_ENDPOINT: 'https://smb-api.xaidev.net/v1/graphql',
 };
 export const PRODUCTION: IConfiguration = {
     DOMAIN: 'https://admin.smb.museum',
-    IMAGE_PROVIDER_DOMAIN: 'https://admin.smb.museum',
+    IMAGE_PROVIDER_DOMAIN: 'https://recherche.smb.museum',
     GRAPHQL_ENDPOINT: 'https://api.smb.museum/v1/graphql',
 };

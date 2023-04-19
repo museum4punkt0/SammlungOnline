@@ -41,16 +41,16 @@ const DEV: Config = {
 };
 const STAGE: Config = {
   ...DEV,
-  IMAGE_PROVIDER_DOMAIN: 'https://smb-landingpage.xailabs.com',
-  GRAPHQL_ENDPOINT: 'https://smb-api.xailabs.com/v1/graphql',
-  INTRO_DOMAIN: 'https://smb-landingpage.xailabs.com',
-  TOPICS_DOMAIN: 'https://smb-topics.xailabs.com',
-  RESEARCH_DOMAIN: 'https://smb-research.xailabs.com',
-  GUIDE_DOMAIN: 'https://smb-guide.xailabs.com',
+  IMAGE_PROVIDER_DOMAIN: 'https://smb-research.xaidev.net',
+  GRAPHQL_ENDPOINT: 'https://smb-api.xaidev.net/v1/graphql',
+  INTRO_DOMAIN: 'https://smb-landingpage.xaidev.net',
+  TOPICS_DOMAIN: 'https://smb-topics.xaidev.net',
+  RESEARCH_DOMAIN: 'https://smb-research.xaidev.net',
+  GUIDE_DOMAIN: 'https://smb-guide.xaidev.net',
 };
 const PRODUCTION: Config = {
   ...STAGE,
-  IMAGE_PROVIDER_DOMAIN: 'https://sammlung.smb.museum',
+  IMAGE_PROVIDER_DOMAIN: 'https://recherche.smb.museum',
   GRAPHQL_ENDPOINT: 'https://api.smb.museum/v1/graphql',
   INTRO_DOMAIN: 'https://sammlung.smb.museum',
   TOPICS_DOMAIN: 'http://themen.smb.museum',

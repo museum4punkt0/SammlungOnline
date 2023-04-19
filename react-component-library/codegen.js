@@ -1,7 +1,7 @@
 module.exports = {
   schema: [
     {
-      'https://smb-api.xailabs.dev/v1/graphql': {
+      'http://localhost:8081/v1/graphql': {
         headers: {},
       },
     },

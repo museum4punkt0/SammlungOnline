@@ -2,7 +2,7 @@
 
 set schema_file=src\main\graphql\schema.json
 set auth_header=authservice:authservice
-set endpoint=https://smb-api.xailabs.dev/v1/graphql
+set endpoint=http://localhost:8081/v1/graphql
 
 echo Downloading schema from %endpoint%...
 call .\gradlew.bat downloadApolloSchema --endpoint="%endpoint%" --schema="%schema_file%.tmp" --header="Authorization: %auth_header%" > nul
