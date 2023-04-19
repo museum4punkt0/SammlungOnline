@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   smb-postgres:
-    image: reg.xailabs.com/xailabs/postgres:12.4
+    image: reg.xailabs.dev/xailabs/postgres:12.4
     container_name: smb-postgres
     restart: unless-stopped
     

@@ -4,7 +4,7 @@ version: '3.5'
 
 services:
   smb-orientdb:
-    image: reg.xailabs.com/xailabs/orientdb:3.2.2
+    image: reg.xailabs.dev/xailabs/orientdb:3.2.2
     container_name: smb-orientdb
     restart: unless-stopped    
     volumes:

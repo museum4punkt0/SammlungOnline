@@ -2,7 +2,7 @@ version: '3.5'
 services:
     
     smb-matomo:
-      image: reg.xailabs.com/xailabs/matomo:latest
+      image: reg.xailabs.dev/xailabs/matomo:latest
       restart: unless-stopped
       volumes:
         - ./config.ini.php:/var/www/html/config/config.ini.php
