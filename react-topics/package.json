@@ -107,31 +107,6 @@
     "cypress-image-snapshot": "^4.0.1",
     "cypress-plugin-snapshots": "^1.4.4"
   },
-  "bit": {
-    "env": {
-      "compiler": "bit.envs/compilers/babel@7.0.4"
-    },
-    "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "yarn",
-    "overrides": {
-      "*": {
-        "dependencies": {
-          "react": "-",
-          "react-dom": "-",
-          "@material-ui/core": "-"
-        },
-        "devDependencies": {
-          "@types/node": "+"
-        },
-        "peerDependencies": {
-          "react": "+",
-          "react-dom": "+",
-          "@types/react": "+",
-          "@material-ui/core": "+"
-        }
-      }
-    }
-  },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint --cache"
   }

@@ -97,28 +97,6 @@
         "sonarqube-scanner": "^2.7.0",
         "typescript": "^3.9.9"
     },
-    "bit": {
-        "env": {
-            "compiler": "bit.envs/compilers/react-typescript@3.1.56"
-        },
-        "componentsDefaultDirectory": "components/{name}",
-        "packageManager": "npm",
-        "overrides": {
-            "*": {
-                "dependencies": {
-                    "react": "-",
-                    "react-dom": "-",
-                    "@material-ui/core": "-"
-                },
-                "peerDependencies": {
-                    "react": "+",
-                    "react-dom": "+",
-                    "@types/react": "+",
-                    "@material-ui/core": "+"
-                }
-            }
-        }
-    },
     "lint-staged": {
         "*.{js,ts,tsx}": "eslint --cache"
     }
