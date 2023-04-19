@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# WARINING
+# WARNING
 
 right now the build process only works when
 "prettier/prettier": 1 is set to 1 or 0 in .eslintrc.json

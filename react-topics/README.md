@@ -2,7 +2,7 @@
 
 ---
 
-# WARINING
+# WARNING
 
 right now the build process only works when
 "prettier/prettier": 1 is set to 1 or 0 in .eslintrc.json
@@ -16,21 +16,6 @@ cd docker
 ./run-containers.sh
 docker-compose up -d
 docker exec -ti smb-topics yarn start
-```
-
-# Code quality
-
----
-
-```
-# run from root directory
-
-# install Dependency checker, e.g. brew install dependency-check
-dependency-check --scan . --enableExperimental --format ALL
-
-# install Sonar-scanner, e.g. brew install sonar-scanner
-# typescript dependency required, e.g. npm install typescript@3.7 --only=dev
-sonar-scanner -Dscanner.settings=xailabs_intern/sonar-project.properties
 ```
 
 # Conventions

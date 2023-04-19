@@ -6,7 +6,7 @@ export REACT_APP_STAGE=local
 npm install
 npm run start
 ```
-# WARINING
+# WARNING
 
 right now the build process only works when
 "prettier/prettier": 1 is set to 1 or 0 in .eslintrc.json
