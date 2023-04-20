@@ -35,4 +35,10 @@ public class SitemapController {
         CompletableFuture.runAsync( this.sitemapGenerationJob::generateGuideSitemap);
         return ResponseEntity.ok("Started");
     }
+
+    @PostMapping("/isl")
+    public ResponseEntity<String> generateIsl() {
+        CompletableFuture.runAsync( this.sitemapGenerationJob::generateIslSitemap);
+        return ResponseEntity.ok("Started");
+    }
 }

@@ -15,10 +15,7 @@ import de.smbonline.sitemap.model.adapter.LocationDateAdapter;
  * Model for a sitemaps index sitemap entry.
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "", propOrder = {
-    "location",
-    "lastModification"
-})
+@XmlType(name = "", propOrder = { "location", "lastModification" })
 @XmlRootElement(name = "sitemap", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
 public class SitemapIndex {
 

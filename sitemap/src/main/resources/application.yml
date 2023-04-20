@@ -6,14 +6,25 @@ graphql:
 
 sitemap:
   # local filesystem path where the sitemaps are stored
-  sitemap-location: ${SITEMAP-LOCATION}
+  sitemap-location: ${SITEMAP_LOCATION}
   # url of the research portal
-  research-base-url: ${RESEARCH-BASE-URL}
+  research-base-url: ${RESEARCH_BASE_URL}
   # url of the topics portal
-  topics-base-url: ${TOPICS-BASE-URL}
+  topics-base-url: ${TOPICS_BASE_URL}
   # url of the guide portal
-  guide-base-url: ${GUIDE-BASE-URL}
+  guide-base-url: ${GUIDE_BASE_URL}
+  # url of the ISL portal
+  isl-base-url: ${ISL_BASE_URL}
+  # additional url part to distinguish between the strapi's and the frontends is placed after the base url
+  strapi-platform:
+    smb: ${SMB_URL_INFIX:sammlungen-online}
+    hbf: ${HBF_URL_INFIX:hamburger-bahnhof}
+    kgm: ${KGM_URL_INFIX:kunstgewerbemuseum}
+
+search-api:
+  endpoint: ${SEARCH_API_ENDPOINT:http://smb-search-indexer:8085/search}
 
 logging.level:
   de.smbonline: INFO
+  de.smbonline.sitemap.service: DEBUG
   org.springframework: WARN

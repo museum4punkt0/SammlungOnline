@@ -14,9 +14,9 @@ public class LocationDateAdapter extends XmlAdapter<String, Date> {
     /**
      * See {@link XmlAdapter#unmarshal(Object)}
      *
-     * @param iso8601Date
-     * @return
-     * @throws ParseException
+     * @param iso8601Date date string
+     * @return parsed date
+     * @throws ParseException if ISO_8601_EXTENDED formatter can not parse the given string
      */
     @Override
     public Date unmarshal(final String iso8601Date) throws ParseException {
@@ -28,12 +28,11 @@ public class LocationDateAdapter extends XmlAdapter<String, Date> {
     /**
      * See {@link XmlAdapter#marshal(Object)}
      *
-     * @param date
-     * @return
-     * @throws ParseException
+     * @param date date
+     * @return iso8601Date
      */
     @Override
-    public String marshal(final Date date) throws ParseException {
+    public String marshal(final Date date) {
         synchronized (DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT) {
             return DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(date);
         }

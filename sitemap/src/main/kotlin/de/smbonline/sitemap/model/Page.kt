@@ -1,4 +1,4 @@
-package de.smbonline.sitemap.sitemap.graphql
+package de.smbonline.sitemap.model
 
 class Page<T> {
     var offset: Int = -1

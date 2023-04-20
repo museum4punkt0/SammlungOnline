@@ -1,4 +1,4 @@
-package de.smbonline.sitemap.sitemap;
+package de.smbonline.sitemap;
 
 import de.smbonline.sitemap.config.SitemapConfig;
 import org.assertj.core.api.Assertions;

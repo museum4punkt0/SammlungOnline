@@ -1,4 +1,4 @@
-package de.smbonline.sitemap.sitemap.graphql
+package de.smbonline.sitemap.graphql
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.ApolloQueryCall

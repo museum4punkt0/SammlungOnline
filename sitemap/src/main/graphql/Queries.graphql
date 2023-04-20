@@ -1,35 +1,218 @@
-# Returns a page of Objects
-query FetchObjects($offset: Int!, $limit: Int!) {
-    smb_objects(offset: $offset, limit: $limit, order_by: [{id: asc}]) {
-        ...objectData
-    }
-    smb_objects_aggregate {
-        aggregate {
-            count
-        }
-    }
-}
-
-# Returns a page of Topics
-query FetchTopics($offset: Int!, $limit: Int!) {
-    smb_topics(offset: $offset, limit: $limit, order_by: [{id: asc}]) {
-        ...topicData
-    }
-    smb_topics_aggregate {
-        aggregate {
-            count
-        }
-    }
-}
-
 # Returns a page of Tours
-query FetchTours($offset: Int!, $limit: Int!) {
-    smb_tours(offset: $offset, limit: $limit, order_by: [{id: asc}]) {
-        ...tourData
+# TODO query FetchTours($offset: Int!, $limit: Int!) {
+# }
+
+#Returns a page of ISL Categories
+query FetchIslCategories($offset: Int!, $limit: Int!) {
+    strapi_isl {
+        categories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
     }
-    smb_tours_aggregate {
-        aggregate {
-            count
+}
+
+#Returns a page of ISL Stories
+query FetchIslStories($offset: Int!, $limit: Int!) {
+    strapi_isl {
+        stories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of ISL Topics
+query FetchIslTopics($offset: Int!, $limit: Int!) {
+    strapi_isl {
+        topics(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of SMB Categories
+query FetchSmbCategories($offset: Int!, $limit: Int!) {
+    strapi_smb {
+        categories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of SMB Stories
+query FetchSmbStories($offset: Int!, $limit: Int!) {
+    strapi_smb {
+        stories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of SMB Topics
+query FetchSmbTopics($offset: Int!, $limit: Int!) {
+    strapi_smb {
+        topics(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+#Returns a page of HBF Categories
+query FetchHbfCategories($offset: Int!, $limit: Int!) {
+    strapi_hbf {
+        categories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of HBF Stories
+query FetchHbfStories($offset: Int!, $limit: Int!) {
+    strapi_hbf {
+        stories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of HBF Topics
+query FetchHbfTopics($offset: Int!, $limit: Int!) {
+    strapi_hbf {
+        topics(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of KGM Categories
+query FetchKgmCategories($offset: Int!, $limit: Int!) {
+    strapi_kgm {
+        categories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of KGM Stories
+query FetchKgmStories($offset: Int!, $limit: Int!) {
+    strapi_kgm {
+        stories(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
+        }
+    }
+}
+
+#Returns a page of KGM Topics
+query FetchKgmTopics($offset: Int!, $limit: Int!) {
+    strapi_kgm {
+        topics(publicationState: LIVE, pagination: {start: $offset, limit: $limit}) {
+            data {
+                attributes {
+                    slug
+                }
+            }
+            meta {
+                pagination {
+                    total
+                }
+            }
         }
     }
 }

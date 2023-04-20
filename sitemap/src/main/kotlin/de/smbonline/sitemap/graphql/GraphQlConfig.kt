@@ -1,4 +1,4 @@
-package de.smbonline.sitemap.sitemap.graphql
+package de.smbonline.sitemap.graphql
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration

@@ -199,6 +199,8 @@ public final class SitemapMarshallingUtil {
      */
     public static Schema getSitemapSchema() throws MalformedURLException, SAXException {
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         return schemaFactory.newSchema(new URL(SITEMAP_SCHEMA_LOCATION));
     }
 
@@ -211,6 +213,8 @@ public final class SitemapMarshallingUtil {
      */
     public static Schema getSitemapIndexSchema() throws MalformedURLException, SAXException {
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        schemaFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         return schemaFactory.newSchema(new URL(SITEMAP_INDEX_SCHEMA_LOCATION));
     }
 

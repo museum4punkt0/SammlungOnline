@@ -13,6 +13,8 @@ public class SitemapConfig {
     private String researchBaseUrl;
     private String topicsBaseUrl;
     private String guideBaseUrl;
+    private String islBaseUrl;
+    private final StrapiPlatform strapiPlatform = new StrapiPlatform();
 
     public String getSitemapLocation() {
         return this.sitemapLocation;
@@ -44,5 +46,48 @@ public class SitemapConfig {
 
     public void setGuideBaseUrl(final String loc) {
         this.guideBaseUrl = Objects.requireNonNull(loc);
+    }
+
+    public String getIslBaseUrl() {
+        return islBaseUrl;
+    }
+
+    public void setIslBaseUrl(String islStoryUrl) {
+        this.islBaseUrl = islStoryUrl;
+    }
+
+    public StrapiPlatform getStrapiPlatform() {
+        return strapiPlatform;
+    }
+
+    public final class StrapiPlatform {
+
+        private String smb;
+        private String hbf;
+        private String kgm;
+
+        public String getSmb() {
+            return smb;
+        }
+
+        public void setSmb(String smb) {
+            this.smb = smb;
+        }
+
+        public String getHbf() {
+            return hbf;
+        }
+
+        public void setHbf(String hbf) {
+            this.hbf = hbf;
+        }
+
+        public String getKgm() {
+            return kgm;
+        }
+
+        public void setKgm(String kgm) {
+            this.kgm = kgm;
+        }
     }
 }
