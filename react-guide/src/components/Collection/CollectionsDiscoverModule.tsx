@@ -33,7 +33,7 @@ function CollectionsDiscoverModule({
             container={true}
             spacing={4}
             direction={'row'}
-            justify={'center'}
+            justifyContent={'center'}
             alignItems={'center'}
           >
             <Grid item={true} xs={12} className={classes.titleGridItem}>

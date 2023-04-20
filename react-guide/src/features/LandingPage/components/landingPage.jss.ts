@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     collectionModule: {
-      marginTop: 50,
+      // marginTop: 50,
       // paddingTop: '5rem',
     },
     slideTintCover: {
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     slideContent: {
       margin: '56px',
+      color: '#fff',
       [theme.breakpoints.up('sm')]: {
         width: '75%',
       },
@@ -44,10 +45,16 @@ const useStyles = makeStyles((theme: Theme) =>
       // color: theme.palette.primary.contrastText,
       paddingTop: 10,
     },
+    slideTitleTop: {
+      marginBottom: '1rem',
+      marginTop: '1rem',
+      // color: theme.palette.secondary.main,
+    },
     slideTitle: {
       marginBottom: '1rem',
       marginTop: '1rem',
       // color: theme.palette.secondary.main,
+      color: '#f25b5b',
     },
   }),
 );

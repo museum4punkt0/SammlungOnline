@@ -71,7 +71,7 @@ function CollapsibleCardHeader({
       <Grid
         container
         direction="row"
-        justify="center"
+        justifyContent="center"
         style={{ height: '100%' }}
       >
         <Grid
@@ -79,7 +79,7 @@ function CollapsibleCardHeader({
           container
           xs={10}
           direction="row"
-          justify="flex-start"
+          justifyContent="flex-start"
           wrap="nowrap"
         >
           {/* move icon */}
@@ -106,10 +106,10 @@ function CollapsibleCardHeader({
           </Grid>
         </Grid>
 
-        <Grid item container xs={2} justify="flex-end" wrap="nowrap">
+        <Grid item container xs={2} justifyContent="flex-end" wrap="nowrap">
           {/* share icon */}
           {share && (
-            <Grid item container alignContent="center" justify="center">
+            <Grid item container alignContent="center" justifyContent="center">
               <IconButton
                 onClick={onShare}
                 // aria-expanded={expandedMap}
@@ -131,7 +131,7 @@ function CollapsibleCardHeader({
               alignContent="center"
               style={{ height: '3.125rem', marginRight: '.5rem' }}
             >
-              <Grid item container justify="flex-end">
+              <Grid item container justifyContent="flex-end">
                 <button
                   onClick={toggleCheck}
                   className={classes.checkboxButton}
@@ -161,7 +161,7 @@ function CollapsibleCardHeader({
               alignContent="center"
               style={{ height: '3.125rem', marginRight: '.5rem' }}
             >
-              <Grid container justify="flex-end">
+              <Grid container justifyContent="flex-end">
                 <IconButton
                   className={classes.expandMap}
                   onClick={onMapClick}

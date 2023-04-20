@@ -12,6 +12,8 @@ RUN apk add --no-cache bash git openssh
 # install node_modules
 COPY ./package.json ./package.json
 COPY ./package-lock.json ./package-lock.json
+COPY ./.npmrc ./.npmrc
+
 RUN npm config set unsafe-perm true
 RUN npm install
 

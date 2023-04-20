@@ -77,7 +77,7 @@ function CollectionModule({
             container={true}
             spacing={1}
             direction={'row'}
-            justify={'center'}
+            justifyContent={'center'}
             alignItems={'center'}
           >
             {title && (

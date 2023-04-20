@@ -36,7 +36,7 @@ const StationDirection: React.FC<IStationDirectionProps> = (props) => {
       direction="row"
       container
       spacing={1}
-      justify="flex-start"
+      justifyContent="flex-start"
     >
       <Grid item>
         <Typography variant="body2" color="primary">

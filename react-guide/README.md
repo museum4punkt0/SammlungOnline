@@ -1,4 +1,5 @@
 # SMB - Guide
+
 ## Quick start
 
 ```
@@ -6,12 +7,10 @@ export REACT_APP_STAGE=local
 npm install
 npm run start
 ```
+
 # WARNING
 
-right now the build process only works when
-"prettier/prettier": 1 is set to 1 or 0 in .eslintrc.json
-this is because we have not yet applied all new prettier changes
-to all old files.
+Right now the build process only works when `"prettier/prettier": 1` is set to 1 or 0 in `.eslintrc.json`. This is because we have not yet applied all new prettier changes to all old files.
 
 ## Available Scripts
 
@@ -29,12 +28,14 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-
-# Possible Issues
+# Known Issues
 
 ## Too many open files
 
-if you encounter: 
+If you encounter the following, you have to increase the limit for open files:
+
+Error:
+
 ```
 npm ERR! code EMFILE
 npm ERR! syscall spawn git
@@ -43,10 +44,11 @@ npm ERR! errno -24
 npm ERR! An unknown git error occurred
 npm ERR! command git --no-replace-objects clone https://gitsrv01.xailabs.dev/smb/eslint-config-smb.git .npm/_cacache/tmp/git-cloneWznM2B --recurse-submodules
 ```
-you have to increase the limit for open files:
+
+Fix:
 
 ```
 sudo prlimit --nofile=8192 --pid $$; ulimit -n 8192
 ```
 
-note: this did not work inside zsh shells, please use bash
+Note: This fix did not work inside zsh shells, please use bash.

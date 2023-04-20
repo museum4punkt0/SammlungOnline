@@ -1,7 +1,8 @@
-import { CardMedia, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { ReactElement } from 'react';
 import useStyles from './tourTitleCardModule.jss';
+import { HeroSwiper } from '@smb/smb-react-components-library';
 
 function TourTitleCard({
   title,
@@ -17,47 +18,42 @@ function TourTitleCard({
   withImage?: boolean;
 }): ReactElement {
   const classes = useStyles();
-
+  const collectionContext = () => {
+    return [
+      {
+        title: title,
+        text: abstract,
+        subtitle: subTitle,
+        image: image,
+        caption: null,
+        href: '#',
+      },
+    ];
+  };
   return (
     <div>
       {withImage ? (
-        <CardMedia className={classes.content} src="picture" image={image}>
-          <Grid
-            container
-            justify="center"
-            style={{ height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.55)' }}
-          >
-            <Grid
-              item
-              container
-              direction="column"
-              justify="center"
-              style={{ maxWidth: '80rem', margin: '0 0.5rem' }}
-            >
-              <Typography variant="h5">{subTitle}</Typography>
-              <Typography variant="h1">{title}</Typography>
-              <Grid container item direction="row">
-                <Grid item xs={5}>
-                  <Typography variant="h5">{abstract}</Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </CardMedia>
+        <HeroSwiper data={collectionContext() as any} section="guide-hero" />
       ) : (
-        <Grid container justify="center" style={{ height: '100%' }}>
+        <Grid container justifyContent="center" style={{ height: '100%' }}>
           <Grid
             item
             container
             direction="column"
-            justify="center"
+            justifyContent="center"
             style={{ maxWidth: '80rem' }}
           >
-            <Typography variant="h5">{subTitle}</Typography>
-            <Typography variant="h1">{title}</Typography>
+            <Typography variant="h5" className={classes.subtitle}>
+              {subTitle}
+            </Typography>
+            <Typography variant="h1" className={classes.title}>
+              {title}
+            </Typography>
             <Grid container item direction="row">
               <Grid item xs={5}>
-                <Typography variant="h5">{abstract}</Typography>
+                <Typography variant="h5" className={classes.text}>
+                  {abstract}
+                </Typography>
               </Grid>
             </Grid>
           </Grid>

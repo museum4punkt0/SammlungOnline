@@ -1,119 +1,157 @@
 {
-	"collections module discover button": "",
-	"discover other collections": "",
-	"lastly added": "",
-	"collections module show all button": "",
-	"go to topics overview": "",
-	"play button": "",
-	"go to object details": "",
-	"object desc no data available": "",
-	"object desc description title": "",
-	"object desc exhibition title": "",
-	"object desc literature title": "",
-	"object desc dating": "",
-	"object desc ident nr": "",
-	"object desc collection title": "",
-	"object desc location": "",
-	"object desc involved parties": "",
-	"object desc geographical references title": "",
-	"object desc dimensions and weight title": "",
-	"object desc material and technique title": "",
-	"object desc provenance title": "",
-	"object desc labels title": "",
-	"object desc norm data title": "",
-	"object desc picture credits title": "",
-	"collection scroll to discover": "",
-	"collection scroll to player": "",
-	"link to bpk": "",
-	"aside topic headline": "",
-	"aside contact headline": "",
-	"aside contact mailaddress": "",
-	"history back": "",
-	"download image dialog title": "",
-	"download image dialog content": "Die von Ihnen ausgewählte Werkabbildung unterliegt den Lizenzbedingungen gemäß: CC NC-BY-SA der Staatlichen Museen zu Berlin – Preußischer Kulturbesitz und schließt eine kommerzielle Nutzung eindeutig aus. Mit dem Herunterladen der Abbildung erklären Sie sich mit den Lizenzbedingungen rechtsverbindlich einverstanden. <1></1><2></2>Falls Sie eine kommerzielle Nutzung beabsichtigen wenden Sie sich bitte an die <5>bpk – Bildagentur Preußischer Kulturbesitz</5>. <7></7><8></8>Bei der Verwendung für wissenschaftliche Publikationen bitten wir um die Zusendung eines Belegexemplars.<10></10>",
-	"download": "",
-	"go to topic": "",
-	"go to tour": "Go to Tour",
-	"discover collection card title": "",
-	"discover collection card subtitle": "",
-	"find tour card title": "",
-	"find tour car subtitle": "",
-	"footer Intro": "Intro",
-	"footer Recherche": "Recherche",
-	"footer Themen": "Themen",
-	"footer Touren": "Touren",
-	"footer Staatliche": "Staatliche Museen zu Berlin",
-	"footer Blog": "Blog",
-	"footer Newsletter": "Newsletter",
-	"footer Webshop": "Webshop",
-	"footer copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
-	"show more": "show more",
-	"show less": "show less",
-	"accessible": "accessible",
-	"back": "Back",
-	"start": "Start",
-	"close route description": "Close Route Description",
-	"open route description": "Open Route Description",
-	"place": "Location",
-	"duration": "Duration",
-	"objects": "Objects",
-	"next station": "Next Station",
-	"end": "End",
-	"return to tour start": "Return to the Start",
-	"location overview": "Location Overview",
-	"object": "Object",
-	"object details": "Objectdetails",
-	"guide carousel title": "Explore other Tours",
-	"cookieBanner": "This website uses cookies. If you continue to use the website, we will assume your consent.",
-	"imprint": "Imprint",
-	"privacy": "Privacy",
-	"accessibility": "Accessibility",
-	"notFoundPage": {
-		"title": "PAGE NOT FOUND",
-		"description": "Unfortunately, the requested page does not exist.",
-		"toMainPage": "To main page"
-	},
-	"header": {
-		"logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz",
-		"intro": {
-			"title": "Intro",
-			"subtitle": "Suche in den Sammlungen"
-		},
-		"research": {
-			"title": "Recherche",
-			"subtitle": "Suche in den Sammlungen"
-		},
-		"topics": {
-			"title": "Themen",
-			"subtitle": "Die Sammlung entdecken"
-		},
-		"tours": {
-			"title": "Touren",
-			"subtitle": "Wege in die Sammlung"
-		}
-	},
-	"footer": {
-        "blog": "Blog",
-        "intro": "Intro",
-        "newsletter": "Newsletter",
-        "research": "Research",
-        "staatliche": "Staatliche Museen zu Berlin",
-        "topics": "Topics",
-        "routes": "Routes",
-        "webshop": "Webshop",
-        "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
-        "imprint": "Imprint",
-        "privacy": "Privacy",
-        "accessibility": "Accessibility",
-        "contact": "Contact",
-		"contactSection":{
-		  "title":"Contact",
-		  "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
-		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
-		  "link":{
-			"href":"mailto:smb-digital@smb.spk-berlin.de",
-			"text": "Fragen Sie uns"
-		  }
-		}
-	}	
+  "collections module discover button": "",
+  "discover other collections": "",
+  "lastly added": "",
+  "collections module show all button": "",
+  "go to topics overview": "",
+  "play button": "",
+  "go to object details": "",
+  "object desc no data available": "",
+  "object desc description title": "",
+  "object desc exhibition title": "",
+  "object desc literature title": "",
+  "object desc dating": "",
+  "object desc ident nr": "",
+  "object desc collection title": "",
+  "object desc location": "",
+  "object desc involved parties": "",
+  "object desc geographical references title": "",
+  "object desc dimensions and weight title": "",
+  "object desc material and technique title": "",
+  "object desc provenance title": "",
+  "object desc labels title": "",
+  "object desc norm data title": "",
+  "object desc picture credits title": "",
+  "collection scroll to discover": "",
+  "collection scroll to player": "",
+  "link to bpk": "",
+  "aside topic headline": "",
+  "aside contact headline": "",
+  "aside contact mailaddress": "",
+  "history back": "",
+  "download image dialog title": "",
+  "download image dialog content": "Die von Ihnen ausgewählte Werkabbildung unterliegt den Lizenzbedingungen gemäß: CC NC-BY-SA der Staatlichen Museen zu Berlin – Preußischer Kulturbesitz und schließt eine kommerzielle Nutzung eindeutig aus. Mit dem Herunterladen der Abbildung erklären Sie sich mit den Lizenzbedingungen rechtsverbindlich einverstanden. <1></1><2></2>Falls Sie eine kommerzielle Nutzung beabsichtigen wenden Sie sich bitte an die <5>bpk – Bildagentur Preußischer Kulturbesitz</5>. <7></7><8></8>Bei der Verwendung für wissenschaftliche Publikationen bitten wir um die Zusendung eines Belegexemplars.<10></10>",
+  "download": "",
+  "go to topic": "",
+  "go to tour": "Go to Tour",
+  "discover collection card title": "",
+  "discover collection card subtitle": "",
+  "find tour card title": "",
+  "find tour car subtitle": "",
+  "footer Intro": "Intro",
+  "footer Recherche": "Recherche",
+  "footer Themen": "Themen",
+  "footer Touren": "Touren",
+  "footer Staatliche": "Staatliche Museen zu Berlin",
+  "footer Blog": "Blog",
+  "footer Newsletter": "Newsletter",
+  "footer Webshop": "Webshop",
+  "footer copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
+  "show more": "show more",
+  "show less": "show less",
+  "accessible": "accessible",
+  "back": "Back",
+  "start": "Start",
+  "close route description": "Close Route Description",
+  "open route description": "Open Route Description",
+  "place": "Location",
+  "duration": "Duration",
+  "objects": "Objects",
+  "next station": "Next Station",
+  "end": "End",
+  "return to tour start": "Return to the Start",
+  "location overview": "Location Overview",
+  "object": "Object",
+  "object details": "Objectdetails",
+  "guide carousel title": "Explore other Tours",
+  "cookieBanner": "This website uses cookies. If you continue to use the website, we will assume your consent.",
+  "imprint": "Imprint",
+  "privacy": "Privacy",
+  "accessibility": "Accessibility",
+  "notFoundPage": {
+    "title": "PAGE NOT FOUND",
+    "description": "Unfortunately, the requested page does not exist.",
+    "toMainPage": "To main page"
+  },
+  "stt": {
+    "filter": {
+      "label": "Published by",
+      "all": "All",
+      "isl": "Museum für Islamische Kunst",
+      "smb": "Sammlungen Online",
+      "hbf": "Hamburger Bahnhof",
+      "kgm": "Kunstgewerbemuseum"
+    },
+    "sorting": {
+      "label": "Sort by",
+      "latest": "Publication date",
+      "asc": "A-Z",
+      "desc": "Z-A"
+    }
+  },
+  "topics": {
+    "carousel": {
+      "title": "Topics from the collections"
+    }
+  },
+  "collections": {
+    "buttons": {
+      "research": "View",
+      "topics": "Experience Story",
+      "guide": "Insight"
+    }
+  },
+  "research": {
+    "highlights": {
+      "title": "Highlights from the Collection",
+      "text": "Here you can go directly to detailed information of particularly popular objects and major works from the collections."
+    },
+    "collection": {
+      "title": "Collections from the stocks",
+      "text": "Here you can go directly to the object collections in RECHERCHE. The collections are compiled by staff members for current events, for example research projects or exhibitions."
+    }
+  },
+  "header": {
+    "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz - Tours Landingpage",
+    "intro": {
+      "title": "Intro",
+      "subtitle": "Suche in den Sammlungen"
+    },
+    "research": {
+      "title": "Recherche",
+      "subtitle": "Suche in den Sammlungen"
+    },
+    "topics": {
+      "title": "Themen",
+      "subtitle": "Die Sammlung entdecken"
+    },
+    "tours": {
+      "title": "Touren",
+      "subtitle": "Wege in die Sammlung"
+    }
+  },
+  "footer": {
+    "blog": "Blog",
+    "intro": "Intro",
+    "newsletter": "Newsletter",
+    "research": "Research",
+    "staatliche": "Staatliche Museen zu Berlin",
+    "topics": "Topics",
+    "routes": "Routes",
+    "webshop": "Webshop",
+    "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "accessibility": "Accessibility",
+    "contact": "Contact",
+    "contactSection": {
+      "title": "Contact",
+      "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+      "text": "In KONTAKT finden Sie eine Übersicht zu den Adressen, über die Sie sich für Ihre Fragen und Ihr Feedback zu dieser Website und ihren Inhalten mit uns in Verbindung setzen können. Beim Anklicken von “Contact us” kommen Sie zur Kontaktseite.",
+      "link": {
+        "href": "mailto:smb-digital@smb.spk-berlin.de",
+        "text": "Contact us!"
+      }
+    }
+  }
 }

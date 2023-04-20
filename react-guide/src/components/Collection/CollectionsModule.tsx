@@ -41,7 +41,7 @@ function CollectionsModule({
             container={true}
             spacing={4}
             direction={'row'}
-            justify={'center'}
+            justifyContent={'center'}
             alignItems={'center'}
           >
             {/* TODO implement sorting
@@ -94,7 +94,7 @@ function CollectionsModule({
               container={true}
               spacing={4}
               direction={'row'}
-              justify={'flex-start'}
+              justifyContent={'flex-start'}
               alignItems={'center'}
             >
               {collectionsContext.collections
@@ -167,7 +167,7 @@ function CollectionsModule({
                         container={true}
                         spacing={4}
                         direction={'row'}
-                        justify={'center'}
+                        justifyContent={'center'}
                         alignItems={'center'}
                     >
                         {collectionsContext.collections
@@ -193,7 +193,7 @@ function CollectionsModule({
                         container={true}
                         spacing={4}
                         direction={'row'}
-                        justify={'center'}
+                        justifyContent={'center'}
                         alignItems={'center'}
                     >
                         <Grid item={true} xs={12} sm={12} md={12} lg={12} className={classes.titleGridItem}>

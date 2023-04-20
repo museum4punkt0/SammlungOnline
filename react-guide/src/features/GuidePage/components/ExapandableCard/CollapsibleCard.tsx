@@ -56,7 +56,7 @@ function CollapsibleCard({
       <Grid
         container
         direction="row"
-        justify="space-between"
+        justifyContent="space-between"
         wrap="nowrap"
         style={{ minHeight: '3.125rem' }}
       >
@@ -112,7 +112,12 @@ function CollapsibleCard({
       </Collapse>
 
       {hasFooter && (
-        <Grid container direction="row" justify="space-between" wrap="nowrap">
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          wrap="nowrap"
+        >
           <Grid item container xs={11}>
             <Grid item container alignContent="center">
               {footer}
@@ -123,7 +128,7 @@ function CollapsibleCard({
             container
             xs={1}
             direction="row"
-            justify="space-evenly"
+            justifyContent="space-evenly"
             wrap="nowrap"
             style={{ marginRight: '.5rem' }}
           >

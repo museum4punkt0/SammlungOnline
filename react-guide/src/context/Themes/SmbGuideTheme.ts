@@ -1,7 +1,7 @@
 import { createTheme } from '@material-ui/core/styles';
 const palette = {
   primary: {
-    main: '#000000',
+    main: '#0F0900',
     // beige
     light: '#d3d3d3',
     // brownish-grey
@@ -15,10 +15,10 @@ const palette = {
     light: '#ffc8c8',
     // pink
     dark: '#f25b5b',
-    contrastText: '#000000',
+    contrastText: '#22201E',
   },
   text: {
-    primary: '#000000',
+    primary: '#22201E',
     secondary: '#ffffff',
     // highlight-color
     hint: '#f25b5b',
@@ -42,7 +42,8 @@ const SmbTopicsTheme = createTheme({
       lineHeight: '1.18',
       letterSpacing: '1px',
       textTransform: 'uppercase',
-      color: '#f25b5b',
+      // color: '#f25b5b',
+      color: 'inherit',
     },
 
     // H2
@@ -54,8 +55,9 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.22',
       letterSpacing: '1px',
-      textTransform: 'uppercase',
-      color: '#f25b5b',
+      //textTransform: 'uppercase',
+      // color: '#f25b5b',
+      color: 'inherit',
     },
 
     // H3 Button Text
@@ -67,8 +69,9 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: 'normal',
       letterSpacing: '1px',
-      textTransform: 'uppercase',
-      color: '#F25B5B',
+      //textTransform: 'uppercase',
+      // color: '#F25B5B',
+      color: 'inherit',
     },
 
     // H4
@@ -80,8 +83,9 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.2',
       letterSpacing: '2px',
-      textTransform: 'uppercase',
-      color: '#000000',
+      //textTransform: 'uppercase',
+      // color: '#000000',
+      color: 'inherit',
     },
 
     // H5
@@ -93,7 +97,8 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.22',
       letterSpacing: '1px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     // H6
@@ -105,8 +110,9 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.22',
       letterSpacing: '1px',
-      textTransform: 'uppercase',
-      color: '#f25b5b',
+      //textTransform: 'uppercase',
+      // color: '#f25b5b',
+      color: 'inherit',
     },
 
     subtitle1: {
@@ -118,7 +124,8 @@ const SmbTopicsTheme = createTheme({
       lineHeight: 'normal',
       letterSpacing: '3px',
       textTransform: 'uppercase',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     // Description
@@ -129,7 +136,8 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#000000',
+      // color: '#000000',
+      color: 'inherit',
       // color: '#ffffff',
     },
 
@@ -141,7 +149,8 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     caption: {
@@ -151,7 +160,8 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     overline: {
@@ -161,7 +171,8 @@ const SmbTopicsTheme = createTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#000000',
+      // color: '#000000',
+      color: 'inherit',
     },
   },
   transitions: {
@@ -199,7 +210,8 @@ SmbTopicsTheme.overrides = {
       fontStyle: 'normal',
       lineHeight: 'normal',
       letterSpacing: '2px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
     root: {
       fontWeight: 'bold',
@@ -216,7 +228,7 @@ SmbTopicsTheme.overrides = {
     underlineHover: {
       '&:hover': {
         textDecoration: 'underline',
-        textDecorationThickness: '0.2em',
+        // textDecorationThickness: '0.2em',
       },
     },
   },

@@ -4,15 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-
 import { ApolloProvider } from '@apollo/react-hooks';
-
-import CustomCssBaseline from './context/Themes/CustomCssBaseline';
 import SmbGuideTheme from './context/Themes/SmbGuideTheme';
-
-import SwitchRoutes from './routes/SwitchRoutes';
-
-import routes from './routes/Routes';
+// import SwitchRoutes from './routes/SwitchRoutes';
+// import routes from './routes/Routes';
+import LandingPage from './features/LandingPage/components/LandingPage';
 
 import {
   Footer,
@@ -21,8 +17,9 @@ import {
   useGraphQlClient,
   WrappedSpinner,
   LoadingSpinner,
-  IConfiguration,
+  CustomCssBaseline,
   AppStage,
+  HeaderPlatformType,
 } from '@smb/smb-react-components-library';
 
 import useStyles from './app.jss';
@@ -37,15 +34,9 @@ function App(): ReactElement {
   // useConfigLoader will trigger head-request to fetch X-React-App-Stage header. Value change of loadingConfig will
   // result in rerendering the component.
   const classes = useStyles();
-  const { loadingConfig, appStage, config } = useConfigLoader();
+  const { loadingConfig, config } = useConfigLoader();
   const { loading, graphQlClient } = useGraphQlClient();
-  const onContextMenu = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ): void => {
-    if (appStage === AppStage.STAGE || appStage === AppStage.PRODUCTION) {
-      event.preventDefault();
-    }
-  };
+
   const loadingSpinner = (
     <div className={classes.loadingWrapper}>
       <LoadingSpinner styleClasses={classes.loadingSpinner} />
@@ -69,11 +60,17 @@ function App(): ReactElement {
               <CssBaseline />
               <CustomCssBaseline />
 
-              <div className={classes.root} onContextMenu={onContextMenu}>
+              <div className={classes.root}>
                 <Box className={classes.grow}>
-                  <Header configuration={config as any} />
+                  <Header
+                    configuration={config as any}
+                    isBlackBackground={true}
+                    shouldDisplayLang={true}
+                    currentPortal={HeaderPlatformType.GUIDE}
+                  />
                   <div className={classes.wrapper}>
-                    <SwitchRoutes routes={routes} />
+                    {/* <SwitchRoutes routes={routes} /> */}
+                    <LandingPage />
                   </div>
                   <div
                     style={{
@@ -81,7 +78,10 @@ function App(): ReactElement {
                     }}
                     data-testid={'application-footer-wrapper'}
                   >
-                    <Footer configuration={config as any} />
+                    <Footer
+                      configuration={config as any}
+                      showContactSection={true}
+                    />
                   </div>
                 </Box>
               </div>

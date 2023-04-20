@@ -52,7 +52,7 @@ function OverrideCard({
           item
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           wrap="nowrap"
         >
           <Grid
@@ -60,7 +60,7 @@ function OverrideCard({
             container
             xs={10}
             direction="column"
-            justify="flex-start"
+            justifyContent="flex-start"
             wrap="nowrap"
             spacing={1}
             style={{ margin: '0.5rem 0' }}
@@ -130,7 +130,7 @@ function OverrideCard({
             margin: '0 0.5rem',
           }}
         >
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <CardMedia
               style={{
                 height: '23.125rem',
@@ -145,10 +145,10 @@ function OverrideCard({
           </Grid>
         </CardContent>
         {/* TODO V2 */}
-        {/* <Grid container justify='center'>
+        {/* <Grid container justifyContent='center'>
                     <ZoomInIcon color='secondary' fontSize='large' />
                 </Grid> */}
-        <Grid container justify="center">
+        <Grid container justifyContent="center">
           {/* TODO V2 */}
           {/* <ArrowBackIosIcon color='secondary' fontSize='large' /> */}
           <Typography variant="h4" color="secondary" style={{ margin: '1rem' }}>

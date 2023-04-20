@@ -41,15 +41,6 @@ class ImageUrlBuilder implements IImageUrlBuilder {
       ),
     ).toString();
   }
-
-  // todo replace with buildURL
-  buildUrlLocal(id: string): URL {
-    const [imageId, imageType] = this.splitImageIdAndType(id);
-
-    return new URL(
-      this.config.IMAGE_PROVIDER_DOMAIN.concat(imageId, '.', imageType),
-    );
-  }
 }
 
 export default ImageUrlBuilder;

@@ -59,7 +59,7 @@ function StationHeader({
             <Grid
               container
               direction="row"
-              justify="space-between"
+              justifyContent="space-between"
               wrap="nowrap"
               style={{ height: '100%' }}
             >
@@ -77,7 +77,7 @@ function StationHeader({
                 container
                 xs={2}
                 alignContent="center"
-                justify="flex-end"
+                justifyContent="flex-end"
               >
                 <Typography
                   variant="h5"

@@ -18,40 +18,21 @@ import TourNavigation from './../components/TourHeader/TourNavigation';
 import { Grid, isWidthUp, Typography, withWidth } from '@material-ui/core';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
-// import GuideService from '../../Services/GuideService';
-
 import LocationFilter from '../utils/LocationFilter';
 
-// SMB Components
 import {
-  Carousel,
   CarouselHeadline,
-  CollectionCard,
+  CollectionCardNew,
+  SwiperCarousel,
   GuideService,
   ICollectionContextData,
   ICollectionsContextData,
   useConfigLoader,
+  WrappedSpinner,
 } from '@smb/smb-react-components-library';
 
 import useStyles from './guidePage.jss';
 import ImageUrlBuilder from '../../../utils/ImageUrlBuilder';
-
-const cardCollection = (
-  contextData: ICollectionContextData[],
-  navigator: LinkBuilder,
-) => {
-  return contextData.map((guide: ICollectionContextData) => {
-    return {
-      title: guide.title,
-      subtitle: guide.subtitle,
-      tintColor: 'rgba(0, 0, 0, 0.5)',
-      elementCount: guide.collectionObjects.length,
-      onClick: () => navigator.toGuide(guide.id, guide.title),
-      id: guide.id,
-      image: guide.previewImageCard,
-    };
-  });
-};
 
 const MobileWrapper = withWidth()(function (props: {
   width: Breakpoint;
@@ -65,24 +46,39 @@ const MobileWrapper = withWidth()(function (props: {
   const locationFilter = new LocationFilter(location);
   const id = parseInt(locationFilter.getPathParam(1));
   const guideService = new GuideService(new ImageUrlBuilder());
-
   const onCollectionClick = (id: number, title: string): void => {
     history.push(`/tour/${id}/${title}`);
   };
 
+  const cardCollection = (
+    contextData: ICollectionContextData[],
+    navigator: LinkBuilder,
+  ) => {
+    return contextData.map((guide: ICollectionContextData) => {
+      return {
+        title: guide.title,
+        subtitle: guide.subtitle,
+        section: 'guide',
+        actionText: t('collections module discover button'),
+        href: navigator.getGuideHref(guide.id, guide.title),
+        id: guide.id,
+        image: guide.previewImageCard,
+      };
+    });
+  };
 
   // data for curren guide
   const { tourLoading, tourData } = guideService.getGuide(
     id,
-    config.CAROUSEL_CONFIG.COLLECTION_CARD_IMAGE_SIZE,
-    config.CAROUSEL_CONFIG.SLIDER_IMAGE_SIZE,
+    config?.CAROUSEL_CONFIG?.COLLECTION_CARD_IMAGE_SIZE,
+    config?.CAROUSEL_CONFIG?.SLIDER_IMAGE_SIZE,
   );
 
   // todo use guideservice --loading--
   // data for carousel
   const { contextData } = guideService.getGuides(
-    config.CAROUSEL_CONFIG.COLLECTION_CARD_IMAGE_SIZE,
-    config.CAROUSEL_CONFIG.COLLECTION_CARD_IMAGE_SIZE,
+    config?.CAROUSEL_CONFIG?.COLLECTION_CARD_IMAGE_SIZE,
+    config?.CAROUSEL_CONFIG?.COLLECTION_CARD_IMAGE_SIZE,
   );
   const collectionsContext: ICollectionsContextData = {
     collections: contextData,
@@ -99,7 +95,14 @@ const MobileWrapper = withWidth()(function (props: {
   if (!tourLoading && tourData?.id === 0) {
     return <Redirect to="/404" />;
   }
+  const collectionCardData = cardCollection(
+    collectionsContext.collections,
+    link,
+  );
 
+  if (tourLoading) {
+    return <WrappedSpinner loading={true} platform={'guide'} />;
+  }
   // desktop
   if (isWidthUp('md', props.width)) {
     return (
@@ -117,13 +120,13 @@ const MobileWrapper = withWidth()(function (props: {
         {/* Guide Data */}
         <Grid
           container
-          justify="center"
+          justifyContent="center"
           data-testid={'guide-page-data-content-wrapper'}
         >
           <Grid
             item
             container
-            justify="space-between"
+            justifyContent="space-between"
             style={{ margin: '0 2rem', maxWidth: '80rem' }}
           >
             <Grid item sm={4}>
@@ -165,36 +168,22 @@ const MobileWrapper = withWidth()(function (props: {
         {/* Other Guides Carousel */}
         <Grid
           style={{
-            backgroundColor: '#d3d3d3',
-            margin: '0 0.5rem',
+            backgroundColor: '#fbe7e7',
             paddingBottom: '4rem',
           }}
+          className={'sectionWrapper'}
         >
-          <CarouselHeadline color="#f25b5b" href={config.GUIDE_DOMAIN}>
-            {t('guide carousel title')}
-          </CarouselHeadline>
-          <Carousel
-            cellSpacing={12}
-            color="#666666"
-            visibleSlides={{
-              xs: 1,
-              sm: 2,
-              lg: 2,
-            }}
-          >
-            {cardCollection(collectionsContext.collections, link).map(
-              (collection) => {
-                return (
-                  <CollectionCard
-                    key={collection.id}
-                    actionText={t('collections module discover button')}
-                    count={collection.elementCount}
-                    {...collection}
-                  />
-                );
-              },
-            )}
-          </Carousel>
+          <div className={classes.carouselInner}>
+            <CarouselHeadline color="#f25b5b" href={config.GUIDE_DOMAIN}>
+              {t('guide carousel title')}
+            </CarouselHeadline>
+            <SwiperCarousel
+              data={collectionCardData as any}
+              type="pair"
+              sliderComponent={CollectionCardNew}
+              section="guide-pair"
+            />
+          </div>
         </Grid>
       </div>
     );
@@ -204,11 +193,11 @@ const MobileWrapper = withWidth()(function (props: {
   return (
     <div className={classes.content} style={{ paddingTop: '5rem' }}>
       {/* Guide Data */}
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid
           item
           container
-          justify="space-between"
+          justifyContent="space-between"
           style={{ margin: '0 0.5rem', maxWidth: '80rem' }}
         >
           {/* Route */}
@@ -218,20 +207,22 @@ const MobileWrapper = withWidth()(function (props: {
               <div>
                 <Grid
                   container
-                  justify="center"
+                  justifyContent="center"
                   style={{ marginTop: '1rem', height: '100%' }}
                 >
                   <Grid
                     item
                     container
                     direction="column"
-                    justify="center"
+                    justifyContent="center"
                     style={{ maxWidth: '80rem' }}
                   >
                     <Typography color="primary" variant="h5">
                       {tourData.subtitle}
                     </Typography>
-                    <Typography variant="h1">{tourData.title}</Typography>
+                    <Typography variant="h1" className={classes.title}>
+                      {tourData.title}
+                    </Typography>
                   </Grid>
                 </Grid>
               </div>
@@ -265,35 +256,22 @@ const MobileWrapper = withWidth()(function (props: {
       {/* Other Guides Carousel */}
       <Grid
         style={{
-          backgroundColor: '#d3d3d3',
+          backgroundColor: '#fbe7e7',
           padding: '2rem',
         }}
+        className={'sectionWrapper'}
       >
-        <CarouselHeadline color="#f25b5b" href={config.GUIDE_DOMAIN}>
-          {t('guide carousel title')}
-        </CarouselHeadline>
-        <Carousel
-          color="#666666"
-          cellSpacing={12}
-          visibleSlides={{
-            xs: 1,
-            sm: 2,
-            lg: 2,
-          }}
-        >
-          {cardCollection(collectionsContext.collections, link).map(
-            (collection) => {
-              return (
-                <CollectionCard
-                  key={collection.id}
-                  actionText={t('collections module discover button')}
-                  count={collection.elementCount}
-                  {...collection}
-                />
-              );
-            },
-          )}
-        </Carousel>
+        <div className={classes.carouselInner}>
+          <CarouselHeadline color="#f25b5b" href={config.GUIDE_DOMAIN}>
+            {t('guide carousel title')}
+          </CarouselHeadline>
+          <SwiperCarousel
+            data={collectionCardData as any}
+            type="pair"
+            sliderComponent={CollectionCardNew}
+            section="guide-pair"
+          />
+        </div>
       </Grid>
     </div>
   );

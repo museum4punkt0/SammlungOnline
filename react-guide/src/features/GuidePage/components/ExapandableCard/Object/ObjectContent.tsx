@@ -65,7 +65,7 @@ function ObjectContent({
       // style={{ height: '40rem' }}
       >
         <Grid item container direction="column" wrap="nowrap">
-          <Grid item container justify="center">
+          <Grid item container justifyContent="center">
             <CardMedia
               // className={classes.objectImage}
               style={{
@@ -84,7 +84,7 @@ function ObjectContent({
           container
           direction="column"
           alignContent="flex-start"
-          justify="flex-start"
+          justifyContent="flex-start"
         >
           <Grid item style={{ margin: '1rem 0' }}>
             <Typography>{geographicalReferences}</Typography>
@@ -124,12 +124,12 @@ function ObjectContent({
                 <Button
                   style={{ padding: '0' }}
                   color={'inherit'}
-                  onClick={OpenObjectInNewTab} //link.toObject(objectLink)}
+                  onClick={OpenObjectInNewTab}
                 >
                   <Grid
                     container
                     direction="row"
-                    justify="flex-start"
+                    justifyContent="flex-start"
                     wrap="nowrap"
                   >
                     <Grid item container alignContent="center">
@@ -157,7 +157,7 @@ function ObjectContent({
                         <Grid
                           container
                           direction="row"
-                          justify="flex-start"
+                          justifyContent="flex-start"
                           wrap="nowrap"
                         >
                           <Grid item container alignContent="center">
@@ -191,7 +191,7 @@ function ObjectContent({
           wrap="nowrap"
           style={{ padding: '1rem' }}
         >
-          <Grid item container justify="center">
+          <Grid item container justifyContent="center">
             <CardMedia
               className={classes.objectImage}
               src="picture"
@@ -206,7 +206,7 @@ function ObjectContent({
           xs={6}
           direction="column"
           alignContent="flex-start"
-          justify="flex-start"
+          justifyContent="flex-start"
         >
           <Grid item>
             <Typography>{geographicalReferences}</Typography>
@@ -237,13 +237,13 @@ function ObjectContent({
               color={'inherit'}
               onClick={() =>
                 window.open(link.getObjectUrl(objectLink), '_newtab')
-              } //link.toObject(objectLink)}
+              }
               className={classes.buttonHover}
             >
               <Grid
                 container
                 direction="row"
-                justify="flex-start"
+                justifyContent="flex-start"
                 wrap="nowrap"
               >
                 <Grid item container alignContent="center">
@@ -271,7 +271,7 @@ function ObjectContent({
                       <Grid
                         container
                         direction="row"
-                        justify="flex-start"
+                        justifyContent="flex-start"
                         wrap="nowrap"
                       >
                         <Grid item container alignContent="center">

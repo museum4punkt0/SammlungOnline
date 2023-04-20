@@ -28,11 +28,11 @@ export const MockTourDesktopComponent = ({
   return (
     <div className={classes.content} style={{ paddingTop: '5rem' }}>
       {/* Guide Data */}
-      <Grid container justify="center">
+      <Grid container justifyContent="center">
         <Grid
           item
           container
-          justify="space-between"
+          justifyContent="space-between"
           style={{ margin: '0 0.5rem', maxWidth: '80rem' }}
         >
           {/* Route */}
@@ -42,14 +42,14 @@ export const MockTourDesktopComponent = ({
               <div>
                 <Grid
                   container
-                  justify="center"
+                  justifyContent="center"
                   style={{ marginTop: '1rem', height: '100%' }}
                 >
                   <Grid
                     item
                     container
                     direction="column"
-                    justify="center"
+                    justifyContent="center"
                     style={{ maxWidth: '80rem' }}
                   >
                     <Typography color="primary" variant="h5">

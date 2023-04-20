@@ -38,7 +38,13 @@ const useStyles = makeStyles((theme: Theme) =>
     slideTitle: {
       color: theme.palette.secondary.main,
     },
-
+    title: {
+      color: '#f25b5b',
+    },
+    carouselInner: {
+      maxWidth: 1280,
+      margin: '0 auto',
+    },
     guideDescription: {},
 
     testFiller: {

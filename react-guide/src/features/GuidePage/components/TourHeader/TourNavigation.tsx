@@ -27,7 +27,7 @@ const TourNavigation: React.FC<ITourNavigationProps> = (props) => {
       container
       direction="row"
       wrap="nowrap"
-      justify="space-between"
+      justifyContent="space-between"
       style={{ margin: '1rem 0' }}
     >
       <Grid
@@ -35,7 +35,7 @@ const TourNavigation: React.FC<ITourNavigationProps> = (props) => {
         container
         xs={2}
         direction="row"
-        justify="flex-start"
+        justifyContent="flex-start"
         wrap="nowrap"
       >
         <IconButton
@@ -49,7 +49,7 @@ const TourNavigation: React.FC<ITourNavigationProps> = (props) => {
           </Typography>
         </IconButton>
       </Grid>
-      <Grid item container xs={3} justify="space-between">
+      <Grid item container xs={3} justifyContent="space-between">
         {accessibility && (
           <Grid
             item
@@ -57,7 +57,7 @@ const TourNavigation: React.FC<ITourNavigationProps> = (props) => {
             xs={4}
             direction="row"
             wrap="nowrap"
-            justify="flex-start"
+            justifyContent="flex-start"
           >
             <Grid item container alignContent="center">
               <Switch

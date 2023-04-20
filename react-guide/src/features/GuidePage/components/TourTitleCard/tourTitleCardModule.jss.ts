@@ -9,6 +9,15 @@ const useStyles = makeStyles((theme: Theme) =>
         height: '54rem',
       },
     },
+    subtitle: {
+      color: '#fff',
+    },
+    title: {
+      color: '#f25b5b',
+    },
+    text: {
+      color: '#fff',
+    },
   }),
 );
 

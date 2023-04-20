@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     headerTitle: {
       width: '100%',
+      color: '#f25b5b',
     },
     divider: {
       height: 5,
