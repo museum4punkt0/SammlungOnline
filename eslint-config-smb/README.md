@@ -1,4 +1,4 @@
-# Eslint-config-smb
+# Eslint-config-SMB
 
 **An npm module exporting recommended eslint and prettier configs for the SMB project.**
 
@@ -20,7 +20,7 @@ Create a file `.eslintrc.json` in your root directory. In this file, eslint can 
 }
 ```
 
-If you wish to furthermore customize the settings for your particular project, you can do so by adding eslint confiurations here. For example add:
+If you wish to furthermore customize the settings for your particular project, you can do so by adding eslint configurations here. For example add:
 
 ```
 {
