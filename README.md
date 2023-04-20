@@ -9,9 +9,11 @@ Die Neugestaltung der Online Sammlungen verfolgt dabei folgende Ziele:
 Beim Besuch der Online Sammlungen weisen BesucherInnen individuelle und spezifischen Motivationen und Bedürfnisse auf. Um diesen individuellen Zugriffen auf die Objekte der Online Sammlung gerecht zu werden, stehen die Objekte der Sammlungen im Mittelpunkt. Durch verschiedene Themenformate, werden für die individuellen Motivationen der Online BesucherInnen, individuelle Zugänge zu den Objekten geschaffen. Die Online Sammlungen wurden modular wachsend sowie mit der Möglichkeit der mehrsprachigen Nutzung geplant.
 
 ### Entstehungskontext
+
 Die Plattform Sammlungen Online ist initial entstanden im Verbundprojekt [museum4punkt0 – Digitale Strategien für das Museum der Zukunft](https://www.museum4punkt0.de) im Teilprojekt [Visitor Journeys neu gedacht – digitale Erweiterung des Museumsbesuchs](https://www.museum4punkt0.de/teilprojekt/visitor-journeys-neu-gedacht-digitale-erweiterung-des-museumsbesuchs/) der Staatlichen Museen zu Berlin – Preußischer Kulturbesitz. Die Plattform wurde über die beiden weiteren Förderphasen des Verbundprojekts museum4punkt0 im Projekt [(De-)Coding Culture. Kulturelle Kompetenz im digitalen Raum](https://www.museum4punkt0.de/teilprojekt/de-coding-culture-kulturelle-kompetenz-im-digitalen-raum/) der Staatlichen Museen zu Berlin um weitere Funktionen und Module erweitert.
 
 ### Förderung
+
 Das Projekt museum4punkt0 wird gefördert durch die Beauftragte der Bundesregierung für Kultur und Medien aufgrund eines Beschlusses des Deutschen Bundestages.
 
 ![BKM-Logo](https://github.com/museum4punkt0/Object-by-Object/blob/77bba25aa5a7f9948d4fd6f0b59f5bfb56ae89e2/04%20Logos/BKM_Fz_2017_Web_de.gif)
@@ -51,7 +53,6 @@ Um die Plattformen im Hintergrund mit den notwendigen Daten zu versorgen, sind w
 | -------------- | -------------------------------------------------------------------------------------------------------------- |
 | hasura-auth    | Webhook Authentifizierungs-Service für Hasura                                                                  |
 | mds-sync       | Service um den Daten-Index mit Änderungen im MDS zu synchronisieren                                            |
-| react-admin    | Administrations-UI für die Pflege von Website-Content (Textblöcke, Themen, Touren)                             |
 | search-indexer | Service für die Indizierung von Suchergebnissen mit Elasticsearch sowie Implementierung des Search-Webservices |
 | sitemap        | Generierung und Bereitstellung der Sitemaps für SMB Recherche, SMB Touren und SMB Themen (SEO)                 |
 
@@ -83,19 +84,6 @@ Matomo `core/matomo` wird für das User-Tracking auf den einzelnen Plattformen v
 
 Je nach Anwendungsfall, müssen zusätzliche Container gestartet werden.
 
-### Administration
-
-SMB Admin erlaubt die Content-Pflege für die einzelen Plattformen. Der Content wird über die API `core/hasura` in der Datenbank `core/postgres`)gespeichert. Für die Administration ist eine Authentifizierung über einen Webhook `hasura-auth` notwendig. Alle dafür notwendigen Container sind oben beschrieben. Startsequenz:
-1. s.o.
-2. react-admin: `npm run start`
-
-Die Museumsgrundriss-Informationen für die Touren werden in einer Graph-DB (`core/orientdb`) hinterlegt. Dieser Container muss für die Administration der Touren demnach zusätzlich gestartet werden.
-
-**Hinweis**: Die Verwendung des Admin UI ist nur für Administratoren und Redakteure möglich. Bei Verwendung einer eigenen Instanz, muss daher zuvor ein Benutzer mit der Rolle "admin" oder "editor" angelegt werden. Es gibt zurzeit weder eine Registrierung noch die Möglichkeit sein Passwort selbst zu vergeben. Ein Administrator muss sich mit dem Admin Secret in die Hasura Admin-Console einloggen und den Benutzer in der Datenbank anlegen. Um ein Passwort zu erzeugen, werden die Postgres-Funktionen crypt und gen_salt (Blowfish Algorithmus 'bf') verwendet. Die Rechte des Redakteurs werden über die Spalte "editor_scope" definiert. Gültige Werte sind INTRO, TOPICS, GUIDE und SYSTEM - auch beliebig kombinierbar mit Pipe-Symbol getrennt.
-
-_Beispiel_
-
-`INSERT INTO smb.user (email, password, role_id, editor_scope) VALUES ('max.muster', crypt('hier-steht-das-passwort', gen_salt('bf', 10)), 1, 'TOPICS|GUIDE');`
 
 ### Intro
 
@@ -113,14 +101,14 @@ SMB Recherche nutzt zusätzlich den Search-Webservice (`search-indexer`), welche
 
 ### Touren
 
-Aktuell werden die Daten für SMB Touren noch im Admin (`react-admin`) gepflegt. Zukünftig werden die Museumsgrundriss-Informationen für die Touren allerdings aus einer Graph-DB (`core/orientdb`) geladen. Es empfiehlt sich daher, den entsprechenden Container bei der Nutzung von Touren mitzustarten. Startsequenz:
+Aktuell ist SMB Touren noch im Aufbau und nur rudimentär implementiert. Zukünftig werden die Museumsgrundriss-Informationen für die Touren allerdings aus einer Graph-DB (`core/orientdb`) geladen. Es empfiehlt sich daher, den entsprechenden Container bei der Nutzung von Touren mitzustarten. Startsequenz:
 1. s.o.
 2. core/orientdb
 3. react-guide: `npm run start`
 
 ### Themen
 
-SMB Themen nutzt keine zusätzlichen Services. . Alle notwendigen Container sind oben beschrieben. Startsequenz:
+SMB Themen nutzt keine zusätzlichen Services. Alle notwendigen Container sind oben beschrieben. Startsequenz:
 1. s.o.
 2. react-topics: `npm run start`
 
@@ -128,7 +116,7 @@ SMB Themen nutzt keine zusätzlichen Services. . Alle notwendigen Container sind
 
 Copyright (c) 2020-2022 / museum4punkt0
 
-Die hier veröffentlichte Anwendung wird unter der GNU GPLv3 Lizenz veröffentlicht. Sämtliche verwendete Programmteile Dritter sind mit der jeweiligen Lizenz in der Datei `react-component-library/LICENSES` aufgeführt. Alle verwendeten Bibliotheken stehen unter Open-Source Lizenzen. Diese sind:
+Die hier hinterlegte Anwendung wird unter der GNU GPLv3 Lizenz veröffentlicht. Sämtliche verwendete Programmteile Dritter sind mit der jeweiligen Lizenz in der Datei `react-component-library/LICENSES` aufgeführt. Alle verwendeten Bibliotheken stehen unter Open-Source Lizenzen. Diese sind:
 - Apache 2.0
 - Artistic-2.0
 - BSD
