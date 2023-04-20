@@ -1,169 +1,211 @@
 {
-    "collections module discover button": "",
-    "discover other collections": "",
-    "lastly added": "",
-    "collections module show all button": "",
-    "go to topics overview": "",
-    "play button": "",
-    "go to object details": "",
-    "object attribute fallback - no data available": "No data available.",
-    "object attribute description": "",
-    "object attribute dating": "",
-    "object attribute identNr": "",
-    "object attribute collection": "",
-    "object attribute compilation": "",
-    "object attribute location": "",
-    "object attribute involvedParties": "",
-    "object attribute geographicalReferences": "",
-    "object attribute dimensionsAndWeight": "",
-    "object attribute materialAndTechnique": "",
-    "object attribute provenance": "",
-    "object attribute technicalTerm": "",
-    "object attribute titles": "",
-    "attachment attribute picture credits": "",
-    "collection scroll to discover": "",
-    "collection scroll to player": "",
-    "link to bpk": "",
-    "aside topic headline": "",
-    "aside tours headline": "",
-    "aside contact headline": "",
-    "aside contact mailaddress": "",
-    "history back": "",
-    "download image dialog title": "",
-    "download image dialog content": "",
-    "download image dialog content right": "",
-    "download": "",
-    "dialog download title": "",
-    "download noncommercial use": "",
-    "download commercial use": "",
-    "go to topic": "",
-    "discover collection card title": "",
-    "discover collection card subtitle": "",
-    "find tour card title": "",
-    "find tour car subtitle": "",
-    "footer Intro": "",
-    "footer Recherche": "",
-    "footer Themen": "",
-    "footer Touren": "",
-    "footer Staatliche": "Staatliche Museen zu Berlin",
-    "footer Blog": "Blog",
-    "footer Newsletter": "Newsletter",
-    "footer Webshop": "Webshop",
-    "footer copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
-    "carousel button left": "Previous Topic",
-    "carousel button right": "Next Topic",
-    "logo link": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz",
-    "go to detail": "Click for details on the topic {{title}}",
-    "download image": "Download Image",
-    "zoom in": "Zoom in",
-    "show detail": "Show detailed object description",
-    "button play": "",
-    "go to collection": "Click for exploring the collection {{title}}",
-    "fallback image label": "There is no preview available for {{caption}}",
-    "next topic": "Next topic",
-    "previous topic": "Previous topic",
-    "find tour": "Click for finding a tour",
+  "collections module discover button": "",
+  "discover other collections": "",
+  "lastly added": "",
+  "collections module show all button": "",
+  "go to topics overview": "",
+  "play button": "",
+  "go to object details": "",
+  "object attribute fallback - no data available": "No data available.",
+  "object attribute description": "",
+  "object attribute dating": "",
+  "object attribute identNr": "",
+  "object attribute collection": "",
+  "object attribute compilation": "",
+  "object attribute location": "",
+  "object attribute involvedParties": "",
+  "object attribute geographicalReferences": "",
+  "object attribute dimensionsAndWeight": "",
+  "object attribute materialAndTechnique": "",
+  "object attribute provenance": "",
+  "object attribute technicalTerm": "",
+  "object attribute titles": "",
+  "attachment attribute picture credits": "",
+  "collection scroll to discover": "",
+  "collection scroll to player": "",
+  "link to bpk": "",
+  "aside topic headline": "",
+  "aside tours headline": "",
+  "aside contact headline": "",
+  "aside contact mailaddress": "",
+  "history back": "",
+  "download image dialog title": "",
+  "download image dialog content": "",
+  "download image dialog content right": "",
+  "download": "",
+  "dialog download title": "",
+  "download noncommercial use": "",
+  "download commercial use": "",
+  "go to topic": "",
+  "discover collection card title": "",
+  "discover collection card subtitle": "",
+  "find tour card title": "",
+  "find tour car subtitle": "",
+  "footer Intro": "",
+  "footer Recherche": "",
+  "footer Themen": "",
+  "footer Touren": "",
+  "footer Staatliche": "Staatliche Museen zu Berlin",
+  "footer Blog": "Blog",
+  "footer Newsletter": "Newsletter",
+  "footer Webshop": "Webshop",
+  "footer copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
+  "carousel button left": "Previous Topic",
+  "carousel button right": "Next Topic",
+  "logo link": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz",
+  "go to detail": "Click for details on the topic {{title}}",
+  "download image": "Download Image",
+  "zoom in": "Zoom in",
+  "show detail": "Show detailed object description",
+  "button play": "",
+  "go to collection": "Click for exploring the collection {{title}}",
+  "fallback image label": "There is no preview available for {{caption}}",
+  "next topic": "Next topic",
+  "previous topic": "Previous topic",
+  "find tour": "Click for finding a tour",
+  "imprint": "Imprint",
+  "privacy": "Privacy",
+  "accessibility": "Accessibility",
+  "research": {
+    "highlights": {
+      "title": "Highlights from the Collection",
+      "text": "Here you can go directly to detailed information of particularly popular objects and major works from the collections."
+    },
+    "collection": {
+      "title": "Collections from the stocks",
+      "text": "Here you can go directly to the object collections in RECHERCHE. The collections are compiled by staff members for current events, for example research projects or exhibitions."
+    }
+  },
+  "stt": {
+    "filter": {
+      "label": "Publiziert von",
+      "all": "Alle",
+      "isl": "Museum für Islamische Kunst",
+      "smb": "Sammlungen Online",
+      "hbf": "Hamburger Bahnhof",
+      "kgm": "Kunstgewerbemuseum"
+    },
+    "sorting": {
+      "label": "Sortieren nach",
+      "latest": "zuletzt hinzugefügt",
+      "asc": "A-Z",
+      "desc": "Z-A"
+    }
+  },
+  "intro": {
+    "title": "Direct entry into the collections of the National Museums in Berlin",
+    "text": "Clicking on them will take you directly to the objects available online from the selected collection and institutes:"
+  },
+  "topics": {
+    "carousel": {
+      "title": "Topics from the collections"
+    }
+  },
+  "collections": {
+    "buttons": {
+      "research": "View",
+      "topics": "Experience Story",
+      "guide": "Insight"
+    }
+  },
+  "search": {
+    "results": {
+      "title": "Search Results",
+      "count": "of {{searchResultsCount}} Objects",
+      "empty": "Your Search did not return any Result.",
+      "next": "Next Object",
+      "previous": "Previous Object"
+    },
+    "topics": {
+      "title": "Topics of the Online Collection"
+    },
+    "guide": {
+      "title": "Tours through the Online Collection"
+    },
+    "exhibit": {
+      "location": "Location",
+      "collection": "Collection",
+      "compilation": "Compilation",
+      "notExhibited": "Not exhibited",
+      "attributes": {
+        "geographicalReferences": "Geographical references",
+        "involvedParties": "Contributors",
+        "identNumber": "Ident. No.",
+        "datingTo": "Datierung bis",
+        "datingFrom": "Datierung von",
+        "dimensionsAndWeight": "Dimensions and Weight",
+        "description": "Object Description",
+        "dating": "Date Stamping",
+        "materialAndTechnique": "Material and Technology",
+        "provenance": "Provenance and Acquisition",
+        "technicalTerm": "Technical Term",
+        "titles": "Title",
+        "literature": "Literature",
+        "signatures": "Signatures and inscriptions",
+        "noData": "No Data available."
+      }
+    }
+  },
+  "details": {
+    "aside": {
+      "contact": "Contact",
+      "topic": "Topics",
+      "tours": "Tours"
+    },
+    "attachment": {
+      "pictureCredits": "Picture Credits"
+    },
+    "referencesToOtherExhibits": "References to other Objects"
+  },
+  "cookieBanner": {
+    "content": "This website uses cookies. If you continue to use the website, we will assume your consent."
+  },
+  "notFoundPage": {
+    "title": "PAGE NOT FOUND",
+    "description": "Unfortunately, the requested page does not exist.",
+    "toMainPage": "To main page"
+  },
+  "header": {
+    "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz - Topics Landingpage",
+    "intro": {
+      "title": "Intro",
+      "subtitle": "Einstieg in die Sammlungen"
+    },
+    "research": {
+      "title": "Recherche",
+      "subtitle": "Suche in den Sammlungen"
+    },
+    "topics": {
+      "title": "Themen",
+      "subtitle": "Die Sammlung entdecken"
+    },
+    "tours": {
+      "title": "Touren",
+      "subtitle": "Wege in die Sammlung"
+    }
+  },
+  "footer": {
+    "blog": "Blog",
+    "intro": "Intro",
+    "newsletter": "Newsletter",
+    "research": "Research",
+    "staatliche": "Staatliche Museen zu Berlin",
+    "topics": "Topics",
+    "routes": "Routes",
+    "webshop": "Webshop",
+    "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
     "imprint": "Imprint",
     "privacy": "Privacy",
     "accessibility": "Accessibility",
-    "search": {
-        "results": {
-            "title": "Search Results",
-            "count": "of {{searchResultsCount}} Objects",
-            "empty": "Your Search did not return any Result.",
-            "next": "Next Object",
-            "previous": "Previous Object"
-        },
-        "topics": {
-            "title": "Topics of the Online Collection"
-        },
-        "guide": {
-            "title": "Tours through the Online Collection"
-        },
-        "exhibit": {
-            "location": "Location",
-            "collection": "Collection",
-            "compilation": "Compilation",
-            "notExhibited": "Not exhibited",
-            "attributes": {
-                "geographicalReferences": "Geographical references",
-                "involvedParties": "Contributors",
-                "identNumber": "Ident. No.",
-                "datingTo": "Datierung bis",
-                "datingFrom": "Datierung von",
-                "dimensionsAndWeight": "Dimensions and Weight",
-                "description": "Object Description",
-                "dating": "Date Stamping",
-                "materialAndTechnique": "Material and Technology",
-                "provenance": "Provenance and Acquisition",
-                "technicalTerm": "Technical Term",
-                "titles": "Title",
-                "literature": "Literature",
-                "signatures": "Signatures and inscriptions",
-                "noData": "No Data available."
-            }
-        }
-    },
-    "details": {
-        "aside": {
-            "contact": "Contact",
-            "topic": "Topics",
-            "tours": "Tours"
-        },
-        "attachment": {
-            "pictureCredits": "Picture Credits"
-        },
-        "referencesToOtherExhibits": "References to other Objects"
-    },
-    "cookieBanner": {
-        "content": "This website uses cookies. If you continue to use the website, we will assume your consent."
-    },
-    "notFoundPage": {
-        "title": "PAGE NOT FOUND",
-        "description": "Unfortunately, the requested page does not exist.",
-        "toMainPage": "To main page"
-    },
-    "header": {
-        "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz",
-        "intro": {
-            "title": "Intro",
-            "subtitle": "Suche in den Sammlungen"
-        },
-        "research": {
-            "title": "Recherche",
-            "subtitle": "Suche in den Sammlungen"
-        },
-        "topics": {
-            "title": "Themen",
-            "subtitle": "Die Sammlung entdecken"
-        },
-        "tours": {
-            "title": "Touren",
-            "subtitle": "Wege in die Sammlung"
-        }
-    },
-	"footer": {
-        "blog": "Blog",
-        "intro": "Intro",
-        "newsletter": "Newsletter",
-        "research": "Research",
-        "staatliche": "Staatliche Museen zu Berlin",
-        "topics": "Topics",
-        "routes": "Routes",
-        "webshop": "Webshop",
-        "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
-        "imprint": "Imprint",
-        "privacy": "Privacy",
-        "accessibility": "Accessibility",
-        "contact": "Contact",
-		"contactSection":{
-		  "title":"Contact",
-		  "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
-		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
-		  "link":{
-			"href":"mailto:smb-digital@smb.spk-berlin.de",
-			"text": "Fragen Sie uns"
-		  }
-		}
-	}
+    "contact": "Contact",
+    "contactSection": {
+      "title": "Contact",
+      "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+      "text": "In KONTAKT finden Sie eine Übersicht zu den Adressen, über die Sie sich für Ihre Fragen und Ihr Feedback zu dieser Website und ihren Inhalten mit uns in Verbindung setzen können. Beim Anklicken von “Contact us” kommen Sie zur Kontaktseite.",
+      "link": {
+        "href": "mailto:smb-digital@smb.spk-berlin.de",
+        "text": "Contact us!"
+      }
+    }
+  }
 }

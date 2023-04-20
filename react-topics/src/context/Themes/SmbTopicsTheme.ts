@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const SmbTopicsTheme = createMuiTheme({
+const SmbTopicsTheme = createTheme({
   props: {
     MuiButtonBase: {
       disableRipple: true,
@@ -8,7 +8,7 @@ const SmbTopicsTheme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: '#000000',
+      main: '#0F0900',
       // beige
       light: '#c2c2ba',
       dark: '#666666',
@@ -20,11 +20,11 @@ const SmbTopicsTheme = createMuiTheme({
       light: '#ffffff',
       // greyish-brown
       dark: '#6f7045',
-      contrastText: '#000000',
+      contrastText: '#22201E',
     },
     text: {
       primary: '#ffffff',
-      secondary: '#000000',
+      secondary: '#22201E',
       // highlight-color
       hint: '#f9ff04',
       // brownish-grey
@@ -44,7 +44,8 @@ const SmbTopicsTheme = createMuiTheme({
       lineHeight: '1.18',
       letterSpacing: '1px',
       textTransform: 'uppercase',
-      color: '#f9ff04',
+      // color: '#f9ff04',
+      color: 'inherit',
     },
 
     // H2
@@ -56,8 +57,9 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.22',
       letterSpacing: '1px',
-      textTransform: 'uppercase',
-      color: '#f9ff04',
+      //textTransform: 'uppercase',
+      // color: '#f9ff04',
+      color: 'inherit',
     },
 
     // H3 Button Text
@@ -69,8 +71,9 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: 'normal',
       letterSpacing: '1px',
-      textTransform: 'uppercase',
-      color: '#f9ff04',
+      //textTransform: 'uppercase',
+      // color: '#f9ff04',
+      color: 'inherit',
     },
 
     // H4
@@ -82,8 +85,9 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.2',
       letterSpacing: '2px',
-      textTransform: 'uppercase',
-      color: '#000000',
+      //textTransform: 'uppercase',
+      // color: '#000000',
+      color: 'inherit',
     },
 
     // H5
@@ -95,7 +99,8 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.22',
       letterSpacing: '1px',
-      color: '#f9ff04',
+      // color: '#f9ff04',
+      color: 'inherit',
     },
 
     // H6
@@ -107,8 +112,9 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.22',
       letterSpacing: '1px',
-      textTransform: 'uppercase',
-      color: '#f9ff04',
+      //textTransform: 'uppercase',
+      // color: '#f9ff04',
+      color: 'inherit',
     },
 
     subtitle1: {
@@ -120,7 +126,8 @@ const SmbTopicsTheme = createMuiTheme({
       lineHeight: 'normal',
       letterSpacing: '1px',
       textTransform: 'uppercase',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     // Description
@@ -131,7 +138,8 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     body2: {
@@ -142,7 +150,8 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     caption: {
@@ -152,7 +161,8 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
 
     overline: {
@@ -162,7 +172,8 @@ const SmbTopicsTheme = createMuiTheme({
       fontStyle: 'normal',
       lineHeight: '1.57',
       letterSpacing: '1px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
   },
   transitions: {
@@ -226,7 +237,8 @@ SmbTopicsTheme.overrides = {
       fontStyle: 'normal',
       lineHeight: 'normal',
       letterSpacing: '2px',
-      color: '#ffffff',
+      // color: '#ffffff',
+      color: 'inherit',
     },
     root: {
       fontWeight: 'bold',

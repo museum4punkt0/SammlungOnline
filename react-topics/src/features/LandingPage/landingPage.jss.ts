@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       backgroundColor: 'rgba(0, 0, 0, 0.55)',
     },
+    title: {
+      color: '#f9ff04',
+    },
     slideContentWrapper: {
       display: 'flex',
       flexDirection: 'column',
