@@ -9,6 +9,7 @@
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.56",
         "@material-ui/styles": "^4.10.0",
+        "@smb/smb-react-components-library": "^1.10.1",
         "apollo-boost": "^0.4.9",
         "apollo-client": "^2.6.4",
         "axios": "^0.21.1",
@@ -27,7 +28,6 @@
         "react-i18next": "^11.7.0",
         "react-router-dom": "^5.2.0",
         "react-scripts": "^4.0.3",
-        "@smb/smb-react-components-library": "git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git#f1852293ef6e56ef14df357b9e998a06fefced0e",
         "use-open-seadragon": "^1.0.0"
     },
     "scripts": {
