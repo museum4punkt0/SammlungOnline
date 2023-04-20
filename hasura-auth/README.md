@@ -14,12 +14,11 @@ Steps to getting started:
 
 1. Check/adjust GraphQL _auth\_header_ and _endpoint_ in `updateApolloSchema.bat`
 2. Run `updateApolloSchema.bat` (or create an *.sh equivalent and run it)
-3. Generate `schema.json.graphql` from downloaded `schema.json`
-4. Check/adjust `UserFetch.qraphql`
-5. Run gradle task `generateApolloSources`
-6. Check/adjust `UserRepository.kt`
-7. Check/adjust env-variables (see _application.yml_)
-8. Run gradle task `bootRun`
+3. Check/adjust `UserFetch.qraphql`
+4. Run gradle task `generateApolloSources`
+5. Check/adjust `UserRepository.kt`
+6. Check/adjust env-variables (see _application.yml_)
+7. Run gradle task `bootRun`
 
 ## Development
 

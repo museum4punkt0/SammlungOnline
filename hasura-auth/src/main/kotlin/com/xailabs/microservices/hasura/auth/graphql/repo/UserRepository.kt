@@ -1,6 +1,6 @@
 package com.xailabs.microservices.hasura.auth.graphql.repo
 
-import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.coroutines.await
 import com.xailabs.microservices.hasura.auth.graphql.GraphQlClient
 import com.xailabs.microservices.hasura.auth.graphql.queries.FetchUserByTokenQuery
 import com.xailabs.microservices.hasura.auth.graphql.queries.FetchUserByUsernameQuery
@@ -15,7 +15,6 @@ class UserRepository @Autowired constructor(val graphQlClient: GraphQlClient) {
     suspend fun fetchUserByUsernameAsync(username: String): UserData? {
         val result = graphQlClient.client
                 .query(FetchUserByUsernameQuery(username))
-                .toDeferred()
                 .await()
         val users: List<FetchUserByUsernameQuery.User>? = result.data?.user
         return if (users.isNullOrEmpty()) null else users[0].fragments.userData
@@ -34,7 +33,6 @@ class UserRepository @Autowired constructor(val graphQlClient: GraphQlClient) {
     suspend fun fetchUserByTokenAsync(token: String): UserData? {
         val result = graphQlClient.client
                 .query(FetchUserByTokenQuery(token))
-                .toDeferred()
                 .await()
         val users: List<FetchUserByTokenQuery.User>? = result.data?.user
         return if (users.isNullOrEmpty()) null else users[0].fragments.userData

@@ -7,13 +7,12 @@ services:
       dockerfile: docker/Dockerfile
     image: xailabs/hasura-auth
     container_name: smb-hasura-auth
-
-    # for dev purposes only
     restart: unless-stopped
     environment:
       - HASURA_SECRET=jcG8QBI5g8OX
       - HASURA_ENDPOINT=http://smb-hasura:8080/v1/graphql
       - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=public
+      - SENTRY_ENVIRONMENT=local
     ports:
       - 8083:8080
     external_links:

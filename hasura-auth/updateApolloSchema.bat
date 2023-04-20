@@ -1,22 +1,21 @@
 @echo off
 
-set schema_file=src\main\graphql\schema.json
+set schema_file=src\main\graphql\schema.graphql
 set auth_header=authservice:authservice
 set endpoint=http://localhost:8081/v1/graphql
 
 echo Downloading schema from %endpoint%...
-call .\gradlew.bat downloadApolloSchema --endpoint="%endpoint%" --schema="%schema_file%.tmp" --header="Authorization: %auth_header%" > nul
+call .\gradlew.bat downloadApolloSchema --endpoint="%endpoint%" --schema="%schema_file%" --header="Authorization: %auth_header%" > nul
 if not %ERRORLEVEL%==0 goto Error
 
-python -m json.tool "%schema_file%.tmp" > "%schema_file%"
-del "%schema_file%.tmp"
 
 echo Update complete. 
 echo.
-echo Now open %schema_file% 
-echo in IntelliJ and hit the green triangle to create the graphql file from json. 
-echo If you don't have IntelliJ... well... then figure out something else :-P
-echo.
+echo Schema is located at %schema_file% 
+echo NOTE: There may be an issue with "null: Boolean" in the schema if 
+echo       Strapi remote schemas are included during schema update. 
+echo       In this case just remove the respective lines from the schema file
+echo       or make sure, Strapi remote schemas are not included after all.
 goto :End
 
 :Error
