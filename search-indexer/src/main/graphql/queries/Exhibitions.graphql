@@ -1,0 +1,26 @@
+# Definition of the Exhibition data struct
+fragment exhibitionData on smb_exhibitions {
+    id
+    location
+    title
+    description
+    startDate:start_date
+    endDate:end_date
+}
+
+# ----------------------------------------------------------
+
+# Return an Exhibition entry by id
+query FetchExhibition($id: bigint!) {
+    smb_exhibitions_by_pk(id: $id) {
+        ...exhibitionData
+    }
+}
+
+query FetchExhibitionLinks($objectId: bigint!) {
+    smb_exhibitions_objects(where: {object_id: {_eq: $objectId}}) {
+        exhibition {
+            ...exhibitionData
+        }
+    }
+}

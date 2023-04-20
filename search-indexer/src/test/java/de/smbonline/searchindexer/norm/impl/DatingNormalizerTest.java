@@ -1,7 +1,6 @@
 package de.smbonline.searchindexer.norm.impl;
 
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +25,7 @@ public class DatingNormalizerTest {
         );
         // when
         DatingNormalizer normalizer = new DatingNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
@@ -41,7 +40,7 @@ public class DatingNormalizerTest {
         );
         // when
         DatingNormalizer normalizer = new DatingNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
@@ -56,7 +55,7 @@ public class DatingNormalizerTest {
         );
         // when
         DatingNormalizer normalizer = new DatingNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

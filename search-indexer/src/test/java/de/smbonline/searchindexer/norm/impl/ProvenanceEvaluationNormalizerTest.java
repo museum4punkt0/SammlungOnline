@@ -21,7 +21,7 @@ public class ProvenanceEvaluationNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("ObjProvenanceEvaluationClb", "Gelber Schnee"));
         // when
         ProvenanceEvaluationNormalizer normalizer = new ProvenanceEvaluationNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Gelber Schnee");
     }
@@ -35,7 +35,7 @@ public class ProvenanceEvaluationNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         ProvenanceEvaluationNormalizer normalizer = new ProvenanceEvaluationNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

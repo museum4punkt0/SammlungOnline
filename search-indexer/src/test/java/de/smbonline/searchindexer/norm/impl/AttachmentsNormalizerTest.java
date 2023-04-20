@@ -20,7 +20,7 @@ public class AttachmentsNormalizerTest {
         obj.getAttachments().add(createAttachment("dummy"));
 
         AttachmentsNormalizer normalizer = new AttachmentsNormalizer();
-        Boolean value = normalizer.resolveAttributeValue(obj);
+        Boolean value = normalizer.resolveAttributeValue(obj, "de");
         assertThat(value).isTrue();
     }
 
@@ -30,7 +30,7 @@ public class AttachmentsNormalizerTest {
         obj.getAttachments().clear();
 
         AttachmentsNormalizer normalizer = new AttachmentsNormalizer();
-        Boolean value = normalizer.resolveAttributeValue(obj);
+        Boolean value = normalizer.resolveAttributeValue(obj, "de");
         assertThat(value).isFalse();
     }
 }

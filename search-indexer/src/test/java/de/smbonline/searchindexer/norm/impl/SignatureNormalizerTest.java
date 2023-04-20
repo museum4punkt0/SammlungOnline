@@ -58,7 +58,7 @@ public class SignatureNormalizerTest {
 
         // when
         SignatureNormalizer normalizer = new SignatureNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
 
         // then
         assertThat(value).isNotNull();

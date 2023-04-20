@@ -11,26 +11,13 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
+import static de.smbonline.searchindexer.util.Dates.*;
 
 // TODO exhibition-date indexing must be re-checked as days pass by
 public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<String> {
 
-    /**
-     * "dd.MM.yyyy"
-     */
-    private static final Pattern REGULAR_DATE_PATTERN = Pattern.compile(
-            "^\\s*(?<day>\\d{1,2})\\.(?<month>\\d{1,2})\\.(?<year>\\d{1,4})\\s*$");
-
-    /**
-     * "yyyy-MM-dd"
-     */
-    private static final Pattern ISO_DATE_PATTERN = Pattern.compile(
-            "^\\s*(\\d{1,4})-(\\d{1,2})-(\\d{1,2})\\s*$");
-    
     public ExhibitionsNormalizer() {
         super(EXHIBITIONS_ATTRIBUTE, "ObjRegistrarRef", ExhibitionsNormalizer::sort);
     }
@@ -50,6 +37,18 @@ public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<String> 
             String sortB = extractSortingInfo(findExhibitionRef(b));
             return Comparator.<String>nullsLast(Comparator.naturalOrder()).compare(sortA, sortB);
         }).toArray(Data[]::new);
+    }
+
+    @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjRegistrarRef.RegExhibitionRef.ExhBeginDateDat",
+                "ObjRegistrarRef.RegExhibitionRef.ExhDateTxt",
+                "ObjRegistrarRef.RegExhibitionRef.ExhEndDateDat",
+                "ObjRegistrarRef.RegExhibitionRef.ExhVenueDetailsTxt",
+                "ObjRegistrarRef.RegExhibitionRef.ExhTitleGrp.TitleClb",
+                "ObjRegistrarRef.RegExhibitionRef.ExhTitleGrp.TypeVoc",
+        };
     }
 
     @Override
@@ -95,26 +94,15 @@ public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<String> 
             }
         }
         if (hasBeginDate) {
-            sb.append(formatDate(beginDate));
+            sb.append(formatDate(beginDate, "de")); // TODO honor language
             if (hasEndDate) {
                 sb.append("-");
             }
         }
         if (hasEndDate) {
-            sb.append(formatDate(endDate));
+            sb.append(formatDate(endDate, "de")); // TODO honor language
         }
         return sb.toString();
-    }
-
-    private static String formatDate(final String date) {
-        Matcher matcher = ISO_DATE_PATTERN.matcher(date);
-        if (matcher.matches()) {
-            int year = Integer.parseInt(matcher.group(1));
-            int month = Integer.parseInt(matcher.group(2));
-            int day = Integer.parseInt(matcher.group(3));
-            return String.format("%02d.%02d.%04d", day, month, year);
-        }
-        return date.trim();
     }
 
     private static @Nullable String extractExhibitionTitle(final Data exhibitionItem) {
@@ -137,23 +125,6 @@ public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<String> 
         if (exhibitionItem != null) {
             String date = exhibitionItem.getTypedAttribute("ExhBeginDateDat");
             return tryParseDate(date);
-        }
-        return null;
-    }
-
-    private static @Nullable LocalDate tryParseDate(final @Nullable String date) {
-        if (date != null) {
-            Matcher matcher = ISO_DATE_PATTERN.matcher(date);
-            if (matcher.matches()) {
-                return LocalDate.parse(date.trim());
-            }
-            matcher = REGULAR_DATE_PATTERN.matcher(date);
-            if (matcher.matches()) {
-                int year = Integer.parseInt(matcher.group("year"));
-                int month = Integer.parseInt(matcher.group("month"));
-                int day = Integer.parseInt(matcher.group("day"));
-                return LocalDate.parse(String.format("%04d-%02d-%02d", year, month, day));
-            }
         }
         return null;
     }

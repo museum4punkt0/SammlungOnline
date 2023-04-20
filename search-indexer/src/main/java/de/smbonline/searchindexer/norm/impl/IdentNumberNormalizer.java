@@ -14,6 +14,14 @@ public class IdentNumberNormalizer extends FirstHitSortedNormalizer<String> {
     }
 
     @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjObjectNumberGrp.SortLnu",
+                "ObjObjectNumberGrp.NumberVrt",
+        };
+    }
+
+    @Override
     protected @Nullable String pickValue(final Data item) {
         return StringUtils.trimToNull(item.getTypedAttribute("NumberVrt"));
     }

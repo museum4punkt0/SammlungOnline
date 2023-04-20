@@ -3,8 +3,22 @@ fragment objectData on smb_objects {
     id
     createdAt:created_at
     updatedAt:updated_at
+    collectionKey
+    compilation
     exhibitionSpace:exhibition_space
-    attributes:attribute_translations (where: {language: {lang: {_eq: $lang} } }){
+    geographicalReferences:geographical_references(
+        order_by: [{sequence: asc}],
+        where: {sequence: {_gte: 0}, language: {lang: {_eq: $lang}}}
+    ) {
+        ...geoData
+    }
+    materialReferences:materials_and_techniques(
+        order_by: [{sequence: asc}],
+        where: {sequence: {_gte: 0}, language: {lang: {_eq: $lang}}}
+    ) {
+        ...materialData
+    }
+    attributes (where: {language: {lang: {_eq: $lang} } }){
         key:attribute_key
         value
         fqKey:fq_key

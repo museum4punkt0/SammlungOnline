@@ -1,0 +1,16 @@
+{
+    "name": "SMB Online Schema (Hasura)",
+    "schemaPath": "schema.graphql",
+    "extensions": {
+        "endpoints": {
+            "Hasura Local Endpoint": {
+                "url": "http://localhost:8081/v1/graphql",
+                "headers": {
+                    "user-agent": "JS GraphQL",
+                    "X-Hasura-Admin-Secret": "jcG8QBI5g8OX"
+                },
+                "introspect": true
+            }
+        }
+    }
+}

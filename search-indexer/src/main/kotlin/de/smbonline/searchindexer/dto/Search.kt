@@ -68,12 +68,14 @@ class Search : Cloneable {
                         StringUtils.isNoneBlank(it.getTypedAttribute(ATTR_FIELD), it.getTypedAttribute(ATTR_SEARCHQUERY))
                     }.mapIndexed { idx, it ->
                         val field: String = it.getTypedAttribute(ATTR_FIELD)!!
-                        var searchTerm: String = cleanupSearchTerm(it.getTypedAttribute(ATTR_SEARCHQUERY)!!)
-                        if (field == DATE_RANGE_ATTRIBUTE) {
-                            searchTerm = adjustDateRangeSearchValue(searchTerm)
+                        var searchTerm = cleanupSearchTerm(it.getTypedAttribute(ATTR_SEARCHQUERY)!!)
+                        searchTerm = if (field == DATE_RANGE_ATTRIBUTE) {
+                            adjustDateRangeSearchValue(searchTerm)
+                        } else {
+                            "($searchTerm)" // we need brackets here to avoid wrong search results
                         }
                         val operator = if (it.hasAttribute(ATTR_OPERATOR)) {
-                            FieldSearch.Operator.valueOf(it.getTypedAttribute<String>(ATTR_OPERATOR)!!.toUpperCase())
+                            FieldSearch.Operator.valueOf(it.getTypedAttribute<String>(ATTR_OPERATOR)!!.uppercase())
                         } else {
                             if (idx == 0) FieldSearch.Operator.AND else FieldSearch.Operator.OR
                         }
@@ -118,7 +120,7 @@ class Search : Cloneable {
 
         private fun startDate(str: String): Date {
             val cal = GregorianCalendar()
-            cal.set(Calendar.YEAR, 200000) // far far back in time
+            cal.set(Calendar.YEAR, 200000) // far, far back in time
             cal.set(Calendar.ERA, GregorianCalendar.BC)
             cal.set(Calendar.MONTH, Calendar.JANUARY)
             cal.set(Calendar.DAY_OF_MONTH, 1)
@@ -137,27 +139,27 @@ class Search : Cloneable {
             cal.set(Calendar.HOUR_OF_DAY, 23)
             cal.set(Calendar.MINUTE, 59)
             cal.set(Calendar.SECOND, 59)
-            cal.set(Calendar.MILLISECOND, 999)
+            cal.set(Calendar.MILLISECOND, 0) // don't care about millis, we do "x / 1000" anyway
             return setDateFields(cal, str)
         }
 
         private fun setDateFields(cal: Calendar, date: String): Date {
             val isBC = date.startsWith("-")
             val source = if (isBC) date.substring(1) else date
-            val parts = source.split(Regex("[-]"))
+            val parts = source.split('-').map { it.trim() }.filter { it.isNotEmpty() }
 
             // year
             if (parts.isNotEmpty()) {
-                cal.set(Calendar.YEAR, Integer.parseInt(parts[0]))
+                cal.set(Calendar.YEAR, parts[0].toInt())
                 cal.set(Calendar.ERA, if (isBC) GregorianCalendar.BC else GregorianCalendar.AD)
             }
             // month
             if (parts.size > 1) {
-                cal.set(Calendar.MONTH, Integer.parseInt(parts[1]) - 1)
+                cal.set(Calendar.MONTH, parts[1].toInt() - 1)
             }
             // day
             if (parts.size > 2) {
-                cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(parts[2]))
+                cal.set(Calendar.DAY_OF_MONTH, parts[2].toInt())
             }
             return cal.time
         }
@@ -185,7 +187,7 @@ class Search : Cloneable {
         fun cleanupSearchTerm(searchTerm: String, trim: Boolean = true): String {
             var cleaned = searchTerm
                     .replace("\\\"", "<ESCAPED_QUOTE>")
-                    .replace(Regex("[()/]"), " ")
+                    .replace(Regex("[()/]"), " ") // first remove these, it will break our logic
                     .replace(Regex("\\s+"), " ")
             if (trim) cleaned = cleaned.trim()
             cleaned = balanced("<ESCAPED_QUOTE>", cleaned)

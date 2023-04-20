@@ -12,4 +12,5 @@ class ElasticSearchConfig {
 
     var objectIndex: String = "objects"
     var suggestionsSort: SuggestionSort = SuggestionSort.COUNTER
+    var partialMatchSuggestions: Boolean = false
 }

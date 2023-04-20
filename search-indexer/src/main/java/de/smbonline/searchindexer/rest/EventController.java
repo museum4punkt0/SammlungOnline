@@ -1,9 +1,11 @@
 package de.smbonline.searchindexer.rest;
 
 import de.smbonline.searchindexer.dto.Data;
+import de.smbonline.searchindexer.dto.Projection;
 import de.smbonline.searchindexer.dto.SearchObject;
 import de.smbonline.searchindexer.service.ElasticSearchService;
-import de.smbonline.searchindexer.service.GraphQlService;
+import de.smbonline.searchindexer.service.GraphQlDataResolver;
+import io.sentry.Sentry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +30,19 @@ public class EventController {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventController.class);
 
     private final ElasticSearchService elasticSearch;
-    private final GraphQlService graphQl;
+    private final GraphQlDataResolver graphQl;
 
     @Autowired
     public EventController(
             final ElasticSearchService elasticSearchService,
-            final GraphQlService graphQlService) {
+            final GraphQlDataResolver graphQlService) {
         this.elasticSearch = elasticSearchService;
         this.graphQl = graphQlService;
     }
 
     @GetMapping
     public String check() {
+        Sentry.captureMessage("EventController invoked");
         return "Hello from EventController!";
     }
 
@@ -51,27 +54,32 @@ public class EventController {
         String lang = extractLanguage(event);
         SearchObject objectData = this.graphQl.resolveObjectById(id, lang);
         if (objectData == null) {
-            return handleDataResponse(new Data().setAttribute("noop", "no such object"));
+            return handleDataResponse(new Data().setAttribute("noop", "no such object"), Projection.DEFAULT_PROJECTION);
         }
         // make sure old fields are removed - a push will only upsert but not delete fields
         this.elasticSearch.delete(id, lang);
         Data response = this.elasticSearch.push(objectData);
-        return handleDataResponse(response);
+        return handleDataResponse(response, Projection.ID);
     }
 
     @PostMapping(value = "delete-event", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> deleteTrigger(final @RequestBody Data event) {
         LOGGER.info("Delete event received: {}", event);
         Data response = this.elasticSearch.delete(extractId(event), extractLanguage(event));
-        return handleDataResponse(response);
+        return handleDataResponse(response, Projection.ID);
     }
 
     private static long extractId(final Data event) {
-        Number id = event.getNestedTypedAttribute("event.data.new.id");
-        if (id == null) {
-            id = event.getNestedTypedAttribute("event.data.old.id");
-        }
+        String path = determinePathToObjectId(event);
+        Number id = event.getNestedTypedAttribute(path);
         return Objects.requireNonNull(id).longValue();
+    }
+
+    private static String determinePathToObjectId(final Data event) {
+        String operation = event.getNestedTypedAttribute("event.op");
+        String path = "DELETE".equals(operation) ? "event.data.old.{id-attribute}" : "event.data.new.{id-attribute}";
+        String dbTable = event.getNestedTypedAttribute("table.name");
+        return path.replace("{id-attribute}", "objects".equals(dbTable) ? "id" : "object_id");
     }
 
     private static String extractLanguage(final Data event) {

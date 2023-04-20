@@ -16,11 +16,18 @@ public interface Normalizer<VALUE> {
     String getAttributeKey();
 
     /**
+     * Returns the MDS attributes this converter takes into account when calculating the output value.
+     * @return names of source attributes
+     */
+    String[] getRelevantAttributeKeys();
+
+    /**
      * Creates the value for an attribute. Business logic is applied to calculate
      * the best possible value from the given source object.
      * @param source source object providing input for calculation
+     * @param language current language; may be of interest if referenced translations need to be fetched during resolving
      * @return attribute value
      */
-    @Nullable VALUE resolveAttributeValue(final ObjectData source);
+    @Nullable VALUE resolveAttributeValue(final ObjectData source, final String language);
 
 }

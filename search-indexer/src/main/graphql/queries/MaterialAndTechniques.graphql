@@ -1,0 +1,17 @@
+# Definition of the MaterialReference data struct
+fragment materialData on smb_material_references {
+    id
+    details
+    specificTypeVocId:specific_type_voc_id
+    typeVocId:type_voc_id
+    sequence
+}
+
+# ----------------------------------------------------------
+
+# Return a MaterialReference entry by id
+query FetchMaterialById($id: bigint!) {
+    smb_material_references_by_pk(id: $id) {
+        ...materialData
+    }
+}

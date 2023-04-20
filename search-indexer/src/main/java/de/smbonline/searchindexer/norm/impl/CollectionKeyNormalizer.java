@@ -13,4 +13,5 @@ public class CollectionKeyNormalizer extends AttributeMappingNormalizer<String> 
         super("__orgUnit", COLLECTION_KEY_ATTRIBUTE,
                 value -> StringUtils.isBlank(value) ? UNKNOWN_COLLECTION_KEY : value.trim());
     }
+
 }

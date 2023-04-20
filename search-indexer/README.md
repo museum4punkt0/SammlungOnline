@@ -4,24 +4,52 @@ Service that provides indexing objects by Elasticsearch and also providing the s
 
 ## Introduction
 
-This project contains all the code required to index objects with Elasticsearch. It also provides the search webservice to fetch the indexed abjects from Elasticsearch.
+This project contains all the code required to index objects using Elasticsearch. 
+It also provides the search webservice to fetch the indexed objects from Elasticsearch.
 
 > Note: There is no authentication required on the endpoints since they are not exposed to the outside world.
 > The search-indexer is available only inside the k8s cluster and hence needs port-forwarding to be invoked locally.
 
-`kubectl port-forward pods/smb-search-indexer-... 8085:8085`
+E.g. `kubectl port-forward service/smb-search-indexer 8085:8085`
+
+### Listing of indexed objects for comparison
+
+There is a dedicated inventory endpoint that allows for fetching all indexed objects. This is highly relevant for 
+comparison of indexed objects against objects stored in Hasura and objects published for SMB Online in MDS.
+
+The inventory endpoint allows to specify language, separator, start and end id for partial inventory.
+
+| Parameter | Type      | Optional | Default Value   | Comment                                                                                 |
+|-----------|-----------|----------|-----------------|-----------------------------------------------------------------------------------------|
+| lang      | oneOf(de) | x        | de              | The language, currently only DE is supported                                            |
+| startId   | number    | x        | 1               | Sorting fields, multiple separated by comma. Sort direction is specified by leading +/- |
+| endId     | number    | x        | 999999999999999 | First index of requested result for paginated requests                                  |
+| sep       | string    | x        | \n              | Separator to use in between object ids                                                  |
+
+GET
+
+```plain
+   .../index/listing
+   .../index/listing?startId=2347
+   .../index/listing?endId=37511
+   .../index/listing?startId=23472&endId=37511&sep=,
+```
 
 ### Indexing an object
 
-For indexing the `IndexController` is available. It provides 3 endpoints to create, update and delete objects from the index.
+For indexing the `IndexController` is available. It provides 4 endpoints to create, update and delete objects 
+from the index.
 
-1. POST `/index` - Notify to reindex objects by their id
-2. PUT `/index` - Pass a normalized object for (re-)indexing
-3. DELETE `/index/{id}` - Remove an object from the index
+1. `POST /index` - Notify to reindex objects by their id
+2. `PUT /index` - Pass a normalized object for (re-)indexing
+3. `DELETE /index/{id}` - Remove an object from the index
+4. `POST /index/force-full-reindex` - Force full reindexing of all objects available in Hasura
 
 The POST endpoint only expects the `ids` of the objects. The normalization will be performed in the code.  
 The PUT endpoint expects an already normalized object.  
-The DELETE endpoint expects no payload but only the id of the target object in the url.
+The DELETE endpoint expects no payload but only the id of the target object in the url.  
+The _force_ POST endpoint does not expect parameters nor payload. However, start and end id can be specified 
+for partial reindexing.
 
 Examples:
 
@@ -35,7 +63,7 @@ POST
 
 ```json
 {
-    "ids": [9 10, 11, 12, 133, 2443, 3434, 324432]
+    "ids": [9, 10, 11, 12, 133, 2443, 3434, 324432]
 }
 ```
 
@@ -68,19 +96,34 @@ PUT
     "highlight": false,
     "id": 782485,
     "identNumber": "SZ CD.Friedrich 1",
-    "involvedParties": [
-        "Herstellung: Caspar David Friedrich (1789-1840), Zeichner"
-    ],
+    "involvedParties": [{
+        "id": 23,
+        "name": "Caspar David Friedrich",
+        "dateOfBirth": "1789-04-21",
+        "dateOfDeath": "1840-12-18",
+        "roleId": 12,
+        "formatted": "Herstellung: Caspar David Friedrich (1789-1840), Zeichner"
+    }],
     "location": "Neues Museum, Ebene 0, R002",
     "longDescription": "Von den acht erhaltenen gezeichneten Selbstbildnissen Friedrichs ist dieses das berühmteste.",
-    "materialAndTechnique": [
-        "Graue Kreide, auf Papier"
-    ],
+    "materialAndTechnique": [{
+        "id": 234,
+        "specificTypeId": 213,
+        "typeId": 32535,
+        "details": "Graue Kreide, auf Papier",
+        "formatted": "Graue Kreide, auf Papier"
+    }],
     "technicalTerm": "Zeichnung",
     "titles": [
         "Selbstbildnis"
     ]
 }
+```
+
+_force_ POST
+
+```plain
+   .../index/force-full-reindex?startId=23472&endId=37511
 ```
 
 There is an additional REST endpoint `/triggers/index-event` exposed by `EventController` that is supposed
@@ -106,25 +149,30 @@ POST
 
 ### Searching
 
-For searching the `SearchController` is available. It provides 4 endpoints to fetch data from the index.
+For searching the `SearchController` is available. It provides 5 endpoints to fetch data from the index.
 
-1. GET `/search` - Run a (simple) search with query parameters
-2. POST `/search` - Run an (advanced) search with filters in the payload
-3. GET `/search/suggestions` - Get autocomplete search suggestions for a search term
-4. GET `/search/{id}` - Fetch an indexed object by id
+1. `GET  /search` - Run a (simple) search with query parameters
+2. `POST /search` - Run an (advanced) search with filters in the payload
+3. `GET  /search/suggestions` - Get autocomplete search suggestions for a search term
+4. `GET  /search/{id}` - Fetch an indexed object by id
+5. `GET  /search/{id}/export` - Fetch object data as download file
 
 #### Regular Search
 
 The regular search works with query parameters.
 
-| Parameter | Type   | Optional | Default Value | Comment |
-| --------- | ------ | -------- | ------------- | ------- |
-| q         | string | x        | *             | The search term |
-| sort      | string | x        | -_score       | Sorting fields, multiple separated by comma. Sort direction is specified by leading +/- |
-| offset    | number | x        | 0             | First index of requested result for paginated requests |
-| limit     | number | x        | 20            | Number af requested results for paginated requests |
+| Parameter  | Type                | Optional | Default Value | Comment                                                                                 |
+|------------|---------------------|----------|---------------|-----------------------------------------------------------------------------------------|
+| q          | string              | x        | *             | The search term                                                                         |
+| sort       | string              | x        | -_score       | Sorting fields, multiple separated by comma. Sort direction is specified by leading +/- |
+| offset     | number              | x        | 0             | First index of requested result for paginated requests                                  |
+| limit      | number              | x        | 20            | Number af requested results for paginated requests                                      |
+| projection | oneOf(flat,full,id) | x        | flat          | Defines the response data structure                                                     |
+| lang       | oneOf(de)           | x        | de            | The language, currently only DE is supported                                            |
 
 > Note: The `q` parameter also allows for extended search syntax like _?q=titles:Museum+AND+technicalTerm:(Bild+OR+Bildnis)_
+
+> Note: offset+limit must not be greater than 50.000 which is a limit defined by Elasticsearch.
 
 Example:
 
@@ -139,7 +187,7 @@ GET
 The advanced search provides the same query parameters as the simple search but also allows for definition of the search filters in the payload. In this case the underlying implementation builds an advanced searchterm from the filters and joins it with the optional `q` parameter.
 
 | Field                  | Type                   | Optional | Default Value    | Comment                                    |
-| ---------------------- | ---------------------  | -------- | ---------------- | ------------------------------------------ |
+|------------------------|------------------------|----------|------------------|--------------------------------------------|
 | q_advanced             | complex[]              |          |                  | The advanced search filters                |
 | q_advanced[n].operator | enum(AND, OR, AND_NOT) | x        | n=0 AND, else OR | Operator for filter combination            |
 | q_advanced[n].field    | string                 |          |                  | Name of field on which this filter applies |
@@ -182,10 +230,11 @@ POST
 
 Search suggestions can be retrieved for a fulltext search term or for concrete fields. If field-specific search suggestions are requested the `q` parameter must be prefixed with the requested fieldname and colon.
 
-| Parameter | Type   | Optional | Default Value | Comment                                            |
-| --------- | ------ | -------- | ------------- | -------------------------------------------------- |
-| q         | string |          |               | The search term, possibly prefixed with field name |
-| limit     | number | x        | 15            | Number of requested suggestions                    |
+| Parameter | Type      | Optional | Default Value | Comment                                            |
+|-----------|-----------|----------|---------------|----------------------------------------------------|
+| q         | string    |          |               | The search term, possibly prefixed with field name |
+| limit     | number    | x        | 15            | Number of requested suggestions                    |
+| lang      | oneOf(de) | x        | de            | The language, currently only DE is supported       |
 
 Examples:
 
@@ -209,6 +258,24 @@ GET
 
 ```plain
    .../search/372352
+```
+
+#### Exporting Object Data
+
+The export endpoint allows specification of the export format. Supported formats are `json` and `csv` (default).
+Note: The export projection is always `flat`.
+
+| Parameter | Type            | Optional | Default Value | Comment                                      |
+|-----------|-----------------|----------|---------------|----------------------------------------------|
+| format    | oneOf(csv,json) | x        | csv           | The desired export format                    |
+| lang      | oneOf(de)       | x        | de            | The language, currently only DE is supported |
+
+Example:
+
+GET
+
+```plain
+   .../search/372352/export?format=json
 ```
 
 ## Development
@@ -251,16 +318,17 @@ The required env-vars are defined in _application.yml_.
 
 The base package of the application is `de.smbonline.mdssync`.
 
-| Package | Description |
-| ---     | ---     |
-| `de.smbonline.searchindexer` | Application entry point |
-| `de.smbonline.searchindexer.api` | API implementations for Elasticsearch and (Hasura) GrapgQl|
-| `de.smbonline.searchindexer.conf` | Runtime configuration incl. configuration wrappers for _application.yml_ |
-| `de.smbonline.searchindexer.dto` | Data transfer objects |
-| `de.smbonline.searchindexer.log` | Logging utils |
-| `de.smbonline.searchindexer.norm` | Normalizer implementations |
-| `de.smbonline.searchindexer.rest` | Controller implementations and utilities shared between Controllers |
-| `de.smbonline.searchindexer.service` | Service implementations |
+| Package                              | Description                                                              |
+|--------------------------------------|--------------------------------------------------------------------------|
+| `de.smbonline.searchindexer`         | Application entry point                                                  |
+| `de.smbonline.searchindexer.api`     | API implementations for Elasticsearch and (Hasura) GraphQl               |
+| `de.smbonline.searchindexer.conf`    | Runtime configuration incl. configuration wrappers for _application.yml_ |
+| `de.smbonline.searchindexer.dto`     | Data transfer objects                                                    |
+| `de.smbonline.searchindexer.log`     | Logging utils                                                            |
+| `de.smbonline.searchindexer.norm`    | Normalizer implementations                                               |
+| `de.smbonline.searchindexer.rest`    | Controller implementations and utilities shared between Controllers      |
+| `de.smbonline.searchindexer.service` | Service implementations                                                  |
+| `de.smbonline.searchindexer.util`    | Shared utility classes and functions                                     |
 
 ### Developer Guidelines and Code Conventions
 

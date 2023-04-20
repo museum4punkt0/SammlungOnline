@@ -37,7 +37,7 @@ public class ProvenanceNormalizerTest {
         );
         // when
         ProvenanceNormalizer normalizer = new ProvenanceNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
@@ -106,7 +106,7 @@ public class ProvenanceNormalizerTest {
         );
         // when
         ProvenanceNormalizer normalizer = new ProvenanceNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(3);

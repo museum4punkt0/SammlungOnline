@@ -20,7 +20,7 @@ public class HighlightsNormalizerTest {
         obj.getHighlights().add(createHighlight(789L));
 
         HighlightsNormalizer normalizer = new HighlightsNormalizer();
-        Boolean value = normalizer.resolveAttributeValue(obj);
+        Boolean value = normalizer.resolveAttributeValue(obj, "de");
         assertThat(value).isTrue();
     }
 
@@ -30,7 +30,7 @@ public class HighlightsNormalizerTest {
         obj.getHighlights().clear();
 
         HighlightsNormalizer normalizer = new HighlightsNormalizer();
-        Boolean value = normalizer.resolveAttributeValue(obj);
+        Boolean value = normalizer.resolveAttributeValue(obj, "de");
         assertThat(value).isFalse();
     }
 }

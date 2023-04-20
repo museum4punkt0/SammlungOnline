@@ -27,7 +27,7 @@ public class IdentNumberNormalizerTest {
         );
         // when
         IdentNumberNormalizer normalizer = new IdentNumberNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isIn("123", "ABC", "XYZ", "000");
     }
@@ -38,7 +38,7 @@ public class IdentNumberNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"));
         // when
         IdentNumberNormalizer normalizer = new IdentNumberNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

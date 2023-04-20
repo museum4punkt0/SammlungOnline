@@ -35,7 +35,7 @@ public class LongDescriptionNormalizerTest {
         );
         // when
         LongDescriptionNormalizer normalizer = new LongDescriptionNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("richtig");
     }
@@ -49,7 +49,7 @@ public class LongDescriptionNormalizerTest {
         );
         // when
         LongDescriptionNormalizer normalizer = new LongDescriptionNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

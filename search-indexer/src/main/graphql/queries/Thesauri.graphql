@@ -1,0 +1,34 @@
+# Definition of the Thesaurus data struct
+fragment thesaurusData on smb_thesaurus {
+    id
+    name
+    parentId:parent_id
+    type
+}
+
+fragment thesaurusTranslationData on smb_thesaurus_translations {
+    thesaurus {
+        id
+        name
+        parentId:parent_id
+    }
+    label:value
+}
+
+# ----------------------------------------------------------
+
+# Return an Thesaurus entry by id
+query FetchThesaurus($id: bigint!) {
+    smb_thesaurus_by_pk(id: $id) {
+        ...thesaurusData
+    }
+}
+# Return an Thesaurus entry with translated value
+query FetchThesaurusTranslation($id: bigint!, $lang:String!) {
+    smb_thesaurus_translations(where: {
+        thesaurus_id: {_eq: $id}
+        language: { lang: {_eq: $lang}}
+    }) {
+        ...thesaurusTranslationData
+    }
+}

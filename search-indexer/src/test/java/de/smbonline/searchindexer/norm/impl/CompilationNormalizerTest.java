@@ -24,7 +24,7 @@ public class CompilationNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("__orgUnit", "KBArchitekturzeichnung"));
         // when
         CompilationNormalizer normalizer = new CompilationNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Sammlung Architektur");
     }
@@ -38,7 +38,7 @@ public class CompilationNormalizerTest {
             // given
             ObjectData obj = createObject(123L, Pair.of("__orgUnit", entry.getKey()));
             // when
-            String value = normalizer.resolveAttributeValue(obj);
+            String value = normalizer.resolveAttributeValue(obj, "de");
             // then
             assertThat(value).isEqualTo(entry.getValue());
         }
@@ -50,7 +50,7 @@ public class CompilationNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("__orgUnit", "fününününü"));
         // when
         CompilationNormalizer normalizer = new CompilationNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }
@@ -61,7 +61,7 @@ public class CompilationNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"), Pair.of("key", "val"));
         // when
         CompilationNormalizer normalizer = new CompilationNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

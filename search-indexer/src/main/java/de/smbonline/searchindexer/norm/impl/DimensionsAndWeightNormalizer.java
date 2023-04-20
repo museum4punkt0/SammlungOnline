@@ -1,7 +1,7 @@
 package de.smbonline.searchindexer.norm.impl;
 
-import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
+import de.smbonline.searchindexer.dto.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -12,6 +12,15 @@ public class DimensionsAndWeightNormalizer extends MultipleHitsSortedNormalizer<
 
     public DimensionsAndWeightNormalizer() {
         super(DIMENSIONS_AND_WEIGHT_ATTRIBUTE, "ObjDimAllGrp");
+    }
+
+    @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[] {
+                "ObjDimAllGrp.PreviewVrt",
+                "ObjDimAllGrp.TypeDimRef",
+                "ObjDimAllGrp.SortLnu"
+        };
     }
 
     @Override

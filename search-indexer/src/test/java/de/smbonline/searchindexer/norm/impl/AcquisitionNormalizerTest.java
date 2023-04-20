@@ -24,7 +24,7 @@ public class AcquisitionNormalizerTest {
         );
         // when
         AcquisitionNormalizer normalizer = new AcquisitionNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
@@ -44,7 +44,7 @@ public class AcquisitionNormalizerTest {
         );
         // when
         AcquisitionNormalizer normalizer = new AcquisitionNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).containsExactly("memo1", "memo2", "memo3");
@@ -60,7 +60,7 @@ public class AcquisitionNormalizerTest {
         );
         // when
         AcquisitionNormalizer normalizer = new AcquisitionNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

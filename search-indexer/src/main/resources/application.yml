@@ -1,6 +1,7 @@
 logging.level:
   de.smbonline: INFO
   org.apache.catalina: WARN
+  org.elasticsearch.client: ERROR # ignore security warnings
   org.springframework: WARN
   performance: INFO
 
@@ -17,6 +18,7 @@ elastic:
   base-url: ${ELASTICSEARCH_BASEURL:http://smb-elasticsearch:9200}
   object-index: ${ELASTICSEARCH_INDEXNAME:objects}
   suggestions-sort: counter
+  partial-match-suggestions: false
 spring:
   elasticsearch:
     rest:
@@ -31,3 +33,12 @@ management:
   endpoint:
     health:
       show-details: always
+
+csv:
+  separator: ${CSV_SEPARATOR:;}
+  inline-separator: ${CSV_INLINE_SEPARATOR:<br>}
+
+sentry:
+  environment: ${SENTRY_ENVIRONMENT:local}
+  dsn: https://0e967a9d67394b5abb6839743e011573@sentry.xailabs.dev/5
+  traces-sample-rate: 1.0

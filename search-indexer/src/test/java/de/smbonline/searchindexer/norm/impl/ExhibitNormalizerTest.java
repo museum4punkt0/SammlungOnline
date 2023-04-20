@@ -27,10 +27,10 @@ public class ExhibitNormalizerTest {
         normalizer.setUnknownExhibitionSpace("no-value");
 
         ObjectData obj = createObject(123456L);
-        assertThat(normalizer.resolveAttributeValue(obj)).isFalse();
+        assertThat(normalizer.resolveAttributeValue(obj, "de")).isFalse();
         obj = withExhibitionSpace(obj, "no-value");
-        assertThat(normalizer.resolveAttributeValue(obj)).isNull();
+        assertThat(normalizer.resolveAttributeValue(obj, "de")).isNull();
         obj = withExhibitionSpace(obj, "Room 123");
-        assertThat(normalizer.resolveAttributeValue(obj)).isTrue();
+        assertThat(normalizer.resolveAttributeValue(obj, "de")).isTrue();
     }
 }

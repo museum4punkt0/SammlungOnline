@@ -31,7 +31,7 @@ public class TitlesNormalizerTest {
         );
         // when
         TitlesNormalizer normalizer = new TitlesNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).containsExactly("vier gewinnt", "2. versuch", "der dritte", "nummer 1");
     }
@@ -42,7 +42,7 @@ public class TitlesNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"));
         // when
         TitlesNormalizer normalizer = new TitlesNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

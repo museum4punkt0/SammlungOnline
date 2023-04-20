@@ -1,6 +1,8 @@
 package de.smbonline.searchindexer.rest;
 
 import de.smbonline.searchindexer.dto.Data;
+import de.smbonline.searchindexer.dto.Format;
+import de.smbonline.searchindexer.dto.Projection;
 import de.smbonline.searchindexer.dto.Search;
 import de.smbonline.searchindexer.dto.SearchObject;
 import de.smbonline.searchindexer.dto.SearchSuggest;
@@ -14,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.util.Map;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
+import static de.smbonline.searchindexer.dto.Format.*;
+import static de.smbonline.searchindexer.dto.Projection.*;
 import static de.smbonline.searchindexer.rest.Params.*;
+import static de.smbonline.searchindexer.rest.Requests.*;
 import static de.smbonline.searchindexer.rest.Responses.*;
 import static org.springframework.http.MediaType.*;
 
@@ -35,18 +41,39 @@ public class SearchController {
 
     @GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> getObject(
-            final @PathVariable("id") Long objectId,
-            final @RequestParam(name = LANGUAGE_PARAMETER, defaultValue = DEFAULT_LANGUAGE) String lang) {
-        SearchObject object = this.service.get(objectId, lang);
-        return object == null ? ResponseEntity.notFound().build() : handleDataResponse(object.getAttributes());
+            final @PathVariable("id") String objectId,
+            final @RequestParam(name = LANGUAGE_PARAMETER, defaultValue = DEFAULT_LANGUAGE) String lang,
+            final @RequestParam(name = PROJECTION_PARAMETER, defaultValue = DEFAULT_PROJECTION_NAME) String projection) {
+        long id = requireNumericPathElement(objectId);
+        SearchObject object = this.service.get(id, lang);
+        if (object == null) {
+            return ResponseEntity.notFound().build();
+        }
+        Projection proj = Projection.getOrDefault(projection);
+        if (proj == FULL) {
+            // TODO add attachments links
+        }
+        return handleDataResponse(object, proj);
+    }
+
+    @GetMapping(path = "{id}/export", produces = APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<StreamingResponseBody> getFormattedObject(
+            final @PathVariable("id") String objectId,
+            final @RequestParam(name = LANGUAGE_PARAMETER, defaultValue = DEFAULT_LANGUAGE) String lang,
+            final @RequestParam(name = FORMAT_PARAMETER, defaultValue = DEFAULT_FORMAT_NAME) String format) {
+        long id = requireNumericPathElement(objectId);
+        SearchObject object = this.service.get(id, lang);
+        return object == null
+                ? ResponseEntity.notFound().build()
+                : handleDataResponse(object, Format.getOrDefault(format));
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> search(final @RequestParam Map<String, String> requestParams) {
         String language = requestParams.getOrDefault(LANGUAGE_PARAMETER, DEFAULT_LANGUAGE);
+        String projection = requestParams.get(PROJECTION_PARAMETER);
         Search search = Search.Companion.fromQueryParams(requestParams);
-        Data result = this.service.search(search, language);
-        return handleDataResponse(result);
+        return handleSearch(search, language, Projection.getOrDefault(projection));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -54,10 +81,18 @@ public class SearchController {
             final @RequestParam Map<String, String> requestParams,
             final @RequestBody Data request) {
         String language = requestParams.getOrDefault(LANGUAGE_PARAMETER, DEFAULT_LANGUAGE);
+        String projection = requestParams.get(PROJECTION_PARAMETER);
         Search search = Search.Companion.fromQueryParams(requestParams);
         search = Search.Companion.merge(search, request);
+        return handleSearch(search, language, Projection.getOrDefault(projection));
+    }
+
+    private ResponseEntity<Data> handleSearch(final Search search, final String language, final Projection projection) {
         Data result = this.service.search(search, language);
-        return handleDataResponse(result);
+        if (projection == FULL) {
+            // TODO add attachments links to all results
+        }
+        return handleDataResponse(result, projection);
     }
 
     @GetMapping(path = "suggestions", produces = APPLICATION_JSON_VALUE)
@@ -68,6 +103,6 @@ public class SearchController {
         SearchSuggest suggestion = SearchSuggest.Companion.fromSearchTerm(searchTerm);
         suggestion.setLimit(limit);
         Data result = this.service.suggest(suggestion, language);
-        return handleDataResponse(result);
+        return handleDataResponse(result, Projection.FLAT);
     }
 }

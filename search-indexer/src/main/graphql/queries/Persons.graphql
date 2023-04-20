@@ -1,0 +1,47 @@
+# Definition of the Person data struct
+fragment personData on smb_persons {
+    id
+    name
+    dateOfBirth:date_of_birth
+    dateOfDeath:date_of_death
+    dateRange:date_range
+    normdata1
+    normdata2
+    normdata3
+}
+
+# Definition of InvolvedParty data struct
+fragment involvedPartyData on smb_persons_objects {
+    person {
+        id
+        name
+        dateRange:date_range
+    }
+    role:role_voc {
+        id
+        name
+        type
+    }
+    sequence
+}
+
+# ----------------------------------------------------------
+
+# Return an Person entry by id
+query FetchPerson($id: bigint!) {
+    smb_persons_by_pk(id: $id) {
+        ...personData
+    }
+}
+
+query FetchInvolvedParties($objectId: bigint!) {
+    smb_persons_objects(
+        where: {
+            object_id: {_eq: $objectId},
+            sequence: {_gte: 0}
+        }
+        order_by: [{sequence: asc}]
+    ) {
+        ...involvedPartyData
+    }
+}

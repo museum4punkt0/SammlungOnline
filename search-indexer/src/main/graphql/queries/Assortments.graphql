@@ -1,0 +1,17 @@
+# Definition of the Assortment data struct
+fragment assortmentData on smb_assortments {
+    id
+    key
+    searchQuery:search_query
+    queryType:search_query_type
+    objects:assortments_objects {
+        id:object_id
+    }
+}
+
+# Return all Assortments
+query FetchAssortments {
+    smb_assortments {
+        ...assortmentData
+    }
+}

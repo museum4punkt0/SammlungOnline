@@ -22,13 +22,29 @@ public class LocationNormalizer implements Normalizer<String> {
     }
 
     @Override
-    public @Nullable String resolveAttributeValue(final ObjectData source) {
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjCurrentLocationVrt",
+                "ObjCurrentLocationVoc",
+                "ObjCurrentLocationGrpVrt",
+                "ObjNormalLocationVrt",
+                "ObjNormalLocationVoc"
+        };
+    }
+
+    @Override
+    public @Nullable String resolveAttributeValue(final ObjectData source, final String language) {
         String exhibitionSpace = source.getExhibitionSpace();
         if (!StringUtils.contains(exhibitionSpace, this.separator)) {
             return null;
         }
         String[] parts = StringUtils.splitByWholeSeparatorPreserveAllTokens(exhibitionSpace, this.separator);
-        String building = StringUtils.defaultIfEmpty(parts[1].trim(), null);
-        return buildingMapping().getOrDefault(building, building);
+        String buildingCandidate = StringUtils.defaultIfEmpty(parts[1].trim(), null);
+        if (buildingCandidate == null) {
+            // only if we don't have a building, the sector maybe used instead ("Friedrichswerdersche Kirche" is the case here)
+            buildingCandidate = StringUtils.defaultIfEmpty(parts[2].trim(), null);
+        }
+        // TODO use language
+        return buildingMapping().getOrDefault(buildingCandidate, buildingCandidate);
     }
 }

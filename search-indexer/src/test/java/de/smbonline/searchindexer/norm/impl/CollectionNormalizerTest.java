@@ -24,7 +24,7 @@ public class CollectionNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("__orgUnit", "EMIslamischerOrient"));
         // when
         CollectionNormalizer normalizer = new CollectionNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Ethnologisches Museum");
     }
@@ -40,7 +40,7 @@ public class CollectionNormalizerTest {
             // given any compilation key
             ObjectData obj = createObject(123L, Pair.of("__orgUnit", entry.getKey()));
             // when collection mapping is applied
-            String value = normalizer.resolveAttributeValue(obj);
+            String value = normalizer.resolveAttributeValue(obj, "de");
             // then check if the mapped value was retrieved from the collection map
             assertThat(collectionMapping).containsValue(value);
         }
@@ -52,7 +52,7 @@ public class CollectionNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("__orgUnit", "fününününü"));
         // when
         CollectionNormalizer normalizer = new CollectionNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("fününününü");
     }
@@ -63,7 +63,7 @@ public class CollectionNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"), Pair.of("key", "val"));
         // when
         CollectionNormalizer normalizer = new CollectionNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

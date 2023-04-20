@@ -68,9 +68,10 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
                 c.set(Calendar.HOUR_OF_DAY, 23);
                 c.set(Calendar.MINUTE, 59);
                 c.set(Calendar.SECOND, 59);
-                c.set(Calendar.MILLISECOND, 999);
+                c.set(Calendar.MILLISECOND, 0); // don't set 999 otherwise we end up on 01.01. instead of 31.12.
             }
         };
+
         public abstract void adjust(final Calendar c);
     }
 
@@ -79,7 +80,17 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
     }
 
     @Override
-    public @Nullable DateRange resolveAttributeValue(final ObjectData source) {
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjDateGrp.DateFromTxt",
+                "ObjDateGrp.DateToTxt",
+                "ObjDateGrp.DateTxt",
+                "ObjDateGrp.SortLnu",
+        };
+    }
+
+    @Override
+    public @Nullable DateRange resolveAttributeValue(final ObjectData source, final String language) {
         Data[] dateItems = findGroupItems(source, "ObjDateGrp");
 
         // find an item with concrete dates that we can use directly
@@ -93,7 +104,7 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
             String toText = Objects.requireNonNull(dateItem.getTypedAttribute("DateToTxt"));
             DateRange dateRange = tryParseDateRange(fromText, toText);
             if (dateRange != null) {
-                LOGGER.info("Calculated date-range {} for object {} - source data: DateFromTxt={}, DateToTxt={}",
+                LOGGER.debug("Calculated date-range {} for object {} - source data: DateFromTxt={}, DateToTxt={}",
                         dateRange, source.getId(), fromText, toText);
                 return dateRange;
             }
@@ -114,7 +125,7 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
             }
             dateRange = tryGuessDateRange(dateText);
             if (dateRange != null) {
-                LOGGER.info("Calculated date-range {} for object {} - source data: DateTxt={}",
+                LOGGER.debug("Calculated date-range {} for object {} - source data: DateTxt={}",
                         dateRange, source.getId(), dateText);
                 return dateRange;
             }
@@ -406,11 +417,11 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
     }
 
     private static Long startOfDay(final String isoDate) {
-        return asCalendar(isoDate, TimeMode.FLOOR).getTimeInMillis()/1000;
+        return asCalendar(isoDate, TimeMode.FLOOR).getTimeInMillis() / 1000;
     }
 
     private static Long endOfDay(final String isoDate) {
-        return asCalendar(isoDate, TimeMode.CEIL).getTimeInMillis()/1000;
+        return asCalendar(isoDate, TimeMode.CEIL).getTimeInMillis() / 1000;
     }
 
     private static String firstDayOfYear(final int year) {

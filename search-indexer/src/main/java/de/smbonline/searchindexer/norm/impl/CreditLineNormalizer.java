@@ -6,6 +6,6 @@ import static de.smbonline.searchindexer.conf.ConstKt.*;
 
 public class CreditLineNormalizer extends SimpleMappingNormalizer {
     public CreditLineNormalizer() {
-        super("ObjCreditLineVoc", CREDIT_LINE);
+        super("ObjCreditLineVoc", CREDIT_LINE_ATTRIBUTE);
     }
 }

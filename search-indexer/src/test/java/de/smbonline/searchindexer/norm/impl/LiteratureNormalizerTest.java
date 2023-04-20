@@ -52,7 +52,7 @@ public class LiteratureNormalizerTest {
 
         // when
         LiteratureNormalizer normalizer = new LiteratureNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
 
         // then
         assertThat(value).isNotNull();

@@ -33,7 +33,7 @@ public class DimensionsAndWeightNormalizerTest {
         );
         // when
         DimensionsAndWeightNormalizer normalizer = new DimensionsAndWeightNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj);
+        String[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).containsExactly("30cm", "Gewicht: 2t", "5kg", "Größe: 1x2x3 cm");
     }
@@ -56,7 +56,7 @@ public class DimensionsAndWeightNormalizerTest {
         );
         // when
         DimensionsAndWeightNormalizer normalizer = new DimensionsAndWeightNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj);
+        String[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).containsOnly("300");
     }
@@ -84,7 +84,7 @@ public class DimensionsAndWeightNormalizerTest {
         );
         // when
         DimensionsAndWeightNormalizer normalizer = new DimensionsAndWeightNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj);
+        String[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNotNull();
         assertThat(values).hasSize(1);
@@ -97,7 +97,7 @@ public class DimensionsAndWeightNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"));
         // when
         DimensionsAndWeightNormalizer normalizer = new DimensionsAndWeightNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj);
+        String[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNull();
     }

@@ -22,7 +22,7 @@ public class SimpleMappingNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("source", "value"));
         // when
         SimpleMappingNormalizer normalizer = new SimpleMappingNormalizer("source", "target");
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("value");
     }
@@ -33,7 +33,7 @@ public class SimpleMappingNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"));
         // when
         SimpleMappingNormalizer normalizer = new SimpleMappingNormalizer("source", "target");
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

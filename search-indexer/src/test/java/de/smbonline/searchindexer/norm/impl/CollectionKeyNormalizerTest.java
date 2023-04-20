@@ -21,7 +21,7 @@ public class CollectionKeyNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("__orgUnit", "best-unit-ever"));
         // when
         CollectionKeyNormalizer normalizer = new CollectionKeyNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("best-unit-ever");
     }
@@ -35,7 +35,7 @@ public class CollectionKeyNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         CollectionKeyNormalizer normalizer = new CollectionKeyNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value)
                 // don't care about actual value here, but make sure the public constant is used

@@ -21,7 +21,7 @@ public class CreditLineNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("ObjCreditLineVoc", "Gelber Schnee"));
         // when
         CreditLineNormalizer normalizer = new CreditLineNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Gelber Schnee");
     }
@@ -35,7 +35,7 @@ public class CreditLineNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         CreditLineNormalizer normalizer = new CreditLineNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

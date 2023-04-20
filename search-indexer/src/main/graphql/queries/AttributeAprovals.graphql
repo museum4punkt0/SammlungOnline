@@ -1,0 +1,12 @@
+# Definition of the Assortment data struct
+fragment approvalData on smb_attribute_approval {
+    attributeKey:attribute_key
+    collectionKeys:approvals
+}
+
+# Return all AttributeApproval
+query FetchAttributeApprovalByKey($attrKey: String!){
+    smb_attribute_approval (where: {attribute_key: {_eq: $attrKey}}) {
+        ...approvalData
+    }
+}

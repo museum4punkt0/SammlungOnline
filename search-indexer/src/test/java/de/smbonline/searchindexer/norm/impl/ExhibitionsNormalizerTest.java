@@ -37,7 +37,7 @@ public class ExhibitionsNormalizerTest {
         );
         // when
         ExhibitionsNormalizer normalizer = new ExhibitionsNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
@@ -135,7 +135,7 @@ public class ExhibitionsNormalizerTest {
         );
         // when
         ExhibitionsNormalizer normalizer = new ExhibitionsNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj);
+        String[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(2);

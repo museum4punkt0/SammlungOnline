@@ -13,7 +13,14 @@ public class IdNormalizer implements Normalizer<Long> {
     }
 
     @Override
-    public Long resolveAttributeValue(final ObjectData source) {
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "__id"
+        };
+    }
+
+    @Override
+    public Long resolveAttributeValue(final ObjectData source, final String language) {
         return ((Number) source.getId()).longValue();
     }
 }

@@ -1,7 +1,7 @@
 package de.smbonline.searchindexer.norm.impl;
 
-import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
+import de.smbonline.searchindexer.dto.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
+import static de.smbonline.searchindexer.norm.ValueExtractor.*;
 
 public class ProvenanceNormalizer extends MultipleHitsSortedNormalizer<String> {
 
@@ -21,6 +22,24 @@ public class ProvenanceNormalizer extends MultipleHitsSortedNormalizer<String> {
 
     public ProvenanceNormalizer() {
         super(PROVENANCE_ATTRIBUTE, "ObjOwnership001Ref");
+    }
+
+    @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[] {
+                "ObjOwnership001Ref.OwnApprovalVoc",
+                "ObjOwnership001Ref.OwnDatePreviewVrt",
+                "ObjOwnership001Ref.OwnCertaintyVoc",
+                "ObjOwnership001Ref.OwnExchangeMethodVoc",
+                "ObjOwnership001Ref.OwnLocation001Voc",
+                "ObjOwnership001Ref.OwnLocationDetailsTxt",
+                "ObjOwnership001Ref.OwnOwnerTxt",
+                "ObjOwnership001Ref.OwnDocumentsGrp.DocumentsClb",
+                "ObjOwnership001Ref.OwnDocumentsGrp.SortLnu",
+                "ObjOwnership001Ref.OwnDocumentsGrp.TypeVoc",
+                "ObjOwnership001Ref.OwnPersonMNRef.PerNennformTxt",
+                "ObjOwnership001Ref.SortLnu",
+        };
     }
 
     @Override
@@ -40,11 +59,11 @@ public class ProvenanceNormalizer extends MultipleHitsSortedNormalizer<String> {
     private static String extractProvenanceInfo(final Data item) {
 
         String date = item.getTypedAttribute("OwnDatePreviewVrt");
-        String certainty = item.getTypedAttribute("OwnCertaintyVoc");
+        String certainty = extractVoc(item, "OwnCertaintyVoc");
         String owner = extractOwnerInfo(item);
-        String location = item.getTypedAttribute("OwnLocation001Voc");
+        String location = extractVoc(item, "OwnLocation001Voc");
         String locationDetails = item.getTypedAttribute("OwnLocationDetailsTxt");
-        String method = item.getTypedAttribute("OwnExchangeMethodVoc");
+        String method = extractVoc(item, "OwnExchangeMethodVoc");
         String[] sources = extractSources(item);
 
         boolean hasDate = StringUtils.isNotBlank(date);

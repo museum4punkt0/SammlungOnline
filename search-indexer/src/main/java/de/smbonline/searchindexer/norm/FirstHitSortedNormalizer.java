@@ -7,23 +7,49 @@ import org.springframework.lang.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
 
 public abstract class FirstHitSortedNormalizer<T> extends NormalizerBase<T> {
 
+    @FunctionalInterface
+    public interface FqKeyExtractor extends Function<List<ObjectData.Attribute>, String> {
+        @Override @Nullable String apply(final List<ObjectData.Attribute> group);
+    }
+
     protected final String repeatableGroup;
+    protected final FqKeyExtractor itemFqKeyResolver;
 
     protected FirstHitSortedNormalizer(final String attributeKey, final String repeatableGroup) {
+        this(attributeKey, repeatableGroup, FirstHitSortedNormalizer::extractFirstHitFqKey);
+    }
+
+    protected FirstHitSortedNormalizer(final String attributeKey, final String repeatableGroup, final FqKeyExtractor extractor) {
         super(attributeKey);
         this.repeatableGroup = repeatableGroup;
+        this.itemFqKeyResolver = extractor;
+    }
+
+    public static String extractFirstHitFqKey(final List<ObjectData.Attribute> group) {
+        // find the minimum SortLnu, or just pick the first attribute if there is no sorting info
+        String itemAttributeFqKey = group
+                .stream()
+                .filter(a -> a.getKey().endsWith("." + SORTING_FIELDNAME))
+                .min(Comparator.comparingInt(attr -> {
+                    Optional<String> sort = Optional.ofNullable(StringUtils.defaultIfBlank(attr.getValue(), null));
+                    return sort.map(Integer::parseInt).orElse(Integer.MAX_VALUE);
+                }))
+                .orElseGet(() -> group.get(0))
+                .getFqKey();
+        // from the found attribute, extract the prefix that is the common prefix for all attributes of the respective item
+        return toItemFqKey(itemAttributeFqKey);
     }
 
     @Override
-    public T resolveAttributeValue(final ObjectData source) {
+    public T resolveAttributeValue(final ObjectData source, final String language) {
         Data data = findFirstGroupItem(source);
         return data == null ? null : pickValue(data);
     }
@@ -42,25 +68,21 @@ public abstract class FirstHitSortedNormalizer<T> extends NormalizerBase<T> {
             return null;
         }
 
-        // now find the minimum SortLnu, or just pick the first attribute if there is no sorting info
-        String itemAttributeFqKey = group
-                .stream()
-                .filter(a -> a.getKey().endsWith("." + SORTING_FIELDNAME))
-                .min(Comparator.comparingInt(attr -> {
-                    Optional<String> sort = Optional.ofNullable(StringUtils.defaultIfBlank(attr.getValue(), null));
-                    return sort.map(Integer::parseInt).orElse(Integer.MAX_VALUE);
-                }))
-                .orElseGet(() -> group.get(0))
-                .getFqKey();
-        // from the found attribute, extract the prefix that is the common prefix for all attributes of the respective item
-        String itemFqKey = toItemFqKey(itemAttributeFqKey);
+        // now find the item that represents the one-and-only hit
+        String itemFqKey = this.itemFqKeyResolver.apply(group);
+        if (itemFqKey == null) {
+            return null;
+        }
 
         // now we can reverse-engineer the item
+        // sort by fq-key to make sure, parent keys are always used before child keys
         Data item = new Data();
-        group.stream().filter(a -> a.getFqKey().startsWith(itemFqKey)).forEach(a -> {
+        group.stream()
+                .sorted(Comparator.comparing(ObjectData.Attribute::getFqKey))
+                .filter(a -> a.getFqKey().startsWith(itemFqKey)).forEach(a -> {
             // strip-off the repeatable group with dot, we only want the actual item's attribute key
-            String itemAttribute = a.getKey().substring(this.repeatableGroup.length() + 1);
-            applyAttributeValue(item, itemAttribute, a.getValue());
+            String itemAttrKey = toItemAttrKey(a.getFqKey(), itemFqKey);
+            applyAttributeValue(item, itemAttrKey, a.getValue());
         });
         return item;
     }

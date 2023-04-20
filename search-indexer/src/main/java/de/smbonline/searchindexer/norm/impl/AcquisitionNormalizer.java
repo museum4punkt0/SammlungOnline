@@ -3,7 +3,6 @@ package de.smbonline.searchindexer.norm.impl;
 import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
 import de.smbonline.searchindexer.dto.Data;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 
@@ -13,6 +12,15 @@ public class AcquisitionNormalizer extends MultipleHitsSortedNormalizer<String> 
 
     public AcquisitionNormalizer() {
         super(ACQUISITION_ATTRIBUTE, "ObjAcquisitionNotesGrp");
+    }
+
+    @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[] {
+                "ObjAcquisitionNotesGrp.MemoClb",
+                "ObjAcquisitionNotesGrp.SortLnu",
+                "ObjAcquisitionNotesGrp.TypeVoc",
+        };
     }
 
     @Override

@@ -24,7 +24,7 @@ public class LocationNormalizerTest {
         ObjectData obj = withExhibitionSpace(createObject(123L), "AMP -> NMU -> -> Ebene 2 -> Raum 206");
         // when
         LocationNormalizer normalizer = new LocationNormalizer("->");
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Neues Museum");
     }
@@ -35,7 +35,7 @@ public class LocationNormalizerTest {
         ObjectData obj = withExhibitionSpace(createObject(123L), "PART1 # Gebäude # PART3 # PART4 # PART5");
         // when
         LocationNormalizer normalizer = new LocationNormalizer("#");
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Gebäude");
     }
@@ -50,7 +50,7 @@ public class LocationNormalizerTest {
             // given any building key
             ObjectData obj = withExhibitionSpace(createObject(123L), "PART1 -!- "+entry.getKey()+ " -!- PARTn...");
             // when building mapping is applied
-            String value = normalizer.resolveAttributeValue(obj);
+            String value = normalizer.resolveAttributeValue(obj, "de");
             // then check if the mapped value was retrieved from the building map
             assertThat(buildings).containsValue(value);
         }
@@ -62,7 +62,7 @@ public class LocationNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"), Pair.of("key", "val"));
         // when
         LocationNormalizer normalizer = new LocationNormalizer("->");
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

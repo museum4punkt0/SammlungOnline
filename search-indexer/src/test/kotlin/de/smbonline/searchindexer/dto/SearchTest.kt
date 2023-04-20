@@ -66,16 +66,16 @@ class SearchTest {
         assertThat(search.sort[0]).isEqualTo(Pair("sortField", false))
         assertThat(search.advancedSearch).isNotNull
         assertThat(search.advancedSearch!!.size).isEqualTo(4)
-        assertThat(search.advancedSearch!![0].searchTerm).isEqualTo("q-1")
+        assertThat(search.advancedSearch!![0].searchTerm).isEqualTo("(q-1)")
         assertThat(search.advancedSearch!![0].field).isEqualTo("field-1")
         assertThat(search.advancedSearch!![0].operator).isEqualTo(FieldSearch.Operator.AND)
-        assertThat(search.advancedSearch!![1].searchTerm).isEqualTo("q-2")
+        assertThat(search.advancedSearch!![1].searchTerm).isEqualTo("(q-2)")
         assertThat(search.advancedSearch!![1].field).isEqualTo("field-2")
         assertThat(search.advancedSearch!![1].operator).isEqualTo(FieldSearch.Operator.OR)
-        assertThat(search.advancedSearch!![2].searchTerm).isEqualTo("q-3")
+        assertThat(search.advancedSearch!![2].searchTerm).isEqualTo("(q-3)")
         assertThat(search.advancedSearch!![2].field).isEqualTo("field-3")
         assertThat(search.advancedSearch!![2].operator).isEqualTo(FieldSearch.Operator.AND_NOT)
-        assertThat(search.advancedSearch!![3].searchTerm).isEqualTo("q-4")
+        assertThat(search.advancedSearch!![3].searchTerm).isEqualTo("(q-4)")
         assertThat(search.advancedSearch!![3].field).isEqualTo("field-4")
         assertThat(search.advancedSearch!![3].operator).isEqualTo(FieldSearch.Operator.OR)
     }
@@ -135,7 +135,7 @@ class SearchTest {
         assertThat(merged.sort[0]).isEqualTo(Pair("sort1", true))
         assertThat(merged.advancedSearch).isNotNull
         assertThat(merged.advancedSearch!!.size).isEqualTo(1)
-        assertThat(merged.advancedSearch!![0].searchTerm).isEqualTo("q2")
+        assertThat(merged.advancedSearch!![0].searchTerm).isEqualTo("(q2)")
         assertThat(merged.advancedSearch!![0].field).isEqualTo("field2")
         assertThat(merged.advancedSearch!![0].operator).isEqualTo(FieldSearch.Operator.AND_NOT)
     }

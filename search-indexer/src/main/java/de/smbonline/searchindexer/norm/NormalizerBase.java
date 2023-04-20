@@ -9,16 +9,20 @@ import org.springframework.lang.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
 
 public abstract class NormalizerBase<T> implements Normalizer<T> {
+
+    public static final String ITEM_ID = "id";
 
     protected final String attributeKey;
 
@@ -31,7 +35,7 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
         return this.attributeKey;
     }
 
-    protected static Optional<Data[]> primaryItems(final Data[] repeatableGroupItems) {
+    public static Optional<Data[]> primaryItems(final Data[] repeatableGroupItems) {
         // if there is one (or more) items with SortLnu=0, these are the only items we should use
         Data[] mainItems = Arrays.stream(repeatableGroupItems)
                 .filter(item -> hasAttributeValue(item, SORTING_FIELDNAME, "0"))
@@ -39,12 +43,12 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
         return mainItems.length == 0 ? Optional.empty() : Optional.of(mainItems);
     }
 
-    protected static @Nullable String getAttributeValue(final ObjectData source, final String attributeKey) {
+    public static @Nullable String getAttributeValue(final ObjectData source, final String attributeKey) {
         ObjectData.Attribute attribute = findAttribute(source, attributeKey);
         return attribute == null ? null : attribute.getValue();
     }
 
-    protected static @Nullable ObjectData.Attribute findAttribute(final ObjectData source, final String attributeKey) {
+    public static @Nullable ObjectData.Attribute findAttribute(final ObjectData source, final String attributeKey) {
         return source.getAttributes()
                 .stream()
                 .filter(attr -> attributeKey.equals(attr.getKey()))
@@ -52,21 +56,27 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
                 .orElse(null);
     }
 
-
-    protected static Data[] findGroupItems(final ObjectData source, final String groupName) {
+    public static Data[] findGroupItems(final ObjectData source, final String groupName) {
         return findGroupItems(source, groupName, NormalizerBase::defaultSorting);
     }
 
-    protected static Data[] findGroupItems(
+    public static Data[] findGroupItems(
             final ObjectData source,
+            final String groupName,
+            final ItemSort sorting) {
+        return findGroupItems(source.getAttributes(), groupName, sorting);
+    }
+
+    public static Data[] findGroupItems(
+            final List<ObjectData.Attribute> attributes,
             final String groupName,
             final ItemSort sorting) {
 
         // first find all attributes that are related to items in the group
-        List<ObjectData.Attribute> group = source.getAttributes()
+        List<ObjectData.Attribute> group = attributes
                 .stream()
                 .filter(attr -> relatesTo(attr, groupName))
-                .collect(Collectors.toList());
+                .toList();
         // in the group, there is at least one item so this can actually only be empty if the
         // given string is not a repeatable group
         if (group.isEmpty()) {
@@ -74,13 +84,28 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
         }
 
         // now reverse-engineer all the items
+        // sort by fq-key to make sure, parent keys are always used before child keys
         Map<String, Data> items = new LinkedHashMap<>();
-        group.forEach(attr -> {
+        group.stream().sorted(Comparator.comparing(ObjectData.Attribute::getFqKey)).forEach(attr -> {
             String itemFqKey = toItemFqKey(attr.getFqKey());
             String itemAttrKey = toItemAttrKey(attr.getFqKey(), itemFqKey);
-            Data item = items.computeIfAbsent(itemFqKey, key -> new Data());
+            Data item = items.computeIfAbsent(itemFqKey, key -> new Data().setNonNullAttribute(ITEM_ID, extractId(key)));
             applyAttributeValue(item, itemAttrKey, attr.getValue());
         });
+
+        // now apply default filters if applicable
+        boolean defaultFilterRuleApplies = items.values().stream().anyMatch(d -> d.hasAttribute(SORTING_FIELDNAME));
+        if (defaultFilterRuleApplies) {
+            // Rule is: If SortLnu applies to the group, all items that don't have SortLnu should be hidden
+            for (Iterator<Map.Entry<String, Data>> it = items.entrySet().iterator(); it.hasNext(); ) {
+                Data item = it.next().getValue();
+                if (!hasAttributeValue(item, SORTING_FIELDNAME)) {
+                    it.remove();
+                }
+            }
+        }
+
+        // return sorted
         return sorting.apply(items);
     }
 
@@ -108,7 +133,7 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
         return items.values().toArray(new Data[0]);
     }
 
-    protected static Data[] sortByAttribute(final Data[] items, final String attribute) {
+    public static Data[] sortByAttribute(final Data[] items, final String attribute) {
         return Arrays.stream(items).sorted((a, b) -> {
             String strA = StringUtils.defaultIfBlank(a.getTypedAttribute(attribute), null);
             int sortA = Optional.ofNullable(strA).map(Integer::parseInt).orElse(Integer.MAX_VALUE);
@@ -135,16 +160,30 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
         return attrFqKey.startsWith(itemFqKey + ".") ? attrFqKey.substring(itemFqKey.length() + 1) : VIRTUAL_ATTRIBUTE_NAME;
     }
 
+    protected static @Nullable Long extractId(final String itemFqKey) {
+        Matcher matcher = Pattern.compile(".*[Ii]tem\\[(?<idAndSeq>.+)\\]$").matcher(itemFqKey);
+        if (matcher.matches()) {
+            String[] idAndSeq = matcher.group("idAndSeq").split("#");
+            String id = idAndSeq[0];
+            // for composite items, we don't have actual ids - hence we use the sequence
+            if (StringUtils.isEmpty(id) && idAndSeq.length > 1) {
+                id = idAndSeq[1];
+            }
+            return "".equals(id) ? null : Long.valueOf(id);
+        }
+        return null;
+    }
+
     protected static boolean relatesTo(final ObjectData.Attribute attr, final String key) {
         return attr.getKey().equals(key) || attr.getKey().startsWith(key + ".");
     }
 
-    protected static boolean hasTypeVoc(final Data item, final String value) {
+    public static boolean hasTypeVoc(final Data item, final String value) {
         return hasAttributeValue(item, "TypeVoc", value);
     }
 
-    protected static boolean hasAttributeValue(final Data item, final String key, final Object value) {
-        Object attrValue = item.getAttribute(key);
+    public static boolean hasAttributeValue(final Data item, final String key, final Object value) {
+        Object attrValue = key.endsWith("Voc") ? ValueExtractor.extractVoc(item, key) : item.getAttribute(key);
         if (attrValue instanceof List) {
             return ((List<?>) attrValue).contains(value);
         }
@@ -157,24 +196,19 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
         return false;
     }
 
-    protected static boolean hasAttributeValue(final Data item, final String key) {
+    public static boolean hasAttributeValue(final Data item, final String key) {
         Object value = item.getAttribute(key);
         if (value == null) {
             return false;
         }
         String string = value.toString();
-        switch (string.toUpperCase().trim()) {
-            case "": // blank string
-            case "{}": // empty object
-            case "[]": // empty list
-            case "NULL": // 'null' string
-                return false;
-            default:
-                return true;
-        }
+        return switch (string.toUpperCase().trim()) {
+            // blank string, empty object, empty list/array, 'null' string
+            case "", "{}", "[]", "NULL" -> false;
+            default -> true;
+        };
     }
 
-    @SuppressWarnings("unchecked")
     protected static void applyAttributeValue(final Data target, final String key, final @Nullable String value) {
         if (value == null) {
             return;
@@ -190,6 +224,15 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
             // flatten vocabulary-reference
             if (nextKey.matches("(.+Voc)\\[\\d+\\]$")) {
                 nextKey = nextKey.substring(0, nextKey.indexOf('['));
+                if (key.matches(".+voc.*Ref.*Item\\[\\d+\\]\\..+")) {
+                    Object voc = parent.getAttribute(nextKey);
+                    if (!(voc instanceof Data)) {
+                        voc = new Data().setNonNullAttribute(VIRTUAL_ATTRIBUTE_NAME, voc);
+                        parent.setAttribute(nextKey, voc);
+                    }
+                    parent = (Data) voc;
+                    nextKey = StringUtils.substringAfterLast(key, '.');
+                }
                 break;
             }
 
@@ -199,7 +242,7 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
                 nextKey = NESTED_ITEMS_ATTRIBUTE_NAME;
                 Data data = findNestedDataById(parent, nextKey, id);
                 if (data == null) {
-                    data = new Data().setNonNullAttribute("id", id);
+                    data = new Data().setNonNullAttribute(ITEM_ID, id);
                     upsertAttributeValue(parent, nextKey, data);
                 }
                 parent = data;
@@ -229,11 +272,11 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
     }
 
     @SuppressWarnings("unchecked")
-    protected static <T> void upsertAttributeValue(final Data target, final String key, final T value) {
+    private static <T> void upsertAttributeValue(final Data target, final String key, final T value) {
         // add or set value
         if (target.hasAttribute(key)) {
             // we have added at least one value for the key already,
-            // so we have to make it a multi-valued attribute by converting values into a list
+            // so we have to make it a multivalued attribute by converting values into a list
             Object oldValue = target.getAttribute(key);
             if (oldValue instanceof List) {
                 ((List<T>) oldValue).add(value);
@@ -259,13 +302,12 @@ public abstract class NormalizerBase<T> implements Normalizer<T> {
         }
         if (child instanceof List) {
             return ((List<Data>) child).stream()
-                    .filter(item -> itemId.equals(item.getAttribute("id")))
+                    .filter(item -> itemId.equals(item.getAttribute(ITEM_ID)))
                     .findFirst()
                     .orElse(null);
         }
-        if (child instanceof Data) {
-            Data item = (Data) child;
-            return itemId.equals(item.getAttribute("id")) ? item : null;
+        if (child instanceof Data item) {
+            return itemId.equals(item.getAttribute(ITEM_ID)) ? item : null;
         }
         return null;
     }

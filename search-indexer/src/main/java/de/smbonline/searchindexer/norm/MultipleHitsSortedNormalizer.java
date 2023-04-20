@@ -10,8 +10,9 @@ public abstract class MultipleHitsSortedNormalizer<T> extends NormalizerBase<T[]
     protected final ItemSort sorting;
 
     /**
-     * Creates a new instance.
-     * @param attributeKey target attribute name
+     * Creates a new instance with default sorting.
+     *
+     * @param attributeKey    target attribute name
      * @param repeatableGroup MDS repeatableGroup or moduleRef name
      */
     protected MultipleHitsSortedNormalizer(final String attributeKey, final String repeatableGroup) {
@@ -19,10 +20,11 @@ public abstract class MultipleHitsSortedNormalizer<T> extends NormalizerBase<T[]
     }
 
     /**
-     * Creates a new instance.
-     * @param attributeKey target attribute name
+     * Creates a new instance with given sorting.
+     *
+     * @param attributeKey    target attribute name
      * @param repeatableGroup MDS repeatableGroup or moduleRef name
-     * @param sorting sorting function
+     * @param sorting         sorting function
      */
     protected MultipleHitsSortedNormalizer(final String attributeKey, final String repeatableGroup, final ItemSort sorting) {
         super(attributeKey);
@@ -31,7 +33,7 @@ public abstract class MultipleHitsSortedNormalizer<T> extends NormalizerBase<T[]
     }
 
     @Override
-    public @Nullable T[] resolveAttributeValue(final ObjectData source) {
+    public @Nullable T[] resolveAttributeValue(final ObjectData source, final String language) {
         Data[] data = findGroupItems(source, this.repeatableGroup, this.sorting);
         data = applyFilter(data);
         return data.length == 0 ? null : pickValues(data);
@@ -39,7 +41,8 @@ public abstract class MultipleHitsSortedNormalizer<T> extends NormalizerBase<T[]
 
     /**
      * Method can be overridden to filter reverse-engineered repeatableGroup items. The result is passed to {@link #pickValues(Data[])}
-     * Note: Usage of <i>primaryItem(repeatableGroupItems).orElse(...)</i> could be a common implementation.
+     * Note: Usage of <i>primaryItems(repeatableGroupItems).orElse(...)</i> could be a common implementation.
+     * The default implementation just returns the arguments as is.
      *
      * @param repeatableGroupItems reverse-engineered repeatableGroup items
      * @return filtered items

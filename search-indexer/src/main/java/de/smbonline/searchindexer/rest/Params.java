@@ -13,6 +13,16 @@ public final class Params {
     public static final String LANGUAGE_PARAMETER = "lang";
 
     /**
+     * http parameter to specify the id of the first object for a range of objects
+     */
+    public static final String STARTID_PARAMETER = "startId";
+
+    /**
+     * http parameter to specify the id of the last object for a range of objects
+     */
+    public static final String ENDID_PARAMETER = "endId";
+
+    /**
      * http parameter for paginated requests
      */
     public static final String OFFSET_PARAMETER = "offset";
@@ -31,6 +41,15 @@ public final class Params {
      * http parameter for query results sorting
      */
     public static final String SORT_PARAMETER = "sort";
+    /**
+     * http parameter for response format
+     */
+    public static final String PROJECTION_PARAMETER = "projection";
+
+    /**
+     * http parameter for response format
+     */
+    public static final String FORMAT_PARAMETER = "format";
 
     private Params() {
         // no instances

@@ -1,0 +1,19 @@
+# Definition of the GeographicalReference data struct
+fragment geoData on smb_geographical_references {
+    id
+    details
+    geopolVocId:geopol_voc_id
+    placeVocId:place_voc_id
+    roleVocId:role_voc_id
+    typeVocId:type_voc_id
+    sequence
+}
+
+# ----------------------------------------------------------
+
+# Return a GeographicalReference entry by id
+query FetchGeographicalReferenceById($id: bigint!) {
+    smb_geographical_references_by_pk(id:$id) {
+        ...geoData
+    }
+}

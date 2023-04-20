@@ -1,14 +1,20 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.dto.Data;
+import de.smbonline.searchindexer.graphql.queries.fragment.GeoData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
+import de.smbonline.searchindexer.norm.NormalizerBase;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -544,10 +550,16 @@ public final class TestData {
                 Triple.of("ObjGeograficGrp.PlaceEgyptVoc", "[1513247].ObjGeograficGrp.repeatableGroupItem[32341110].PlaceEgyptVoc[61666].vocabularyReferenceItem[3980888]", "Abusir el-Meleq"),
                 Triple.of("ObjGeograficGrp.SortLnu", "[1513247].ObjGeograficGrp.repeatableGroupItem[32341110].SortLnu", "5"),
                 Triple.of("ObjGeograficGrp.DetailsTxt", "[1513247].ObjGeograficGrp.repeatableGroupItem[32341110].DetailsTxt", "Ägypten"),
+                Triple.of("ObjGeograficGrp.TypeVoc", "[1513247].ObjGeograficGrp.repeatableGroupItem[32341].TypeVoc[61636].vocabularyReferenceItem[3988]", "Fundort"),
+                Triple.of("ObjGeograficGrp.SortLnu", "[1513247].ObjGeograficGrp.repeatableGroupItem[32341].SortLnu", "4"),
+                Triple.of("ObjGeograficGrp.DetailsTxt", "[1513247].ObjGeograficGrp.repeatableGroupItem[32341].DetailsTxt", "Kairo"),
+                Triple.of("ObjIconographyGrp.KeywordVoc", "[1513247].ObjIconographyGrp.repeatableGroupItem[3234].KeywordVoc[23].vocabularyReferenceItem[4334]", "Meer"),
                 Triple.of("ObjInventoryDateDat", "[1513247].ObjInventoryDateDat", "14.05.2010"),
+                Triple.of("ObjKeyWordsGrp.SortLnu", "[1513247].ObjKeyWordsGrp.repeatableGroupItem[3223434].SortLnu", "0"),
+                Triple.of("ObjKeyWordsGrp.KeyWordVoc", "[1513247].ObjKeyWordsGrp.repeatableGroupItem[3223434].KeyWordVoc[23234].vocabularyReferenceItem[4334]", "Ozean"),
                 Triple.of("ObjLabelObjectGrp.LabelClb", "[1513247].ObjLabelObjectGrp.repeatableGroupItem[37570891].LabelClb", "Sprache: Griechisch/ Schrift: Griechisch"),
                 Triple.of("ObjLabelObjectGrp.SortLnu", "[1513247].ObjLabelObjectGrp.repeatableGroupItem[37570891].SortLnu", "1"),
-                Triple.of("ObjLabelObjectGrp.TypeVoc", "[1513247].ObjLabelObjectGrp.repeatableGroupItem[37570891].TypeVoc[61675].vocabularyReferenceItem[1804323]", "Allg. Angabe Beschriftung"),
+                Triple.of("ObjLabelObjectGrp.TypeVoc", "[1513247].ObjLabelObjectGrp.repeatableGroupItem[37570891].TypeVoc[61675].vocabularyReferenceItem[1804323]", "Signatur (Künstler)"),
                 Triple.of("ObjLiteratureRef.CatalogueNumberTxt", "[1513247].ObjLiteratureRef.moduleReferenceItem[207326#0].CatalogueNumberTxt", "o. S."),
                 Triple.of("ObjLiteratureRef.LitAuthorSortTxt", "[1513247].ObjLiteratureRef.moduleReferenceItem[207326#0].LitAuthorSortTxt", "Staatliche Museen zu Berlin, Nationalgalerie"),
                 Triple.of("ObjLiteratureRef.LitCitationClb", "[1513247].ObjLiteratureRef.moduleReferenceItem[207326#0].LitCitationClb", "Die Gemälde der Nationalgalerie. Verzeichnis. Deutsche Malerei vom Klassizismus bis zum Impressionismus. Ausländische Malerei von 1800 bis 1930, hrsg. v. Staatliche Museen zu Berlin, Nationalgalerie, Berlin (Ost) 1986"),
@@ -802,6 +814,8 @@ public final class TestData {
                 Triple.of("ObjRegistrarRef.RegExhibitionRef.ExhVenueDetailsTxt", "[1513247].ObjRegistrarRef.moduleReferenceItem[439857#6].RegExhibitionRef.moduleReferenceItem[54226].ExhVenueDetailsTxt", "Erfurt, Angermuseum"),
                 Triple.of("ObjResponsibleGrp.ResposibleVoc", "[1513247].ObjResponsibleGrp.repeatableGroupItem[41320308].ResposibleVoc[61683].vocabularyReferenceItem[4121638]", "ÄMP_KK (admin)"),
                 Triple.of("ObjTechnicalTermClb", "[1513247].ObjTechnicalTermClb", "Blatt (Schriftträger)"),
+                Triple.of("ObjSWDGrp.Sort001Lnu", "[1513247].ObjSWDGrp.repeatableGroupItem[3234].Sort001Lnu", "12"),
+                Triple.of("ObjSWDGrp.SWDVoc", "[1513247].ObjSWDGrp.repeatableGroupItem[3234].SWDVoc", "Wellen"),
                 Triple.of("ObjTechnicalTermGrp.ModifiedByTxt", "[1513247].ObjTechnicalTermGrp.repeatableGroupItem[22509054].ModifiedByTxt", "ZET_DÜ"),
                 Triple.of("ObjTechnicalTermGrp.ModifiedDateDat", "[1513247].ObjTechnicalTermGrp.repeatableGroupItem[22509054].ModifiedDateDat", "10.10.2017"),
                 Triple.of("ObjTechnicalTermGrp.SortLnu", "[1513247].ObjTechnicalTermGrp.repeatableGroupItem[22509054].SortLnu", "2"),
@@ -854,9 +868,49 @@ public final class TestData {
                 LocalDateTime.now().minusDays(7),
                 LocalDateTime.now(),
                 null,
+                null,
+                null,
+                geographicalReferences(attributes),
+                materialReferences(attributes),
                 attributes,
                 new ArrayList<>(), // mutable
                 new ArrayList<>()); // mutable
+    }
+
+    public static List<ObjectData.GeographicalReference> geographicalReferences(final List<ObjectData.Attribute> attributes) {
+        Data[] groupItems = NormalizerBase.findGroupItems(attributes, "ObjGeograficGrp", items -> items.values().toArray(Data[]::new));
+        return Arrays.stream(groupItems).map(item ->
+                new ObjectData.GeographicalReference("__georef",
+                        new ObjectData.GeographicalReference.Fragments(new GeoData(
+                                "__georef",
+                                item.getAttribute("id"),
+                                item.getTypedAttribute(""),
+                                extractVocId(item, "PlaceILSVoc", "PlaceEgyptVoc", "PlaceAntiqueVoc", "PlaceVoc"),
+                                extractVocId(item, "RoleVoc"),
+                                extractVocId(item, "TypeVoc"),
+                                item.getTypedAttribute("DetailsTxt"),
+                                (item.<Number>getTypedAttribute("SortLnu")).intValue()
+                        )))
+        ).collect(Collectors.toList());
+    }
+
+    public static List<ObjectData.MaterialReference> materialReferences(final List<ObjectData.Attribute> attributes) {
+        // TODO
+        return Collections.emptyList();
+    }
+
+    private static Long extractVocId(final Data item, final String candidate, @Nullable String... alternatives) {
+        Object value = item.getAttribute(candidate);
+        if (value instanceof Data && ((Data) value).hasAttribute("id")) {
+            Object id = ((Data) value).getAttribute("id");
+            return id instanceof Number ? ((Number) id).longValue() : Long.valueOf(id.toString());
+        }
+        if (alternatives != null && alternatives.length > 0) {
+            String alternative = alternatives[0];
+            String[] remaining = ArrayUtils.remove(alternatives, 0);
+            return extractVocId(item, alternative, remaining);
+        }
+        return null;
     }
 
     public static ObjectData withExhibitionSpace(final ObjectData obj, final String space) {
@@ -865,7 +919,11 @@ public final class TestData {
                 obj.getId(),
                 obj.getCreatedAt(),
                 obj.getUpdatedAt(),
+                obj.getCollectionKey(),
+                obj.getCompilation(),
                 space,
+                obj.getGeographicalReferences(),
+                obj.getMaterialReferences(),
                 obj.getAttributes(),
                 obj.getAttachments(),
                 obj.getHighlights()

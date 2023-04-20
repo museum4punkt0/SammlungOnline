@@ -52,8 +52,8 @@ goto fail
 
 :findJavaFromJavaHome
 @rem set JAVA_HOME=%JAVA_HOME:"=%
-@rem Remo: ENSURE JAVA11 is used
-set JAVA_HOME=%JAVA11_HOME%
+@rem Remo: ENSURE JAVA17 is used
+set JAVA_HOME=%JAVA17_HOME%
 set JAVA_EXE=%JAVA_HOME%/bin/java.exe
 
 if exist "%JAVA_EXE%" goto init

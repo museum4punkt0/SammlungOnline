@@ -13,7 +13,6 @@ import static de.smbonline.searchindexer.conf.ConstKt.*;
 
 public class LiteratureNormalizer extends MultipleHitsSortedNormalizer<String> {
 
-
     public LiteratureNormalizer() {
         super(LITERATURE_ATTRIBUTE, "ObjLiteratureRef", LiteratureNormalizer::sort);
     }
@@ -30,6 +29,18 @@ public class LiteratureNormalizer extends MultipleHitsSortedNormalizer<String> {
             }
             return c;
         }).toArray(Data[]::new);
+    }
+
+    @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjLiteratureRef.LitReferenceShortTxt",
+                "ObjLiteratureRef.LitPublicationDateLnu",
+                "ObjLiteratureRef.LitCitationClb",
+                "ObjLiteratureRef.PageRefTxt",
+                "ObjLiteratureRef.PicturePageTxt",
+                "ObjLiteratureRef.CatalogueNumberTxt",
+        };
     }
 
     @Override
@@ -69,19 +80,31 @@ public class LiteratureNormalizer extends MultipleHitsSortedNormalizer<String> {
             }
         }
         if (hasPage) {
-            sb.append(page.trim());
+            page = page.trim();
+            if (StringUtils.isNumeric(page)) {
+                sb.append("Erw.-Seite ");
+            }
+            sb.append(page);
             if (hasPicture || hasCatalog) {
                 sb.append(", ");
             }
         }
         if (hasPicture) {
-            sb.append(picture.trim());
+            picture = picture.trim();
+            if (StringUtils.isNumeric(picture)) {
+                sb.append("Abb. S. ");
+            }
+            sb.append(picture);
             if (hasCatalog) {
                 sb.append(", ");
             }
         }
         if (hasCatalog) {
-            sb.append(catalog.trim());
+            catalog = catalog.trim();
+            if (StringUtils.isNumeric(catalog)) {
+                sb.append("Kat.Nr. ");
+            }
+            sb.append(catalog);
         }
         return sb.toString();
     }

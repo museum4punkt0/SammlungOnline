@@ -1,30 +1,8 @@
 package de.smbonline.searchindexer.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import de.smbonline.searchindexer.conf.ACQUISITION_ATTRIBUTE
-import de.smbonline.searchindexer.conf.ALL_RELEVANT_ATTRIBUTES
-import de.smbonline.searchindexer.conf.COLLECTION_ATTRIBUTE
-import de.smbonline.searchindexer.conf.COLLECTION_KEY_ATTRIBUTE
-import de.smbonline.searchindexer.conf.COMPILATION_ATTRIBUTE
-import de.smbonline.searchindexer.conf.CREDIT_LINE
-import de.smbonline.searchindexer.conf.DEFAULT_LANGUAGE
-import de.smbonline.searchindexer.conf.DIMENSIONS_AND_WEIGHT_ATTRIBUTE
-import de.smbonline.searchindexer.conf.EXHIBITIONS_ATTRIBUTE
-import de.smbonline.searchindexer.conf.EXHIBITION_SPACE_ATTRIBUTE
+import de.smbonline.searchindexer.conf.*
 import de.smbonline.searchindexer.conf.ElasticSearchConfig
-import de.smbonline.searchindexer.conf.GEOGRAPHICAL_REFERENCES_ATTRIBUTE
-import de.smbonline.searchindexer.conf.IDENT_NUMBER_ATTRIBUTE
-import de.smbonline.searchindexer.conf.ID_ATTRIBUTE
-import de.smbonline.searchindexer.conf.INVOLVED_PARTIES_ATTRIBUTE
-import de.smbonline.searchindexer.conf.LITERATURE_ATTRIBUTE
-import de.smbonline.searchindexer.conf.LOCATION_ATTRIBUTE
-import de.smbonline.searchindexer.conf.LONG_DESCRIPTION_ATTRIBUTE
-import de.smbonline.searchindexer.conf.MATERIAL_AND_TECHNIQUE_ATTRIBUTE
-import de.smbonline.searchindexer.conf.PROVENANCE_ATTRIBUTE
-import de.smbonline.searchindexer.conf.PROVENANCE_EVALUATION_ATTRIBUTE
-import de.smbonline.searchindexer.conf.SIGNATURES_ATTRIBUTE
-import de.smbonline.searchindexer.conf.TECHNICAL_TERM_ATTRIBUTE
-import de.smbonline.searchindexer.conf.TITLES_ATTRIBUTE
 import de.smbonline.searchindexer.dto.Data
 import de.smbonline.searchindexer.dto.FieldSearch
 import de.smbonline.searchindexer.dto.JsonAttr.*
@@ -33,6 +11,7 @@ import de.smbonline.searchindexer.dto.SearchObject
 import de.smbonline.searchindexer.dto.SearchSuggest
 import de.smbonline.searchindexer.log.LogExecutionTime
 import org.apache.commons.lang3.StringUtils
+import org.apache.commons.text.WordUtils
 import org.elasticsearch.action.DocWriteResponse
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.delete.DeleteRequest
@@ -41,13 +20,13 @@ import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.update.UpdateRequest
 import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.client.Response
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.common.xcontent.StatusToXContentObject
-import org.elasticsearch.common.xcontent.XContentType
+import org.elasticsearch.xcontent.XContentType
 import org.elasticsearch.index.query.Operator
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.script.Script
 import org.elasticsearch.search.aggregations.AggregationBuilders
 import org.elasticsearch.search.aggregations.BucketOrder
 import org.elasticsearch.search.aggregations.bucket.terms.Terms
@@ -69,10 +48,11 @@ class ElasticSearchAPI @Autowired constructor(
         val LOGGER: Logger = LoggerFactory.getLogger(ElasticSearchAPI::class.java)
         val SORTABLE_TEXT_FIELDS = arrayOf(
                 ACQUISITION_ATTRIBUTE,
-                COLLECTION_ATTRIBUTE, COLLECTION_KEY_ATTRIBUTE, COMPILATION_ATTRIBUTE, CREDIT_LINE,
+                COLLECTION_ATTRIBUTE, COLLECTION_KEY_ATTRIBUTE, COMPILATION_ATTRIBUTE, CREDIT_LINE_ATTRIBUTE,
                 DIMENSIONS_AND_WEIGHT_ATTRIBUTE,
                 EXHIBITIONS_ATTRIBUTE,
                 EXHIBITION_SPACE_ATTRIBUTE,
+                FINDSPOT_ATTRIBUTE,
                 GEOGRAPHICAL_REFERENCES_ATTRIBUTE,
                 IDENT_NUMBER_ATTRIBUTE, INVOLVED_PARTIES_ATTRIBUTE,
                 LOCATION_ATTRIBUTE,
@@ -80,17 +60,37 @@ class ElasticSearchAPI @Autowired constructor(
                 PROVENANCE_EVALUATION_ATTRIBUTE,
                 TECHNICAL_TERM_ATTRIBUTE, TITLES_ATTRIBUTE
         )
-        val SUGGESTION_FIELDS = arrayOf(
-                ACQUISITION_ATTRIBUTE,
-                COLLECTION_ATTRIBUTE, COMPILATION_ATTRIBUTE, CREDIT_LINE,
-                EXHIBITIONS_ATTRIBUTE,
+        val FULLTEXT_SUGGESTION_FIELDS = arrayOf(
+                TITLES_ATTRIBUTE,
+                FINDSPOT_ATTRIBUTE,
                 GEOGRAPHICAL_REFERENCES_ATTRIBUTE,
-                IDENT_NUMBER_ATTRIBUTE, ID_ATTRIBUTE, INVOLVED_PARTIES_ATTRIBUTE,
-                LOCATION_ATTRIBUTE,
+                INVOLVED_PARTIES_ATTRIBUTE,
                 MATERIAL_AND_TECHNIQUE_ATTRIBUTE,
-                PROVENANCE_ATTRIBUTE,
-                TECHNICAL_TERM_ATTRIBUTE, TITLES_ATTRIBUTE
+                TECHNICAL_TERM_ATTRIBUTE,
+                EXHIBITIONS_ATTRIBUTE,
+                //COLLECTION_ATTRIBUTE,
+                //COMPILATION_ATTRIBUTE
         )
+        val NO_SUGGESTION_FIELDS = arrayOf(
+                ASSORTMENTS_ATTRIBUTE,
+                COLLECTION_KEY_ATTRIBUTE,
+                DATE_RANGE_ATTRIBUTE,
+                HAS_ATTACHMENTS_ATTRIBUTE,
+                INSCRIPTION_ATTRIBUTE,
+                IS_EXHIBIT_ATTRIBUTE,
+                IS_HIGHLIGHT_ATTRIBUTE,
+                LITERATURE_ATTRIBUTE,
+                LONG_DESCRIPTION_ATTRIBUTE,
+                PROVENANCE_ATTRIBUTE,
+                PROVENANCE_EVALUATION_ATTRIBUTE,
+                SIGNATURES_ATTRIBUTE
+        )
+        val OBJECT_FIELDS = arrayOf(
+                GEOGRAPHICAL_REFERENCES_ATTRIBUTE,
+                INVOLVED_PARTIES_ATTRIBUTE,
+                MATERIAL_AND_TECHNIQUE_ATTRIBUTE
+        )
+        val WORD_DELIMITERS = " /-()[]{}\"".toCharArray()
     }
 
     /**
@@ -115,7 +115,7 @@ class ElasticSearchAPI @Autowired constructor(
      */
     @LogExecutionTime
     fun push(obj: SearchObject): Data {
-        val doc = jackson.writeValueAsBytes(obj.attributes);
+        val doc = jackson.writeValueAsBytes(obj.attributes)
         val request = UpdateRequest("${config.objectIndex}-${obj.language}", "${obj.id}")
                 .doc(doc, XContentType.JSON) // for update
                 .upsert(doc, XContentType.JSON) // for insert
@@ -138,7 +138,7 @@ class ElasticSearchAPI @Autowired constructor(
     @LogExecutionTime
     fun delete(objectId: Long): Data {
         return if (exists(objectId)) remove(objectId)
-        else Data().setAttribute("$objectId", DocWriteResponse.Result.NOT_FOUND)
+        else Data().setAttribute("$objectId", DocWriteResponse.Result.NOT_FOUND.name)
     }
 
     private fun remove(objectId: Long): Data {
@@ -146,22 +146,22 @@ class ElasticSearchAPI @Autowired constructor(
         val en = DeleteRequest("${config.objectIndex}-en", "$objectId")
         val request = BulkRequest().add(de).add(en)
         val response = this.client.bulk(request, RequestOptions.DEFAULT)
-        return handleDeletedResponse(response, objectId);
+        return handleDeletedResponse(response, objectId)
     }
 
     /**
      * Delete object from index if exists.
      */
     @LogExecutionTime
-    fun delete(objectId: Long, language: String): Data {
-        return if (exists(objectId, language)) remove(objectId, language)
-        else Data().setAttribute("$objectId", DocWriteResponse.Result.NOT_FOUND)
+    fun delete(objectId: Long, lang: String): Data {
+        return if (exists(objectId, lang)) remove(objectId, lang)
+        else Data().setAttribute("$objectId", DocWriteResponse.Result.NOT_FOUND.name)
     }
 
-    private fun remove(objectId: Long, language: String): Data {
-        val request = DeleteRequest("${config.objectIndex}-$language", "$objectId")
+    private fun remove(objectId: Long, lang: String): Data {
+        val request = DeleteRequest("${config.objectIndex}-$lang", "$objectId")
         val response = this.client.delete(request, RequestOptions.DEFAULT)
-        return handleDeletedResponse(response, objectId);
+        return handleDeletedResponse(response, objectId)
     }
 
     private fun handleDeletedResponse(response: StatusToXContentObject, objectId: Long): Data {
@@ -174,6 +174,25 @@ class ElasticSearchAPI @Autowired constructor(
         }
     }
 
+    fun deleteField(objectId: Long, lang: String, field: String): Data {
+        return if (exists(objectId, lang)) {
+            val script = Script("ctx._source.remove(\"${field}\")")
+            val request = UpdateRequest("${config.objectIndex}-${lang}", "$objectId").script(script)
+            val response = client.update(request, RequestOptions.DEFAULT)
+            val success = response.result == DocWriteResponse.Result.UPDATED
+                    || response.result == DocWriteResponse.Result.NOOP
+            if (success && LOGGER.isDebugEnabled) {
+                LOGGER.debug("Deleted field {} from Object {}", field, objectId)
+            }
+            if (!success) {
+                LOGGER.error("Failed: {}", response)
+            }
+            Data().setAttribute("$objectId", response.result.name).setAttribute("field", field)
+        } else {
+            Data().setAttribute("$objectId", DocWriteResponse.Result.NOT_FOUND.name)
+        }
+    }
+
     /**
      * Fetch search suggestions.
      */
@@ -182,13 +201,13 @@ class ElasticSearchAPI @Autowired constructor(
         return if (suggestion.field == null) multiFieldSuggest(suggestion, lang) else fieldSuggest(suggestion, lang)
     }
 
-    // TODO make this more sophisticated
+    // TODO make this more sophisticated - use elastic-inbuilt-suggestions
     private fun multiFieldSuggest(suggestion: SearchSuggest, lang: String): Data {
 
         val suggestions = mutableListOf<Data>()
 
         // loop over all suggestion fields and aggregate the field suggestions
-        for (field in SUGGESTION_FIELDS) {
+        for (field in FULLTEXT_SUGGESTION_FIELDS) {
             val fieldSuggestion = SearchSuggest(suggestion.searchTerm)
             fieldSuggestion.field = field
             fieldSuggestion.limit = suggestion.limit
@@ -199,7 +218,7 @@ class ElasticSearchAPI @Autowired constructor(
                 val same = suggestions.find { it.getAttribute(ATTR_VALUE) == fs.getAttribute(ATTR_VALUE) }
                 if (same == null) {
                     // default case
-                    suggestions.add(fs);
+                    suggestions.add(fs)
                 } else {
                     // edge case
                     // we have a hit on multiple fields; aggregate counters for same values and remove the field attribute
@@ -235,25 +254,26 @@ class ElasticSearchAPI @Autowired constructor(
         return if (str.indexOf(' ') > -1) StringUtils.wrap(str, '"') else str
     }
 
-    private fun appendWildcard(str: String): String? {
-        return if (str.endsWith('"') || str.endsWith(" ")) str else "${str}*"
-    }
-
+    // TODO use elastic-inbuilt-suggestions
     private fun fieldSuggest(suggestion: SearchSuggest, lang: String): Data {
-        val field = suggestable(suggestion.field!!) ?: return Data().setAttribute(ATTR_SUGGESTIONS, emptyList<Data>());
+        val rawSearchTerm = normalize(suggestion.searchTerm)
+        val field = suggestableField(suggestion.field!!)
+                ?: return Data().setAttribute(ATTR_SUGGESTIONS, emptyList<Data>())
         val sort = if (config.suggestionsSort == ElasticSearchConfig.SuggestionSort.TERM) {
             BucketOrder.key(true)
         } else {
             BucketOrder.count(false)
         }
+        val leadingWildcards = config.partialMatchSuggestions
         val aggregationBuilder = AggregationBuilders.terms("suggestions")
-                .field(field)
+                .field("$field.keyword")
                 .order(sort)
                 .size(suggestion.limit)
         val queryBuilder = QueryBuilders
-                .simpleQueryStringQuery(appendWildcard(suggestion.searchTerm))
+                .queryStringQuery(suggestableTerm(suggestion.searchTerm, leadingWildcards))
+                .allowLeadingWildcard(leadingWildcards)
                 .defaultOperator(Operator.AND)
-                .field(suggestion.field)
+                .field(field)
                 .lenient(true)
         val sourceBuilder = SearchSourceBuilder()
                 .from(0)
@@ -266,12 +286,19 @@ class ElasticSearchAPI @Autowired constructor(
         val buckets = response.aggregations.get<Terms>("suggestions").buckets
         val results = mutableListOf<Data>()
         for (bucket in buckets) {
-            results.add(Data()
-                    .setAttribute(ATTR_FIELD, suggestion.field)
-                    .setAttribute(ATTR_VALUE, wrapQuotes(bucket.keyAsString))
-                    .setAttribute(ATTR_COUNTER, bucket.docCount))
+            val term = bucket.keyAsString
+            if (normalize(term).contains(rawSearchTerm)) {
+                results.add(Data()
+                        .setAttribute(ATTR_FIELD, suggestion.field)
+                        .setAttribute(ATTR_VALUE, wrapQuotes(WordUtils.capitalize(term, *WORD_DELIMITERS))) // workaround as we have lowercase suggestions
+                        .setAttribute(ATTR_COUNTER, bucket.docCount))
+            }
         }
         return Data().setAttribute(ATTR_SUGGESTIONS, results)
+    }
+
+    private fun normalize(string: String): String {
+        return string.replace(Regex("[*'\" ]"), "").lowercase()
     }
 
     @LogExecutionTime
@@ -286,24 +313,36 @@ class ElasticSearchAPI @Autowired constructor(
                 .setNonNullAttribute(ATTR_RESULTS, response.hits.hits.map { Data.fromMap(it.sourceAsMap.toSortedMap()) })
     }
 
+    private fun defaultCombinedQuery(term: String): QueryBuilder {
+        val normalizedSearchTerm = convertTopLevelFieldsToFormattedSubLevelFields(term)
+        return QueryBuilders.boolQuery()
+                .must(QueryBuilders.queryStringQuery(normalizedSearchTerm)
+                        .lenient(true)
+                        .allowLeadingWildcard(false))
+    }
+
+    private fun convertTopLevelFieldsToFormattedSubLevelFields(term: String): String {
+        var converted = term
+        for (field in OBJECT_FIELDS) {
+            converted = converted.replace("$field:", "$field.$FORMATTED_VALUE_ATTRIBUTE:")
+        }
+        return converted
+    }
+
     /**
      * Convert search object DTO into Elastic search-source-builder
      */
     private fun prepareSearchSourceBuilder(searchRequest: Search): SearchSourceBuilder {
         val queryBuilder: QueryBuilder = if (searchRequest.advancedSearch == null) {
-            QueryBuilders.queryStringQuery(searchRequest.searchTerm)
-                    .lenient(true)
-                    .allowLeadingWildcard(false)
+            defaultCombinedQuery(searchRequest.searchTerm)
         } else {
             val advancedSearchTerm = buildAdvancedSearchTerm(searchRequest.advancedSearch!!)
             val fullSearchTerm = if (hasActualSearchTerm(searchRequest)) {
-                "${searchRequest.searchTerm} $advancedSearchTerm"
+                "(${searchRequest.searchTerm}) $advancedSearchTerm"
             } else {
                 stripFirstOperator(advancedSearchTerm)
             }
-            QueryBuilders.queryStringQuery(fullSearchTerm)
-                    .lenient(true)
-                    .allowLeadingWildcard(false)
+            defaultCombinedQuery(fullSearchTerm)
         }
         val sourceBuilder = SearchSourceBuilder()
                 .from(searchRequest.offset)
@@ -311,7 +350,7 @@ class ElasticSearchAPI @Autowired constructor(
                 .trackTotalHitsUpTo(500000)
                 .query(queryBuilder)
         for (sorting in searchRequest.sort) {
-            val sortable = sortable(sorting.first)
+            val sortable = sortableField(sorting.first)
             if (sortable != null) {
                 sourceBuilder.sort(sortable, if (sorting.second) SortOrder.ASC else SortOrder.DESC)
             }
@@ -330,6 +369,7 @@ class ElasticSearchAPI @Autowired constructor(
      * If given string starts with a field-search operator, remove it.
      */
     private fun stripFirstOperator(string: String): String {
+        // we need a backslash in front of the operator char since all of them are regex special chars
         val operators = FieldSearch.Operator.values().joinToString("|") { it.value.trim() + "|\\" + it.char }
         return string.replace(Regex("^\\s*($operators)\\s*", RegexOption.IGNORE_CASE), "")
     }
@@ -357,38 +397,83 @@ class ElasticSearchAPI @Autowired constructor(
         return withoutWildcards.isNotBlank()
     }
 
+    private fun suggestableTerm(str: String, leadingWildcard: Boolean = false): String {
+        var term = str
+        if (leadingWildcard && !(term.startsWith('*') || term.startsWith('"') || term.startsWith('?'))) {
+            term = "*${term}"
+        }
+        if (!leadingWildcard) {
+            term = StringUtils.stripStart(term, "*?")
+        }
+        if (!(term.endsWith('*') || term.endsWith('?') || term.endsWith('"') || term.endsWith(' '))) {
+            term = "${term}*"
+        }
+        return term
+    }
+
     /**
      * Check if given field supports search suggestions and adjust to Elastic syntax if required.
      */
-    private fun suggestable(field: String): String? {
-        return if (SUGGESTION_FIELDS.contains(field)) {
+    private fun suggestableField(field: String): String? {
+        return if (!NO_SUGGESTION_FIELDS.contains(field)) {
             // our id is numeric, we need the string version for suggestions
-            // for the other string fields we need the respective keyword type
-            return if (field == ID_ATTRIBUTE) "@$ID_ATTRIBUTE.keyword" else "$field.keyword"
+            // for the nested objects we use a dedicated attribute
+            when (field) {
+                GEOGRAPHICAL_REFERENCES_ATTRIBUTE -> "$field.$FORMATTED_VALUE_ATTRIBUTE"
+                ID_ATTRIBUTE -> "@$ID_ATTRIBUTE"
+                INVOLVED_PARTIES_ATTRIBUTE -> "$field.name"
+                MATERIAL_AND_TECHNIQUE_ATTRIBUTE -> "$field.$FORMATTED_VALUE_ATTRIBUTE"
+                else -> field
+            }
         } else null
     }
 
     /**
      * Check if given field is sortable and adjust to Elastic syntax if required.
      */
-    private fun sortable(field: String): String? {
+    private fun sortableField(field: String): String? {
         // early return for sort fields natively provided by elasticsearch
         if (field.first() == '_' || field.first() == '@') {
             return field
         }
+
+        val topLevelField = field.substringBefore('.')
+
         // do not sort by long texts
-        if (LITERATURE_ATTRIBUTE == field
-                || LONG_DESCRIPTION_ATTRIBUTE == field
-                || PROVENANCE_ATTRIBUTE == field
-                || SIGNATURES_ATTRIBUTE == field) {
+        if (INSCRIPTION_ATTRIBUTE == topLevelField
+                || LITERATURE_ATTRIBUTE == topLevelField
+                || LONG_DESCRIPTION_ATTRIBUTE == topLevelField
+                || PROVENANCE_ATTRIBUTE == topLevelField
+                || SIGNATURES_ATTRIBUTE == topLevelField
+                || ASSORTMENTS_ATTRIBUTE == topLevelField) {
+            return null
+        }
+        // do not sort by tags
+        if (ICONCLASS_ATTRIBUTE == topLevelField
+                || ICONOGRAPHY_ATTRIBUTE == topLevelField
+                || KEYWORDS_ATTRIBUTE == topLevelField) {
             return null
         }
         // do not try sorting on missing attribute
-        if (!ALL_RELEVANT_ATTRIBUTES.contains(field)) {
+        if (!ALL_RELEVANT_ATTRIBUTES.contains(topLevelField)) {
             return null
         }
+        // for complex types we have to use the formatted property
+        if (OBJECT_FIELDS.contains(topLevelField)) {
+            val subLevelField = field.substringAfter('.', "")
+            return when {
+                subLevelField.isEmpty() -> {
+                    "$topLevelField.$FORMATTED_VALUE_ATTRIBUTE.keyword"
+                }
+                subLevelField.endsWith("id", true) -> {
+                    field
+                }
+                else -> {
+                    "$field.keyword"
+                }
+            }
+        }
         // for text fields, we have to use .keyword suffix because "Fielddata is disabled on text fields by default."
-        val isTextAttribute = SORTABLE_TEXT_FIELDS.contains(field)
-        return if (isTextAttribute) "$field.keyword" else field
+        return if (SORTABLE_TEXT_FIELDS.contains(topLevelField)) "$field.keyword" else field
     }
 }

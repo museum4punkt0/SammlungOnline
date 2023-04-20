@@ -10,6 +10,7 @@ services:
     restart: unless-stopped
     environment:
       - HASURA_SECRET=jcG8QBI5g8OX
+      - SENTRY_ENVIRONMENT=local
     ports:
       - 8085:8085
     external_links:

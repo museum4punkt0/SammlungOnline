@@ -21,7 +21,7 @@ public class TechnicalTermNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("ObjTechnicalTermClb", "Gelber Schnee"));
         // when
         TechnicalTermNormalizer normalizer = new TechnicalTermNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Gelber Schnee");
     }
@@ -35,7 +35,7 @@ public class TechnicalTermNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         TechnicalTermNormalizer normalizer = new TechnicalTermNormalizer();
-        String value = normalizer.resolveAttributeValue(obj);
+        String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

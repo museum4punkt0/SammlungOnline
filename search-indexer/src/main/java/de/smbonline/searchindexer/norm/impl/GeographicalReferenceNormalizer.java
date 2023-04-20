@@ -1,52 +1,93 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.norm.ThesaurusResolvingNormalizer;
 import de.smbonline.searchindexer.dto.Data;
-import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
-import io.reactivex.rxjava3.annotations.Nullable;
+import de.smbonline.searchindexer.graphql.queries.fragment.GeoData;
+import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
+import de.smbonline.searchindexer.graphql.queries.fragment.ThesaurusData;
+import de.smbonline.searchindexer.service.GraphQlService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.lang.Nullable;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
 
-public class GeographicalReferenceNormalizer extends MultipleHitsSortedNormalizer<String> {
+public class GeographicalReferenceNormalizer extends ThesaurusResolvingNormalizer<Data[]> {
 
-    private static final List<String> TYPES_BLACKLIST = Arrays.asList(
+    private static final List<String> TYPES_BLACKLIST = List.of(
             "",
             "Statistischer Bezug",
-            "Fundort Ausgabe", "Fundort aktuell", "Fundort historisch 1800", "Fundort historisch 1900", "Fundort historisch 2000", "Fundort normiert", "Fundort Variante"
+            "Fundort Ausgabe",
+            "Fundort aktuell", "Fundort (aktuell)", "Fundort (aktueller)",
+            "Fundort normiert", "Fundort (normiert)",
+            "Fundort Variante", "Fundort (Variante)",
+            "Fundort historisch 1800", "Fundort (historisch 1800)",
+            "Fundort historisch 1900", "Fundort (historisch 1900)",
+            "Fundort historisch 2000", "Fundort (historisch 2000)"
     );
 
-    public GeographicalReferenceNormalizer() {
-        super(GEOGRAPHICAL_REFERENCES_ATTRIBUTE, "ObjGeograficGrp");
+    public GeographicalReferenceNormalizer(final ObjectProvider<GraphQlService> graphQl) {
+        super(GEOGRAPHICAL_REFERENCES_ATTRIBUTE, graphQl);
     }
 
     @Override
-    protected Data[] applyFilter(final Data[] items) {
-        return Arrays.stream(items)
-                .filter(item -> {
-                    String type = item.getTypedAttribute("TypeVoc");
-                    if (TYPES_BLACKLIST.contains(type)) {
-                        return false;
-                    }
-                    return hasAttributeValue(item, "DetailsTxt") || hasPlaceVoc(item);
-                })
-                .toArray(Data[]::new);
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjGeograficGrp.DetailsTxt",
+                "ObjGeograficGrp.GeopolVoc",
+                "ObjGeograficGrp.PlaceILSVoc",
+                "ObjGeograficGrp.PlaceEgyptVoc",
+                "ObjGeograficGrp.PlaceAntiqueVoc",
+                "ObjGeograficGrp.PlaceVoc",
+                "ObjGeograficGrp.RoleVoc",
+                "ObjGeograficGrp.SortLnu",
+                "ObjGeograficGrp.TypeVoc",
+        };
+    }
+
+    private Function<List<ObjectData.GeographicalReference>, List<ObjectData.GeographicalReference>> getBusinessRuleFilter() {
+        return (list) -> list.stream().filter(ref -> {
+            GeoData geoData = ref.getFragments().getGeoData();
+            if (geoData.getTypeVocId() != null && isBlacklisted(((Number) geoData.getTypeVocId()).longValue())) {
+                return false;
+            }
+            return StringUtils.isNotEmpty(geoData.getDetails()) || geoData.getPlaceVocId() != null;
+        }).collect(Collectors.toList());
     }
 
     @Override
-    protected String[] pickValues(final Data[] items) {
-        return Arrays.stream(items)
-                .map(GeographicalReferenceNormalizer::extractGeoInfo)
-                .toArray(String[]::new);
+    public @Nullable Data[] resolveAttributeValue(final ObjectData source, final String language) {
+        List<Data> refs = new ArrayList<>();
+        for (ObjectData.GeographicalReference ref : getBusinessRuleFilter().apply(source.getGeographicalReferences())) {
+            GeoData geoData = ref.getFragments().getGeoData();
+            Data dto = resolveReference(geoData, language);
+            refs.add(dto);
+        }
+        return refs.isEmpty() ? null : refs.toArray(Data[]::new);
     }
 
-    private static String extractGeoInfo(final Data item) {
-        String place = extractPlaceVoc(item);
-        String details = item.getTypedAttribute("DetailsTxt");
-        String type = item.getTypedAttribute("TypeVoc");
-        String geopol = item.getTypedAttribute("GeopolVoc");
+    private Data resolveReference(final GeoData ref, final String language) {
+        return new Data()
+                .setNonNullAttribute(ID_ATTRIBUTE, ref.getId())
+                .setNonNullAttribute("placeId", ref.getPlaceVocId())
+                .setNonNullAttribute("typeId", ref.getTypeVocId())
+                .setNonNullAttribute("geopolId", ref.getGeopolVocId())
+                .setNonNullAttribute("roleId", ref.getRoleVocId())
+                .setNonNullAttribute("details", StringUtils.trimToNull(ref.getDetails()))
+                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, buildTextValue(ref, language));
+    }
+
+    private @Nullable String buildTextValue(final GeoData ref, final String language) {
+
+        String place = resolveThesaurusLabel(ref.getPlaceVocId(), language);
+        String details = ref.getDetails(); // already translated
+        String type = resolveThesaurusLabel(ref.getTypeVocId(), language);
+        String geopol = resolveThesaurusLabel(ref.getGeopolVocId(), language);
 
         boolean hasPlace = StringUtils.isNotBlank(place);
         boolean hasDetails = StringUtils.isNotBlank(details);
@@ -69,25 +110,11 @@ public class GeographicalReferenceNormalizer extends MultipleHitsSortedNormalize
         if (hasGeopol) {
             sb.append(' ').append('(').append(geopol.trim()).append(')');
         }
-        return sb.toString().trim();
+        return sb.length() == 0 ? null : sb.toString().trim();
     }
 
-    private static boolean hasPlaceVoc(final Data item) {
-        return extractPlaceVoc(item) != null;
-    }
-
-    private static @Nullable String extractPlaceVoc(final Data item) {
-        String[] candidates = {
-                "PlaceILSVoc",  // ISL - yes, ILS typo is correct here
-                "PlaceEgyptVoc", // ÄMP
-                "PlaceAntiqueVoc", // ANT
-                "PlaceVoc"
-        };
-        for (String candidate : candidates) {
-            if (hasAttributeValue(item, candidate)) {
-                return item.getTypedAttribute(candidate);
-            }
-        }
-        return null;
+    private boolean isBlacklisted(final Long typeVocId) {
+        ThesaurusData entry = fetchThesaurus(typeVocId);
+        return entry != null && TYPES_BLACKLIST.contains(entry.getName());
     }
 }

@@ -23,6 +23,17 @@ public class ExhibitNormalizer implements Normalizer<Boolean> {
     }
 
     @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjCurrentLocationVrt",
+                "ObjCurrentLocationVoc",
+                "ObjCurrentLocationGrpVrt",
+                "ObjNormalLocationVrt",
+                "ObjNormalLocationVoc"
+        };
+    }
+
+    @Override
     public String getAttributeKey() {
         return IS_EXHIBIT_ATTRIBUTE;
     }
@@ -34,7 +45,7 @@ public class ExhibitNormalizer implements Normalizer<Boolean> {
      * @return exhibition state
      */
     @Override
-    public @Nullable Boolean resolveAttributeValue(final ObjectData source) {
+    public @Nullable Boolean resolveAttributeValue(final ObjectData source, final String language) {
         String space = source.getExhibitionSpace();
         if (StringUtils.isEmpty(space)) {
             return StringUtils.isEmpty(this.unknownExhibitionSpace) ? null : Boolean.FALSE;

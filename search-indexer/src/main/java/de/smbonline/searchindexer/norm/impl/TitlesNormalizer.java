@@ -3,7 +3,6 @@ package de.smbonline.searchindexer.norm.impl;
 import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 
@@ -16,8 +15,16 @@ public class TitlesNormalizer extends MultipleHitsSortedNormalizer<String> {
     }
 
     @Override
+    public String[] getRelevantAttributeKeys() {
+        return new String[]{
+                "ObjObjectTitleGrp.SortLnu",
+                "ObjObjectTitleGrp.TitleTxt",
+        };
+    }
+
+    @Override
     protected Data[] applyFilter(final Data[] items) {
-        return Arrays.stream(items)
+        return Arrays.stream(primaryItems(items).orElse(items))
                 .filter(item -> hasAttributeValue(item, "TitleTxt"))
                 .toArray(Data[]::new);
     }
