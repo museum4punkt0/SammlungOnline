@@ -1,195 +1,267 @@
 {
-    "test": "test",
-    "image": {
-        "notFoundText": "Ohne Abbildungen"
+  "test": "test",
+  "research": {
+    "highlights": {
+      "title": "Highlights aus den Sammlungen",
+      "text": "Hier gelangen Sie direkt zu Detail-Informationen besonders beliebter Objekte und Hauptwerke aus den Sammlungen."
     },
-    "searchForm": {
-        "advancedSearch": "Erweiterte Suche",
-        "labels": {
-            "search": "Suchen",
-            "searchLong": "Suchen Sie nach Personen oder Begriffen"
-
-        },
-        "actions": {
-            "clear": "Löschen",
-            "addCondition": "Suche verfeinern",
-            "search": "Suche auslösen"
-        },
-        "filters": {
-            "location": "Standort",
-            "collection": "Sammlung",
-            "compilation": "Bestand",
-            "toggles": {
-                "attachment": "Nur mit Abbildungen",
-                "exhibited": "Ausgestellt",
-                "highlight": "Highlights"
-            },
-            "attributes": {
-                "attachments": "Abbildungen",
-                "acquisition": "Erwerbung",
-                "collection": "Sammlung",
-                "collectionKey": "Sammlung",
-                "compilation": "Bestand",
-                "creditLine": "Beschaffung",
-                "dating": "Datierung",
-                "datingFrom": "Datierung von",
-                "datingFromTo": "Datierung von/bis",
-                "datingTo": "Datierung bis",
-                "dateRange": "Datum",
-                "dimensionsAndWeight": "Abmessungen",
-                "exhibit": "Ausgestellt",
-                "exhibitions": "Ausstellungen",
-                "exhibitionSpace": "Standort",
-                "fulltext": "Volltext",
-                "geographicalReferences": "Geografische Bezüge",
-                "id": "Id",
-                "identNumber": "Ident. Nr.",
-                "involvedParties": "Beteiligte",
-                "literature": "Literatur",
-                "location": "Standort",
-                "longDescription": "Beschreibung",
-                "highlight": "Highlight",
-                "materialAndTechnique": "Material / Technik",
-                "provenance": "Provenienz",
-                "provenanceEvaluation": "Provenienz",
-                "signatures": "Signaturen und Inschriften",
-                "technicalTerm": "Sachbegriff",
-                "titles": "Titel"
-            },
-            "operators": {
-                "and": "und",
-                "not": "nicht",
-                "or": "oder"
-            }
-        }
-    },
-    "cookieBanner": {
-        "content": "Diese Website benutzt Cookies. Wenn du die Website weiter nutzt, gehen wir von deinem Einverständnis aus."
-    },
-    "search": {
-        "results": {
-            "title": "Suchergebnisse",
-            "count": "von {{searchResultsCount}} Objekten",
-            "empty": "Die Suche lieferte keine Ergebnisse.",
-            "previous": "Vorheriges Objekt",
-            "next": "Nächstes Objekt"
-        },
-        "topics": {
-            "title": "Themen aus den Sammlungen"
-        },
-        "guide": {
-            "title": "Touren aus den Sammlungen"
-        },
-        "exhibit": {
-            "location": "Standort",
-            "collection": "Sammlung",
-            "compilation": "Bestand",
-            "notExhibited": "Nicht ausgestellt",
-            "attributes": {
-                "acquisition": "Erwerbung",
-                "collection": "Sammlung",
-                "dating": "Datierung",
-                "datingFromTo": "Datierung von/bis",
-                "description": "Objektbeschreibung",
-                "dimensionsAndWeight": "Abmessungen",
-                "exhibitions": "Ausstellungen",
-                "geographicalReferences": "Geografische Bezüge",
-                "identNumber": "Ident. Nr.",
-                "involvedParties": " ",
-                "literature": "Literatur",
-                "location": "Standort",
-                "materialAndTechnique": "Material / Technik",
-                "noData": "Keine Daten vorhanden.",
-                "provenance": "Provenienz",
-                "signatures": "Signaturen und Inschriften",
-                "technicalTerm": "Sachbegriff",
-                "titles": "Titel"
-            }
-        }
-    },
-    "footer": {
-        "blog": "Blog",
-        "intro": "Intro",
-        "newsletter": "Newsletter",
-        "research": "Recherche",
-        "staatliche": "Staatliche Museen zu Berlin",
-        "topics": "Themen",
-        "guide": "Touren",
-        "webshop": "Webshop",
-        "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
-        "imprint": "Impressum",
-        "privacy": "Datenschutz",
-        "accessibility": "Barrierefreiheit",
-        "contact": "Kontakt",
-        "contactSection":{
-          "title":"Kontakt",
-          "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
-		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
-          "link":{
-            "href":"mailto:smb-digital@smb.spk-berlin.de",
-            "text": "Fragen Sie uns"
-          }
-        }
-    
-      },
-    "details": {
-        "aside": {
-            "contact": "Kontakt",
-            "topic": "Themen",
-            "tours": "Touren"
-        },
-        "attachment": {
-            "pictureCredits": "Fotonachweis"
-        },
-        "referencesToOtherExhibits": "Weitere Objekte aus den Sammlungen"
-    },
-    "carousel": {
-        "nextTopic": "Nächstes Thema",
-        "previousTopic": "Vorheriges Thema",
-        "nextTour": "Nächste Tour",
-        "previousTour": "Vorherige Tour"
-    },
-    "collections module discover button": "Entdecken",
-    "dialog download title": "Download Bilddatei",
-    "download commercial use": "Kommerzielle Nutzung",
-    "download image dialog content right": "Falls Sie eine kommerzielle Nutzung beabsichtigen wenden Sie sich bitte an die <1>bpk – Bildagentur Preußischer Kulturbesitz</1>. <2></2> <3></3> Bei der Verwendung für wissenschaftliche Publikationen bitten wir um die <5>Zusendung eines Belegexemplars.</5>",
-    "download image dialog content": "Die von Ihnen ausgewählte Werkabbildung unterliegt den Lizenzbedingungen gemäß: CC NC-BY-SA der Staatlichen Museen zu Berlin – Preußischer Kulturbesitz und schließt eine kommerzielle Nutzung eindeutig aus. Mit dem Herunterladen der Abbildung erklären Sie sich mit den Lizenzbedingungen rechtsverbindlich einverstanden.",
-    "download image dialog title": "",
-    "download image": "Bild herunterladen",
-    "download noncommercial use": "Nicht-kommerzielle Nutzung",
-    "download": "Download",
-    "fallback image label": "Es ist kein Vorschaubild vorhanden von {{caption}}",
-    "fallback image text": "Ohne Abbildungen",
-    "go to collection": "Sammlung {{title}} entdecken",
-    "go to detail": "Weiter zu Details über {{title}}",
-    "link to bpk": "https://www.bpk-bildagentur.de/",
-    "search field": "Feld zur Eintragung des Suchbegriffs",
-    "show detail": "Detaillierte Objektbeschreibung anzeigen",
-    "start search": "Suche auslösen",
-    "website bpk": "WEBSITE BPK",
-    "zoom in": "Hineinzoomen",
-    "notFoundPage": {
-        "title": "SEITE NICHT GEFUNDEN",
-        "description": "Leider existiert die angeforderte Seite nicht.",
-        "toMainPage": "Zur Hauptseite"
-    },
-    "header": {
-        "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz",
-        "intro": {
-            "title": "Intro",
-            "subtitle": "Einstieg in die Sammlungen"
-        },
-        "research": {
-            "title": "Recherche",
-            "subtitle": "Suche in den Sammlungen"
-        },
-        "topics": {
-            "title": "Themen",
-            "subtitle": "Die Sammlung entdecken"
-        },
-        "tours": {
-            "title": "Touren",
-            "subtitle": "Wege in die Sammlung"
-        }
+    "collection": {
+      "title": "Kollektionen aus den Sammlungen",
+      "text": "Hier kommen Sie direkt zu Objekt Kollektionen in der RECHERCHE. Die Kollektionen werden von Mitarbeiter*innen zu aktuellen Ereignissen, zum Beispiel Forschungsprojekten oder Ausstellungen, zusammengestellt."
     }
+  },
+  "collections": {
+    "buttons": {
+      "research": "Anschauen",
+      "topics": "Story Erleben",
+      "guide": "Einblick"
+    }
+  },
+  "stt": {
+    "filter": {
+      "label": "Publiziert von",
+      "all": "Alle",
+      "isl": "Museum für Islamische Kunst",
+      "smb": "Sammlungen Online",
+      "hbf": "Hamburger Bahnhof",
+      "kgm": "Kunstgewerbemuseum"
+    },
+    "sorting": {
+      "label": "Sortieren nach",
+      "latest": "zuletzt hinzugefügt",
+      "asc": "A-Z",
+      "desc": "Z-A"
+    }
+  },
+  "intro": {
+    "title": "Direkteinstieg in die Sammlungen der Staatlichen Museen zu Berlin",
+    "text": "Beim Anklicken gelangen Sie direkt zu den online verfügbaren Objekten der ausgewählten Sammlung und Institute:"
+  },
+  "topics": {
+    "carousel": {
+      "title": "Themen aus den Sammlungen"
+    }
+  },
+  "image": {
+    "notFoundText": "Ohne Abbildungen"
+  },
+  "breadcrumb": {
+    "main": "Sammlungen Online > ",
+    "noTitle": "Ohne Titel",
+    "research": "Recherche"
+  },
+  "searchForm": {
+    "advancedSearch": "Erweiterte Suche",
+    "labels": {
+      "search": "Suchen",
+      "searchLong": "Suchen Sie nach Personen oder Begriffen",
+      "noFiltersSelected": "alle",
+      "filtersSelected": "Filter aktiv"
+    },
+    "actions": {
+      "clear": "Löschen",
+      "addCondition": "Suche verfeinern",
+      "search": "Suche auslösen"
+    },
+    "filters": {
+      "location": "Standort",
+      "collection": "Sammlungen und Institute",
+      "assortments": "Kollektionen",
+      "compilation": "Bestand",
+      "toggles": {
+        "attachment": "Nur mit Abbildungen",
+        "exhibited": "Ausgestellt",
+        "highlight": "Highlights"
+      },
+      "attributes": {
+        "attachments": "Abbildungen",
+        "acquisition": "Erwerbung",
+        "collection": "Sammlung",
+        "collectionKey": "Sammlung",
+        "compilation": "Bestand",
+        "creditLine": "Beschaffung",
+        "dating": "Datierung",
+        "datingFrom": "Datierung von",
+        "datingFromTo": "Datierung von/bis",
+        "datingTo": "Datierung bis",
+        "dateRange": "Datum",
+        "dimensionsAndWeight": "Abmessungen",
+        "exhibit": "Ausgestellt",
+        "exhibitions": "Ausstellungen",
+        "exhibitionSpace": "Standort",
+        "findSpot": "Fundort",
+        "fulltext": "Volltext",
+        "geographicalReferences": "Geografische Bezüge",
+        "id": "Id",
+        "identNumber": "Ident. Nr.",
+        "involvedParties": "Beteiligte",
+        "literature": "Literatur",
+        "location": "Standort",
+        "longDescription": "Beschreibung",
+        "highlight": "Highlight",
+        "materialAndTechnique": "Material / Technik",
+        "provenance": "Provenienz",
+        "provenanceEvaluation": "Provenienz",
+        "signatures": "Signaturen und Inschriften",
+        "technicalTerm": "Sachbegriff",
+        "titles": "Titel",
+        "title": "Titel",
+        "iconclasses": "Iconclass",
+        "iconography": "Ikonografie",
+        "keywords": "Schlagwörter"
+      },
+      "operators": {
+        "and": "und",
+        "not": "nicht",
+        "or": "oder"
+      }
+    }
+  },
+  "cookieBanner": {
+    "content": "Diese Website benutzt Cookies. Wenn du die Website weiter nutzt, gehen wir von deinem Einverständnis aus."
+  },
+  "tooltip": {
+    "title": "Suchergebnisse:"
+  },
+  "search": {
+    "results": {
+      "title": "Suchergebnisse",
+      "count": "von {{searchResultsCount}} Objekten",
+      "empty": "Die Suche lieferte keine Ergebnisse.",
+      "previous": "Vorheriges Objekt",
+      "next": "Nächstes Objekt"
+    },
+    "topics": {
+      "title": "Themen aus den Sammlungen"
+    },
+    "guide": {
+      "title": "Touren aus den Sammlungen"
+    },
+    "exhibit": {
+      "location": "Standort",
+      "collection": "Sammlung",
+      "compilation": "Bestand",
+      "notExhibited": "Nicht ausgestellt",
+      "attributes": {
+        "acquisition": "Erwerbung",
+        "collection": "Sammlung",
+        "dating": "Datierung",
+        "datingFromTo": "Datierung von/bis",
+        "description": "Objektbeschreibung",
+        "dimensionsAndWeight": "Abmessungen",
+        "exhibitions": "Ausstellungen",
+        "geographicalReferences": "Geografische Bezüge",
+        "identNumber": "Ident. Nr.",
+        "involvedParties": "Beteiligte",
+        "literature": "Literatur",
+        "location": "Standort",
+        "findSpot": "Fundort",
+        "materialAndTechnique": "Material / Technik",
+        "noData": "Keine Daten vorhanden.",
+        "provenance": "Provenienz",
+        "signatures": "Signaturen und Inschriften",
+        "technicalTerm": "Sachbegriff",
+        "titles": "Weitere Titel",
+        "title": "Titel",
+        "permalink": "Permalink",
+        "iconclasses": "Iconclass",
+        "iconography": "Ikonografie",
+        "keywords": "Schlagwörter",
+        "inscriptions": "Aufschriften"
+      }
+    }
+  },
+  "footer": {
+    "blog": "Blog",
+    "intro": "Intro",
+    "newsletter": "Newsletter",
+    "research": "Recherche",
+    "staatliche": "Staatliche Museen zu Berlin",
+    "topics": "Themen",
+    "guide": "Touren",
+    "webshop": "Webshop",
+    "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "accessibility": "Barrierefreiheit",
+    "contact": "Kontakt",
+    "contactSection": {
+      "title": "Kontakt",
+      "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+      "text": "In KONTAKT finden Sie eine Übersicht zu den Adressen, über die Sie sich für Ihre Fragen und Ihr Feedback zu dieser Website und ihren Inhalten mit uns in Verbindung setzen können. Beim Anklicken von “Schreiben Sie uns” kommen Sie zur Kontaktseite.",
+      "link": {
+        "href": "mailto:smb-digital@smb.spk-berlin.de",
+        "text": "Schreiben Sie uns!"
+      }
+    }
+  },
+  "sharebuttons": {
+    "title": "Teilen:"
+  },
+  "details": {
+    "externalUrl": "ICONCLASS",
+    "aside": {
+      "contact": "Kontakt",
+      "contact and feedback": "Kontakt und Feedback",
+      "image request": "Bildanfrage stellen",
+      "topic": "Themen",
+      "topicTestData": "Verlinkung zum Themen",
+      "tours": "Touren",
+      "toursTestData": "Verlinkung zum Touren",
+      "permalinkCopied": "Permalink kopieren"
+    },
+    "attachment": {
+      "pictureCredits": "Fotonachweis"
+    },
+    "referencesToOtherExhibits": "Weitere Objekte aus den Sammlungen"
+  },
+  "carousel": {
+    "nextTopic": "Nächstes Thema",
+    "previousTopic": "Vorheriges Thema",
+    "nextTour": "Nächste Tour",
+    "previousTour": "Vorherige Tour"
+  },
+  "collections module discover button": "Entdecken",
+  "dialog download title": "Download Bilddatei",
+  "download commercial use": "Kommerzielle Nutzung",
+  "download image dialog content right": "Falls Sie eine kommerzielle Nutzung beabsichtigen wenden Sie sich bitte an die <1>bpk – Bildagentur Preußischer Kulturbesitz</1>. <2></2> <3></3> Bei der Verwendung für wissenschaftliche Publikationen bitten wir um die <5>Zusendung eines Belegexemplars.</5>",
+  "download image dialog content": "Die von Ihnen ausgewählte Werkabbildung unterliegt den Lizenzbedingungen gemäß: CC NC-BY-SA der Staatlichen Museen zu Berlin – Preußischer Kulturbesitz und schließt eine kommerzielle Nutzung eindeutig aus. Mit dem Herunterladen der Abbildung erklären Sie sich mit den Lizenzbedingungen rechtsverbindlich einverstanden.",
+  "download image dialog title": "",
+  "download image": "Bild herunterladen",
+  "download noncommercial use": "Nicht-kommerzielle Nutzung",
+  "download": "Download",
+  "fallback image label": "Es ist kein Vorschaubild vorhanden von {{caption}}",
+  "fallback image text": "Ohne Abbildungen",
+  "go to collection": "Sammlung {{title}} entdecken",
+  "go to detail": "Weiter zu Details über {{title}}",
+  "link to bpk": "https://www.bpk-bildagentur.de/",
+  "search field": "Feld zur Eintragung des Suchbegriffs",
+  "show detail": "Detaillierte Objektbeschreibung anzeigen",
+  "start search": "Suche auslösen",
+  "website bpk": "WEBSITE BPK",
+  "zoom in": "Hineinzoomen",
+  "notFoundPage": {
+    "title": "SEITE NICHT GEFUNDEN",
+    "description": "Leider existiert die angeforderte Seite nicht.",
+    "toMainPage": "Zur Hauptseite"
+  },
+  "header": {
+    "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz - Startseite Recherche",
+    "intro": {
+      "title": "Intro",
+      "subtitle": "Einstieg in die Sammlungen"
+    },
+    "research": {
+      "title": "Recherche",
+      "subtitle": "Suche in den Sammlungen"
+    },
+    "topics": {
+      "title": "Themen",
+      "subtitle": "Die Sammlung entdecken"
+    },
+    "tours": {
+      "title": "Touren",
+      "subtitle": "Wege in die Sammlung"
+    }
+  }
 }

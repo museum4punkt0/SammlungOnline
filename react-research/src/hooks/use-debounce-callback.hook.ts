@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-function useDebouncedCallback<A extends any[]>(
+export function useDebouncedCallback<A extends any[]>(
   callback: (...args: A) => void,
   wait: number,
 ) {
@@ -27,5 +27,3 @@ function useDebouncedCallback<A extends any[]>(
     }, wait);
   };
 }
-
-export default useDebouncedCallback;

@@ -7,5 +7,5 @@ interface IDetailPageParams {
 export const useExhibitId = (): number => {
   const { exhibitId: exhibitIdNotParsed } = useParams<IDetailPageParams>();
 
-  return Number(exhibitIdNotParsed) ;
+  return Number(exhibitIdNotParsed);
 };

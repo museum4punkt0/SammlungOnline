@@ -1,0 +1,12 @@
+.accordionSummary {
+  min-height: 4rem;
+  background-color: unset !important;
+  h4,
+  .h4,
+  .MuiTypography-h4 {
+    flex: 1;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

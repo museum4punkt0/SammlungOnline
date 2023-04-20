@@ -1,7 +1,8 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   schema: [
     {
-      'https://smb-api.xailabs.dev/v1/graphql': {
+      'http://localhost:8081/v1/graphql': {
         headers: {},
       },
     },
@@ -23,9 +24,6 @@ module.exports = {
           transformUnderscore: true,
         },
       },
-    },
-    'src/GraphQl/queries/graphql.schema.json': {
-      plugins: ['introspection'],
     },
   },
 };

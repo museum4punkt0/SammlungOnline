@@ -1,8 +1,8 @@
 import debounce from 'debounce-promise';
 
-import { ISearchFormData } from '../features/Search/components/SearchForm/interfaces/form-data.interface';
+import { ISearchFormData } from '../types/index';
 import { ExhibitModel } from '@smb/smb-react-components-library';
-import { useDependency } from '../context/dependency.context';
+import { useDependency } from '../providers/index';
 import { useCallback } from 'react';
 
 type searchFunction = (

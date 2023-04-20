@@ -1,6 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 
-import { navHeight } from '@smb/smb-react-components-library';
+// import { navHeight } from '@smb/smb-react-components-library';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -8,7 +8,7 @@ const useStyles = makeStyles(() =>
       minHeight: '100vh',
       overflowX: 'hidden',
       display: 'flex',
-      width: '100vw',
+      width: '100%',
     },
     grow: {
       flexGrow: 1,
@@ -20,7 +20,7 @@ const useStyles = makeStyles(() =>
     wrapper: {
       height: '100%',
       width: '100%',
-      marginTop: navHeight,
+      //marginTop: navHeight,
     },
     loadingWrapper: {
       height: '100vh',

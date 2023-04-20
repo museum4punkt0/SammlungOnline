@@ -1,3 +1,7 @@
 {
-  "extends": "eslint-config-smb"
+  "extends": "eslint-config-smb",
+  "rules": {
+    "react/display-name": "off",
+    "react/jsx-key": ["warn"]
+  }
 }

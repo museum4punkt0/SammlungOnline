@@ -1,0 +1,43 @@
+# Build container
+# ---------------------
+
+FROM node:14-alpine as builder
+ENV REACT_APP_STAGE=production
+
+WORKDIR /opt/research
+
+# install git
+RUN apk update && apk upgrade
+RUN apk add --no-cache bash git openssh
+
+# install node_modules
+COPY ./package.json ./package.json
+COPY ./package-lock.json ./package-lock.json
+COPY ./.npmrc ./.npmrc
+
+RUN npm config set unsafe-perm true
+RUN npm install
+
+# see .dockerignore for excludes
+COPY ./ ./
+
+ENV PUBLIC_URL /
+
+RUN npm run build --production
+
+
+# Runnable container
+# ---------------------
+
+FROM node:14-alpine as server
+ENV REACT_APP_STAGE=production
+
+LABEL maintainer="Xailabs<it-support@xailabs.de>"
+WORKDIR /opt/research
+#COPY docker/default.conf /etc/nginx/conf.d/default.conf
+#COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /opt/research/ /opt/research/
+RUN npm run postinstall
+
+EXPOSE 80
+CMD ["npm", "run", "start:ssr"]

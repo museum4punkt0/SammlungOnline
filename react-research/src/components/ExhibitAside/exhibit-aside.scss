@@ -1,0 +1,25 @@
+.exhibit-aside {
+  &__credit-line {
+    margin-bottom: 0.5rem !important;
+  }
+
+  &__text-container {
+    margin-bottom: 1rem !important;
+  }
+
+  .shareButtonsWrapper {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  .shareButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    width: 100%;
+    .shareButton{
+      margin-left: 1rem;
+
+    }
+  }
+}

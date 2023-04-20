@@ -1,8 +1,6 @@
 import debounce from 'debounce-promise';
-
-import { ISuggestion } from '../features/Search/services/search/interfaces/search/suggestion.interface';
-
-import { useDependency } from '../context/dependency.context';
+import { ISuggestion } from '../types/index';
+import { useDependency } from '../providers/index';
 
 type FetchSuggestions = (
   question: string,

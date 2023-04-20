@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ExhibitModel } from '@smb/smb-react-components-library';
 
-import { useDependency } from '../context/dependency.context';
+import { useDependency } from '../providers/index';
 
 export type UseFetchExhibitResult = {
   exhibit: ExhibitModel | null;

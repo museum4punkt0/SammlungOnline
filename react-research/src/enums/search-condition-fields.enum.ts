@@ -1,0 +1,17 @@
+export enum ESearchConditionFields {
+  titles = 'titles',
+  dateRange = 'dateRange',
+  dating = 'dating',
+  geographicalReferences = 'geographicalReferences',
+  geographicalReferencesID = 'geographicalReferences.id',
+  materialAndTechnique = 'materialAndTechnique',
+  materialAndTechniqueID = 'materialAndTechnique.id',
+  identNumber = 'identNumber',
+  technicalTerm = 'technicalTerm',
+  involvedParties = 'involvedParties',
+  exhibitions = 'exhibitions',
+  involvedPartiesID = 'involvedParties.id',
+  iconclasses = 'iconclasses',
+  iconography = 'iconography',
+  keywords = 'keywords',
+}

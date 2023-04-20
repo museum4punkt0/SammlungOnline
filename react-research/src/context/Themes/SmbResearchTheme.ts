@@ -2,7 +2,7 @@ import { createTheme } from '@material-ui/core';
 
 const palette = {
   primary: {
-    main: '#000000',
+    main: '#0F0900',
     light: '#d8d8d8',
     dark: '#666666',
     contrastText: '#ffffff',
@@ -11,17 +11,18 @@ const palette = {
     main: '#79a9f5',
     light: '#ffffff',
     dark: '#6f7045',
-    contrastText: '#000000',
+    contrastText: '#0F0900',
   },
   text: {
-    primary: '#000000',
-    secondary: '#000000',
+    primary: '#0F0900',
+    secondary: '#0F0900',
     hint: '#f9ff04',
     disabled: '#666666',
   },
 };
 
 export const textLineHeight = '1.4rem';
+const fallbackFont = 'Arial';
 
 const SmbResearchTheme = createTheme({
   props: {
@@ -32,113 +33,129 @@ const SmbResearchTheme = createTheme({
   palette,
   typography: {
     fontFamily: 'ClanOTNarrow-News, Arial',
+
+    // H1 Highlight
     h1: {
-      fontFamily: 'GTWalsheimPro-Black, Arial',
-      fontSize: '3rem',
-      fontWeight: 'normal',
-      fontStretch: 'normal',
-      fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '1px',
-      color: palette.text.primary,
-    },
-    h2: {
-      fontFamily: 'GTWalsheimPro-Black, Arial',
-      fontSize: '2.35rem',
-      fontWeight: 'normal',
-      fontStretch: 'normal',
-      fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '1px',
-      color: palette.text.primary,
-    },
-    h3: {
-      fontFamily: 'GTWalsheimPro-Bold, Arial',
-      fontSize: '1.8rem',
+      fontFamily: `GTWalsheimPro-Black, ${fallbackFont}`,
+      fontSize: '2.5rem',
       fontWeight: 'bold',
       fontStretch: 'normal',
       fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '1px',
-      color: palette.text.primary,
+      lineHeight: '3.25rem',
+      letterSpacing: '0.0675em',
+      color: 'inherit',
     },
+
+    // H2
+    h2: {
+      fontFamily: `GTWalsheimPro-Black, ${fallbackFont}`,
+      fontSize: '2.25rem',
+      fontWeight: 'bold',
+      fontStretch: 'normal',
+      fontStyle: 'normal',
+      lineHeight: '2.625rem',
+      letterSpacing: '0.0625em',
+      color: 'inherit',
+    },
+
+    // H3 Button Text
+    h3: {
+      fontFamily: `GTWalsheimPro-Bold, ${fallbackFont}`,
+      fontSize: '1.75rem',
+      fontWeight: 'bold',
+      fontStretch: 'normal',
+      fontStyle: 'normal',
+      lineHeight: '2.25rem',
+      letterSpacing: '0.065em',
+      color: 'inherit',
+    },
+
+    // H4
     h4: {
-      fontFamily: 'ClanOTNarrow, Arial',
+      fontFamily: `GTWalsheimPro-Bold, ${fallbackFont}`,
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+      fontStretch: 'normal',
+      fontStyle: 'normal',
+      lineHeight: '1.75rem',
+      letterSpacing: '0.065em',
+      color: 'inherit',
+    },
+
+    // H5
+    h5: {
+      fontFamily: `ClanOTNarrow, ${fallbackFont}`,
+      fontSize: '1.3125rem',
+      fontWeight: 'bold',
+      fontStretch: 'normal',
+      fontStyle: 'normal',
+      lineHeight: '2rem',
+      letterSpacing: '0.07875em',
+      color: 'inherit',
+    },
+
+    h6: {
+      fontFamily: `GTWalsheimPro-Bold, ${fallbackFont}`,
       fontSize: '1.125rem',
       fontWeight: 'bold',
       fontStretch: 'normal',
       fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '2px',
-      color: palette.text.primary,
+      lineHeight: '1.625rem',
+      letterSpacing: '0.07875em',
     },
-    h5: {
-      fontFamily: 'ClanOTNarrow, Arial',
-      fontSize: '1rem',
-      fontWeight: 'bold',
-      fontStretch: 'normal',
-      fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '1px',
-      color: palette.text.primary,
-    },
-    h6: {
-      fontFamily: 'GTWalsheimPro-Bold, Arial',
-      fontSize: '1rem',
-      fontWeight: 'normal',
-      fontStretch: 'normal',
-      fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '1px',
-      color: palette.text.primary,
-    },
+
     subtitle1: {
-      fontFamily: 'GTWalsheimPro-Bold, Arial',
-      fontSize: '1rem',
+      fontFamily: `GTWalsheimPro-Bold, ${fallbackFont}`,
+      fontSize: '1.125rem',
       fontWeight: 'bold',
       fontStretch: 'normal',
       fontStyle: 'normal',
-      lineHeight: textLineHeight,
+      lineHeight: '1.625rem',
       letterSpacing: '1px',
-      textTransform: 'uppercase',
-      color: palette.text.primary,
     },
+
+    // Description
     body1: {
-      fontSize: '0.875rem',
-      fontWeight: 'normal',
+      fontFamily: `ClanOTNarrow, ${fallbackFont}`,
+      fontSize: '1.125rem',
       fontStretch: 'normal',
       fontStyle: 'normal',
-      lineHeight: textLineHeight,
-      letterSpacing: '1px',
-      color: palette.text.primary,
+      lineHeight: '1.25rem',
+      letterSpacing: '0.075em',
+      color: 'inherit',
     },
+
     body2: {
-      fontFamily: 'ClanOTNarrow, Arial',
-      fontSize: '0.875rem',
-      fontWeight: 'bold',
+      fontFamily: `ClanOTNarrow, ${fallbackFont}`,
+      fontSize: '1.125rem',
       fontStretch: 'normal',
       fontStyle: 'normal',
-      lineHeight: textLineHeight,
-      letterSpacing: '1px',
-      color: palette.text.primary,
+      lineHeight: '1.875rem',
+      letterSpacing: '0.071875em',
+      color: 'inherit',
     },
+
     caption: {
-      fontSize: '0.75rem',
+      fontFamily: `ClanOTNarrow, ${fallbackFont}`,
+      fontSize: '1rem',
       fontWeight: 500,
       fontStretch: 'normal',
       fontStyle: 'normal',
-      lineHeight: textLineHeight,
-      letterSpacing: '1px',
-      color: palette.text.primary,
+      lineHeight: '1.25rem',
+      letterSpacing: '0.07875em',
+      color: 'inherit',
     },
+
     overline: {
-      fontSize: '0.75rem',
+      fontFamily: `ClanOTNarrow, ${fallbackFont}`,
+      fontSize: '1rem',
       fontWeight: 500,
       fontStretch: 'normal',
       fontStyle: 'normal',
-      lineHeight: textLineHeight,
-      letterSpacing: '1px',
-      color: palette.text.primary,
+      lineHeight: '1.25rem',
+      letterSpacing: '0.16em',
+      textTransform: 'uppercase',
+      color: 'inherit',
     },
   },
   transitions: {
@@ -150,12 +167,13 @@ const SmbResearchTheme = createTheme({
 
 const globalFocusVisibleOverride = {
   '&:focus-visible': {
-    outline: `4px solid ${palette.secondary.main}`,
+    outline: `4px solid`,
   },
 };
 
 SmbResearchTheme.overrides = {
   ...SmbResearchTheme.overrides,
+
   MuiFormControlLabel: {
     root: {
       ...globalFocusVisibleOverride,
@@ -225,7 +243,7 @@ SmbResearchTheme.overrides = {
         backgroundColor: 'transparent',
         textDecoration: 'underline',
         '& svg': {
-          color: '#c2c2ba',
+          color: SmbResearchTheme.palette.secondary.main,
         },
       },
       ...globalFocusVisibleOverride,

@@ -1,21 +1,22 @@
 import React from 'react';
 import 'jest-canvas-mock';
+import TestRenderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
-import { createDependencies } from '../../context/dependency.context';
+import { MemoryRouter } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { AppStage } from '../../config/enums/app-stage.enum';
+
 import { Footer, Header } from '@smb/smb-react-components-library';
+
+import { createDependencies } from '../../providers/index';
+import { AppStage } from '../../enums/index';
 import DetailPage from '../../features/Detail/DetailPage';
 import SearchPage from '../../features/Search/SearchPage';
-import TestRenderer from 'react-test-renderer';
-import { createBrowserHistory } from 'history';
-import { MemoryRouter } from 'react-router-dom';
 
 export const mockConfiguration = {
   ELASTIC_API_URL: 'https://smb-search.xailabs.dev/search',
   GRAPHQL_ENDPOINT: 'https://smb-api.xailabs.dev/v1/graphql',
   GUIDE_DOMAIN: 'https://smb-guide.xailabs.dev',
-  IMAGE_PROVIDER_DOMAIN: 'https://smb-research.xailabs.dev',
   IMAGE_PROVIDER_ENDPOINT: 'https://smb-research.xailabs.dev/images',
   INTRO_DOMAIN: 'https://smb-landingpage.xailabs.dev',
   PRODUCTION_READY: false,

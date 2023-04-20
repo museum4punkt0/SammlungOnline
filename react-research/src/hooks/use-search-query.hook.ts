@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
-import { ISearchQueryData } from '../features/Search/components/SearchContainer/SearchContainer';
-
-import { useDependency } from '../context/dependency.context';
+import { ISearchQueryData } from '../components/SearchContainer/SearchContainer';
+import { useDependency } from '../providers/index';
 
 export const useSearchQuery = (): ISearchQueryData => {
   const { searchQueryParamsService } = useDependency();

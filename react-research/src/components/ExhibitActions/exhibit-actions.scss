@@ -1,0 +1,18 @@
+.exhibit-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  &__btn {
+    padding: 0 !important;
+    margin-left: 0.75rem !important;
+
+    .MuiSvgIcon-fontSizeLarge {
+      font-size: 2rem !important;
+    }
+
+    &--csv {
+      margin-right: 0.5rem !important;
+    }
+  }
+}

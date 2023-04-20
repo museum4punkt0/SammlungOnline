@@ -1,4 +1,4 @@
-import { useDependency } from '../context/dependency.context';
+import { useDependency } from '../providers/dependency.context';
 
 export const useFetchExhibitAttachments = (id: number) => {
   const { attachmentService } = useDependency();

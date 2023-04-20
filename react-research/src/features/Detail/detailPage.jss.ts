@@ -2,56 +2,108 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    wrapper: {
-      display: 'flex',
-      width: '100%',
-      flexDirection: 'column',
-    },
-    content: {
-      flex: 1,
-      margin: '0 auto',
-      height: '100%',
-      maxWidth: 1280,
-      width: '100%',
-      padding: '0 10px',
-      backgroundColor: theme.palette.secondary.light,
-      color: theme.palette.secondary.contrastText,
-      transition: theme.transitions.create(['height'], {
-        easing: theme.transitions.easing.easeInOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
     navigation: {
       display: 'flex',
       justifyContent: 'space-between',
-      paddingBottom: '10px',
+      paddingBottom: '.5rem',
+      maxWidth: 1280,
+      margin: '0 auto',
+      flexDirection: 'column',
     },
-    backButton: {
-      textTransform: 'uppercase',
+
+    svgContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-start',
+    },
+    svgLink: {
+      color: '#0F0900 !important',
+
+      '& svg': {
+        color: 'currentColor',
+        fontSize: '1.75rem !important',
+      },
+
+      '&:hover': {
+        color: '#79a9f5 !important',
+      },
+    },
+
+    breadcrumb: {
+      marginBottom: '1rem',
+      marginTop: '.5rem',
+      fontWeight: 600,
       color: 'inherit',
-    },
-    objectActions: {
-      [theme.breakpoints.up('sm')]: {
-        display: 'none',
+
+      '& a': {
+        cursor: 'pointer',
+        color: 'inherit',
+
+        '&:focus-visible': {
+          outline: `4px solid !important`,
+        },
       },
     },
-    navText: {
-      fontSize: 11,
-      marginTop: 16,
-    },
-    iconButton: {
-      [theme.breakpoints.down('md')]: {
-        display: 'none',
+
+    sectionWrapper: {
+      paddingLeft: '1rem',
+      paddingRight: '1rem',
+      paddingBottom: '4rem',
+
+      [theme.breakpoints.up(500)]: {
+        paddingLeft: '1.5rem',
+        paddingRight: '1.5rem',
       },
-      padding: 0,
-    },
-    hideOnDesktop: {
-      [theme.breakpoints.up('sm')]: {
-        display: 'none !important',
+
+      [theme.breakpoints.up(678)]: {
+        paddingLeft: '2rem',
+        paddingRight: '2rem',
+      },
+
+      [theme.breakpoints.up(1024)]: {
+        paddingLeft: '3rem',
+        paddingRight: '3rem',
+      },
+
+      [theme.breakpoints.up('lg')]: {
+        paddingLeft: '4rem',
+        paddingRight: '4rem',
       },
     },
-    imageZoom: {
-      color: theme.palette.text.primary,
+
+    overlayWrapper: {
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      zIndex: 2,
+
+      '& #actions-zoom': {
+        width: '100%',
+        height: '100%',
+        borderRadius: '0',
+        color: 'transparent',
+
+        '& span': {
+          color: 'inherit',
+
+          '& svg': {
+            width: '4rem',
+            height: '4rem',
+          },
+        },
+
+        '&:hover': {
+          color: '#FFFFFF',
+
+          '& span': {
+            color: 'inherit',
+
+            '& svg': {
+              color: 'inherit',
+            },
+          },
+        },
+      },
     },
   });
 });

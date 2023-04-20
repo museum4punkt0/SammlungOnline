@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  smb-research:
+    build:
+      context: ./../
+      dockerfile: docker/Dockerfile-build-prod
+    image: smb/research
+    container_name: smb-research
+    platform: linux/amd64
+
+
+networks:
+  default:
+    name: smb-net
