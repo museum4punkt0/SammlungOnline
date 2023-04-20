@@ -51,19 +51,73 @@
     "privacy": "Datenschutz",
     "accessibility": "Barrierefreiheit",
     "contact": "Kontakt",
-    "contactSection":{
-      "title":"Kontakt",
+    "contactSection": {
+      "title": "Kontakt",
       "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
-		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
-      "link":{
-        "href":"mailto:smb-digital@smb.spk-berlin.de",
-        "text": "Fragen Sie uns"
+      "text": "In KONTAKT finden Sie eine Übersicht zu den Adressen, über die Sie sich für Ihre Fragen und Ihr Feedback zu dieser Website und ihren Inhalten mit uns in Verbindung setzen können. Beim Anklicken von “Schreiben Sie uns” kommen Sie zur Kontaktseite.",
+      "link": {
+        "href": "mailto:smb-digital@smb.spk-berlin.de",
+        "text": "Schreiben Sie uns!"
       }
     }
-
+  },
+  "stt": {
+    "filter": {
+      "label": "Publiziert von",
+      "all": "Alle",
+      "isl": "Museum für Islamische Kunst",
+      "smb": "Sammlungen Online",
+      "hbf": "Hamburger Bahnhof",
+      "kgm": "Kunstgewerbemuseum"
+    },
+    "sorting": {
+      "label": "Sortieren nach",
+      "latest": "zuletzt hinzugefügt",
+      "asc": "A-Z",
+      "desc": "Z-A"
+    }
   },
   "routes in the collection": "Touren aus den Sammlungen",
   "highlights from the collection": "Highlights aus den Sammlungen",
+  "collections": {
+    "buttons": {
+      "research": "Anschauen",
+      "topics": "Story Erleben",
+      "guide": "Einblick"
+    }
+  },
+  "search": {
+    "sublevel": {
+      "title": {
+        "staatlichen-sammlung": "Sammlungen der Staatlichen Museen zu Berlin",
+        "staatlichen-insitute": "Institute der Staatlichen Museen zu Berlin",
+        "musikforschung": "Sammlung des Staatlichen Instituts für Musikforschung"
+      }
+    }
+  },
+  "research": {
+    "highlights": {
+      "title": "Highlights aus den Sammlungen",
+      "text": "Hier gelangen Sie direkt zu Detail-Informationen besonders beliebter Objekte und Hauptwerke aus den Sammlungen."
+    },
+    "collection": {
+      "title": "Kollektionen aus den Sammlungen",
+      "text": "Hier kommen Sie direkt zu Objekt Kollektionen in der RECHERCHE. Die Kollektionen werden von Mitarbeiter*innen zu aktuellen Ereignissen, zum Beispiel Forschungsprojekten oder Ausstellungen, zusammengestellt."
+    }
+  },
+  "image": {
+    "notFoundText": "Ohne Abbildungen"
+  },
+  "intro": {
+    "title": "Direkteinstieg in die Sammlungen der Staatlichen Museen zu Berlin",
+    "text": "Beim Anklicken gelangen Sie direkt zu den online verfügbaren Objekten der ausgewählten Sammlung und Institute:"
+  },
+  "topics": {
+    "carousel": {
+      "title": "Themen aus den Sammlungen"
+    }
+  },
+  "predefined search": "Vordefinierte Suche 1",
   "dialog download title": "Download Bilddatei",
   "download noncommercial use": "Nicht-kommerzielle Nutzung",
   "download commercial use": "Kommerzielle Nutzung",
@@ -95,7 +149,7 @@
     "toMainPage": "Zur Hauptseite"
   },
   "header": {
-    "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz",
+    "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz - Startseite",
     "intro": {
       "title": "Intro",
       "subtitle": "Einstieg in die Sammlungen"

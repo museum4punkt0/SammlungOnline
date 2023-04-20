@@ -1,6 +1,7 @@
 {
   "collections module discover button": "",
   "discover other collections": "",
+  "predefined search": "Predefined search 1",
   "lastly added": "",
   "collections module show all button": "",
   "go to topics overview": "",
@@ -66,52 +67,106 @@
   "privacy": "Privacy",
   "accessibility": "Accessibility",
   "cookieBanner": "This website uses cookies. If you continue to use the website, we will assume your consent.",
+  "search": {
+    "sublevel": {
+      "title": {
+        "staatlichen-sammlung": "Collections of the Staatliche Museen zu Berlin",
+        "staatlichen-insitute": "Institutes of the Staatliche Museen zu Berlin",
+        "musikforschung": "Collection of the National Institute for Music Research"
+      }
+    }
+  },
+  "collections": {
+    "buttons": {
+      "research": "View",
+      "topics": "Experience Story",
+      "guide": "Insight"
+    }
+  },
+  "research": {
+    "highlights": {
+      "title": "Highlights from the Collection",
+      "text": "Here you can go directly to detailed information of particularly popular objects and major works from the collections."
+    },
+    "collection": {
+      "title": "Collections from the stocks",
+      "text": "Here you can go directly to the object collections in RECHERCHE. The collections are compiled by staff members for current events, for example research projects or exhibitions."
+    }
+  },
+  "stt": {
+    "filter": {
+      "label": "Published by",
+      "all": "All",
+      "isl": "Museum für Islamische Kunst",
+      "smb": "Sammlungen Online",
+      "hbf": "Hamburger Bahnhof",
+      "kgm": "Kunstgewerbemuseum"
+    },
+    "sorting": {
+      "label": "Sort by",
+      "latest": "Publication date",
+      "asc": "A-Z",
+      "desc": "Z-A"
+    }
+  },
+  "intro": {
+    "title": "Direct entry into the collections of the National Museums in Berlin",
+    "text": "Clicking on them will take you directly to the objects available online from the selected collection and institutes:"
+  },
+  "topics": {
+    "carousel": {
+      "title": "Topics from the collections"
+    }
+  },
+  "image": {
+    "notFoundText": "Without images"
+  },
   "notFoundPage": {
     "title": "PAGE NOT FOUND",
     "description": "Unfortunately, the requested page does not exist.",
     "toMainPage": "To main page"
   },
   "header": {
-    "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz",
+    "logo": "Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz - Landingpage",
     "intro": {
       "title": "Intro",
-      "subtitle": "Suche in den Sammlungen"
+      "subtitle": "Einstieg in die Sammlungen"
     },
     "research": {
-      "title": "Recherche",
+      "title": "Research",
       "subtitle": "Suche in den Sammlungen"
     },
     "topics": {
-      "title": "Themen",
+      "title": "Topics",
       "subtitle": "Die Sammlung entdecken"
     },
     "tours": {
-      "title": "Touren",
+      "title": "Tours",
       "subtitle": "Wege in die Sammlung"
     }
   },
-	"footer": {
-        "blog": "Blog",
-        "intro": "Intro",
-        "newsletter": "Newsletter",
-        "research": "Research",
-        "staatliche": "Staatliche Museen zu Berlin",
-        "topics": "Topics",
-        "routes": "Routes",
-        "webshop": "Webshop",
-        "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
-        "imprint": "Imprint",
-        "privacy": "Privacy",
-        "accessibility": "Accessibility",
-        "contact": "Contact",
-		"contactSection":{
-		  "title":"Contact",
-		  "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
-		  "text":"Sie haben ein Frage zu der Online-Datenbank der Staatlichen Museen zu Berlin? Oder vielleicht möchten Sie uns Ihre Anregungen oder Ihr Feedback mitteilen? Wir freuen uns über ihre Nachricht.",
-		  "link":{
-			"href":"mailto:smb-digital@smb.spk-berlin.de",
-			"text": "Fragen Sie uns"
-		  }
-		}
-	}
+  "footer": {
+    "blog": "Blog",
+    "intro": "Intro",
+    "newsletter": "Newsletter",
+    "research": "Research",
+    "staatliche": "Staatliche Museen zu Berlin",
+    "topics": "Topics",
+    "routes": "Routes",
+    "webshop": "Webshop",
+    "copyright": "\u00A9{{year}} Staatliche Museen zu Berlin",
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "accessibility": "Accessibility",
+    "contact": "Contact",
+    "contactSection": {
+      "title": "Contact",
+      "subtitle": "Sammlungen der Staatlichen Museen zu Berlin",
+      "text": "In KONTAKT finden Sie eine Übersicht zu den Adressen, über die Sie sich für Ihre Fragen und Ihr Feedback zu dieser Website und ihren Inhalten mit uns in Verbindung setzen können. Beim Anklicken von “Contact us” kommen Sie zur Kontaktseite.",
+      "link": {
+        "href": "mailto:smb-digital@smb.spk-berlin.de",
+        "text": "Contact us!"
+      }
+    }
+  }
 }

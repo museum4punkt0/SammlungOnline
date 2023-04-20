@@ -5,24 +5,23 @@ const useStyles = makeStyles(() =>
     root: {
       minHeight: '100vh',
       overflowX: 'hidden',
-      display: 'flex',
-    },
-    grow: {
-      flexGrow: 1,
-      width: '100%',
-      display: 'flex',
       flexDirection: 'column',
-      overflowX: 'hidden',
+      display: 'flex',
     },
+
     loadingWrapper: {
       height: '100vh',
       width: '100vw',
-      backgroundColor: '#000000',
+      backgroundColor: '#000',
     },
+
     wrapper: {
       height: '100%',
       width: '100%',
+      minHeight: 'calc(100vh - 100px)',
+      flexGrow: 1,
     },
+
     loadingSpinner: {
       position: 'relative',
       top: '50vh',

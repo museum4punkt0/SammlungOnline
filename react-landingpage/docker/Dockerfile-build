@@ -3,15 +3,17 @@
 
 FROM node:14-alpine as builder
 
-WORKDIR /opt/topics
+WORKDIR /opt/smb-landingpage
 
 # install git
 RUN apk update && apk upgrade
 RUN apk add --no-cache bash git openssh
     
 # install node_modules
-COPY ./package.json ./package.json
+COPY ./package.json ./package.json	
 COPY ./package-lock.json ./package-lock.json
+COPY ./.npmrc ./.npmrc
+
 RUN npm config set unsafe-perm true
 RUN npm install
 
@@ -30,7 +32,7 @@ FROM nginx:1.21-alpine-perl as server
 LABEL maintainer="Xailabs<it-support@xailabs.de>"
 COPY docker/default.conf /etc/nginx/conf.d/default.conf
 COPY docker/nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder /opt/topics/build /usr/share/nginx/html
+COPY --from=builder /opt/smb-landingpage/build /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
