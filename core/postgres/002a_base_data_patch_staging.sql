@@ -1,3 +1,4 @@
-UPDATE smb.intro_text_modules SET link = 'https://smb-research.xaidev.net' WHERE id = 1;
-UPDATE smb.intro_text_modules SET link = 'https://smb-topics.xaidev.net'   WHERE id = 2;
-UPDATE smb.intro_text_modules SET link = 'https://smb-guide.xaidev.net'    WHERE id = 3;
+UPDATE smb.stt_platform_config SET link_template = 'https://stt-smb.xaidev.net/:lang/story/:slug' where platform_key = 'SMB';
+UPDATE smb.stt_platform_config SET link_template = 'https://stt-isl.xaidev.net/:lang/story/:slug' where platform_key = 'ISL';
+UPDATE smb.stt_platform_config SET link_template = 'https://stt-hbf.xaidev.net/:lang/story/:slug' where platform_key = 'HBF';
+UPDATE smb.stt_platform_config SET link_template = 'https://stt-kgm.xaidev.net/:lang/story/:slug' where platform_key = 'KGM';

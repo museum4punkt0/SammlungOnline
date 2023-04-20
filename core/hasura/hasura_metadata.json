@@ -1,1867 +1,1775 @@
 {
-  "resource_version": 1,
+  "resource_version": 96,
   "metadata": {
-  "version": 2,
-  "tables": [
-    {
-      "table": {
-        "schema": "smb",
-        "name": "attachments"
-      },
-      "object_relationships": [
-        {
-          "name": "license",
-          "using": {
-            "foreign_key_constraint_on": "license_id"
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "attachment",
-              "object_id",
-              "primary",
-              "credits"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "attachment",
-              "primary",
-              "credits"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "attachment",
-              "primary",
-              "credits"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "attribute_translations"
-      },
-      "object_relationships": [
-        {
-          "name": "attribute",
-          "using": {
-            "foreign_key_constraint_on": "attribute_key"
-          }
-        },
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "language_id",
-              "object_id",
-              "value",
-              "attribute_key",
-              "fq_key"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "attribute_key",
-              "value"
-            ],
-            "filter": {},
-            "limit": 1500
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "attribute_key",
-              "value"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "attributes"
-      },
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "datatype",
-              "key"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "datatype",
-              "key"
-            ],
-            "filter": {},
-            "limit": 1500
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "datatype",
-              "key"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "highlights"
-      },
-      "object_relationships": [
-        {
-          "name": "object",
-          "using": {
-            "foreign_key_constraint_on": "object_id"
-          }
-        },
-        {
-          "name": "org_unit",
-          "using": {
-            "foreign_key_constraint_on": "org_unit_id"
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "org_unit_id",
-              "object_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "object_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "object_id"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "ignoreable_keys"
-      },
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "key"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "key"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "key"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "intro_slide_translations"
-      },
-      "object_relationships": [
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "language_id",
-              "title",
-              "intro_slide_id"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "language_id",
-              "title",
-              "intro_slide_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "title"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "title"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "intro_slide_id",
-              "id",
-              "language_id",
-              "title"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "intro_slides"
-      },
-      "array_relationships": [
-        {
-          "name": "intro_slide_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "intro_slide_id",
-              "table": {
-                "schema": "smb",
-                "name": "intro_slide_translations"
+    "version": 3,
+    "sources": [
+      {
+        "name": "default",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "name": "assortments",
+              "schema": "smb"
+            },
+            "array_relationships": [
+              {
+                "name": "assortments_objects",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "assortment_id",
+                    "table": {
+                      "name": "assortments_objects",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "i18n",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "assortment_id",
+                    "table": {
+                      "name": "assortments_translation",
+                      "schema": "smb"
+                    }
+                  }
+                }
               }
+            ],
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "id",
+                    "key",
+                    "preview_image",
+                    "search_query",
+                    "search_query_type"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "key",
+                    "search_query",
+                    "search_query_type",
+                    "preview_image"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "preview_image"
+                  ],
+                  "filter": {
+                    "_not": {
+                      "_and": [
+                        {
+                          "key": {
+                            "_like": "%.%"
+                          }
+                        },
+                        {
+                          "search_query_type": {
+                            "_eq": "OBJECT_GROUP"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "key",
+                    "preview_image",
+                    "search_query",
+                    "search_query_type"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "re-sync-assortment",
+                "definition": {
+                  "enable_manual": true,
+                  "insert": {
+                    "columns": "*"
+                  },
+                  "update": {
+                    "columns": [
+                      "key",
+                      "search_query_type"
+                    ]
+                  }
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 300
+                },
+                "webhook": "http://smb-mds-sync:8082/admin/trigger/sync"
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "assortments_objects",
+              "schema": "smb"
+            },
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "assortment_id",
+                    "object_id"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "assortment_id",
+                    "object_id"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "assortment_id",
+                    "object_id"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "re-index-assortment",
+                "definition": {
+                  "delete": {
+                    "columns": "*"
+                  },
+                  "enable_manual": false,
+                  "insert": {
+                    "columns": "*"
+                  },
+                  "update": {
+                    "columns": [
+                      "assortment_id",
+                      "object_id"
+                    ]
+                  }
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 60
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "assortments_translation",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "abstract",
+                    "assortment_id",
+                    "description",
+                    "language_id",
+                    "subtitle",
+                    "title"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "abstract",
+                    "assortment_id",
+                    "description",
+                    "id",
+                    "language_id",
+                    "subtitle",
+                    "title"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "abstract",
+                    "description",
+                    "subtitle",
+                    "title"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "abstract",
+                    "assortment_id",
+                    "description",
+                    "language_id",
+                    "subtitle",
+                    "title"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "attachments",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "license",
+                "using": {
+                  "foreign_key_constraint_on": "license_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "attachment",
+                    "credits",
+                    "id",
+                    "media_type",
+                    "object_id",
+                    "primary"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "attachment",
+                    "credits",
+                    "media_type",
+                    "primary"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "attribute_approval",
+              "schema": "smb"
+            },
+            "computed_fields": [
+              {
+                "name": "approvals",
+                "definition": {
+                  "function": {
+                    "name": "extract_approvals",
+                    "schema": "smb"
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "attribute_key"
+                  ],
+                  "computed_fields": [
+                    "approvals"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "attribute_translations",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "attribute",
+                "using": {
+                  "foreign_key_constraint_on": "attribute_key"
+                }
+              },
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "attribute_key",
+                    "fq_key",
+                    "id",
+                    "language_id",
+                    "object_id",
+                    "value",
+                    "visible"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "attribute_key",
+                    "value"
+                  ],
+                  "filter": {
+                    "_and": [
+                      {
+                        "visible": {
+                          "_eq": true
+                        }
+                      },
+                      {
+                        "attribute_key": {
+                          "_nlike": "ObjPerAssociationRef.%"
+                        }
+                      },
+                      {
+                        "attribute_key": {
+                          "_nlike": "ObjGeograficGrp.%"
+                        }
+                      }
+                    ]
+                  },
+                  "limit": 1500
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "attributes",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "approvals",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "attribute_key",
+                    "table": {
+                      "name": "attribute_approval",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "datatype",
+                    "key"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "datatype",
+                    "key"
+                  ],
+                  "filter": {},
+                  "limit": 1500
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "collections",
+              "schema": "smb"
+            },
+            "is_enum": true
+          },
+          {
+            "table": {
+              "name": "exhibitions",
+              "schema": "smb"
+            },
+            "array_relationships": [
+              {
+                "name": "exhibitions_objects",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "exhibition_id",
+                    "table": {
+                      "name": "exhibitions_objects",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "description",
+                    "end_date",
+                    "location",
+                    "start_date",
+                    "title",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "description",
+                    "end_date",
+                    "location",
+                    "start_date",
+                    "title"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "exhibitions_objects",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "exhibition",
+                "using": {
+                  "foreign_key_constraint_on": "exhibition_id"
+                }
+              },
+              {
+                "name": "object",
+                "using": {
+                  "foreign_key_constraint_on": "object_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "exhibition_id",
+                    "id",
+                    "object_id",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "geographical_references",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "geopol_voc",
+                "using": {
+                  "foreign_key_constraint_on": "geopol_voc_id"
+                }
+              },
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              },
+              {
+                "name": "place_voc",
+                "using": {
+                  "foreign_key_constraint_on": "place_voc_id"
+                }
+              },
+              {
+                "name": "role_voc",
+                "using": {
+                  "foreign_key_constraint_on": "role_voc_id"
+                }
+              },
+              {
+                "name": "type_voc",
+                "using": {
+                  "foreign_key_constraint_on": "type_voc_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "geo_item_id",
+                    "geopol_voc_id",
+                    "id",
+                    "language_id",
+                    "object_id",
+                    "place_voc_id",
+                    "role_voc_id",
+                    "type_voc_id",
+                    "sequence",
+                    "details"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "details",
+                    "sequence"
+                  ],
+                  "filter": {
+                    "type_voc": {
+                      "name": {
+                        "_nin": [
+                          "Statistischer Bezug",
+                          "Fundort Ausgabe",
+                          "Fundort (aktueller)",
+                          "Fundort (normiert)",
+                          "Fundort (Variante)",
+                          "Fundort (historisch 1800)",
+                          "Fundort (historisch 1900)",
+                          "Fundort (historisch 2000)"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "highlights",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "object",
+                "using": {
+                  "foreign_key_constraint_on": "object_id"
+                }
+              },
+              {
+                "name": "org_unit",
+                "using": {
+                  "foreign_key_constraint_on": "org_unit_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "org_unit_id",
+                    "object_id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "object_id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "ignoreable_keys",
+              "schema": "smb"
+            },
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "id",
+                    "key"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "key"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "key"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "language",
+              "schema": "smb"
+            },
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "lang"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "lang"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "licenses",
+              "schema": "smb"
+            },
+            "array_relationships": [
+              {
+                "name": "i18n",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "license_id",
+                    "table": {
+                      "name": "licenses_translation",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "key",
+                    "link"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "link"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "licenses_translation",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "content",
+                    "language_id",
+                    "license_id",
+                    "license_text"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "content",
+                    "id",
+                    "language_id",
+                    "license_id",
+                    "license_text"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "content",
+                    "license_text"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "content",
+                    "language_id",
+                    "license_id",
+                    "license_text"
+                  ],
+                  "filter": {},
+                  "check": null
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "material_references",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              },
+              {
+                "name": "specific_type_voc",
+                "using": {
+                  "foreign_key_constraint_on": "specific_type_voc_id"
+                }
+              },
+              {
+                "name": "type_voc",
+                "using": {
+                  "foreign_key_constraint_on": "type_voc_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "language_id",
+                    "material_item_id",
+                    "object_id",
+                    "specific_type_voc_id",
+                    "type_voc_id",
+                    "sequence",
+                    "details"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "details",
+                    "sequence"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "objects",
+              "schema": "smb"
+            },
+            "array_relationships": [
+              {
+                "name": "attachments",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "attachments",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "attributes",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "attribute_translations",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "exhibitions",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "exhibitions_objects",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "geographical_references",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "geographical_references",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "highlights",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "highlights",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "involved_parties",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "persons_objects",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "materials_and_techniques",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "material_references",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "computed_fields": [
+              {
+                "name": "collectionKey",
+                "definition": {
+                  "function": {
+                    "name": "extract_collection_key",
+                    "schema": "smb"
+                  }
+                },
+                "comment": ""
+              },
+              {
+                "name": "compilation",
+                "definition": {
+                  "function": {
+                    "name": "extract_compilation",
+                    "schema": "smb"
+                  }
+                },
+                "comment": ""
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "exhibition_space",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "exhibition_space",
+                    "id",
+                    "updated_at"
+                  ],
+                  "filter": {},
+                  "limit": 50,
+                  "allow_aggregations": true
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "delete-from-elastic",
+                "definition": {
+                  "delete": {
+                    "columns": "*"
+                  },
+                  "enable_manual": false
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 1,
+                  "timeout_sec": 60
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/delete-event"
+              },
+              {
+                "name": "re-index-object",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 60
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
+              },
+              {
+                "name": "re-sync-object",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 120
+                },
+                "webhook": "http://smb-mds-sync:8082/admin/trigger/sync"
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "org_unit",
+              "schema": "smb"
+            },
+            "array_relationships": [
+              {
+                "name": "highlights",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "org_unit_id",
+                    "table": {
+                      "name": "highlights",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "name"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "persons",
+              "schema": "smb"
+            },
+            "array_relationships": [
+              {
+                "name": "involved_parties",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "person_id",
+                    "table": {
+                      "name": "persons_objects",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "created_at",
+                    "date_of_birth",
+                    "date_of_death",
+                    "date_range",
+                    "id",
+                    "name",
+                    "updated_at"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "date_of_birth",
+                    "date_of_death",
+                    "date_range",
+                    "name"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "persons_objects",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "object",
+                "using": {
+                  "foreign_key_constraint_on": "object_id"
+                }
+              },
+              {
+                "name": "person",
+                "using": {
+                  "foreign_key_constraint_on": "person_id"
+                }
+              },
+              {
+                "name": "role_voc",
+                "using": {
+                  "foreign_key_constraint_on": "role_voc_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "created_at",
+                    "id",
+                    "object_id",
+                    "person_id",
+                    "role_voc_id",
+                    "sequence",
+                    "updated_at"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "sequence"
+                  ],
+                  "filter": {
+                    "role_voc": {
+                      "name": {
+                        "_nin": [
+                          "Leihgeber",
+                          "Mäzen",
+                          "Nachlasser",
+                          "Person",
+                          "Veräußerer",
+                          "Vorbesitzer"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "stt_platform",
+              "schema": "smb"
+            },
+            "is_enum": true
+          },
+          {
+            "table": {
+              "name": "stt_platform_config",
+              "schema": "smb"
+            },
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "enable_story_filter",
+                    "hero_slider_limit",
+                    "hide_in_overview",
+                    "link_template",
+                    "platform_key"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "platform_key",
+                    "link_template",
+                    "hide_in_overview",
+                    "hero_slider_limit",
+                    "enable_story_filter",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "enable_story_filter",
+                    "hero_slider_limit",
+                    "hide_in_overview",
+                    "link_template",
+                    "platform_key"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "enable_story_filter",
+                    "hero_slider_limit",
+                    "hide_in_overview",
+                    "platform_key"
+                  ],
+                  "filter": {},
+                  "check": null
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "sync_cycle_type",
+              "schema": "smb"
+            },
+            "is_enum": true,
+            "array_relationships": [
+              {
+                "name": "sync_cycles",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "type",
+                    "table": {
+                      "name": "sync_cycles",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "sync_cycles",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "sync_cycle_type",
+                "using": {
+                  "foreign_key_constraint_on": "type"
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "retry-failed",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 60
+                },
+                "webhook": "http://smb-mds-sync:8082/admin/sync",
+                "request_transform": {
+                  "body": {
+                    "action": "transform",
+                    "template": "{\n  \"type\": \"MANUAL\",\n  \"module\": {{$body.event.data.new.module}},\n  \"ids\": {{$body.event.data.new.failed_ids}}\n}"
+                  },
+                  "method": "PATCH",
+                  "query_params": {},
+                  "template_engine": "Kriti",
+                  "version": 2
+                },
+                "cleanup_config": {
+                  "batch_size": 10000,
+                  "clean_invocation_logs": false,
+                  "clear_older_than": 168,
+                  "paused": true,
+                  "schedule": "0 0 * * *",
+                  "timeout": 60
+                }
+              },
+              {
+                "name": "retry-skipped",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 60
+                },
+                "webhook": "http://smb-mds-sync:8082/admin/sync",
+                "request_transform": {
+                  "body": {
+                    "action": "transform",
+                    "template": "{\n  \"type\": \"MANUAL\",\n  \"module\": {{$body.event.data.new.module}},\n  \"ids\": {{$body.event.data.new.skipped_ids}}\n}"
+                  },
+                  "method": "PATCH",
+                  "query_params": {},
+                  "template_engine": "Kriti",
+                  "version": 2
+                },
+                "cleanup_config": {
+                  "batch_size": 10000,
+                  "clean_invocation_logs": false,
+                  "clear_older_than": 168,
+                  "paused": true,
+                  "schedule": "0 0 * * *",
+                  "timeout": 60
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "thesaurus",
+              "schema": "smb"
+            },
+            "array_relationships": [
+              {
+                "name": "i18n",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "thesaurus_id",
+                    "table": {
+                      "name": "thesaurus_translations",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "parent",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "parent_id",
+                    "table": {
+                      "name": "thesaurus",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "mds_id",
+                    "parent_id",
+                    "instance",
+                    "name",
+                    "type",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "name"
+                  ],
+                  "filter": {
+                    "_not": {
+                      "_or": [
+                        {
+                          "_and": [
+                            {
+                              "instance": {
+                                "_eq": "ObjGeographicTypeVgr"
+                              }
+                            },
+                            {
+                              "name": {
+                                "_in": [
+                                  "Statistischer Bezug",
+                                  "Fundort Ausgabe",
+                                  "Fundort (aktueller)",
+                                  "Fundort (normiert)",
+                                  "Fundort (Variante)",
+                                  "Fundort (historisch 1800)",
+                                  "Fundort (historisch 1900)",
+                                  "Fundort (historisch 2000)"
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "instance": {
+                            "_eq": "ObjPerAssociationRoleVgr"
+                          }
+                        },
+                        {
+                          "name": {
+                            "_in": [
+                              "Leihgeber",
+                              "Mäzen",
+                              "Nachlasser",
+                              "Person",
+                              "Veräußerer",
+                              "Vorbesitzer"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "thesaurus_translations",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              },
+              {
+                "name": "thesaurus",
+                "using": {
+                  "foreign_key_constraint_on": "thesaurus_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "language_id",
+                    "thesaurus_id",
+                    "value"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "value"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "user",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "user_role",
+                "using": {
+                  "foreign_key_constraint_on": "role_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "authservice",
+                "permission": {
+                  "columns": [
+                    "editor_scope",
+                    "email",
+                    "id",
+                    "password",
+                    "role_id"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              },
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "email"
+                  ],
+                  "filter": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "email"
+                  ],
+                  "filter": {
+                    "id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "user_role",
+              "schema": "smb"
+            },
+            "select_permissions": [
+              {
+                "role": "authservice",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "role"
+                  ],
+                  "filter": {},
+                  "allow_aggregations": true
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "database_url": {
+              "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+            },
+            "isolation_level": "read-committed",
+            "pool_settings": {
+              "connection_lifetime": 600,
+              "idle_timeout": 180,
+              "max_connections": 50,
+              "retries": 1
+            },
+            "use_prepared_statements": true
+          }
+        }
+      }
+    ],
+    "remote_schemas": [
+      {
+        "name": "stt-hbf-strapi",
+        "definition": {
+          "url_from_env": "REMOTE_SCHEMA_HBF_STRAPI",
+          "timeout_seconds": 60,
+          "customization": {
+            "root_fields_namespace": "strapi_hbf",
+            "type_names": {
+              "mapping": {}
             }
           }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "image"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "image"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
         },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "image"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "image"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "image"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "intro_text_module_translations"
+        "comment": "STT backend HBF"
       },
-      "object_relationships": [
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "title",
-              "subtitle",
-              "content",
-              "link_caption",
-              "intro_text_module_id",
-              "language_id"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "title",
-              "subtitle",
-              "content",
-              "link_caption",
-              "intro_text_module_id",
-              "language_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "content",
-              "link_caption",
-              "subtitle",
-              "title"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "content",
-              "link_caption",
-              "subtitle",
-              "title"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "intro_text_module_id",
-              "id",
-              "language_id",
-              "content",
-              "link_caption",
-              "subtitle",
-              "title"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "intro_text_module_type"
-      },
-      "is_enum": true,
-      "array_relationships": [
-        {
-          "name": "intro_text_modules",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "module_type",
-              "table": {
-                "schema": "smb",
-                "name": "intro_text_modules"
-              }
-            }
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "value",
-              "comment"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "value"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "value"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "intro_text_modules"
-      },
-      "object_relationships": [
-        {
-          "name": "intro_text_module_type",
-          "using": {
-            "foreign_key_constraint_on": "module_type"
-          }
-        }
-      ],
-      "array_relationships": [
-        {
-          "name": "intro_text_module_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "intro_text_module_id",
-              "table": {
-                "schema": "smb",
-                "name": "intro_text_module_translations"
-              }
-            }
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "link",
-              "module_background_color",
-              "title_color",
-              "text_color",
-              "text_area_color",
-              "module_type",
-              "sequence"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "link",
-              "module_background_color",
-              "title_color",
-              "text_color",
-              "text_area_color",
-              "module_type",
-              "sequence"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "link",
-              "module_background_color",
-              "module_type",
-              "sequence",
-              "text_area_color",
-              "text_color",
-              "title_color"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "link",
-              "module_background_color",
-              "module_type",
-              "sequence",
-              "text_area_color",
-              "text_color",
-              "title_color"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "sequence",
-              "id",
-              "link",
-              "module_background_color",
-              "module_type",
-              "text_area_color",
-              "text_color",
-              "title_color"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "language"
-      },
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "lang"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "lang"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "lang"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "licenses"
-      },
-      "array_relationships": [
-        {
-          "name": "licenses_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "license_id",
-              "table": {
-                "schema": "smb",
-                "name": "licenses_translation"
-              }
-            }
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "key",
-              "link"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "key",
-              "link"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "key",
-              "link"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "licenses_translation"
-      },
-      "object_relationships": [
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "content",
-              "license_id",
-              "language_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "content"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "content"
-            ],
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "objects"
-      },
-      "array_relationships": [
-        {
-          "name": "attachments",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "object_id",
-              "table": {
-                "schema": "smb",
-                "name": "attachments"
-              }
-            }
-          }
-        },
-        {
-          "name": "attribute_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "object_id",
-              "table": {
-                "schema": "smb",
-                "name": "attribute_translations"
-              }
-            }
-          }
-        },
-        {
-          "name": "highlights",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "object_id",
-              "table": {
-                "schema": "smb",
-                "name": "highlights"
-              }
-            }
-          }
-        },
-        {
-          "name": "topics_objects",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "objects_id",
-              "table": {
-                "schema": "smb",
-                "name": "topics_objects"
-              }
-            }
-          }
-        },
-        {
-          "name": "tours_objects",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "object_id",
-              "table": {
-                "schema": "smb",
-                "name": "tours_objects"
-              }
-            }
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "exhibition_space",
-              "created_at",
-              "updated_at"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "exhibition_space",
-              "id",
-              "updated_at"
-            ],
-            "filter": {},
-            "limit": 50,
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "exhibition_space",
-              "id",
-              "updated_at"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        }
-      ],
-      "event_triggers": [
-        {
-          "name": "delete-from-elastic",
-          "definition": {
-            "enable_manual": false,
-            "delete": {
-              "columns": "*"
+      {
+        "name": "stt-isl-strapi",
+        "definition": {
+          "url_from_env": "REMOTE_SCHEMA_ISL_STRAPI",
+          "timeout_seconds": 60,
+          "customization": {
+            "root_fields_namespace": "strapi_isl",
+            "type_names": {
+              "mapping": {}
             }
           },
-          "retry_conf": {
-            "num_retries": 1,
-            "interval_sec": 10,
-            "timeout_sec": 60
+          "forward_client_headers": true
+        },
+        "comment": "STT backend ISL"
+      },
+      {
+        "name": "stt-kgm-strapi",
+        "definition": {
+          "url_from_env": "REMOTE_SCHEMA_KGM_STRAPI",
+          "timeout_seconds": 60,
+          "customization": {
+            "root_fields_namespace": "strapi_kgm",
+            "type_names": {
+              "mapping": {}
+            }
           },
-          "webhook": "http://smb-search-indexer:8085/triggers/delete-event"
+          "forward_client_headers": true
         },
-        {
-          "name": "re-index",
-          "definition": {
-            "enable_manual": true
-          },
-          "retry_conf": {
-            "num_retries": 0,
-            "interval_sec": 10,
-            "timeout_sec": 60
-          },
-          "webhook": "http://smb-search-indexer:8085/triggers/index-event"
-        },
-        {
-          "name": "re-sync",
-          "definition": {
-            "enable_manual": true
-          },
-          "retry_conf": {
-            "num_retries": 0,
-            "interval_sec": 10,
-            "timeout_sec": 60
-          },
-          "webhook": "http://smb-mds-sync:8082/admin/trigger/sync"
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "org_unit"
+        "comment": "STT backend KGM"
       },
-      "array_relationships": [
-        {
-          "name": "highlights",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "org_unit_id",
-              "table": {
-                "schema": "smb",
-                "name": "highlights"
-              }
-            }
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "name"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "sync_cycle_type"
-      },
-      "is_enum": true,
-      "array_relationships": [
-        {
-          "name": "sync_cycles",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "type",
-              "table": {
-                "schema": "smb",
-                "name": "sync_cycles"
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "sync_cycles"
-      },
-      "object_relationships": [
-        {
-          "name": "sync_cycle_type",
-          "using": {
-            "foreign_key_constraint_on": "type"
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "topics"
-      },
-      "array_relationships": [
-        {
-          "name": "objects",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "topics_id",
-              "table": {
-                "schema": "smb",
-                "name": "topics_objects"
-              }
+      {
+        "name": "stt-smb-strapi",
+        "definition": {
+          "url_from_env": "REMOTE_SCHEMA_SMB_STRAPI",
+          "timeout_seconds": 60,
+          "customization": {
+            "root_fields_namespace": "strapi_smb",
+            "type_names": {
+              "mapping": {}
             }
           }
         },
-        {
-          "name": "topics_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "topics_id",
-              "table": {
-                "schema": "smb",
-                "name": "topics_translations"
-              }
-            }
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "has_slide",
-              "preview_image"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "has_slide",
-              "id",
-              "preview_image"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "has_slide",
-              "id",
-              "preview_image"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "has_slide",
-              "id",
-              "preview_image"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "has_slide",
-              "id",
-              "preview_image"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "topics_objects"
-      },
-      "object_relationships": [
-        {
-          "name": "object",
-          "using": {
-            "foreign_key_constraint_on": "objects_id"
-          }
-        },
-        {
-          "name": "topic",
-          "using": {
-            "foreign_key_constraint_on": "topics_id"
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "topics_id",
-              "objects_id",
-              "id",
-              "created_at",
-              "updated_at"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "objects_id",
-              "topics_id",
-              "created_at",
-              "updated_at"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "objects_id",
-              "topics_id",
-              "updated_at"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "objects_id",
-              "topics_id",
-              "updated_at"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "objects_id",
-              "topics_id",
-              "created_at",
-              "updated_at"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "topics_translations"
-      },
-      "object_relationships": [
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "language_id",
-              "topics_id",
-              "description",
-              "title"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "language_id",
-              "title",
-              "description",
-              "topics_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "description",
-              "title"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "description",
-              "title"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "language_id",
-              "topics_id",
-              "description",
-              "title"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "tours"
-      },
-      "array_relationships": [
-        {
-          "name": "tours_objects",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "tour_id",
-              "table": {
-                "schema": "smb",
-                "name": "tours_objects"
-              }
-            }
-          }
-        },
-        {
-          "name": "tours_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "tour_id",
-              "table": {
-                "schema": "smb",
-                "name": "tours_translation"
-              }
-            }
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "duration",
-              "number",
-              "id",
-              "directions",
-              "museum",
-              "preview_image"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "duration",
-              "number",
-              "id",
-              "directions",
-              "museum",
-              "preview_image"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "duration",
-              "number",
-              "id",
-              "directions",
-              "museum",
-              "preview_image"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "duration",
-              "number",
-              "id",
-              "directions",
-              "museum",
-              "preview_image"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "duration",
-              "number",
-              "id",
-              "directions",
-              "museum",
-              "preview_image"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "tours_objects"
-      },
-      "object_relationships": [
-        {
-          "name": "object",
-          "using": {
-            "foreign_key_constraint_on": "object_id"
-          }
-        },
-        {
-          "name": "tour",
-          "using": {
-            "foreign_key_constraint_on": "tour_id"
-          }
-        }
-      ],
-      "array_relationships": [
-        {
-          "name": "tours_objects_translations",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "tour_object_id",
-              "table": {
-                "schema": "smb",
-                "name": "tours_objects_translation"
-              }
-            }
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "sequence",
-              "id",
-              "object_id",
-              "tour_id",
-              "room"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "sequence",
-              "tour_id",
-              "object_id",
-              "room"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "object_id",
-              "room",
-              "sequence",
-              "tour_id"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "object_id",
-              "room",
-              "sequence",
-              "tour_id"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "sequence",
-              "id",
-              "object_id",
-              "tour_id",
-              "room"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "tours_objects_translation"
-      },
-      "object_relationships": [
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "language_id",
-              "tour_object_id",
-              "abstract",
-              "description"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "tour_object_id",
-              "language_id",
-              "abstract",
-              "description"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "abstract",
-              "description"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "abstract",
-              "description"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "language_id",
-              "tour_object_id",
-              "abstract",
-              "description"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "tours_translation"
-      },
-      "object_relationships": [
-        {
-          "name": "language",
-          "using": {
-            "foreign_key_constraint_on": "language_id"
-          }
-        }
-      ],
-      "insert_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "check": {},
-            "columns": [
-              "id",
-              "language_id",
-              "tour_id",
-              "abstract",
-              "description",
-              "subtitle",
-              "title"
-            ],
-            "backend_only": false
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "title",
-              "subtitle",
-              "abstract",
-              "description",
-              "tour_id",
-              "language_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "abstract",
-              "description",
-              "subtitle",
-              "title"
-            ],
-            "filter": {}
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "abstract",
-              "description",
-              "subtitle",
-              "title"
-            ],
-            "filter": {}
-          }
-        }
-      ],
-      "update_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "id",
-              "language_id",
-              "tour_id",
-              "abstract",
-              "description",
-              "subtitle",
-              "title"
-            ],
-            "filter": {},
-            "check": {}
-          }
-        }
-      ],
-      "delete_permissions": [
-        {
-          "role": "editor",
-          "permission": {
-            "filter": {}
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "user"
-      },
-      "object_relationships": [
-        {
-          "name": "user_role",
-          "using": {
-            "foreign_key_constraint_on": "role_id"
-          }
-        }
-      ],
-      "select_permissions": [
-        {
-          "role": "authservice",
-          "permission": {
-            "columns": [
-              "editor_scope",
-              "email",
-              "id",
-              "password",
-              "role_id"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        },
-        {
-          "role": "editor",
-          "permission": {
-            "columns": [
-              "email"
-            ],
-            "filter": {
-              "id": {
-                "_eq": "X-Hasura-User-Id"
-              }
-            }
-          }
-        },
-        {
-          "role": "public",
-          "permission": {
-            "columns": [
-              "email"
-            ],
-            "filter": {
-              "id": {
-                "_eq": "X-Hasura-User-Id"
-              }
-            }
-          }
-        },
-        {
-          "role": "reader",
-          "permission": {
-            "columns": [
-              "email"
-            ],
-            "filter": {
-              "id": {
-                "_eq": "X-Hasura-User-Id"
-              }
-            }
-          }
-        }
-      ]
-    },
-    {
-      "table": {
-        "schema": "smb",
-        "name": "user_role"
-      },
-      "select_permissions": [
-        {
-          "role": "authservice",
-          "permission": {
-            "columns": [
-              "id",
-              "role"
-            ],
-            "filter": {},
-            "allow_aggregations": true
-          }
-        }
-      ]
-    }
-  ]
-}
+        "comment": "STT backend SMB"
+      }
+    ]
+  }
 }

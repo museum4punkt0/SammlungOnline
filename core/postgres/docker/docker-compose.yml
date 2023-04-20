@@ -1,12 +1,12 @@
+# only for local development
+
 version: '3.5'
 
 services:
   smb-postgres:
-    image: reg.xailabs.dev/xailabs/postgres:12.4
+    image: reg.xailabs.dev/xailabs/postgres:12.13
     container_name: smb-postgres
     restart: unless-stopped
-    
-    # only for development
     volumes:
       - ./data:/var/lib/postgresql/data/pgdata
     environment: 

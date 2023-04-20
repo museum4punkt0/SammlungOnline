@@ -1,4 +1,4 @@
-FROM nginx:1.19-alpine-perl
+FROM reg.xailabs.dev/xailabs/nginx:1.22
 LABEL maintainer="Xailabs<it-support@xailabs.de>"
 
 COPY ./default.conf /etc/nginx/conf.d/default.conf

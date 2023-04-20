@@ -1,10 +1,11 @@
 [1] postgres :: if scheme exists, run DROP SCHEMA smb CASCADE;
 [2] postgres :: import postgres/001_scheme.sql
 [3] postgres :: import postgres/002_base_data.sql
-[4] postgres :: if desired, import postgres/999_test_data.sql
-[5] hasura   :: import hasura/hasura_metadata.json
+[4] postgres :: import base data patch if applicable
+[5] postgres :: if desired, import postgres/999_test_data.sql
+[6] hasura   :: import hasura/hasura_metadata.json
 ---
-[6] elasticsearch :: call DELETE http://smb-elasticsearch:9200/objects-de
-[7] elasticsearch :: call PUT http://smb-elasticsearch:9200/objects-de with elasticsearch/create-index.json as payload
-[8] mds-sync :: if [4], call PATCH http://smb-mds-sync:8082/admin/sync with the imported object ids as payload {"ids":[...]}
-[9] search-indexer :: if 'search.indexer.should.update=false', call PUT http://smb-search-indexer:8085/index with the imported object ids as payload {"ids":[...]}
+[7] elasticsearch :: call DELETE http://smb-elasticsearch:9200/objects-de
+[8] elasticsearch :: call PUT http://smb-elasticsearch:9200/objects-de with elasticsearch/create-index.json as payload
+[9] mds-sync :: if [5], call PATCH http://smb-mds-sync:8082/admin/sync with the imported object ids as payload {"ids":[...]}
+[10] search-indexer :: if 'search.indexer.should.update=false', call PUT http://smb-search-indexer:8085/index with the imported object ids as payload {"ids":[...]}

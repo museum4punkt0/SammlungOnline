@@ -1,8 +1,15 @@
-FROM nginx:1.21
+FROM reg.xailabs.dev/xailabs/nginx:1.23
 LABEL maintainer="Xailabs<it-support@xailabs.de>"
 
-RUN apt-get update && apt-get install -y nginx-extras apache2-utils
+RUN apt-get update && apt-get install -y nginx-extras apache2-utils logrotate
+
 RUN mkdir -p /data/nginx/cache
+RUN chown nginx:nginx /data/nginx/cache
+
+RUN mkdir -p /usr/share/nginx/html/images/restricted
+RUN chmod 777 /usr/share/nginx/html/images
+RUN chmod 777 /usr/share/nginx/html/images/restricted
+
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
