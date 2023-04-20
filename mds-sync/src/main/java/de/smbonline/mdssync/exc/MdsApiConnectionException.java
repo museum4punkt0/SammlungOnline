@@ -1,6 +1,7 @@
 package de.smbonline.mdssync.exc;
 
-import javax.validation.constraints.NotBlank;
+import org.springframework.lang.Nullable;
+
 import java.net.ConnectException;
 
 /**
@@ -10,17 +11,17 @@ public class MdsApiConnectionException extends ConnectException {
 
     private final Throwable cause;
 
-    public MdsApiConnectionException(final @NotBlank String msg) {
+    public MdsApiConnectionException(final String msg) {
         this(msg, null);
     }
 
-    public MdsApiConnectionException(final @NotBlank String msg, final Throwable cause) {
+    public MdsApiConnectionException(final String msg, final @Nullable Throwable cause) {
         super(msg);
         this.cause = cause;
     }
 
     @Override
-    public synchronized Throwable getCause() {
+    public synchronized @Nullable Throwable getCause() {
         return this.cause;
     }
 }

@@ -1,0 +1,29 @@
+# Returns all Languages
+query FetchLanguages {
+    smb_language {
+        ...languageData
+    }
+}
+
+# Returns a Language
+query FetchLanguageByName($lang: String!) {
+    smb_language(where: {lang: {_eq: $lang}}) {
+        ...languageData
+    }
+}
+
+# Insert Language if not exists
+mutation InsertOrUpdateLanguage($lang: String!) {
+    insert_smb_language_one(
+        object: {
+            lang: $lang
+            sync_enabled: false
+        },
+        on_conflict: {
+            constraint: language_lang_ukey,
+            update_columns: [lang]
+        }
+    ) {
+        id
+    }
+}

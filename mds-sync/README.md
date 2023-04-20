@@ -1,6 +1,6 @@
 # mds-sync
 
-Service to sync objects from MDS to SMB Online-Sammlungen.
+Service to sync items from MDS to SMB Online-Sammlungen.
 
 ## Introduction
 
@@ -17,16 +17,17 @@ This project contains all the code required to run a sync between SMB-Online-Sam
 To start a sync the `AdminRestController` is available. It provides a `/admin/sync` endpoint that needs to be
 called via http PATCH with a fairly simple payload:
 
-| Attribute | Type | Optional | Default Value | Comment |
-| ---       | ---  | ---      | ---           | ---     |
-| type      | enum(INCREMENTAL,HIGHLIGHTS,DELETIONS,MANUAL) | x | MANUAL | Specifies what should be synced |
-| ids       | string[] / number[] | x | | for type MANUAL; List of MDS-Ids that should be synced, also allows range definitions ["0..n"] |
-| modifiedFrom | timestamp | x | 1970-01-01T00:00:00+00:00 | for type MANUAL; starttime filter for __lastModified timestamp |
-| modifiedTo | timestamp | x | now | for type MANUAL; endtime filter for __lastModified timestamp |
+| Attribute    | Type                                                      | Optional | Default Value             | Comment                                                                                        |
+|--------------|-----------------------------------------------------------|----------|---------------------------|------------------------------------------------------------------------------------------------|
+| type         | enum(INCREMENTAL,HIGHLIGHTS,DELETIONS,ASSORTMENTS,MANUAL) | x        | MANUAL                    | Specifies what should be synced                                                                |
+| ids          | string[] / number[]                                       | x        |                           | for type MANUAL; List of MDS-Ids that should be synced, also allows range definitions ["0..n"] |
+| module       | string                                                    | x        | Object                    | for type MANUAL; the MDS module that should be synced                                          |
+| modifiedFrom | timestamp                                                 | x        | 1970-01-01T00:00:00+00:00 | for type MANUAL; starttime filter for __lastModified timestamp                                 |
+| modifiedTo   | timestamp                                                 | x        | now                       | for type MANUAL; endtime filter for __lastModified timestamp                                   |
 > Note: `ids` as well as `modifiedFrom` and `modifiedTo` are ignored for a non-MANUAL-typed request.
 > For a MANUAL-typed request either the ids _or_ the date must be given. It is not possible to combine both at the same time.
 
-Example:
+Examples:
 
 ```json
 {
@@ -121,25 +122,25 @@ The required env-vars are defined in _application.yml_.
 
 The base package of the application is `de.smbonline.mdssync`.
 
-| Package | Description |
-| ---     | ---     |
-| `de.smbonline.mdssync` | Application entry point |
-| `de.smbonline.mdssync.dataprocessor.controller` | Service configuration (_consuming_ side) |
-| `de.smbonline.mdssync.dataprocessor.graphql` | GraphQl code (_consuming_ side) |
-| `de.smbonline.mdssync.dataprocessor.queue` | Interface between _producing_ and _consuming_ side |
+| Package                                         | Description                                        |
+|-------------------------------------------------|----------------------------------------------------|
+| `de.smbonline.mdssync`                          | Application entry point                            |
+| `de.smbonline.mdssync.dataprocessor.controller` | Service configuration (_consuming_ side)           |
+| `de.smbonline.mdssync.dataprocessor.graphql`    | GraphQl code (_consuming_ side)                    |
+| `de.smbonline.mdssync.dataprocessor.queue`      | Interface between _producing_ and _consuming_ side |
 | `de.smbonline.mdssync.dataprocessor.repository` | GraphQl and webdav repositories (_consuming_ side) |
-| `de.smbonline.mdssync.dataprocessor.service` | Service implementation (_consuming_ side) |
-| `de.smbonline.mdssync.dto` | Data transfer objects |
-| `de.smbonline.mdssync.exc` | Exception classes |
-| `de.smbonline.mdssync.exec` | Sync execution code (_producing_ side) |
-| `de.smbonline.mdssync.index` | Search-indexer connection (_producing_ side) |
-| `de.smbonline.mdssync.log` | Logging utils |
-| `de.smbonline.mdssync.pattern` | Generic code for software patterns |
-| `de.smbonline.mdssync.properties` | Wrappers for _application.yml_ configuration |
-| `de.smbonline.mdssync.rest` | REST code (_producing_ side) |
-| `de.smbonline.mdssync.rules` | Data transformation rules (_producing_ side) |
-| `de.smbonline.mdssync.search` | MDS code (_producing_ side) |
-| `de.smbonline.mdssync.util` | Shared utilities |
+| `de.smbonline.mdssync.dataprocessor.service`    | Service implementation (_consuming_ side)          |
+| `de.smbonline.mdssync.dto`                      | Data transfer objects                              |
+| `de.smbonline.mdssync.exc`                      | Exception classes                                  |
+| `de.smbonline.mdssync.exec`                     | Sync execution code (_producing_ side)             |
+| `de.smbonline.mdssync.index`                    | Search-indexer connection (_producing_ side)       |
+| `de.smbonline.mdssync.log`                      | Logging utils                                      |
+| `de.smbonline.mdssync.pattern`                  | Generic code for software patterns                 |
+| `de.smbonline.mdssync.properties`               | Wrappers for _application.yml_ configuration       |
+| `de.smbonline.mdssync.rest`                     | REST code (_producing_ side)                       |
+| `de.smbonline.mdssync.rules`                    | Data transformation rules (_producing_ side)       |
+| `de.smbonline.mdssync.search`                   | MDS code (_producing_ side)                        |
+| `de.smbonline.mdssync.util`                     | Shared utilities                                   |
 
 ### Developer Guidelines and Code Conventions
 

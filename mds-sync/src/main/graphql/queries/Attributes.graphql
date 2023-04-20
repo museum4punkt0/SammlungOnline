@@ -1,0 +1,74 @@
+# Returns all AttributeTranslations of an Object filtered by Language
+query FetchAttributeTranslationsByObjectIdAndLanguage($objectId: bigint!, $lang: String!) {
+    smb_attribute_translations(where: {
+        object_id: { _eq: $objectId },
+        language: { lang: { _eq: $lang } }
+    }) {
+        ...attributeTranslationsData
+    }
+}
+
+# Returns only the ids for AttributeTranslations of an Object filtered by Language
+query FetchAttributeTranslationIdsByObjectIdAndLanguage($objectId: bigint!, $lang: String!) {
+    smb_attribute_translations(where: {
+        object_id: { _eq: $objectId },
+        language: { lang: { _eq: $lang } }
+    }) {
+        id
+    }
+}
+
+# Returns an attribute if existent
+query FetchAttribute($key: String!) {
+    smb_attributes_by_pk(key: $key) {
+        ...attributeData
+    }
+}
+
+query FetchAttributeApprovals($key: String!) {
+    smb_attribute_approval(where: {attribute_key: {_eq: $key}}) {
+        approvals
+    }
+}
+
+# Insert and update AttributeTranslations in one go.
+mutation BulkInsertOrUpdateAttributeTranslations($attributes: [smb_attribute_translations_insert_input!]!) {
+    insert_smb_attribute_translations(
+        objects: $attributes,
+        on_conflict: {
+            constraint: attribute_translations_pkey
+            update_columns: [attribute_key, fq_key, language_id, object_id, value, visible]
+        }
+    ) {
+        returning {
+            id
+        }
+    }
+}
+
+# Mutation to delete multiple AttributeTranslations by ids.
+mutation DeleteAttributeTranslations($attributeTranslationIds: [bigint!]!) {
+    delete_smb_attribute_translations(where: {id: {_in: $attributeTranslationIds}}) {
+        returning {
+            id
+        }
+    }
+}
+
+# Mutation to insert a new Attribute definition.
+mutation InsertOrUpdateAttribute(
+    $key: String!,
+    $datatype: String) {
+    insert_smb_attributes_one(
+        object: {
+            key: $key
+            datatype: $datatype
+        },
+        on_conflict: {
+            constraint: attributes_pkey
+            update_columns: [datatype]
+        }
+    ) {
+        key
+    }
+}

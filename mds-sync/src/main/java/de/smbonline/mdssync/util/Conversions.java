@@ -3,12 +3,11 @@ package de.smbonline.mdssync.util;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+
 public final class Conversions {
 
     public static int toInteger(final @Nullable Object obj) {
-        if (obj == null) {
-            return 0;
-        }
         if (obj instanceof Number) {
             return ((Number) obj).intValue();
         }
@@ -32,31 +31,29 @@ public final class Conversions {
             return ((Number) obj).intValue() > 0;
         }
         if (obj instanceof Character) {
-            switch (Character.toLowerCase((char) obj)) {
-                case 'x':
-                case 'y':
-                case '1':
-                    return true;
-                default:
-                    return false;
-            }
+            return switch (Character.toLowerCase((char) obj)) {
+                case 'x', 'y', '1' -> true;
+                default -> false;
+            };
         }
         if (obj instanceof String) {
-            switch (((String) obj).toLowerCase()) {
-                case "x":
-                case "y":
-                case "1":
-                case "on":
-                case "true":
-                case "active":
-                case "enabled":
-                case "yes":
-                    return true;
-                default:
-                    return false;
-            }
+            return switch (((String) obj).toLowerCase()) {
+                case "x", "y", "1", "on", "true", "active", "enabled", "yes" -> true;
+                default -> false;
+            };
         }
         return false;
+    }
+
+    public static @Nullable LocalDate toDate(final @Nullable String string) {
+        if (!StringUtils.hasText(string)) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(string);
+        } catch (Exception exc) {
+            return null;
+        }
     }
 
     private Conversions() {

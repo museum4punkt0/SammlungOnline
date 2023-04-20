@@ -7,21 +7,10 @@ import org.junit.jupiter.api.Test;
 import static de.smbonline.mdssync.test.TestData.*;
 import static org.assertj.core.api.Assertions.*;
 
-public class ExhibitionSpaceRuleTest {
-
-
-    // R 104 (MVF / Neues Museum) / V. 05
-    // R 311 (MVF / Neues Museum) / V. Marne-Golasecca
-    // Ausleihe/Ausstellung (ÄMP) / MVF im Neuen Museum (10/2009-06/2019)
-    // Prussia-Magazin (MVF / Depotbereich Langhans-Bau)
-    // Archäologisches Zentrum (MVF)
-
-    // Anorganik/Organik R 2.26 (ISL / MI / AZ / Restaurierungswerkstatt ISL)
-
-    // PS (ÄMP / AZ / Papyrus / Schrank 105) / F 14
+class ExhibitionSpaceRuleTest {
 
     @Test
-    public void testMapping_AMP() {
+    void testMapping_AMP() {
         ModuleItem item;
 
         // given
@@ -40,7 +29,7 @@ public class ExhibitionSpaceRuleTest {
                 Pair.of("ObjCurrentLocationVrt", "1. 11 / 01 (ÄMP / NMU / Ebene 1 / Raum 11) / rechts")
         );
         // then
-        assertMapping(item, "ÄMP -> NMU -> -> Ebene 1 -> Raum 11 -> rechts");
+        assertMapping(item, "AMP -> NMU -> -> Ebene 1 -> Raum 11 -> rechts");
 
         // given
         item = createModuleItem(123L,
@@ -53,41 +42,39 @@ public class ExhibitionSpaceRuleTest {
     }
 
     @Test
-    public void testMapping_ANT() {
+    void testMapping_ANT() {
         ModuleItem obj;
 
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "AZ R 0.48 Studiensammlung 2 Skulpturen (ANT / Archäologisches Zentrum / Magazine) / Schrank:4 Fach:2"),
+                Pair.of("ObjNormalLocationVoc", "ANT##Pergamonmuseum##Magazine##Hellenistischer Saal (RuB ANT 3)"),
+                Pair.of("ObjNormalLocationVrt", "don't care"),
                 Pair.of("ObjCurrentLocationVrt", "whatever")
         );
         // then
-        assertMapping(obj, "UNKNOWN", null);
+        assertMapping(obj, (String) null);
 
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "Kompartiment 4 (Ostsaal) (ANT / Altes Museum / Ausstellung / 1. Obergeschoss) / Vitrine 4. 3. 3"),
-                Pair.of("ObjCurrentLocationVrt", "whatever")
+                Pair.of("ObjNormalLocationVoc", "ANT##Pergamonmuseum##Kompartiment##Hellenistischer Saal (RuB ANT 3)")
         );
         // then
-        assertMapping(obj, "UNKNOWN", null);
+        assertMapping(obj, (String) null); // Kompartiment = "nicht ausgestellt"
 
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "Museumsshop (ANT / Altes Museum / Ausstellung / AM Obergeschoss) / Vitrine 7"),
-                Pair.of("ObjCurrentLocationVrt", "whatever")
+                Pair.of("ObjNormalLocationVoc", "ANT##Pergamonmuseum##Museumsshop##Hellenistischer Saal (RuB ANT 3)")
         );
         // then
-        assertMapping(obj, "UNKNOWN", null);
+        assertMapping(obj, (String) null); // Museumsshop = "nicht ausgestellt"
 
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "R 3.02 (Eisenzeit) (ANT / Neues Museum / Ausstellung) / Vitrine: 4B"),
-                Pair.of("ObjCurrentLocationVrt", "whatever")
+                Pair.of("ObjNormalLocationVoc", "ANT##Neues Museum##Ausstellung##R 3.02 (Vitrine: 4B)")
         );
         // then
         assertMapping(obj, "ANT -> Neues Museum -> -> -> R 3.02 -> Vitrine: 4B");
@@ -95,8 +82,7 @@ public class ExhibitionSpaceRuleTest {
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "HG R 4 (ANT / Altes Museum / Ausstellung / AM Hauptgeschoss) / V 23b.5"),
-                Pair.of("ObjCurrentLocationVrt", "whatever")
+                Pair.of("ObjNormalLocationVoc", "ANT##Altes Museum##Ausstellung##AM Hauptgeschoss##HG R 4 (V 23b.5)")
         );
         // then
         assertMapping(obj, "ANT -> Altes Museum -> -> AM Hauptgeschoss -> HG R 4 -> V 23b.5");
@@ -104,44 +90,30 @@ public class ExhibitionSpaceRuleTest {
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "R 2.02 (Römischer Saal, Roms Provinzen) (ANT / Neues Museum / Ausstellung) / Vitrine: 4.2 Objekt: 12.a"),
-                Pair.of("ObjCurrentLocationVrt", "whatever")
+                Pair.of("ObjNormalLocationVoc", "ANT##Neues Museum##Ausstellung##2.OG##R 2.02 (Vitrine 4b)")
         );
         // then
-        assertMapping(obj, "ANT -> Neues Museum -> -> -> R 2.02 -> Vitrine: 4.2 Objekt: 12.a");
+        assertMapping(obj, "ANT -> Neues Museum -> -> 2.OG -> R 2.02 -> Vitrine 4b");
 
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "Altarsaal (RuB ANT 2) (ANT / Pergamonmuseum / Ausstellung / Pergamon-Saal (RuB ANT 2))"),
-                Pair.of("ObjCurrentLocationVrt", "whatever")
+                Pair.of("ObjNormalLocationVoc", "ANT##Pergamonmuseum##Ausstellung##Hellenistischer Saal (RuB ANT 3)")
         );
         // then
-        assertMapping(obj, "UNKNOWN", null);
+        assertMapping(obj, "ANT -> Pergamonmuseum -> -> -> Hellenistischer Saal -> RuB ANT 3");
 
         // given
         obj = createModuleItem(123L,
                 Pair.of("__orgUnit", "ANT-Antikensammlung"),
-                Pair.of("ObjNormalLocationVrt", "OG R 7 (ANT / Altes Museum / Ausstellung / AM Obergeschoss) / Tableau 5.8"),
-                Pair.of("ObjCurrentLocationVrt", "whatever")
+                Pair.of("ObjNormalLocationVoc", "ANT##Altes Museum##Ausstellung##AM Obergeschoss##OG R 7 (Tableau 5.8)")
         );
         // then
         assertMapping(obj, "ANT -> Altes Museum -> -> AM Obergeschoss -> OG R 7 -> Tableau 5.8");
     }
 
-    //    @Test
-//    public void testMapping_MVF() {
-//        // given
-//        ModuleItem obj = createModuleItem(123L,
-//                Pair.of("__orgUnit", "MVFMusBKaukasusundVordererOrient"),
-//                Pair.of("ObjNormalLocationVrt", "whatever"),
-//                Pair.of("ObjCurrentLocationVrt", "R 206 (MVF / Neues Museum) / V. 06"));
-//        // then
-//        assertMapping(obj, "Neues Museum, Ebene 2, Raum 206");
-//    }
-//
-//    // TODO more assertions
-//
+    // TODO more assertions
+
     private void assertMapping(final ModuleItem source, final String... expected) {
         // when
         ExhibitionSpaceRule rule = new ExhibitionSpaceRule();

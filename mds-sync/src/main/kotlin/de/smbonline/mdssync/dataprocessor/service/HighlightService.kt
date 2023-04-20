@@ -4,42 +4,42 @@ import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.HighlightData
 import de.smbonline.mdssync.dataprocessor.repository.HighlightRepository
 import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository
 import de.smbonline.mdssync.dataprocessor.repository.OrgUnitRepository
-import de.smbonline.mdssync.dto.HighlightDTO
+import de.smbonline.mdssync.dto.Highlight
 import de.smbonline.mdssync.dto.Operation
 import de.smbonline.mdssync.dto.WrapperDTO
 import de.smbonline.mdssync.pattern.cor.Engine
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
-@Component
+@Service
 class HighlightService @Autowired constructor(
         private val highlightRepository: HighlightRepository,
         private val orgUnitRepository: OrgUnitRepository,
         private val objectRepository: ObjectRepository
-) : DataService<HighlightDTO>, Engine<WrapperDTO>() {
+) : DataService<Highlight>, Engine<WrapperDTO>() {
 
-    override fun save(element: HighlightDTO) {
+    override fun save(element: Highlight) {
         runBlocking {
             saveHighlights(element)
         }
     }
 
-    override fun delete(element: HighlightDTO) {
+    override fun delete(element: Highlight) {
         runBlocking {
             deleteHighlights(element)
         }
     }
 
     override fun isResponsible(element: WrapperDTO): Boolean {
-        return element.dto::class.qualifiedName == HighlightDTO::class.qualifiedName
+        return element.dto::class.qualifiedName == Highlight::class.qualifiedName
     }
 
     override fun executeCommand(element: WrapperDTO) {
         when (element.operation) {
-            Operation.UPSERT -> save(element.dto as HighlightDTO)
-            Operation.DELETE -> delete(element.dto as HighlightDTO)
+            Operation.UPSERT -> save(element.dto as Highlight)
+            Operation.DELETE -> delete(element.dto as Highlight)
         }
     }
 
@@ -68,7 +68,7 @@ class HighlightService @Autowired constructor(
      * Saves all highlights of an orgUnit and deletes highlights that are not part of the orgUnit anymore.
      * @param element
      */
-    private suspend fun saveHighlights(element: HighlightDTO) {
+    private suspend fun saveHighlights(element: Highlight) {
         val orgUnitId = fetchOrInsertOrgUnit(element.orgUnitName)
         val oldHighlightIds = getHighlightIds(orgUnitId)
         val newHighlightIds = saveHighlightElements(orgUnitId, element.objectIds)
@@ -127,7 +127,7 @@ class HighlightService @Autowired constructor(
      * all Objects of specified OrgUnit are deleted.
      * @param element Highlight object with OrgUnit name
      */
-    private suspend fun deleteHighlights(element: HighlightDTO) {
+    private suspend fun deleteHighlights(element: Highlight) {
         val orgUnitId = orgUnitRepository.getOrgUnitIdByOrgUnitName(element.orgUnitName) ?: return
         highlightRepository.deleteHighlights(orgUnitId)
     }

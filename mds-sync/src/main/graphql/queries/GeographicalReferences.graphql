@@ -1,0 +1,40 @@
+# Returns the ids of all GeographicalReferences of an Object filtered by Language
+query FetchGeographicalReferenceIdsByObjectIdAndLanguage($objectId: bigint!, $lang: String!) {
+    smb_geographical_references(where: {
+        object_id: { _eq: $objectId },
+        language: { lang: { _eq: $lang } }
+    }) {
+        id
+    }
+}
+
+mutation InsertOrUpdateGeographicalReference(
+    $objectId:bigint!, $geoItemId:bigint!, $languageId:bigint!
+    $sequence:Int!,
+    $details:String,
+    $geopolVoc:bigint, $placeVoc:bigint, $roleVoc:bigint, $typeVoc:bigint) {
+    insert_smb_geographical_references_one(object: {
+        object_id: $objectId
+        geo_item_id: $geoItemId
+        language_id: $languageId
+        details: $details
+        sequence: $sequence
+        geopol_voc_id: $geopolVoc
+        place_voc_id: $placeVoc
+        role_voc_id: $roleVoc
+        type_voc_id: $typeVoc
+    }, on_conflict: {
+        constraint: geographical_references_pkey,
+        update_columns: [object_id, geo_item_id, language_id, details, sequence, geopol_voc_id, place_voc_id, role_voc_id, type_voc_id]
+    }) {
+        id
+    }
+}
+
+mutation DeleteGeographicalReferences($ids: [bigint!]!) {
+    delete_smb_geographical_references(where: {id: {_in: $ids}}) {
+        returning {
+            id
+        }
+    }
+}

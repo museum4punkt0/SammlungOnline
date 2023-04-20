@@ -1,6 +1,6 @@
 package de.smbonline.mdssync.dataprocessor.repository
 
-import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.coroutines.await
 import de.smbonline.mdssync.dataprocessor.graphql.client.GraphQlClient
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteHighlightsByOrgUnitIdMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteHightlightMutation
@@ -25,7 +25,7 @@ class HighlightRepository @Autowired constructor(private val graphQlClient: Grap
     suspend fun fetchAllHighlights(): List<HighlightData> {
         val result = graphQlClient.client.query(
                 FetchAllHighlightsQuery()
-        ).toDeferred().await()
+        ).await()
         return result.data?.smb_highlights?.map { it.fragments.highlightData }.orEmpty()
     }
 
@@ -36,7 +36,7 @@ class HighlightRepository @Autowired constructor(private val graphQlClient: Grap
     suspend fun fetchHighlightsByOrgUnitId(orgUnitId: Long): List<HighlightData> {
         val result = graphQlClient.client.query(
                 FetchHighlightsByOrgUnitIdQuery(orgUnitId = orgUnitId)
-        ).toDeferred().await()
+        ).await()
         return result.data?.smb_highlights?.map { it.fragments.highlightData }.orEmpty()
     }
 
@@ -62,7 +62,7 @@ class HighlightRepository @Autowired constructor(private val graphQlClient: Grap
                         orgUnitId = orgUnitId,
                         objectId = objectId
                 )
-        ).toDeferred().await()
+        ).await()
 
         val highlight = result.data?.smb_highlights?.firstOrNull() ?: return null
         return (highlight.fragments.highlightData.id as BigDecimal).longValueExact()
@@ -81,7 +81,7 @@ class HighlightRepository @Autowired constructor(private val graphQlClient: Grap
                         orgUnitId = orgUnitId,
                         objectId = objectId
                 )
-        ).toDeferred().await()
+        ).await()
         ensureNoError(result)
 
         result.data?.insert_smb_highlights_one
@@ -102,7 +102,7 @@ class HighlightRepository @Autowired constructor(private val graphQlClient: Grap
                         orgUnitId = orgUnitId,
                         objectId = objectId
                 )
-        ).toDeferred().await()
+        ).await()
         ensureNoError(result)
 
         val highlight = result.data?.delete_smb_highlights?.returning?.firstOrNull() ?: return null
@@ -119,7 +119,7 @@ class HighlightRepository @Autowired constructor(private val graphQlClient: Grap
                 DeleteHighlightsByOrgUnitIdMutation(
                         orgUnitId = orgUnitId
                 )
-        ).toDeferred().await()
+        ).await()
         ensureNoError(result)
 
         val highlights = result.data?.delete_smb_highlights?.returning

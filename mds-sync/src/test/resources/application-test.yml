@@ -10,13 +10,13 @@ scheduler:
     enabled: false
 
 mds-api:
-  base-url: https://de1.zetcom-group.de/MpWeb-mpBerlinStaatlicheMuseenTest
+  base-url: ${MDS_API_BASEURL:https://de1.zetcom-group.de/MpWeb-mpBerlinStaatlicheMuseenTest}
   ssl-validation-enabled: false
   auth:
     user: ${MDS_API_USER} # secret
     pass: ${MDS_API_PASSWORD} # secret
 
-image-provider:
+image-processing:
   base-url: http://localhost:8090/images
   user: smb-image-user # see core/image-provider/docker docker-compose.yml
   pass: ${IMGP_PASS} # secret

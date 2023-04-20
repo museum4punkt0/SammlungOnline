@@ -25,6 +25,6 @@ public class MdsApiClientFactory {
     }
 
     public MdsApiClient getApiClient(final String moduleName) {
-        return this.registry.computeIfAbsent(moduleName, (name) -> new MdsApiClient(this.config, name, this.sessionHandler));
+        return this.registry.computeIfAbsent(moduleName, name -> new MdsApiClient(this.config, name, this.sessionHandler));
     }
 }

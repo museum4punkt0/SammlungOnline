@@ -1,11 +1,13 @@
 package de.smbonline.mdssync.rest;
 
-import de.smbonline.mdssync.dto.SyncCycleDTO;
+import de.smbonline.mdssync.api.MdsApiConfig;
+import de.smbonline.mdssync.dto.SyncCycleType;
 import de.smbonline.mdssync.exec.SyncController;
 import de.smbonline.mdssync.exec.SyncResult;
 import de.smbonline.mdssync.exec.SyncScheduler;
 import de.smbonline.mdssync.index.SearchIndexerConfig;
-import de.smbonline.mdssync.api.MdsApiConfig;
+import de.smbonline.mdssync.jaxb.search.response.Application;
+import io.sentry.Sentry;
 import kotlin.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +22,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.LongStream;
 
 import static de.smbonline.mdssync.rest.JsonAttr.*;
 import static de.smbonline.mdssync.util.Conversions.*;
+import static de.smbonline.mdssync.util.MdsConstants.*;
+import static java.util.Objects.*;
 import static org.springframework.http.MediaType.*;
 
 @RestController
@@ -69,12 +72,13 @@ public class AdminRestController {
 
     @GetMapping
     public String check() {
+        Sentry.captureMessage("AdminRestController invoked");
         return "Hello from AdminController!";
     }
 
     @GetMapping(path = "configure", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Any> getSupportedConfigurationKeys() {
-        Any config = new Any()
+    public ResponseEntity<Data> getSupportedConfigurationKeys() {
+        Data config = new Data()
                 .setAttribute(MDS_SSL_VALIDATION_ENABLED, this.mdsApiConfig.isSslValidationEnabled())
                 .setAttribute(APPROVAL_FILTER_ENABLED, this.mdsApiConfig.isApprovalFilterEnabled())
                 .setAttribute(MDS_TOKEN_LIFETIME, this.mdsApiConfig.getTokenLifetime())
@@ -86,7 +90,7 @@ public class AdminRestController {
     }
 
     @PostMapping(path = "configure", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Any> configure(final @RequestBody Any config) {
+    public ResponseEntity<Data> configure(final @RequestBody Data config) {
 
         if (config.hasAttribute(MDS_SSL_VALIDATION_ENABLED)) {
             this.mdsApiConfig.setSslValidationEnabled(toBoolean(config.getAttribute(MDS_SSL_VALIDATION_ENABLED)));
@@ -121,108 +125,174 @@ public class AdminRestController {
             config.removeAttribute(SEARCH_INDEXER_SHOULD_UPDATE);
         }
 
-        Any response = new Any().setAttribute(ATTR_STATUS, HttpStatus.OK);
+        Data response = new Data().setAttribute(ATTR_STATUS, HttpStatus.OK);
         if (config.hasAttributes()) {
             response.setAttribute("ignoredConfigurationKeys", config.getAttributes().keySet());
         }
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(value = "trigger/recalculate", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Data> recalculateTrigger(final @RequestBody Data event) {
+        LOGGER.info("Recalculate event received: {}", event);
+
+        Long id = extractId(event);
+        Data request = new Data().setAttribute(ATTR_IDS, Collections.singletonList(id));
+        SyncResult result = runRecalculationByIds(request);
+        Data response = toResponse(result);
+        return ResponseEntity.status(requireNonNull(response.getTypedAttribute(ATTR_STATUS))).body(response);
+    }
+
     @PostMapping(value = "trigger/sync", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Any> indexTrigger(final @RequestBody Any event) {
+    public ResponseEntity<Data> indexTrigger(final @RequestBody Data event) {
         LOGGER.info("Index event received: {}", event);
 
         Long id = extractId(event);
-        Any request = new Any().setAttribute(ATTR_IDS, Collections.singletonList(id.toString()));
-        SyncResult result = executeManualSyncByIds(request);
-        Any response = toResponse(result);
-        return ResponseEntity.status(response.getTypedAttribute(ATTR_STATUS)).body(response);
+        Data request = new Data()
+                .setAttribute(ATTR_IDS, Collections.singletonList(id))
+                .setAttribute(ATTR_MODULE, getModuleForTable(requireNonNull(event.getNestedTypedAttribute("table.name"))));
+        SyncResult result = runManualSyncByIds(request);
+        Data response = toResponse(result);
+        return ResponseEntity.status(requireNonNull(response.getTypedAttribute(ATTR_STATUS))).body(response);
     }
 
-    private static Long extractId(final Any event) {
-        Number id = Objects.requireNonNull(event.getNestedTypedAttribute("event.data.new.id"));
+    private String getModuleForTable(final String dbTable) {
+        return switch (dbTable.toLowerCase()) {
+            case "assortments" -> MODULE_OBJECT_GROUPS;
+            case "attachments" -> MODULE_MULTIMEDIA;
+            case "exhibitions" -> MODULE_EXHIBITIONS;
+            case "objects" -> MODULE_OBJECTS;
+            case "persons" -> MODULE_PERSON;
+            case "thesaurus" -> VOCABULARY;
+            default -> null;
+        };
+    }
+
+    private static Long extractId(final Data event) {
+        Number id = requireNonNull(event.getNestedTypedAttribute("event.data.new.id"));
         return id.longValue();
     }
 
     @GetMapping(path = "sync", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getSyncState() {
+    public ResponseEntity<Object> getSyncState() {
         return ResponseEntity.ok(this.syncController.getState());
     }
 
+    @PatchMapping(path = "recalculate", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Data> executeRecalculation(final @RequestBody Data data) {
+        SyncResult result = runRecalculationByIds(data);
+        Data response = toResponse(result);
+        return ResponseEntity.status(requireNonNull(response.getTypedAttribute(ATTR_STATUS))).body(response);
+    }
+
+
+    @PostMapping(path = "sync", produces = MediaType.APPLICATION_JSON_VALUE, consumes = APPLICATION_XML_VALUE)
+    public ResponseEntity<Data> executeSync(final @RequestBody Application xml) {
+        // TODO run sync for module in given Application
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    }
+
     @PatchMapping(path = "sync", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Any> executeSync(final @RequestBody Any data) {
+    public ResponseEntity<Data> executeSync(final @RequestBody Data data) {
 
-        SyncCycleDTO.Type type = data.hasAttribute(ATTR_TYPE)
-                ? SyncCycleDTO.Type.valueOf(data.getTypedAttribute(ATTR_TYPE)) : SyncCycleDTO.Type.MANUAL;
+        SyncCycleType type = data.hasAttribute(ATTR_TYPE)
+                ? SyncCycleType.valueOf(data.getTypedAttribute(ATTR_TYPE)) : SyncCycleType.MANUAL;
 
-        Any response;
-        if (type == SyncCycleDTO.Type.MANUAL) {
+        Data response;
+        if (type == SyncCycleType.MANUAL) {
             response = executeManualSync(data);
         } else {
             SyncResult result = SyncResult.NOOP;
-            if (type == SyncCycleDTO.Type.DELETIONS) {
+            if (type == SyncCycleType.ASSORTMENTS) {
+                result = this.syncController.resolveAssortments();
+            }
+            if (type == SyncCycleType.DELETIONS) {
                 result = this.syncController.removeDeleted();
             }
-            if (type == SyncCycleDTO.Type.HIGHLIGHTS) {
+            if (type == SyncCycleType.HIGHLIGHTS) {
                 result = this.syncController.resolveHighlights();
             }
-            if (type == SyncCycleDTO.Type.INCREMENTAL) {
-                result = this.syncController.nextIncremental();
+            if (type == SyncCycleType.INCREMENTAL) {
+                String module = data.hasAttribute(ATTR_MODULE) ? data.getTypedAttribute(ATTR_MODULE) : MODULE_OBJECTS;
+                result = runIncrementalSync(module);
             }
             response = toResponse(result);
         }
-        return ResponseEntity.status(response.getTypedAttribute(ATTR_STATUS)).body(response);
+        return ResponseEntity.status(requireNonNull(response.getTypedAttribute(ATTR_STATUS))).body(response);
     }
 
-    private Any executeManualSync(final Any data) {
+    private Data executeManualSync(final Data data) {
         boolean syncIds = data.hasAttribute(ATTR_IDS);
         boolean syncTimeRange = data.hasAttribute(ATTR_MODIFIED_FROM) || data.hasAttribute(ATTR_MODIFIED_TO);
         boolean syncBoth = syncIds && syncTimeRange;
         if (syncIds != syncTimeRange) {
-            SyncResult result = syncIds ? executeManualSyncByIds(data) : executeManualSyncByDateRange(data);
+            if (!data.hasAttribute(ATTR_MODULE)) {
+                data.setAttribute(ATTR_MODULE, MODULE_OBJECTS);
+            }
+            SyncResult result = syncIds ? runManualSyncByIds(data) : runManualSyncByDateRange(data);
             return toResponse(result);
         }
         String message = syncBoth
                 ? "can't handle id-sync and timerange-sync at the same time"
                 : "missing fields, either '" + ATTR_IDS + "' or '" + ATTR_MODIFIED_FROM + "'/'" + ATTR_MODIFIED_TO + "' required. Or did you want to specify a different " + ATTR_TYPE + "?";
-        return new Any()
+        return new Data()
                 .setAttribute(ATTR_STATUS, HttpStatus.EXPECTATION_FAILED)
                 .setAttribute(ATTR_RESULT, SyncResult.NOOP.toJson())
                 .setAttribute(ATTR_INFO, message);
     }
 
-    private SyncResult executeManualSyncByIds(final Any data) {
-        Long[] ids = collectIdsAsLongArray(data.getTypedAttribute(ATTR_IDS));
-        return this.syncController.syncUpdates(ids);
+    private SyncResult runIncrementalSync(final String module) {
+        return switch (module) {
+            case MODULE_EXHIBITIONS -> this.syncController.resolveExhibitions();
+            case MODULE_MULTIMEDIA -> this.syncController.resolveAttachments();
+            case MODULE_OBJECT_GROUPS -> this.syncController.resolveAssortments();
+            case MODULE_OBJECTS -> this.syncController.nextIncremental();
+            case MODULE_PERSON -> this.syncController.resolvePersons();
+            case VOCABULARY -> this.syncController.resolveThesauri();
+            default -> SyncResult.NOOP;
+        };
+    }
+
+    private SyncResult runManualSyncByIds(final Data data) {
+        String module = data.getTypedAttribute(ATTR_MODULE);
+        Long[] ids = collectIdsAsLongArray(requireNonNull(data.getTypedAttribute(ATTR_IDS)));
+        return this.syncController.syncUpdates(module, ids);
     }
 
     private static Long[] collectIdsAsLongArray(final Collection<?> payloadIds) {
-        Collection<Long> collected = payloadIds.stream()
-                .collect(ArrayList::new, (list, str) -> {
+        Set<Long> collected = payloadIds.stream()
+                .collect(LinkedHashSet::new, (result, next) -> {
                     // it's either number or string
-                    String element = str.toString();
+                    String element = next.toString();
                     if (element.contains("..")) {
                         long start = Long.parseLong(element.substring(0, element.indexOf('.')));
                         long end = Long.parseLong(element.substring(element.lastIndexOf('.') + 1));
-                        LongStream.rangeClosed(start, end).forEach(list::add);
+                        LongStream.rangeClosed(start, end).forEach(result::add);
                     } else {
-                        list.add(Long.parseLong(element));
+                        result.add(Long.parseLong(element));
                     }
-                }, ArrayList::addAll);
+                }, LinkedHashSet::addAll);
         return collected.toArray(Long[]::new);
     }
 
-    private SyncResult executeManualSyncByDateRange(final Any data) {
-        LocalDateTime from = data.hasAttribute(ATTR_MODIFIED_FROM)
-                ? LocalDateTime.parse(data.getTypedAttribute(ATTR_MODIFIED_FROM))
-                : LocalDateTime.of(LocalDate.EPOCH, LocalTime.MIDNIGHT);
-        LocalDateTime to = data.hasAttribute(ATTR_MODIFIED_TO)
-                ? LocalDateTime.parse(data.getTypedAttribute(ATTR_MODIFIED_TO)) : null;
-        return this.syncController.syncUpdates(from, to);
+    private SyncResult runManualSyncByDateRange(final Data data) {
+        String module = data.getTypedAttribute(ATTR_MODULE);
+        OffsetDateTime from = data.hasAttribute(ATTR_MODIFIED_FROM)
+                ? OffsetDateTime.parse(requireNonNull(data.getTypedAttribute(ATTR_MODIFIED_FROM)))
+                : OffsetDateTime.ofInstant(Instant.EPOCH, MDS_DATE_ZONE);
+        OffsetDateTime to = data.hasAttribute(ATTR_MODIFIED_TO)
+                ? OffsetDateTime.parse(requireNonNull(data.getTypedAttribute(ATTR_MODIFIED_TO))) : null;
+        return this.syncController.syncUpdates(module, from, to);
     }
 
-    private Any toResponse(final SyncResult result) {
-        Any response = new Any()
+    private SyncResult runRecalculationByIds(final Data data) {
+        Long[] ids = collectIdsAsLongArray(requireNonNull(data.getTypedAttribute(ATTR_IDS)));
+        // FIXME implement - fetch objects with attribute translations, then for each recalculate exhibition_space and update the object
+        return SyncResult.NOOP;
+    }
+
+    private Data toResponse(final SyncResult result) {
+        Data response = new Data()
                 .setAttribute(ATTR_STATUS, toHttpStatus(result))
                 .setAttribute(ATTR_RESULT, result.toJson());
         if (result.getStatus() != SyncResult.Status.NOOP) {
@@ -232,14 +302,10 @@ public class AdminRestController {
     }
 
     private HttpStatus toHttpStatus(final SyncResult result) {
-        switch (result.getStatus()) {
-            case NOOP:
-                return HttpStatus.LOCKED;
-            case ERROR:
-                return HttpStatus.INTERNAL_SERVER_ERROR;
-            case SUCCESS:
-            default:
-                return HttpStatus.OK;
-        }
+        return switch (result.getStatus()) {
+            case NOOP -> HttpStatus.LOCKED;
+            case SUCCESS -> HttpStatus.OK;
+            case ERROR -> HttpStatus.INTERNAL_SERVER_ERROR;
+        };
     }
 }

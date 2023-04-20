@@ -1,52 +1,36 @@
 package de.smbonline.mdssync.exec;
 
-import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.IgnorableKeyData;
-import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.LanguageData;
-import de.smbonline.mdssync.dataprocessor.queue.DataQueue;
-import de.smbonline.mdssync.dataprocessor.queue.ObservableDataQueue;
-import de.smbonline.mdssync.dataprocessor.repository.IgnorableKeyRepository;
-import de.smbonline.mdssync.dataprocessor.repository.LanguageRepository;
-import de.smbonline.mdssync.dataprocessor.repository.SyncCycleRepository;
-import de.smbonline.mdssync.dataprocessor.service.IgnorableKeyService;
-import de.smbonline.mdssync.dataprocessor.service.LanguageService;
-import de.smbonline.mdssync.dataprocessor.service.ObjectService;
-import de.smbonline.mdssync.dataprocessor.service.SyncCycleService;
-import de.smbonline.mdssync.dto.WrapperDTO;
-import de.smbonline.mdssync.index.SearchIndexerConfig;
 import de.smbonline.mdssync.api.MdsApiClient;
 import de.smbonline.mdssync.api.MdsApiClientFactory;
 import de.smbonline.mdssync.api.MdsApiConfig;
 import de.smbonline.mdssync.api.MdsSessionHandler;
+import de.smbonline.mdssync.dataprocessor.queue.DataQueue;
+import de.smbonline.mdssync.dataprocessor.queue.ObservableDataQueue;
+import de.smbonline.mdssync.dataprocessor.service.IgnorableKeyService;
+import de.smbonline.mdssync.dataprocessor.service.LanguageService;
+import de.smbonline.mdssync.dataprocessor.service.SyncCycleService;
+import de.smbonline.mdssync.dto.WrapperDTO;
+import de.smbonline.mdssync.exec.resolvers.ObjectsResolver;
+import de.smbonline.mdssync.exec.resolvers.ResolverRegistry;
+import de.smbonline.mdssync.exec.resolvers.ResolverResult;
+import de.smbonline.mdssync.index.SearchIndexerConfig;
 import de.smbonline.mdssync.jaxb.search.response.Module;
 import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.ObjectProvider;
 
-import javax.validation.constraints.NotNull;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class SyncExecuterTest {
+class SyncExecuterTest {
 
     @Test
-    public void ignoredKeys() throws Exception {
-        Repos repos = new Repos().ignorableKeys("foo", "bar", "foo.bar", "one.two.three");
-        SyncExecuter exec = newSyncExecuter(repos);
-        String[] ignoredKeys = exec.getIgnoredKeys();
-        assertThat(ignoredKeys).contains("bar", "foo", "foo.bar", "one.two.three");
-        // certain module-references are supposed to be ignored
-        assertThat(ignoredKeys).contains("ObjLiteratureRef", "ObjRegistrarRef",  "ObjOwnership001Ref");
-    }
-
-    @Test
-    public void syncedIds() throws Exception {
+    void syncedIds() throws Exception {
         Long[] ids = {1L, 2L, 3L};
-        Repos repos = new Repos().languages("de");
-        SyncExecuter exec = newSyncExecuter(repos);
+        Services services = new Services().languages("de");
+        SyncExecuter exec = newSyncExecuter(services);
         SyncResult result = exec.sync(ids);
         assertThat(result.getSuccessfulIds()).isNotNull();
         assertThat(result.getFailedIds()).isNotNull();
@@ -57,7 +41,7 @@ public class SyncExecuterTest {
     }
 
     @SuppressWarnings("unchecked")
-    private static SyncExecuter newSyncExecuter(final @NotNull Repos repos) throws Exception {
+    private static SyncExecuter newSyncExecuter(final Services services) throws Exception {
         MdsApiConfig mdsApiConfig = new MdsApiConfig();
         MdsSessionHandler sessionHandler = Mockito.mock(MdsSessionHandler.class);
         MdsApiClient client = Mockito.mock(MdsApiClient.class);
@@ -82,45 +66,53 @@ public class SyncExecuterTest {
         SearchIndexerConfig indexerConfig = new SearchIndexerConfig();
         indexerConfig.setShouldUpdate(false);
         DataQueue<WrapperDTO> dataQueue = new ObservableDataQueue<>();
-        ObjectProvider<AttachmentsResolver> attachmentResolverProvider = Mockito.mock(ObjectProvider.class);
-        ObjectService objectService = Mockito.mock(ObjectService.class); // repo-mocking too complicated
-        LanguageService langService = new LanguageService();
-        langService.languageRepository = repos.languageRepository;
-        IgnorableKeyService ignoreService = new IgnorableKeyService();
-        ignoreService.ignorableKeyRepo = repos.ignorableKeyRepository;
-        SyncCycleService cycleService = new SyncCycleService();
-        cycleService.syncCycleRepository=repos.cyclesRepository;
+        ObjectsResolver objectResolver = Mockito.mock(ObjectsResolver.class);
+        Mockito.when(objectResolver.parseAndProcess(Mockito.any(), Mockito.any())).then((invocation) -> {
+            Module module = invocation.getArgument(0);
+            ResolverResult result = new ResolverResult();
+            for (ModuleItem item : module.getModuleItem()) {
+                result.processed(item.getId());
+                if (item.getId() % 2 == 0) {
+                    result.failed(item.getId());
+                } else {
+                    result.successful(item.getId());
+                }
 
-        return new SyncExecuter(
+            }
+            return result;
+        });
+        ObjectProvider<ObjectsResolver> objectResolverProvider = Mockito.mock(ObjectProvider.class);
+        Mockito.when(objectResolverProvider.getObject()).thenReturn(Mockito.mock(ObjectsResolver.class));
+        ResolverRegistry registry = new ResolverRegistry(
+                objectResolverProvider,
+                Mockito.mock(ObjectProvider.class),
+                Mockito.mock(ObjectProvider.class),
+                Mockito.mock(ObjectProvider.class),
+                Mockito.mock(ObjectProvider.class));
+
+        SyncExecuter executer = new SyncExecuter(
                 mdsApiConfig,
                 clientFactory,
-                indexerConfig,
-                objectService,
-                langService,
-                cycleService,
-                ignoreService,
+                services.languageService,
+                services.cyclesService,
                 dataQueue,
-                attachmentResolverProvider);
+                registry);
+        executer.setModuleName("Object");
+        return executer;
     }
 
-    private static class Repos {
-        private final LanguageRepository languageRepository = Mockito.mock(LanguageRepository.class);
-        private final SyncCycleRepository cyclesRepository = Mockito.mock(SyncCycleRepository.class);
-        private final IgnorableKeyRepository ignorableKeyRepository = Mockito.mock(IgnorableKeyRepository.class);
+    private static class Services {
+        private final LanguageService languageService = Mockito.mock(LanguageService.class);
+        private final SyncCycleService cyclesService = Mockito.mock(SyncCycleService.class);
+        private final IgnorableKeyService ignorableKeyService = Mockito.mock(IgnorableKeyService.class);
 
-        public Repos ignorableKeys(final @NotNull String... keys) {
-            List<IgnorableKeyData> ignorableKeys = Arrays.stream(keys)
-                    .map(key -> new IgnorableKeyData("smb_ignorable_key", key, key))
-                    .collect(Collectors.toList());
-            Mockito.when(ignorableKeyRepository.fetchAllIgnorableKeysBlocking()).thenReturn(ignorableKeys);
+        public Services ignorableKeys(final String... keys) {
+            Mockito.when(ignorableKeyService.getIgnorableKeys()).thenReturn(Arrays.asList(keys));
             return this;
         }
 
-        public Repos languages(final @NotNull String... isoKeys) {
-            List<LanguageData> languages = Arrays.stream(isoKeys)
-                    .map(key -> new LanguageData("smb_language", key, key))
-                    .collect(Collectors.toList());
-            Mockito.when(languageRepository.fetchLanguagesBlocking()).thenReturn(languages);
+        public Services languages(final String... isoKeys) {
+            Mockito.when(languageService.getSupportedLanguages()).thenReturn(Arrays.asList(isoKeys));
             return this;
         }
     }

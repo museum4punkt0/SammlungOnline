@@ -1,0 +1,41 @@
+# Returns the ids of all MaterialReferences of an Object filtered by Language
+query FetchMaterialReferenceIdsByObjectIdAndLanguage($objectId: bigint!, $lang: String!) {
+    smb_material_references(where: {
+        object_id: { _eq: $objectId },
+        language: { lang: { _eq: $lang } }
+    }) {
+        id
+    }
+}
+
+mutation InsertOrUpdateMaterialReference(
+    $objectId:bigint!,
+    $materialItemId:bigint!,
+    $languageId:bigint!
+    $sequence:Int!,
+    $details:String,
+    $specificTypeVoc:bigint,
+    $typeVoc:bigint) {
+    insert_smb_material_references_one(object: {
+        object_id: $objectId
+        material_item_id: $materialItemId
+        language_id: $languageId
+        details: $details
+        sequence: $sequence
+        specific_type_voc_id: $specificTypeVoc
+        type_voc_id: $typeVoc
+    }, on_conflict: {
+        constraint: material_references_pkey,
+        update_columns: [object_id, material_item_id, language_id, details, sequence, specific_type_voc_id, type_voc_id]
+    }) {
+        id
+    }
+}
+
+mutation DeleteMaterialReferences($ids: [bigint!]!) {
+    delete_smb_material_references(where: {id: {_in: $ids}}) {
+        returning {
+            id
+        }
+    }
+}

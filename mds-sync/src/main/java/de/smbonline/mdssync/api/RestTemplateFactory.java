@@ -25,13 +25,13 @@ public enum RestTemplateFactory {
     INSTANCE;
 
     public RestTemplate getRestTemplate(final MdsApiConfig config) {
-        return  getRestTemplate(config, null);
+        return getRestTemplate(config, null);
     }
 
     public RestTemplate getRestTemplate(final MdsApiConfig config, final @Nullable MdsSessionHandler sessionHandler) {
         RestTemplateBuilder builder = new RestTemplateBuilder()
                 .setConnectTimeout(Duration.ofSeconds(5))
-                .setReadTimeout(Duration.ofMinutes(3)) // resolving of certain module-references lasts way too long...
+                .setReadTimeout(Duration.ofMinutes(8)) // resolving of certain module-items lasts way too long... (see Person 204)
                 .rootUri(config.getBaseUrl())
                 .basicAuthentication(config.getAuth().getUser(), config.getAuth().getPass())
                 .messageConverters(new Jaxb2RootElementHttpMessageConverter());

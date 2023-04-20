@@ -1,146 +1,178 @@
 {
-    "AKu": {
-        "key": "AKu",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "AMP": {
-        "key": "AMP",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "^.+\\((?<collection>ÄMP|AMP) */ *(?<building>NMU|Neues Museum) */ *(?<level>.+?) */ *(?<room>.+?) *\\) */ *(?<appendix>.*)$",
-        "excludes": null
-    },
-    "ÄMP": {
-        "key": "ÄMP",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "^.+\\((?<collection>ÄMP|AMP) */ *(?<building>NMU|Neues Museum) */ *(?<level>.+?) */ *(?<room>.+?) *\\) */ *(?<appendix>.*)$",
-        "excludes": "(?!NMU|Neues Museum)"
-    },
-    "ANT": {
-        "key": "ANT",
-        "field": "ObjNormalLocationVrt",
-        "includes": "^(?<room>.+?) *(?:\\(.*\\))? *\\(ANT */ *(?<building>.+?) */ *Ausstellung(?: */ *(?<level>.+) *)?\\) */ *(?<appendix>.*)$",
-        "excludes": "^(?:Museumsshop|.*\\(ANT.+(?:AM|Altes Museum).*Ausstellung.+(?:1\\. *Obergeschoss)\\)).*$"
-    },
-    "EM": {
-        "key": "EM",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "GG": {
-        "key": "GG",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "ISL": {
-        "key": "ISL",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "KB": {
-        "key": "KB",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "KGM": {
-        "key": "KGM",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "KK": {
-        "key": "KK",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "MK": {
-        "key": "MK",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "MEK": {
-        "key": "MEK",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "MIM": {
-        "key": "MIM",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "MVF": {
-        "key": "MVF",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "^(?<room>.+?) *(?:\\(.*\\))? *\\(MVF */ *(?<building>.+?)\\).*",
-        "excludes": null
-    },
-    "NG": {
-        "key": "NG",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "ANG": {
-        "key": "ANG",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "MSB": {
-        "key": "MSB",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "SBM": {
-        "key": "SBM",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "SKS": {
-        "key": "SKS",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "VAM": {
-        "key": "VAM",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "GF": {
-        "key": "GF",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "IFM": {
-        "key": "IFM",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "RaO": {
-        "key": "RaO",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    },
-    "ZA": {
-        "key": "ZA",
-        "field": "ObjCurrentLocationVrt",
-        "includes": "__TODO__",
-        "excludes": "^.*$"
-    }
+  "some-hopefully-helpful-regex-clarification": [
+    "(?<ABC>......) -> capturing group named 'ABC'",
+    "(?:......)     -> non-capturing group",
+    "(...+?)        -> plus-quantifier becomes lazy, matching as few characters as possible"
+  ],
+  "AKu": {
+    "key": "AKu",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^(?<building>.+?)##(?<room>O(?<level>\\d+).+?)##E[A-Z\\d]+(?:##(?<appendix>.*))?$",
+    "excludes": "^.*(##O3\\.124\\.B1##|##O3\\.090\\.K1##|Depot|##VE\\d+).*$",
+    "explanation": "Essentially anything (in Humboldt Forum) that has an 'E-number' as location indicator - except room '03.124.02.B1/03.124.B1'"
+  },
+  "AMP": {
+    "key": "AMP",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^(?:ÄMP|AMP)##(?<building>NMU|Neues Museum)##(?<level>.+?)##(?<room>.+?)(?:##(?<appendix>.*))?$",
+    "excludes": ".*##Raum 04\\.1##.*",
+    "info": "Just a copy of ÄMP because I am not sure if the actual key is AMP or ÄMP or if even both versions exist",
+    "explanation": "Essentially anything in 'Neues Museum' except R04.1"
+  },
+  "ÄMP": {
+    "key": "AMP",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^(?:ÄMP|AMP)##(?<building>NMU|Neues Museum)##(?<level>.+?)##(?<room>.+?)(?:##(?<appendix>.*))?$",
+    "excludes": ".*##Raum 04\\.1##.*",
+    "info": "Just a copy of AMP because I am not sure if the actual key is AMP or ÄMP or if even both versions exist",
+    "explanation": "Essentially anything in 'Neues Museum' except R04.1"
+  },
+  "ANT": {
+    "key": "ANT",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^ANT##(?<building>.+)##Ausstellung(?:##(?<level>.+))?##(?<room>.+?)(?: *\\((?<appendix>.+)\\))?$",
+    "excludes": "^.*(?:Sonderausstellung|Museumsshop|Kompartiment|Magazine).*$",
+    "explanation": "Essentially anything in 'Ausstellung' except 'Museumsshop', 'Kompartiment' and 'Magazine'"
+  },
+  "EM": {
+    "key": "EM",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^(?<building>.+?)##O(?:(?<level>2|3).+?|1\\.189\\.01\\.K1)##(?<room>E\\d\\d)[A-Z\\d]+(?:##(?<appendix>.*))?$",
+    "excludes": ".*(Depot|Zwischenlager|Restaurierung|##VE\\d+|##E(19|2[0-9]|3[0-1])).*",
+    "explanation": "Essentially anything (in Humboldt Forum) '2. OG', '3. OG' and 'O1.189.01.K1' that has an 'E-number' as location indicator - except E19-E31"
+  },
+  "GF": {
+    "key": "GF",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  },
+  "GG": {
+    "key": "GG",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^GG##GG_(?:(?<building>BM|Bodemuseum|Bode-Museum)|(?<sector>Kulturforum)##(?<level>GG_2\\.OG_Ausstellung))##(?<room>GG_(?:Bodemuseum_)?[0-9]+[a-z]*)(?:_(?<appendix>.*))?$",
+    "excludes": ".*(Unbekannter Standort|Restaurierung|Fotoatelier|Depot).*$",
+    "explanation": "Essentially anything in 'GG 2.OG Ausstellung' and 'Bode-Museum'"
+  },
+  "IFM": {
+    "key": "IFM",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  },
+  "ISL": {
+    "key": "ISL",
+    "field": "ObjNormalLocationVoc",
+    "includes": "^ISL##MI##(?<building>PMU)##AS##(?<room>R *\\d+)(?:##(?<appendix>.*))?$",
+    "excludes": null,
+    "explanation": "Essentially anything in 'Pergamonmuseum', 'Ausstellung Südflügel'"
+  },
+  "KB": {
+    "key": "KB",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  },
+  "KGM": {
+    "key": "KGM",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^(?<building>KGM##(?:Tiergarten|Köpenick))##Ausstellung##(?<room>.+?)(?:##(?<appendix>.*))?$",
+    "excludes": "^.*(Depot|Restaurierung).*$",
+    "explanation": "Essentially anything in 'Kunstgewerbemuseum Ausstellung' and 'Schloss Köpenick Ausstellung'"
+  },
+  "KK": {
+    "key": "KK",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  },
+  "MEK": {
+    "key": "MEK",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^(?<building>MEK)##.*(?<room>Dauerausstellung).*$",
+    "excludes": null,
+    "explanation": "Essentially anything in 'Dauerausstellung'"
+  },
+  "MK": {
+    "key": "MK",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  },
+  "MIM": {
+    "key": "MIM",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^(?<building>MIM)##(?:MIM|SIM)##(?<level>.+?)(?:##(?<appendix>.*))?$",
+    "excludes": "^.*(##MAG|Bildarchiv|##UG).*$",
+    "explanation": "Essentially anything in 'Musikintrumenten-Museum' except 'Bildarchiv' and 'Untergeschoss'"
+  },
+  "MSB": {
+    "key": "MSB",
+    "field": "ObjCurrentLocationVrt",
+    "includes": "^(?<building>BM) (?<room>R(?:aum)? *(?:10[6-9]|1[1-9][0-9]|2[0-5][0-9]|26[0-1])) *\\((?:SBM|MSB|SKS) */ *Museumsinsel */ *Bode\\-Museum *\\) *(?:/ *(?<appendix>.*))?.*$",
+    "excludes": "^.*\\(Restaurierung\\).*$",
+    "explanation": "Essentially anything in 'Bode-Museum' Rooms 106-261"
+  },
+  "MVF": {
+    "key": "MVF",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^MVF##(?<building>NMU|Neues Museum)##(?<room>.+?)(?:##(?<appendix>.*))?$",
+    "excludes": "^.*Depot.*$",
+    "explanation": "Essentially anything in 'Neues Museum'; except 'Depot'"
+  },
+  "NG": {
+    "key": "NG",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  },
+  "NGAlte": {
+    "key": "NG",
+    "field": "ObjCurrentLocationVrt",
+    "includes": "^.*(?:ANG-(?<room>.+?) *\\(NG */ *(?<building>ANG) */ *ANG-Ausstellung */ *(?:ANG-(?<level>(?:1\\.AG|2\\.AG|3\\.AG|Treppenhaus)))(?:[ /]*)(?<appendix> .*)?\\)|(?:(?<sector>FWK) *\\(NG\\))).*$",
+    "excludes": "^.*ANG-(Depot|Restaurierung|temporär).*$",
+    "explanation": "Essentially anything between '1st and 3rd Ausstellungsgeschoss'; or FWK"
+  },
+  "NGNeue": {
+    "key": "NG",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^^NG##(?<building>NNG)##Potsdamer Straße##(?<sector>NNG-Ausstellung)(?:##(?<appendix>.*))?$",
+    "excludes": null,
+    "explanation": "Essentially anything in 'NNG-Ausstellung'"
+  },
+  "SBM": {
+    "key": "MSB",
+    "field": "ObjCurrentLocationVrt",
+    "includes": "^(?<building>BM) (?<room>R(?:aum)? *(?:10[6-9]|1[1-9][0-9]|2[0-5][0-9]|26[0-1])) *\\((?:SBM|MSB|SKS) */ *Museumsinsel */ *Bode\\-Museum *\\) *(?:/ *(?<appendix>.*))?.*$",
+    "excludes": "^.*\\(Restaurierung\\).*$",
+    "info": "Just a copy of MSB",
+    "explanation": "Essentially anything in 'Bode-Museum' Rooms 106-261"
+  },
+  "SKS": {
+    "key": "MSB",
+    "field": "ObjCurrentLocationVrt",
+    "includes": "^(?<building>BM) (?<room>R(?:aum)? *(?:10[6-9]|1[1-9][0-9]|2[0-5][0-9]|26[0-1])) *\\((?:SBM|MSB|SKS) */ *Museumsinsel */ *Bode\\-Museum *\\) *(?:/ *(?<appendix>.*))?.*$",
+    "excludes": "^.*\\(Restaurierung\\).*$",
+    "info": "Just a copy of MSB",
+    "explanation": "Essentially anything in 'Bode-Museum' Rooms 106-261"
+  },
+  "RaO": {
+    "key": "RaO",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  },
+  "VAM": {
+    "key": "VAM",
+    "field": "ObjCurrentLocationVoc",
+    "includes": "^VAM##Berlin, Mitte##(?<building>PMU).*##Ausstellung##(?<room>.+)$",
+    "excludes": "^.*Depot.*$",
+    "explanation": "Essentially anything in 'PMU Ausstellung'"
+  },
+  "ZA": {
+    "key": "ZA",
+    "field": "undef",
+    "includes": "__TODO__",
+    "excludes": "^.*$"
+  }
 }

@@ -2,15 +2,17 @@ package de.smbonline.mdssync.dataprocessor.service
 
 import de.smbonline.mdssync.dataprocessor.repository.AttributeRepository
 import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository
-import de.smbonline.mdssync.dto.ObjectDTO
+import de.smbonline.mdssync.dto.PrincipalObject
 import kotlinx.coroutines.runBlocking
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assumptions.assumeThat
+import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assumptions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
+@ActiveProfiles("test")
 class ObjectServiceIT {
 
     @Autowired
@@ -33,11 +35,11 @@ class ObjectServiceIT {
             val attrCountBeforeChange = attributesRepository.getAttributeIds(mdsId, "de").size
             assumeThat(attrCountBeforeChange).isGreaterThan(0)
 
-            val obj = ObjectDTO(mdsId, "de")
+            val obj = PrincipalObject(mdsId, "de")
             metadataService.save(obj)
 
             val attrCountAfterChange = attributesRepository.getAttributeIds(mdsId, "de").size
-            assertThat(attrCountAfterChange).isEqualTo(0)
+            assertThat(attrCountAfterChange).isZero
             assertThat(attrCountAfterChange).isNotEqualTo(attrCountBeforeChange)
         }
     }

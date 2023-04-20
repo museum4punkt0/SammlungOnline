@@ -13,6 +13,9 @@ public final class JsonAttr {
     public static final String ATTR_RESULT = "result";
     public static final String ATTR_INFO = "info";
 
+    // internal attributes
+    public static final String ATTR_MODULE = "module";
+
     private JsonAttr() {
         // no instances
     }

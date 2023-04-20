@@ -1,13 +1,10 @@
 package de.smbonline.mdssync.api;
 
-import de.smbonline.mdssync.util.MdsConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
 import java.util.Objects;
-
-import static de.smbonline.mdssync.util.Validations.*;
 
 @Configuration
 @ConfigurationProperties(prefix = "mds-api")
@@ -18,7 +15,6 @@ public class MdsApiConfig {
     private String modulePathTemplate = this.webservicePath + "/module/{moduleName}";
     private int tokenLifetime = 20; // minutes
     private final AuthConfig auth = new AuthConfig();
-    private final FieldConfig fields = new FieldConfig();
     private boolean sslValidationEnabled = true;
     private boolean approvalFilterEnabled = true;
 
@@ -66,43 +62,12 @@ public class MdsApiConfig {
         this.approvalFilterEnabled = enabled;
     }
 
-    public FieldConfig getFields() {
-        return this.fields;
-    }
-
     public void setTokenLifetime(final int minutes) {
         this.tokenLifetime = minutes;
     }
 
     public int getTokenLifetime() {
         return this.tokenLifetime;
-    }
-
-    public static class FieldConfig {
-
-        private String highlightFieldName = "OgrNameTxt";
-        private String[] deletedFilter = {MdsConstants.FIELD_ORG_UNIT, MdsConstants.ORGUNIT_TRASHBIN};
-
-        public String getHighlightFieldName() {
-            return this.highlightFieldName;
-        }
-
-        public void setHighlightFieldName(final String fieldName) {
-            this.highlightFieldName = Objects.requireNonNull(fieldName);
-        }
-
-        /**
-         * Sets a filter expression.
-         *
-         * @param filter key,value
-         */
-        public void setDeletedFilter(final String[] filter) {
-            this.deletedFilter = requireArrayLength(2, filter);
-        }
-
-        public String[] getDeletedFilter() {
-            return this.deletedFilter;
-        }
     }
 
     public static class AuthConfig {

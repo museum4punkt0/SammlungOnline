@@ -1,6 +1,6 @@
 package de.smbonline.mdssync.exec;
 
-import de.smbonline.mdssync.rest.Any;
+import de.smbonline.mdssync.rest.Data;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.lang.Nullable;
@@ -26,6 +26,8 @@ public class SyncResult {
     private final Long[] skippedIds;
     private final Duration duration;
     private final Status status;
+    private final String summary;
+    private final String fullInfo;
 
     public SyncResult(final Status status, final Duration dur) {
         this.status = status;
@@ -33,6 +35,8 @@ public class SyncResult {
         this.failedIds = null;
         this.skippedIds = null;
         this.duration = dur;
+        this.summary = buildSummary();
+        this.fullInfo = buildFullInfo();
     }
 
     public SyncResult(final Long[] success, final Long[] fail, final Long[] skipped, final Duration dur) {
@@ -41,6 +45,8 @@ public class SyncResult {
         this.failedIds = fail;
         this.skippedIds = skipped;
         this.duration = dur;
+        this.summary = buildSummary();
+        this.fullInfo = buildFullInfo();
     }
 
     public Status getStatus() {
@@ -70,8 +76,8 @@ public class SyncResult {
         return this.duration;
     }
 
-    public Any toJson() {
-        return new Any()
+    public Data toJson() {
+        return new Data()
                 .setNonNullAttribute("status", this.status)
                 .setNonNullAttribute("successful", this.successfulIds)
                 .setNonNullAttribute("failed", this.failedIds)
@@ -79,8 +85,29 @@ public class SyncResult {
                 .setNonNullAttribute("duration", DurationFormatUtils.formatDurationHMS(this.duration.toMillis()));
     }
 
+    public String getSummary() {
+        return this.summary;
+    }
+
+    private String buildSummary() {
+        String lineEnd = "\n";
+        StringBuilder sb = new StringBuilder()
+                .append("Duration: ").append(DurationFormatUtils.formatDurationHMS(this.duration.toMillis()))
+                .append(lineEnd)
+                .append("Synced: ").append(this.successfulIds == null ? "unknown" : this.successfulIds.length)
+                .append(lineEnd)
+                .append("Failed: ").append(this.failedIds == null ? "unknown" : this.failedIds.length)
+                .append(lineEnd)
+                .append("Skipped: ").append(this.skippedIds == null ? "unknown" : this.skippedIds.length);
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
+        return this.fullInfo;
+    }
+
+    private String buildFullInfo() {
         String processed = this.successfulIds == null || this.failedIds == null || this.skippedIds == null
                 ? "unknown" : String.valueOf(this.successfulIds.length + this.failedIds.length + this.skippedIds.length);
         return "syncResult: { " +
@@ -89,7 +116,7 @@ public class SyncResult {
                 "successfulIds: " + Arrays.toString(this.successfulIds) + ", " +
                 "failedIds: " + Arrays.toString(this.failedIds) + ", " +
                 "skippedIds: " + Arrays.toString(this.skippedIds) + ", " +
-                "duration: " + this.duration +
+                "duration: " + DurationFormatUtils.formatDurationHMS(this.duration.toMillis()) +
                 " }";
     }
 }

@@ -2,52 +2,53 @@ package de.smbonline.mdssync.dataprocessor.service
 
 import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.ObjectData
 import de.smbonline.mdssync.dataprocessor.repository.AttributeRepository
+import de.smbonline.mdssync.dataprocessor.repository.GeographicalReferenceRepository
+import de.smbonline.mdssync.dataprocessor.repository.MaterialReferenceRepository
 import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository
-import de.smbonline.mdssync.dto.ObjectDTO
 import de.smbonline.mdssync.dto.Operation
+import de.smbonline.mdssync.dto.PrincipalObject
 import de.smbonline.mdssync.dto.WrapperDTO
 import de.smbonline.mdssync.pattern.cor.Engine
+import de.smbonline.mdssync.util.Dates
+import de.smbonline.mdssync.util.MdsConstants.*
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 
-@Component
-class ObjectService : DataService<ObjectDTO>, Engine<WrapperDTO>() {
+@Service
+class ObjectService @Autowired constructor(
+        private val objectRepository: ObjectRepository,
+        private val attributeRepository: AttributeRepository,
+        private val geographicalReferenceRepository: GeographicalReferenceRepository,
+        private val materialReferenceRepository: MaterialReferenceRepository,
+        private val attachmentService: AttachmentService
+) : DataService<PrincipalObject>, Engine<WrapperDTO>() {
 
-    @Autowired
-    lateinit var objectRepository: ObjectRepository
-
-    @Autowired
-    lateinit var attributeRepository: AttributeRepository
-
-    @Autowired
-    lateinit var attachmentService: AttachmentService
-
-    override fun save(element: ObjectDTO) {
+    override fun save(element: PrincipalObject) {
         runBlocking {
-            saveOrUpdateObject(element)
+            upsertObject(element)
         }
     }
 
-    override fun delete(element: ObjectDTO) {
+    override fun delete(element: PrincipalObject) {
         runBlocking {
             deleteObject(element)
         }
     }
 
     override fun isResponsible(element: WrapperDTO): Boolean {
-        return element.dto::class.qualifiedName == ObjectDTO::class.qualifiedName
+        return element.dto::class.qualifiedName == PrincipalObject::class.qualifiedName
     }
 
     override fun executeCommand(element: WrapperDTO) {
         when (element.operation) {
-            Operation.UPSERT -> save(element.dto as ObjectDTO)
-            Operation.DELETE -> delete(element.dto as ObjectDTO)
+            Operation.UPSERT -> save(element.dto as PrincipalObject)
+            Operation.DELETE -> delete(element.dto as PrincipalObject)
         }
     }
 
-    private suspend fun deleteObject(element: ObjectDTO) {
+    private suspend fun deleteObject(element: PrincipalObject) {
         attachmentService.deleteAll(element.mdsId)
         objectRepository.deleteObject(element.mdsId)
     }
@@ -57,7 +58,7 @@ class ObjectService : DataService<ObjectDTO>, Engine<WrapperDTO>() {
      * The object and the attributes will be updated, inserted or deleted if they are no longer part of the object.
      * @param obj
      */
-    private suspend fun saveOrUpdateObject(obj: ObjectDTO) {
+    private suspend fun upsertObject(obj: PrincipalObject) {
 
         // find existing object
         val exists = objectRepository.existsObject(obj.mdsId)
@@ -65,24 +66,45 @@ class ObjectService : DataService<ObjectDTO>, Engine<WrapperDTO>() {
         // get attributes before saving the object
         val oldAttributeIds = if (exists) {
             attributeRepository.getAttributeIds(obj.mdsId, obj.language)
-        } else emptyList()
+        } else emptyArray()
+
+        // get geolocations before saving the object
+        val oldGeoRefIds = if (exists) {
+            geographicalReferenceRepository.getGeographicalReferenceIds(obj.mdsId, obj.language)
+        } else emptyArray()
+
+        // get materials before saving the object
+        val oldMaterialRefIds = if (exists) {
+            materialReferenceRepository.getMaterialReferenceIds(obj.mdsId, obj.language)
+        } else emptyArray()
 
         // save object
-        val objectId = objectRepository.saveObject(smbObject = obj)
+        val objectId = objectRepository.saveObject(obj)
+
+        // save new geolocations
+        val newGeoRefIds = geographicalReferenceRepository.saveGeographicalReferences(obj.geoLocs, obj.language)
+        // delete the geolocations that are no longer part of the current object
+        val obsoleteGeoLocIds = oldGeoRefIds.filter { !newGeoRefIds.contains(it) }
+        geographicalReferenceRepository.deleteAll(obsoleteGeoLocIds)
+
+        // save new materials and techniques
+        val newMaterialRefIds = materialReferenceRepository.saveMaterialReferences(obj.materials, obj.language)
+        // delete the materials that are no longer part of the current object
+        val obsoleteMaterialRefIds = oldMaterialRefIds.filter { !newMaterialRefIds.contains(it) }
+        materialReferenceRepository.deleteAll(obsoleteMaterialRefIds)
 
         // save new attributes
         val newAttributeIds = attributeRepository.saveAttributeTranslations(obj.attributes, objectId, obj.language)
-
         // delete the attributes that are no longer part of the current object
         val obsoleteAttributeIds = oldAttributeIds.filter { !newAttributeIds.contains(it) }
         attributeRepository.deleteAll(obsoleteAttributeIds)
 
-        // TODO implement image support similar to highlights or attributes with negative list
+        // TODO remove this; AttachmentService must be able to handle this properly - or we adjust the AttachmentResolver just like we do for exhibitions and involved-parties
         // Delete all attachments, since we cannot know if an image is updated or not.
         // To prevent orphan attachments we have to delete all existing images in this step here
         // before we can save new images of an Object.
         // The new images will be saved by consuming the appropriate Images from the DataQueue *after*
-        // invocation of this method here. So it is important that the ObjectDto is always pushed
+        // invocation of this method here. So it is important that the ObjectDTO is always pushed
         // to the DataQueue before the related Images are pushed.
         attachmentService.deleteAll(objectId)
     }
@@ -92,7 +114,13 @@ class ObjectService : DataService<ObjectDTO>, Engine<WrapperDTO>() {
         runBlocking {
             obj = objectRepository.fetchObject(mdsId)
         }
-        val timestamp = obj?.updatedAt ?: return null
-        return OffsetDateTime.parse(timestamp.toString())
+
+        val exactLocalDateString = obj?.attributes?.find { it.attributeKey == FIELD_LAST_MODIFIED }?.value
+        val approxOffsetTimeString = obj?.updatedAt?.toString()
+        return if (exactLocalDateString != null) {
+            Dates.toOffsetDateTime(exactLocalDateString)
+        } else if (approxOffsetTimeString != null) {
+            OffsetDateTime.parse(approxOffsetTimeString).minusMinutes(5)
+        } else null
     }
 }

@@ -1,6 +1,6 @@
 package de.smbonline.mdssync.dataprocessor.repository
 
-import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.coroutines.await
 import de.smbonline.mdssync.dataprocessor.graphql.client.GraphQlClient
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteOrgUnitByNameMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteOrgUnitMutation
@@ -24,7 +24,7 @@ class OrgUnitRepository @Autowired constructor(private val graphQlClient: GraphQ
     suspend fun fetchAllOrgUnits(): List<OrgUnitData> {
         val result = graphQlClient.client.query(
                 FetchOrgUnitsQuery()
-        ).toDeferred().await()
+        ).await()
         val orgUnits = result.data?.smb_org_unit.orEmpty()
         return orgUnits.map { it.fragments.orgUnitData }
     }
@@ -37,7 +37,7 @@ class OrgUnitRepository @Autowired constructor(private val graphQlClient: GraphQ
     suspend fun fetchOrgUnitByOrgUnitName(orgUnitName: String): OrgUnitData? {
         val result = graphQlClient.client.query(
                 FetchOrgUnitByNameQuery(orgUnitName = orgUnitName)
-        ).toDeferred().await()
+        ).await()
         return result.data?.smb_org_unit?.firstOrNull()?.fragments?.orgUnitData
     }
 
@@ -59,7 +59,7 @@ class OrgUnitRepository @Autowired constructor(private val graphQlClient: GraphQ
     suspend fun saveOrgUnit(orgUnitName: String): Long {
         val result = graphQlClient.client.mutate(
                 InsertOrgUnitMutation(orgUnitName = orgUnitName)
-        ).toDeferred().await()
+        ).await()
 
         if (result.data?.insert_smb_org_unit_one == null) {
             throw SyncFailedException("failed saving ourg-unit $orgUnitName")
@@ -75,11 +75,12 @@ class OrgUnitRepository @Autowired constructor(private val graphQlClient: GraphQ
     suspend fun deleteOrgUnit(orgUnitId: Long): Long? {
         val result = graphQlClient.client.mutate(
                 DeleteOrgUnitMutation(orgUnitId = orgUnitId)
-        ).toDeferred().await()
+        ).await()
         ensureNoError(result)
 
-        return if (result.data?.delete_smb_org_unit_by_pk == null) null else {
-            (result.data!!.delete_smb_org_unit_by_pk!!.id as BigDecimal).longValueExact()
+        val orgUnit = result.data?.delete_smb_org_unit_by_pk
+        return if (orgUnit == null) null else {
+            (orgUnit.id as BigDecimal).longValueExact()
         }
     }
 
@@ -91,7 +92,7 @@ class OrgUnitRepository @Autowired constructor(private val graphQlClient: GraphQ
     suspend fun deleteOrgUnit(orgUnitName: String): Long? {
         val result = graphQlClient.client.mutate(
                 DeleteOrgUnitByNameMutation(orgUnitName = orgUnitName)
-        ).toDeferred().await()
+        ).await()
         ensureNoError(result)
 
         val deleted = result.data?.delete_smb_org_unit?.returning.orEmpty()

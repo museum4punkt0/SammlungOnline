@@ -2,8 +2,8 @@ package de.smbonline.mdssync.pattern.cor
 
 interface Processable {
 
-    var beforeExecuteCommand: (() -> Unit)?
-    var afterExecuteCommand: (() -> Unit)?
-    var onError: ((exc: Exception) -> Unit)?
+    var beforeExecuteCommand: List<(() -> Unit)>
+    var afterExecuteCommand: List<(() -> Unit)>
+    var onError: List<((exc: Exception) -> Unit)>
 
 }

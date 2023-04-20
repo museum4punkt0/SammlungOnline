@@ -2,7 +2,7 @@ package de.smbonline.mdssync.dataprocessor.repository
 
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
-import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.coroutines.await
 import de.smbonline.mdssync.dataprocessor.graphql.client.GraphQlClient
 import de.smbonline.mdssync.dataprocessor.graphql.queries.BulkInsertOrUpdateAttributeTranslationsMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteAttributeTranslationsMutation
@@ -13,17 +13,16 @@ import de.smbonline.mdssync.dataprocessor.graphql.queries.InsertOrUpdateAttribut
 import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.AttributeData
 import de.smbonline.mdssync.dataprocessor.graphql.queries.type.Smb_attribute_translations_insert_input
 import de.smbonline.mdssync.dataprocessor.repository.util.ensureNoError
-import de.smbonline.mdssync.dto.AttributeDTO
+import de.smbonline.mdssync.dto.AttributeValue
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import java.io.SyncFailedException
 import java.math.BigDecimal
-import java.util.ArrayList
 import kotlin.math.min
 
-// TODO remove access to LanguageRepository here. This should be done in service layer.
+// TODO remove access to LanguageRepository here. This should be done in service layer (AttributeService).
 
 @Repository
 class AttributeRepository @Autowired constructor(
@@ -40,12 +39,13 @@ class AttributeRepository @Autowired constructor(
      * @param lang key of Language
      * @return list of AttributeTranslation ids
      */
-    suspend fun getAttributeIds(objectId: Long, lang: String): List<Long> {
+    suspend fun getAttributeIds(objectId: Long, lang: String): Array<Long> {
         val result = graphQlClient.client.query(
                 FetchAttributeTranslationIdsByObjectIdAndLanguageQuery(objectId = objectId, lang = lang)
-        ).toDeferred().await()
+        ).await()
 
-        return result.data?.smb_attribute_translations?.map { (it.id as BigDecimal).longValueExact() }.orEmpty()
+        return result.data?.smb_attribute_translations
+                ?.map { (it.id as BigDecimal).longValueExact() }.orEmpty().toTypedArray()
     }
 
     /**
@@ -55,11 +55,11 @@ class AttributeRepository @Autowired constructor(
      * @param objectId id of owning Object
      * @param lang key to be used for translation reference
      */
-    suspend fun saveAttributeTranslations(attributes: List<AttributeDTO>, objectId: Long, lang: String): List<Long> {
+    suspend fun saveAttributeTranslations(attributes: List<AttributeValue>, objectId: Long, lang: String): Array<Long> {
         LOGGER.debug("Saving ${attributes.size} attribute values for object $objectId.")
 
         if (attributes.isEmpty()) {
-            return emptyList()
+            return emptyArray()
         }
 
         val languageId = languageRepository.fetchOrInsertLanguage(lang)
@@ -82,22 +82,23 @@ class AttributeRepository @Autowired constructor(
                                 id = Input.optional(ids.entries.find { it.key == attr.fqKey }?.value),
                                 language_id = Input.optional(languageId),
                                 object_id = Input.optional(objectId),
-                                value = Input.optional(attr.value)
+                                value = Input.optional(attr.value),
+                                visible = Input.optional(attr.visible)
                         )
                     }
-            )).toDeferred().await())
+            )).await())
             idx += chunkSize
         }
 
         ensureNoError(*results.toTypedArray())
 
         val saved = results.flatMap { it.data?.insert_smb_attribute_translations?.returning.orEmpty() }
-        return saved.map { (it.id as BigDecimal).longValueExact() }
+        return saved.map { (it.id as BigDecimal).longValueExact() }.toTypedArray()
     }
 
     // TODO this loop can be improved by fetching all in one go and then creating
     //  all those that could not be fetched - again in one go
-    private suspend fun ensureAttributesExist(attributes: List<AttributeDTO>) {
+    private suspend fun ensureAttributesExist(attributes: List<AttributeValue>) {
         for (attr in attributes) {
             fetchOrInsertAttribute(attr)
         }
@@ -112,13 +113,13 @@ class AttributeRepository @Autowired constructor(
      * @param lang key to resolve Language relation
      * @return existing attribute fqKeys mapped to respective ids
      */
-    private suspend fun mapToIds(attributes: List<AttributeDTO>, objectId: Long, lang: String): Map<String, Long> {
+    private suspend fun mapToIds(attributes: List<AttributeValue>, objectId: Long, lang: String): Map<String, Long> {
         val existing = graphQlClient.client.query(
                 FetchAttributeTranslationsByObjectIdAndLanguageQuery(
                         objectId = objectId,
                         lang = lang
                 )
-        ).toDeferred().await()
+        ).await()
 
         val findIdForFqKey = fun(fqKey: String): Long? {
             val attr = existing.data?.smb_attribute_translations?.find { it.fragments.attributeTranslationsData.fqKey == fqKey }
@@ -132,7 +133,7 @@ class AttributeRepository @Autowired constructor(
                 .toMap() as Map<String, Long>
     }
 
-    private suspend fun fetchOrInsertAttribute(attr: AttributeDTO): String {
+    private suspend fun fetchOrInsertAttribute(attr: AttributeValue): String {
         val attribute = fetchAttribute(attr.key)
         return attribute?.key ?: insertAttribute(attr.key, attr.datatype)
     }
@@ -140,14 +141,14 @@ class AttributeRepository @Autowired constructor(
     private suspend fun fetchAttribute(key: String): AttributeData? {
         val result = graphQlClient.client.query(
                 FetchAttributeQuery(key = key)
-        ).toDeferred().await()
+        ).await()
         return result.data?.smb_attributes_by_pk?.fragments?.attributeData
     }
 
     private suspend fun insertAttribute(key: String, dataType: String?): String {
         val result = graphQlClient.client.mutate(
                 InsertOrUpdateAttributeMutation(key = key, datatype = Input.optional(dataType))
-        ).toDeferred().await()
+        ).await()
 
         ensureNoError(result)
 
@@ -162,6 +163,6 @@ class AttributeRepository @Autowired constructor(
     suspend fun deleteAll(attributeIds: List<Long>) {
         graphQlClient.client.mutate(
                 DeleteAttributeTranslationsMutation(attributeTranslationIds = attributeIds)
-        ).toDeferred().await() // await is sort-of important, otherwise deletion is not performed!?
+        ).await() // await is sort-of important, otherwise deletion is not performed!?
     }
 }

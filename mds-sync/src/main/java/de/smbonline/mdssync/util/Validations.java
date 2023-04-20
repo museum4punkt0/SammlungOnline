@@ -3,7 +3,7 @@ package de.smbonline.mdssync.util;
 import de.smbonline.mdssync.exc.ValidationException;
 import org.springframework.lang.Nullable;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 /**
  * Utility class for validations.
@@ -20,7 +20,7 @@ public final class Validations {
      * @param end   requested end time
      * @throws ValidationException if start is not before end
      */
-    public static void ensureStartBeforeEnd(final LocalDateTime start, final LocalDateTime end) {
+    public static void ensureStartBeforeEnd(final OffsetDateTime start, final OffsetDateTime end) {
         if (!start.isBefore(end)) {
             throw new ValidationException("start must be before end");
         }

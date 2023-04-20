@@ -1,20 +1,22 @@
 package de.smbonline.mdssync.api;
 
 import de.smbonline.mdssync.exc.MdsApiConnectionException;
-import de.smbonline.mdssync.log.LogExecutionTime;
 import de.smbonline.mdssync.jaxb.search.request.Search;
 import de.smbonline.mdssync.jaxb.search.response.Application;
 import de.smbonline.mdssync.jaxb.search.response.Attachment;
 import de.smbonline.mdssync.jaxb.search.response.Module;
 import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
+import de.smbonline.mdssync.log.LogExecutionTime;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -23,6 +25,7 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import static de.smbonline.mdssync.util.Lookup.*;
+import static de.smbonline.mdssync.util.Misc.*;
 
 /**
  * Client to execute a search in MDS using <b>1</b> given module.
@@ -50,6 +53,10 @@ public class MdsApiClient {
         this.moduleName = moduleName;
         this.mdsConfig = config;
         this.sessionHandler = sessionHandler;
+    }
+
+    public MdsApiConfig getConfig() {
+        return this.mdsConfig;
     }
 
     public String getModuleName() {
@@ -122,11 +129,10 @@ public class MdsApiClient {
 
     private Module extractResponseBody(final ResponseEntity<Application> response) {
         if (response.getBody() == null) {
-            LOGGER.warn("No response body returned {}", response.getStatusCode());
-            Module dummy = new Module();
-            dummy.setName(this.moduleName);
-            dummy.setTotalSize(0L);
-            return dummy;
+            if (response.getStatusCode() != HttpStatus.NO_CONTENT) {
+                LOGGER.warn("No response body returned {}", response.getStatusCode());
+            }
+            return emptyModule(this.moduleName);
         }
         return response.getBody().getModules().getModule().get(0);
     }
@@ -143,12 +149,15 @@ public class MdsApiClient {
         return this.restTemplate;
     }
 
-    private <T> T invokeWithRetries(final Callable<T> apiCall) throws MdsApiConnectionException {
+    private <T> ResponseEntity<T> invokeWithRetries(final Callable<ResponseEntity<T>> apiCall) throws MdsApiConnectionException {
         MdsApiConnectionException connectionError = null;
         for (int i = 1; i <= MAX_RETRY_ATTEMPTS; i++) {
             try {
                 return apiCall.call();
             } catch (Exception exc) {
+                if (exc instanceof HttpStatusCodeException httpExc && httpExc.getStatusCode() == HttpStatus.NOT_FOUND) {
+                    return ResponseEntity.notFound().build();
+                }
                 if (i < MAX_RETRY_ATTEMPTS) {
                     LOGGER.warn("Failed to communicate with MDS-API. Retrying...");
                 } else {

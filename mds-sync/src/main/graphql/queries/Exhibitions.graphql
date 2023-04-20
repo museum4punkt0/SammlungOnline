@@ -1,0 +1,64 @@
+query FetchExhibitionIds {
+    smb_exhibitions (order_by: [{id: asc}]){
+        id
+    }
+}
+
+query FetchExhibits($objectId:bigint!) {
+    smb_exhibitions_objects(
+        where: { object_id: {_eq: $objectId} },
+        order_by: [{id:asc}]
+    ) {
+        ...exhibitData
+    }
+}
+
+query FetchExhibit($objectId:bigint!, $exhibitionId:bigint!) {
+    smb_exhibitions_objects(where: {
+        object_id: {_eq: $objectId},
+        exhibition_id: {_eq: $exhibitionId}
+    }) {
+        ...exhibitData
+    }
+}
+
+# Insert new Exhibition-Object relation
+mutation InsertExhibit($objectId:bigint!, $exhibitionId:bigint!) {
+    insert_smb_exhibitions_objects_one(object: {
+        object_id: $objectId,
+        exhibition_id: $exhibitionId
+    }) {
+        id
+    }
+}
+
+# Insert new Exhibition if not exists
+mutation InsertOrUpdateExhibition($exhibitionId:bigint!, $title:String,, $description:String, $location:String, $startDate:String, $endDate:String) {
+    insert_smb_exhibitions_one(object: {
+        id: $exhibitionId,
+        title: $title,
+        description: $description,
+        location: $location,
+        start_date: $startDate,
+        end_date: $endDate
+    }, on_conflict: {
+        constraint: exhibitions_pkey,
+        update_columns: [title, description, location, start_date, end_date]
+    }) {
+        id
+    }
+}
+
+# Delete an Exhibition by id
+mutation DeleteExhibition($exhibitionId: bigint!) {
+    delete_smb_exhibitions_by_pk(id: $exhibitionId) {
+        id
+    }
+}
+
+# Delete an Exhibition-Object by id
+mutation DeleteExhibit($id: bigint!) {
+    delete_smb_exhibitions_objects_by_pk(id: $id) {
+        id
+    }
+}

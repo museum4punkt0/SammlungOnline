@@ -7,6 +7,7 @@ abstract class Engine<T> : Processor<T> where T : Processable {
     var nextCommand: Processor<T>? = null
 
     protected abstract fun isResponsible(element: T): Boolean
+
     // TBD allow executeCommand to break the chain and consume the element?
     //  (return true/false or throw dedicated exception)
     protected abstract fun executeCommand(element: T)
@@ -19,12 +20,12 @@ abstract class Engine<T> : Processor<T> where T : Processable {
     }
 
     private fun executeProcessCommands(element: T) {
-        element.beforeExecuteCommand?.invoke()
+        element.beforeExecuteCommand.forEach { it.invoke() }
         try {
             executeCommand(element)
-            element.afterExecuteCommand?.invoke()
+            element.afterExecuteCommand.forEach { it.invoke() }
         } catch (e: Exception) {
-            element.onError?.invoke(e)
+            element.onError.forEach { it.invoke(e) }
         }
     }
 }

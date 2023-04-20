@@ -1,5 +1,6 @@
 package de.smbonline.mdssync.api;
 
+import de.smbonline.mdssync.exc.ErrorHandling;
 import de.smbonline.mdssync.jaxb.session.Application;
 import de.smbonline.mdssync.jaxb.session.Session;
 import org.slf4j.Logger;
@@ -131,7 +132,7 @@ public class MdsSessionHandler implements ClientHttpRequestInterceptor {
                 sessionKey = session.getKey();
             }
         } catch (RestClientException exc) {
-            LOGGER.error("Error initiating user session: ", exc);
+            ErrorHandling.capture(exc, "Error initiating user session");
         }
         return sessionKey;
     }

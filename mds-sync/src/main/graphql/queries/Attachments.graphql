@@ -1,0 +1,67 @@
+# Return all Attachments of an Object
+query FetchAttachmentsByObjectId($objectId: bigint!) {
+    smb_attachments(
+        where: {object_id: {_eq: $objectId}},
+        order_by: [{ primary: desc }]
+    ) {
+        ...attachmentData
+    }
+}
+
+# Return all Images/Videos/Audios/PDFs of an Object
+query FetchAttachmentsByObjectAndTypeId($objectId: bigint!, $type: String!) {
+    smb_attachments(
+        where: {object_id: {_eq: $objectId}, media_type: {_eq: $type}},
+        order_by: [{ primary: desc }]
+    ) {
+        ...attachmentData
+    }
+}
+
+# Fetch a single Attachment by name
+query FetchAttachmentByFilename($filename: String!) {
+    smb_attachments(where: {attachment: {_eq: $filename}}) {
+        ...attachmentData
+    }
+}
+
+# Fetch a single Attachment by id
+query FetchAttachmentById($id: bigint!) {
+    smb_attachments_by_pk(id: $id) {
+        ...attachmentData
+    }
+}
+
+# Insert or update an Attachment
+mutation InsertOrUpdateAttachment($id: bigint!, $filename: String!, $primary: Boolean!, $objectId: bigint!, $mediaType: String!, $licenseId: bigint!, $credits: String) {
+    insert_smb_attachments_one(object: {
+        id: $id,
+        attachment: $filename,
+        primary: $primary,
+        object_id: $objectId,
+        license_id: $licenseId,
+        credits: $credits,
+        media_type: $mediaType,
+    }, on_conflict: {
+        constraint: attachments_pkey,
+        update_columns: [primary, object_id, license_id, credits, media_type],
+    }) {
+        id
+    }
+}
+
+# Delete an Attachment by id
+mutation DeleteAttachment($attachmentId: bigint!) {
+    delete_smb_attachments_by_pk(id: $attachmentId) {
+        id
+    }
+}
+
+# Delete all Attachments for an Object
+mutation DeleteAttachmentsByObjectId($objectId: bigint!) {
+    delete_smb_attachments(where: {object_id: {_eq: $objectId}}) {
+        returning {
+            id
+        }
+    }
+}

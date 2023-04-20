@@ -2,7 +2,9 @@ package de.smbonline.mdssync.util;
 
 import de.smbonline.mdssync.jaxb.search.response.DataField;
 import de.smbonline.mdssync.jaxb.search.response.ModuleReference;
+import de.smbonline.mdssync.jaxb.search.response.ModuleReferenceItem;
 import de.smbonline.mdssync.jaxb.search.response.RepeatableGroup;
+import de.smbonline.mdssync.jaxb.search.response.RepeatableGroupItem;
 import de.smbonline.mdssync.jaxb.search.response.RepeatableGroupReference;
 import de.smbonline.mdssync.jaxb.search.response.SystemField;
 import de.smbonline.mdssync.jaxb.search.response.VirtualField;
@@ -14,11 +16,9 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -52,30 +52,65 @@ public final class Lookup {
         return findOne(groups, group -> name.equals(group.getName()));
     }
 
+    /**
+     * Find an RepeatableGroupItem which is qualified by given vocabulary information, e.g. TypeVoc=Geburtsort
+     *
+     * @param items       item to search through
+     * @param vocName     name of VocabularyReference
+     * @param vocItemName name of VocabularyReferenceItem (=value of VocabularyReference)
+     * @return RepeatableGroupItem if found
+     */
+    public static @Nullable RepeatableGroupItem findGroupItem(
+            final Collection<RepeatableGroupItem> items, final String vocName, final String vocItemName) {
+        for (RepeatableGroupItem item : items) {
+            VocabularyReferenceItem voc = findVocRefItem(item.getVocabularyReference(), vocName, vocItemName);
+            if (voc != null) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public static @Nullable RepeatableGroupReference findGroupRef(
             final Collection<RepeatableGroupReference> refs, final String name) {
-        return findOne(refs, ref -> name.equals(ref.getName()));
+        return findFirst(refs, ref -> name.equals(ref.getName()));
     }
 
     public static @Nullable ModuleReference findModuleRef(final Collection<ModuleReference> refs, final String name) {
-        return findOne(refs, ref -> name.equals(ref.getName()));
+        return findFirst(refs, ref -> name.equals(ref.getName()));
     }
 
-    public static @Nullable VocabularyReferenceItem findVocRefItem(
+    public static @Nullable ModuleReferenceItem findModuleRefItem(final Collection<ModuleReferenceItem> items, final Long id) {
+        return findFirst(items, item -> id.equals(item.getModuleItemId()));
+    }
+
+    /**
+     * Find VocabularyReference by name.
+     *
+     * @param refs references
+     * @param name name
+     * @return VocabularyReference with given name
+     */
+    public static @Nullable VocabularyReference findVocRef(
             final Collection<VocabularyReference> refs, final String name) {
-        return findVocRefItem(refs, name, null);
+        return findFirst(refs, ref -> name.equals(ref.getName()));
     }
 
     public static @Nullable VocabularyReferenceItem findVocRefItem(
-            final Collection<VocabularyReference> refs, final String name, @Nullable final String value) {
+            final Collection<VocabularyReference> refs, final String vocName) {
+        return findVocRefItem(refs, vocName, null);
+    }
+
+    public static @Nullable VocabularyReferenceItem findVocRefItem(
+            final Collection<VocabularyReference> refs, final String vocName, @Nullable final String vocItemName) {
 
         Stream<VocabularyReferenceItem> items = refs.stream()
-                .filter(ref -> name.equals(ref.getName()))
+                .filter(ref -> vocName.equals(ref.getName()))
                 .map(VocabularyReference::getVocabularyReferenceItem)
                 .filter(Objects::nonNull);
-        Optional<VocabularyReferenceItem> item = value == null
-                ? items.findAny()
-                : items.filter(ref -> value.equals(ValueExtractor.extractValue(ref))).findFirst();
+        Optional<VocabularyReferenceItem> item = vocItemName == null
+                ? items.findFirst()
+                : items.filter(ref -> vocItemName.equals(ref.getName())).findFirst();
         return item.orElse(null);
     }
 
@@ -143,11 +178,11 @@ public final class Lookup {
      * @param <T>    the type of elements that should be filtered
      * @return all elements in the given list matching the given predicate
      */
-    public static <T> List<T> findAll(final @Nullable List<T> list, final Predicate<T> filter) {
+    public static <T> Collection<T> findAll(final @Nullable Collection<T> list, final Predicate<T> filter) {
         if (list == null || list.isEmpty()) {
             return Collections.emptyList();
         }
-        return list.stream().filter(filter).collect(Collectors.toList());
+        return list.stream().filter(filter).toList();
     }
 
     /**

@@ -1,6 +1,13 @@
 # common definition of fragments
 # ----------------------------------------------
 
+# data fragment of an Assortment
+fragment assortmentData on smb_assortments {
+    id
+    key
+    queryType:search_query_type
+}
+
 # data fragment of a Highlight
 fragment highlightData on smb_highlights {
     id
@@ -15,12 +22,42 @@ fragment highlightData on smb_highlights {
 fragment languageData on smb_language {
     id
     code:lang
+    syncEnabled:sync_enabled
 }
 
 # data fragment of an IgnorableKey
 fragment ignorableKeyData on smb_ignoreable_keys {
     id
     key
+}
+
+# data fragment of Exhibitions
+fragment exhibitionData on smb_exhibitions {
+    id
+    title
+    description
+    location
+    startDate:start_date
+    endDate:end_date
+}
+
+# data fragment of exhibited Objects
+fragment exhibitData on smb_exhibitions_objects {
+    id
+    exhibitionId:exhibition_id
+    objectId:object_id
+    createdAt:created_at
+    updatedAt:updated_at
+}
+
+# data fragment of Person
+fragment personData on smb_persons {
+    id
+    name
+    dateOfBirth:date_of_birth
+    dateOfDeath:date_of_death
+    createdAt:created_at
+    updatedAt:updated_at
 }
 
 # data fragment of an OrgUnit
@@ -34,18 +71,62 @@ fragment objectData on smb_objects {
     id
     createdAt:created_at
     updatedAt:updated_at
+    attributes (where: {
+        attribute_key: { _in: ["__orgUnit", "__lastModified"] },
+        language: { lang: { _eq: "de" } }
+    }) {
+        attributeKey:attribute_key
+        value
+    }
+}
+
+# data fragment of an InvolvedParty
+fragment involvedPartyData on smb_persons_objects {
+    id
+    objectId:object_id
+    personId:person_id
+    roleId:role_voc_id
+    sequence
+    createdAt:created_at
+    updatedAt:updated_at
 }
 
 # data fragment for Attachment
 fragment attachmentData on smb_attachments {
     id
     objectId:object_id
-    attachment
+    filename:attachment
     primary
     credits
-    lisenseId:license_id
+    mediaType:media_type
+    licenseId:license_id
     license {
         key
+    }
+}
+
+fragment thesaurusData on smb_thesaurus {
+    id
+    parentId:parent_id
+    mdsId:mds_id
+    name
+    type
+    instance
+}
+
+fragment thesaurusTranslationData on smb_thesaurus_translations {
+    id
+    value
+    thesaurus {
+        id
+        parentId:parent_id
+        mdsId:mds_id
+        name
+        type
+        instance
+    }
+    language {
+        code:lang
     }
 }
 
@@ -68,6 +149,7 @@ fragment attributeTranslationsData on smb_attribute_translations {
     attributeKey:attribute_key
     fqKey:fq_key
     value
+    visible
     language {
         code:lang
     }
@@ -77,4 +159,5 @@ fragment attributeTranslationsData on smb_attribute_translations {
 fragment syncCycleData on smb_sync_cycles {
     timestamp
     type
+    module
 }

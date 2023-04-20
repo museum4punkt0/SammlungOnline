@@ -1,9 +1,10 @@
 package de.smbonline.mdssync.dataprocessor.service
 
+import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.SyncCycleData
 import de.smbonline.mdssync.dataprocessor.repository.SyncCycleRepository
-import de.smbonline.mdssync.dto.ObjectDTO
 import de.smbonline.mdssync.dto.Operation
-import de.smbonline.mdssync.dto.SyncCycleDTO
+import de.smbonline.mdssync.dto.SyncCycle
+import de.smbonline.mdssync.dto.SyncCycleType
 import de.smbonline.mdssync.dto.WrapperDTO
 import de.smbonline.mdssync.pattern.cor.Engine
 import kotlinx.coroutines.runBlocking
@@ -12,33 +13,34 @@ import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 
 @Component
-class SyncCycleService : DataService<SyncCycleDTO>, Engine<WrapperDTO>() {
+class SyncCycleService @Autowired constructor(private val syncCycleRepository: SyncCycleRepository)
+    : DataService<SyncCycle>, Engine<WrapperDTO>() {
 
-    @Autowired
-    lateinit var syncCycleRepository: SyncCycleRepository
-
-    override fun save(element: SyncCycleDTO) {
+    override fun save(element: SyncCycle) {
         runBlocking {
             syncCycleRepository.saveSyncCycle(element)
         }
     }
 
-    override fun delete(element: SyncCycleDTO) {
+    override fun delete(element: SyncCycle) {
         // There is no need to implement this method
     }
 
     override fun isResponsible(element: WrapperDTO): Boolean {
-        return element.dto::class.qualifiedName == SyncCycleDTO::class.qualifiedName
+        return element.dto is SyncCycle
     }
 
     override fun executeCommand(element: WrapperDTO) {
         if (element.operation == Operation.UPSERT) {
-            save(element.dto as SyncCycleDTO)
+            save(element.dto as SyncCycle)
         }
     }
 
-    fun getLastSyncCycle(type: SyncCycleDTO.Type): OffsetDateTime? {
-        val syncCycle = syncCycleRepository.fetchLastSyncCycleBlocking(type)
+    fun getLastSyncCycle(type: SyncCycleType, module:String): OffsetDateTime? {
+        val syncCycle: SyncCycleData?
+        runBlocking {
+            syncCycle = syncCycleRepository.fetchLastSyncCycle(type, module)
+        }
         val timestamp = syncCycle?.timestamp ?: return null
         return OffsetDateTime.parse(timestamp.toString())
     }

@@ -1,0 +1,61 @@
+
+# Returns all highlights
+query FetchAllHighlights {
+    smb_highlights {
+        ...highlightData
+    }
+}
+
+query FetchHighlightsByOrgUnitId($orgUnitId: bigint!) {
+    smb_highlights(where: {org_unit_id: {_eq: $orgUnitId}}) {
+        ...highlightData
+    }
+}
+
+query FetchHightlightByOrgUnitIdAndObjectId($orgUnitId: bigint!, $objectId: bigint!) {
+    smb_highlights(where: {
+        _and: [
+            {org_unit_id: {_eq: $orgUnitId}},
+            {object_id: {_eq: $objectId}}
+        ]
+    }) {
+        ...highlightData
+    }
+}
+
+# Insert one Highlight. OrgUnit and Object must exist.
+mutation InsertHighlight($orgUnitId: bigint!, $objectId: bigint!) {
+    insert_smb_highlights_one(object: {
+        org_unit_id: $orgUnitId,
+        object_id: $objectId
+    }) {
+        id
+        object_id
+        org_unit_id
+    }
+}
+
+# Delete one Highlight specified by OrgUnit and Object mapping.
+mutation DeleteHightlight($orgUnitId: bigint!, $objectId: bigint!) {
+    delete_smb_highlights(where: {
+        _and: [
+            {org_unit_id: {_eq: $orgUnitId}},
+            {object_id: {_eq: $objectId}}
+        ]
+    }) {
+        returning {
+            id
+        }
+    }
+}
+
+# Delete all highlights of given OrgUnit.
+mutation DeleteHighlightsByOrgUnitId($orgUnitId: bigint!) {
+    delete_smb_highlights(where: {
+        org_unit_id: {_eq: $orgUnitId}
+    }) {
+        returning {
+            id
+        }
+    }
+}

@@ -1,17 +1,18 @@
 package de.smbonline.mdssync.exc;
 
-import javax.validation.constraints.NotBlank;
+
+import org.springframework.lang.Nullable;
 
 /**
  * Exception indicates a precondition validation check failed.
  */
 public class ValidationException extends RuntimeException {
 
-    public ValidationException(final @NotBlank String message) {
+    public ValidationException(final String message) {
         this(message, null);
     }
 
-    public ValidationException(final @NotBlank String message, final Throwable cause) {
+    public ValidationException(final String message, final @Nullable Throwable cause) {
         super(message, cause);
     }
 }

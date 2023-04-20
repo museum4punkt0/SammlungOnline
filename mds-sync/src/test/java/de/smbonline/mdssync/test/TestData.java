@@ -13,6 +13,7 @@ import de.smbonline.mdssync.jaxb.search.response.SystemField;
 import de.smbonline.mdssync.jaxb.search.response.VirtualField;
 import de.smbonline.mdssync.jaxb.search.response.VocabularyReference;
 import de.smbonline.mdssync.jaxb.search.response.VocabularyReferenceItem;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.lang.Nullable;
 
@@ -107,7 +108,7 @@ public final class TestData {
 
     public static VocabularyReferenceItem createVocabularyReferenceItem(final String value) {
         VocabularyReferenceItem item = new VocabularyReferenceItem();
-        item.setId("" + value.hashCode());
+        item.setId(StringUtils.isNumeric(value) ? value : "" + value.hashCode());
         item.setName(value);
         item.setFormattedValue(createFormattedValue(value));
         return item;

@@ -6,9 +6,9 @@ class WrapperDTO(val dto: Any) : Processable {
 
     var operation: Operation = Operation.UPSERT
 
-    override var beforeExecuteCommand: (() -> Unit)? = null
-    override var afterExecuteCommand: (() -> Unit)? = null
-    override var onError: ((exc: Exception) -> Unit)? = null
+    override var beforeExecuteCommand: List<(() -> Unit)> = mutableListOf()
+    override var afterExecuteCommand: List<(() -> Unit)> = mutableListOf()
+    override var onError: List<((exc: Exception) -> Unit)> = mutableListOf()
 
     override fun toString(): String = "Wrapper{op=$operation, obj=$dto}"
 }

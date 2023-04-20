@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import java.time.Duration
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -46,6 +47,9 @@ class GraphQlClient @Autowired constructor(private val graphQlProperties: GraphQ
         return OkHttpClient.Builder()
                 .followRedirects(true)
                 .followSslRedirects(true)
+                .connectTimeout(Duration.ofSeconds(5))
+                .writeTimeout(Duration.ofMinutes(3))
+                .readTimeout(Duration.ofSeconds(90))
                 .addInterceptor { chain: Interceptor.Chain ->
                     val requestBuilder = chain.request().newBuilder()
                     for (entry in graphQlProperties.headers.entries) {

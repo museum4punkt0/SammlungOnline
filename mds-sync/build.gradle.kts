@@ -1,22 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootWar
 
 plugins {
-    id("org.sonarqube") version "3.0"
-    id("org.springframework.boot") version "2.3.1.RELEASE"
-    id("io.spring.dependency-management") version "1.0.9.RELEASE"
-    id("com.apollographql.apollo") version "2.2.1"
+    id("org.sonarqube") version "3.5.0.2730"
+    id("org.springframework.boot") version "2.7.4"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("com.apollographql.apollo") version "2.5.14"
     id("jacoco")
     idea
     war
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.spring") version "1.4.21"
+    kotlin("jvm") version "1.6.20"
+    kotlin("plugin.spring") version "1.6.20"
 }
 
 description = "Sync for MDS objects, highlights and attachments."
 group = "de.smb-online"
-version = "1.5.0"
-java.sourceCompatibility = JavaVersion.VERSION_11
+version = "2.0.0"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -26,7 +25,7 @@ apollo {
     generateKotlinModels.set(true)
     generateOperationOutput.set(true)
     rootPackageName.set("de.smbonline.mdssync.dataprocessor.graphql.queries")
-    schemaFile.set(file("src/main/graphql/schema.json"))
+    schemaFile.set(file("src/main/graphql/schema.graphql"))
     graphqlSourceDirectorySet.srcDir("src/main/graphql/queries")
     graphqlSourceDirectorySet.include("**/*.graphql")
 }
@@ -39,51 +38,55 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    // annotations
-    implementation("javax.validation:validation-api:2.0.1.Final")
     // core utils and helper libraries
-    implementation("org.apache.commons:commons-lang3:3.11")
-    implementation("org.apache.httpcomponents:httpclient:4.5.12")
+    implementation("org.apache.commons:commons-lang3")
+    implementation("org.apache.httpcomponents:httpclient:4.5.14")
+    implementation("org.imgscalr:imgscalr-lib:4.2")
+    implementation("io.sentry:sentry-spring-boot-starter:6.11.0")
     // kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.reactivex.rxjava3:rxkotlin:3.0.0")
+    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
     // jaxb
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("org.glassfish.jaxb:jaxb-runtime:2.3.1")
     // apollo
-    implementation("com.apollographql.apollo:apollo-runtime:2.2.1")
-    implementation("com.apollographql.apollo:apollo-coroutines-support:2.2.1")
-    implementation("com.apollographql.apollo:apollo-rx3-support:2.2.1")
+    implementation("com.apollographql.apollo:apollo-runtime:2.5.14")
+    implementation("com.apollographql.apollo:apollo-coroutines-support:2.5.14")
+    implementation("com.apollographql.apollo:apollo-rx3-support:2.5.14")
     // web-dav
     implementation("com.github.lookfirst:sardine:5.10")
     // test
-    testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-        exclude(group = "org.junit.jupiter", module = "junit-jupiter")
-    }
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 sonarqube {
     properties {
-        property("sonar.projectName", "SMB :: mds-sync")
-        property("sonar.host.url", "http://sonar.xailabs.local")
+        property("sonar.projectName", "SMB :: MDS-Sync")
+        property("sonar.projectKey", "SMB:mds-sync")
+        property("sonar.qualitygate.wait", true)
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.sources", "src/main/java,src/main/kotlin")
-        property("sonar.exclusions", "src/main/java/de/smbonline/mdssync/search/request/*.java,src/main/java/de/smbonline/mdssync/search/response/*.java")
-        property("sonar.junit.reportPaths", "build/test-results/test")
-        property("sonar.jacoco.reportPaths", "build/test-results/testjacoco")
+        property("sonar.sources", "src/main/java, src/main/kotlin")
+        property("sonar.exclusions", "src/main/java/de/smbonline/mdssync/jaxb/**/*.java")
     }
 }
 
-jacoco {
-    toolVersion = "0.8.7"
+tasks.withType<Test> {
+    useJUnitPlatform()
+//    filter {
+//        include("**/*Test.class")
+//        exclude("**/*IT.class")
+//    }
+}
+
+plugins.withType<JacocoPlugin> {
+    tasks["test"].finalizedBy("jacocoTestReport")
 }
 
 tasks.jacocoTestReport {
+    enabled = true
     reports {
         xml.required.set(true)
         csv.required.set(false)
@@ -91,21 +94,14 @@ tasks.jacocoTestReport {
     }
 }
 
-plugins.withType<JacocoPlugin> {
-    tasks["test"].finalizedBy("jacocoTestReport")
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
+tasks.bootWar {
+    enabled = true
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
-tasks.getByName<BootWar>("bootWar") {
-    enabled = true
-}

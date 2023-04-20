@@ -3,14 +3,16 @@ package de.smbonline.mdssync.dataprocessor.service
 import de.smbonline.mdssync.dataprocessor.repository.HighlightRepository
 import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository
 import de.smbonline.mdssync.dataprocessor.repository.OrgUnitRepository
-import de.smbonline.mdssync.dto.HighlightDTO
+import de.smbonline.mdssync.dto.Highlight
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
+@ActiveProfiles("test")
 class HighlightServiceIT {
 
     @Autowired
@@ -30,7 +32,7 @@ class HighlightServiceIT {
     @Test
     fun testSaveFetchDelete() {
         runBlocking {
-            val highlightDto = HighlightDTO()
+            val highlightDto = Highlight()
             highlightDto.orgUnitName = "OrgUnitTestCase1"
             highlightDto.objectIds = arrayOf(975447, 865040, 1576560, 1668818, 459698)
             highlightService.save(highlightDto)

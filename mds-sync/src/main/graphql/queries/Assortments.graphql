@@ -1,0 +1,96 @@
+# Return all Assortments
+query FetchAssortments {
+    smb_assortments(order_by: [{ key: asc }]) {
+        ...assortmentData
+    }
+}
+# Return all Assortments of a certain type
+query FetchAssortmentsByType($type: String!) {
+    smb_assortments(
+        where: {search_query_type: {_eq: $type}},
+        order_by: [{ key: asc }]
+    ) {
+        ...assortmentData,
+    }
+}
+
+# Return one Assortments by id
+query FetchAssortmentById($id: bigint!) {
+    smb_assortments_by_pk(id:$id) {
+        ...assortmentData
+    }
+}
+
+# Return one Assortments by key
+query FetchAssortmentByKey($key: String!) {
+    smb_assortments(where: {key: {_eq: $key}}) {
+        ...assortmentData
+    }
+}
+
+# Return one Assortments by key
+query FetchAssortmentObject($assortmentId: bigint!, $objectId: bigint!) {
+    smb_assortments_objects(
+        where: {
+            assortment_id: {_eq: $assortmentId},
+            object_id: {_eq: $objectId}
+        }
+    ) {
+        id
+    }
+}
+
+query FetchObjectIdsByAssortmentId($id: bigint!) {
+    smb_assortments_objects(where: {assortment_id: {_eq:$id}}) {
+        objectId:object_id
+    }
+}
+
+# Insert one Assortment. OrgUnit and Object must exist.
+mutation InsertAssortment($key: String!, $type: String! $query:String, $image: String,) {
+    insert_smb_assortments_one(object: {
+        key: $key,
+        search_query_type: $type,
+        search_query: $query,
+        preview_image: $image
+    }) {
+        id
+    }
+}
+
+mutation InsertAssortmentObject($assortmentId: bigint!, $objectId: bigint!) {
+    insert_smb_assortments_objects_one(object: {
+        assortment_id: $assortmentId,
+        object_id: $objectId,
+    }) {
+        id
+    }
+}
+
+# Delete one Assortment specified by OrgUnit and Object mapping.
+mutation DeleteAssortment($id: bigint!) {
+    delete_smb_assortments_by_pk(id:$id) {
+        id
+    }
+}
+
+# Unlink all objects of given Assortment.
+mutation DeleteObjectsFromAssortment($id: bigint!) {
+    delete_smb_assortments_objects(where: {assortment_id: {_eq: $id}}) {
+        returning {
+            id
+        }
+    }
+}
+
+# Unlink one object from a given Assortment.
+mutation DeleteAssortmentObject($assortmentId: bigint!, $objectId: bigint!) {
+    delete_smb_assortments_objects(where: {
+        assortment_id: {_eq: $assortmentId},
+        object_id: {_eq: $objectId}
+    }) {
+        returning {
+            id
+        }
+    }
+}

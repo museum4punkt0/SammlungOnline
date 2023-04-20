@@ -1,14 +1,14 @@
 package de.smbonline.mdssync.dataprocessor.repository
 
 import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.coroutines.await
 import de.smbonline.mdssync.dataprocessor.graphql.client.GraphQlClient
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteObjectMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchObjectQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.InsertOrUpdateObjectMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.ObjectData
 import de.smbonline.mdssync.dataprocessor.repository.util.ensureNoError
-import de.smbonline.mdssync.dto.ObjectDTO
+import de.smbonline.mdssync.dto.PrincipalObject
 import de.smbonline.mdssync.exc.SyncFailedException
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ class ObjectRepository @Autowired constructor(private val graphQlClient: GraphQl
 
     /**
      * Kotlin-2-Java bridge to run suspend function synchronously.
-     * @param id of requested Object
+     * @param mdsId of requested Object
      * @return whether Object exists
      * @see existsObject
      */
@@ -34,13 +34,13 @@ class ObjectRepository @Autowired constructor(private val graphQlClient: GraphQl
 
     /**
      * Check if Object with given id exists.
-     * @param id of requested Object
+     * @param mdsId of requested Object
      * @return whether Object exists
      */
     suspend fun existsObject(mdsId: Long): Boolean {
         val result = graphQlClient.client.query(
                 FetchObjectQuery(mdsId = mdsId)
-        ).toDeferred().await()
+        ).await()
 
         val obj = result.data?.smb_objects_by_pk
         return obj != null
@@ -54,7 +54,7 @@ class ObjectRepository @Autowired constructor(private val graphQlClient: GraphQl
     suspend fun fetchObject(mdsId: Long): ObjectData? {
         val result = graphQlClient.client.query(
                 FetchObjectQuery(mdsId = mdsId)
-        ).toDeferred().await()
+        ).await()
         return result.data?.smb_objects_by_pk?.fragments?.objectData
     }
 
@@ -64,13 +64,13 @@ class ObjectRepository @Autowired constructor(private val graphQlClient: GraphQl
      * @return id of stored Object
      * @throws SyncFailedException if Object could not be saved
      */
-    suspend fun saveObject(smbObject: ObjectDTO): Long {
+    suspend fun saveObject(smbObject: PrincipalObject): Long {
         val result = graphQlClient.client.mutate(
                 InsertOrUpdateObjectMutation(
                         mdsId = smbObject.mdsId,
                         exhibitionSpace = Input.optional(smbObject.exhibitionSpace)
                 )
-        ).toDeferred().await()
+        ).await()
         ensureNoError(result)
 
         result.data?.insert_smb_objects_one ?: throw SyncFailedException("failed to save object ${smbObject.mdsId}")
@@ -84,7 +84,7 @@ class ObjectRepository @Autowired constructor(private val graphQlClient: GraphQl
     suspend fun deleteObject(mdsId: Long): Boolean {
         val result = graphQlClient.client.mutate(
                 DeleteObjectMutation(mdsId = mdsId)
-        ).toDeferred().await()
+        ).await()
         ensureNoError(result)
 
         val deleted = result.data?.delete_smb_objects_by_pk?.id

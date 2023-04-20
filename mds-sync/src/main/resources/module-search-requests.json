@@ -1,0 +1,34 @@
+{
+  "Literature": {
+    "select": [
+      "__id",
+      "__lastModified",
+      "LitReferenceShortTxt",
+      "LitPublicationDateLnu",
+      "LitCitationClb"
+    ]
+  },
+  "Person": {
+    "select": [
+      "__id",
+      "__lastModified",
+      "PerNennformTxt",
+      "PerPersonVrt",
+      "PerTypeVoc"
+    ]
+  },
+  "Registrar": {
+    "select": [
+      "RegExhibitionRef.moduleReferenceItem"
+    ]
+  },
+  "ObjectGroup": {
+    "select": [
+      "__id",
+      "__lastModified",
+      "__orgUnit",
+      "OgrNameText",
+      "OgrObjectRef.moduleReferenceItem"
+    ]
+  }
+}

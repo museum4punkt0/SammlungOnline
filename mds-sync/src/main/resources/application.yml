@@ -2,7 +2,9 @@ logging.level:
   performance: INFO
   sync-results: INFO # DON'T CHANGE THIS! results are always logged with INFO level
   de.smbonline: INFO
-  de.smbonline.mdssync.exec: DEBUG
+  de.smbonline.mdssync.exec.resolvers: DEBUG
+  de.smbonline.mdssync.exec.SyncExecuter: DEBUG
+  de.smbonline.mdssync.exec.ThesaurusSyncRunner: DEBUG
   org.apache.catalina: WARN
   org.springframework: WARN
 
@@ -13,18 +15,31 @@ server:
   port: 8082
 
 scheduler:
+  # NOTE: MDS is rebooted every night at 23:30 (lasts 10min) - No jobs should be running at this time!!!
   jobs:
     enabled: ${SCHEDULER_JOBS_ENABLED:false}
-    # from 05:00 to 01:00 o'clock every 15min on every day
-    sync-incremental.cron: 0 */15 5-23,0-1 * * *
-    # every night at 01:15
-    sync-deleted.cron: 0 15 1 * * *
-    # every morning at 04:00
-    sync-highlights.cron: 0 0 4 * * *
+    # from 06:00 to 22:00 o'clock every 15min on every day
+    sync-incremental.cron: 0 */15 6-22 * * *
+    # every night at 22:30
+    sync-attachments.cron: 0 30 22 * * *
+    # every night at 23:45
+    sync-thesaurus.cron: 0 45 23 * * *
+    # every night at 01:00
+    sync-persons.cron: 0 0 1 * * *
+    # every night at 02:30
+    ##disable for now, not perfectly implemented
+    sync-exhibitions.cron: "-"
+    #sync-exhibitions.cron: 0 30 2 * * *
+    # every night at 04:00
+    sync-deleted.cron: 0 0 4 * * *
+    # every morning at 04:30
+    sync-highlights.cron: 0 30 4 * * *
+    # every night at 05:00
+    sync-assortments.cron: 0 0 5 * * *
 
 mds-api:
-#  base-url: https://de1.zetcom-group.de/MpWeb-mpBerlinStaatlicheMuseenTest
-#  base-url: https://194.94.134.27:8181/MpWeb-mpBerlinStaatlicheMuseen
+  # base-url: https://de1.zetcom-group.de/MpWeb-mpBerlinStaatlicheMuseenTest
+  # base-url: https://194.94.134.27:8181/MpWeb-mpBerlinStaatlicheMuseen
   base-url: ${MDS_API_BASEURL}
   webservice-path: /ria-ws/application
   module-path-template: ${mds-api.webservice-path}/module/{moduleName}
@@ -32,7 +47,7 @@ mds-api:
   approval-filter-enabled: true
   token-lifetime: ${MDS_API_TOKEN_LIFETIME:20}
   fields:
-    highlight-field-name: OgrNameTxt
+    # attribute,value
     deleted-filter: __orgUnit,SysTrashBinOrgUnit_global
   auth:
     user: ${MDS_API_USER}
@@ -42,14 +57,17 @@ search-indexer:
   should-update: ${SEARCH_INDEXER_SHOULD_UPDATE:false}
   base-url: ${SEARCH_INDEXER_BASE_URL:http://smb-search-indexer:8085/index}
 
-image-provider:
+image-processing:
   base-url: ${IMGP_BASE_URL:http://smb-image-provider:80/images}
   user: ${IMGP_USER}
   pass: ${IMGP_PASS}
+  max-dimensions: ${IMG_MAX_DIMENSION:5000}
+  default-image-type: ${IMG_DEFAULT_TYPE:jpg}
+  max-images-per-object: ${IMG_MAX_PER_OBJECT:10}
 
 graphql:
   endpoint: ${HASURA_ENDPOINT:http://smb-hasura:8080/v1/graphql}
-  in-memory-cache-size: 65536
+  in-memory-cache-size: 1024
   headers:
     X-Hasura-Admin-Secret: ${HASURA_SECRET}
 
@@ -57,3 +75,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+sentry:
+  environment: ${SENTRY_ENVIRONMENT:local}
+  dsn: https://7eefd59c344c4512823d47d12fea00c1@sentry.xailabs.dev/3
+  traces-sample-rate: 1.0

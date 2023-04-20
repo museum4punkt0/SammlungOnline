@@ -1,0 +1,105 @@
+query FetchThesaurusInstanceNames {
+    smb_thesaurus(distinct_on: [instance], order_by: [{instance: asc}]) {
+        instance
+    }
+}
+
+query FetchThesaurusIdsByInstanceName($instance: String!) {
+    smb_thesaurus(
+        order_by: [{id: asc}],
+        where: {instance: {_eq: $instance}}
+    ) {
+        id
+    }
+}
+
+query FetchThesauri($instance: String!) {
+    smb_thesaurus (
+        where: {instance: {_eq: $instance}}
+        order_by: [{type: asc}, {name: asc}]
+    ){
+        ...thesaurusData
+    }
+}
+
+# Return one Thesurus entry by MDS id and type
+query FetchThesaurusByMdsIdAndType($mdsId:bigint!, $type:String!) {
+    smb_thesaurus(limit: 1, where: {
+        mds_id: {_eq: $mdsId},
+        type: {_eq: $type}
+    }) {
+        ...thesaurusData,
+    }
+}
+
+# Return one Thesurus entry by id
+query FetchThesaurus($id: bigint!) {
+    smb_thesaurus_by_pk(id:$id) {
+        ...thesaurusData
+    }
+}
+
+# Insert one Thesurus entry
+mutation InsertThesaurus($mdsId:bigint!, $name:String!, $type:String!, $instance:String!) {
+    insert_smb_thesaurus_one(object: {
+        mds_id: $mdsId
+        name: $name
+        type: $type
+        instance: $instance
+    }) {
+        id
+    }
+}
+
+mutation UpdateThesaurus($id:bigint!, $parentId:bigint, $name:String!) {
+    update_smb_thesaurus_by_pk(
+        pk_columns: {id: $id}
+        _set: {name: $name, parent_id: $parentId}
+    ) {
+        id
+    }
+}
+
+mutation DeleteThesaurus($id:bigint!) {
+    delete_smb_thesaurus_by_pk(id:$id) {
+        id
+    }
+}
+
+query FetchThesaurusTranslationByThesaurusIdAndLanguage($thesaurusId:bigint!, $lang:String!) {
+    smb_thesaurus_translations(
+        where: {
+            thesaurus_id: {_eq: $thesaurusId},
+            language: {lang: {_eq: $lang}}
+        }
+    ) {
+        ...thesaurusTranslationData
+    }
+}
+
+mutation InsertThesaurusTranslation($thesaurusId:bigint!, $langId:bigint!, $value:String!) {
+    insert_smb_thesaurus_translations_one(
+        object: {
+            thesaurus_id: $thesaurusId
+            language_id: $langId
+            value: $value
+        }
+    ) {
+        id
+    }
+}
+
+mutation UpdateThesaurusTranslation($id:bigint!, $value:String!) {
+    update_smb_thesaurus_translations_by_pk(
+        pk_columns: {id: $id}
+        _set: {value: $value}
+    ) {
+        id
+    }
+}
+
+mutation DeleteThesaurusTranslation($id:bigint!) {
+    delete_smb_thesaurus_translations_by_pk(id:$id) {
+        id
+    }
+}

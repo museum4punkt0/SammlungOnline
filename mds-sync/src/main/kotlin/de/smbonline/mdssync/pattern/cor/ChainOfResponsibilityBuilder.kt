@@ -2,7 +2,7 @@ package de.smbonline.mdssync.pattern.cor
 
 class ChainOfResponsibilityBuilder<T : Processable> {
 
-    private val engineCollections: ArrayList<Engine<T>> = ArrayList()
+    private val engineCollections: MutableList<Engine<T>> = mutableListOf()
 
     fun add(element: Engine<T>) {
         engineCollections.add(element)
@@ -18,17 +18,17 @@ class ChainOfResponsibilityBuilder<T : Processable> {
 
     companion object {
 
-        fun <T : Processable> build(vararg engine: Engine<T>): Engine<T> {
-            return build(engine.toList() as ArrayList<Engine<T>>)
+        fun <T : Processable> build(vararg processors: Engine<T>): Engine<T> {
+            return build(processors.toList())
         }
 
-        fun <T : Processable> build(collection: ArrayList<Engine<T>>): Engine<T> {
-            for (i in collection.indices) {
-                if (i + 1 < collection.size) {
-                    collection[i].nextCommand = collection[i + 1]
+        fun <T : Processable> build(processors: List<Engine<T>>): Engine<T> {
+            for (i in processors.indices) {
+                if (i + 1 < processors.size) {
+                    processors[i].nextCommand = processors[i + 1]
                 }
             }
-            return collection[0]
+            return processors[0]
         }
     }
 }

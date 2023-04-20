@@ -1,0 +1,119 @@
+query FetchPerson($mdsId:bigint!) {
+    smb_persons_by_pk (id: $mdsId){
+        ...personData
+    }
+}
+
+query FetchPersonIds {
+    smb_persons (order_by: [{id: asc}]){
+        id
+    }
+}
+
+query FetchInvolvedPartiesByObjectId($objectId:bigint!) {
+    smb_persons_objects(
+        where: { object_id: {_eq: $objectId} },
+        order_by: [{id:asc}]
+    ) {
+        ...involvedPartyData
+    }
+}
+
+query FetchInvolvedPartiesByPersonId($personId:bigint!) {
+    smb_persons_objects(
+        where: { person_id: {_eq: $personId} },
+        order_by: [{id:asc}]
+    ) {
+        ...involvedPartyData
+    }
+}
+
+query FetchInvolvedPartiesByObjectAndPersonIds($objectId:bigint!, $personId:bigint!) {
+    smb_persons_objects(
+        where: {
+            object_id: {_eq: $objectId},
+            person_id: {_eq: $personId}
+        },
+        order_by: [{id:asc}]
+    ) {
+        ...involvedPartyData
+    }
+}
+
+query FetchInvolvedParty($objectId:bigint!, $personId:bigint!, $vocId:bigint!) {
+    smb_persons_objects(where: {
+        object_id: {_eq: $objectId},
+        person_id: {_eq: $personId},
+        role_voc_id: {_eq: $vocId}
+    }) {
+        ...involvedPartyData
+    }
+}
+
+# Insert new Person-Object relation
+mutation InsertInvolvedParty($objectId:bigint!, $personId:bigint!, $vocId:bigint!, $sequence: Int!) {
+    insert_smb_persons_objects_one(object: {
+        object_id: $objectId,
+        person_id: $personId
+        role_voc_id: $vocId
+        sequence: $sequence
+    }) {
+        id
+    }
+}
+
+# Update a Person-Object relation
+mutation UpdateInvolvedParty($id:bigint!, $sequence:Int!) {
+    update_smb_persons_objects_by_pk(
+        pk_columns: {id: $id},
+        _set: {sequence: $sequence}) {
+        id
+    }
+}
+
+# Insert new Person if not exists
+mutation InsertOrUpdatePerson(
+    $mdsId:bigint!
+    $name:String
+    $dateOfBirth:String, $dateOfDeath:String, $dateRange:String
+    $normdata1:String, $normdata2:String, $normdata3:String
+) {
+    insert_smb_persons_one(object: {
+        id: $mdsId
+        name: $name,
+        date_of_birth: $dateOfBirth,
+        date_of_death: $dateOfDeath
+        date_range: $dateRange
+        normdata1: $normdata1
+        normdata2: $normdata2
+        normdata3: $normdata3
+    }, on_conflict: {
+        constraint: persons_pkey,
+        update_columns: [name, date_of_birth, date_of_death, date_range, normdata1, normdata2, normdata3]
+    }) {
+        id
+    }
+}
+
+mutation InsertPerson($mdsId:bigint!, $name:String) {
+    insert_smb_persons_one(object: {
+        id: $mdsId
+        name: $name
+    }) {
+        id
+    }
+}
+
+# Delete a Person by id
+mutation DeletePerson($mdsId: bigint!) {
+    delete_smb_persons_by_pk(id: $mdsId) {
+        id
+    }
+}
+
+# Delete an Person-Object by id
+mutation DeleteInvolvedParty($id: bigint!) {
+    delete_smb_persons_objects_by_pk(id: $id) {
+        id
+    }
+}

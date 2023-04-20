@@ -1,15 +1,17 @@
 package de.smbonline.mdssync.dataprocessor.repository
 
-import de.smbonline.mdssync.dto.AttributeDTO
-import de.smbonline.mdssync.dto.ObjectDTO
+import de.smbonline.mdssync.dto.AttributeValue
+import de.smbonline.mdssync.dto.PrincipalObject
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
+@ActiveProfiles("test")
 class ObjectRepositoryIT {
 
     @Autowired
@@ -24,7 +26,7 @@ class ObjectRepositoryIT {
 
         runBlocking {
             // ensure existing
-            val obj = ObjectDTO(existingId, "foobar")
+            val obj = PrincipalObject(existingId, "foobar")
             obj.attributes = ArrayList()
             objectRepository.saveObject(obj)
             // ensure missing
@@ -57,16 +59,16 @@ class ObjectRepositoryIT {
 
         // run test
 
-        val obj1 = ObjectDTO(testId, "de")
+        val obj1 = PrincipalObject(testId, "de")
 
-        val attr1 = AttributeDTO()
+        val attr1 = AttributeValue()
         attr1.datatype = "String"
         attr1.key = "ObjectRepositoryTest.testSaveObjects"
         attr1.fqKey = "ObjectRepositoryTest.testSaveObjects.attr1"
         attr1.language = "de"
         attr1.value = "Value of testSaveObjects - attr 1"
 
-        val attr2 = AttributeDTO()
+        val attr2 = AttributeValue()
         attr2.datatype = "String"
         attr2.key = "ObjectRepositoryTest.testSaveObjects"
         attr2.fqKey = "ObjectRepositoryTest.testSaveObjects.attr2"
