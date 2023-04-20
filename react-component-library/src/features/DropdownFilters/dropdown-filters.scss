@@ -1,0 +1,29 @@
+.dropdown-filters {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+
+  @media (min-width: '678px') {
+    flex-direction: row;
+
+    .filters + .filters {
+      align-items: flex-end;
+      min-width: 200px;
+
+      #standard-basic-label {
+        text-align: right;
+      }
+
+      .filters__input {
+        input {
+          text-align: right;
+        }
+      }
+
+      .filters__icon {
+        order: 2;
+      }
+    }
+  }
+}

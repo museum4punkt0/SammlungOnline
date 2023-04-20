@@ -1,5 +1,7 @@
 import { Carousel } from './carousel/components/Carousel';
+import SwiperCarousel from './carousel/components/SwiperCarousel';
 import { CollectionCard } from './collection/components/CollectionCard/CollectionCard';
+import { CollectionCard as CollectionCardNew } from './collection/components/CollectionCard/CollectionCardNew';
 import { CollectionsModule } from './collection/components/CollectionsModule/CollectionsModule';
 import { CollectionsDiscoverModule } from './collection/components/CollectionDiscoverModule/CollectionsDiscoverModule';
 import { CollectionModule } from './collection/components/CollectionModule/CollectionModule';
@@ -13,8 +15,8 @@ import { ExhibitDescriptionGrid } from './Exhibit/components/ExhibitDescription/
 import { ExhibitDescriptionAccordion } from './Exhibit/components/ExhibitDescription/components/ExhibitDescriptionAccordion/components/ExhibitDescriptionAccordion/ExhibitDescriptionAccordion';
 import { Footer } from './Footer';
 import Header from './Header/Header';
-import TopicSection from './TopicsSection/TopicsSection';
 import ResearchSection from './ResearchSection/ResearchSection';
+import SearchButtons from './SearchButtons/SearchButtons';
 import GuideSection from './GuideSection/GuideSection';
 import { Sections } from './Sections';
 import { Progressbar } from './Progressbar/components/Progressbar';
@@ -29,10 +31,16 @@ import * as collection from './collection/components';
 import { Image } from './Image/components/Image';
 import { CollectionPlayerModule } from './collection/components';
 import { Dots, SliderContent, SliderModule } from './Slider/components';
+import { HeroSwiper } from './HeroSwiper/HeroSwiper';
+import { StaticPages } from './StaticPages';
+import DropdownFilters from './DropdownFilters/DropdownFilters';
 
 export {
   Carousel,
+  SwiperCarousel,
+  StaticPages,
   CollectionCard,
+  CollectionCardNew,
   CollectionsModule,
   ExhibitPreview,
   ExhibitActions,
@@ -44,8 +52,8 @@ export {
   ExhibitDescriptionGrid,
   Footer,
   Header,
-  TopicSection,
   ResearchSection,
+  SearchButtons,
   GuideSection,
   Sections,
   Progressbar,
@@ -63,5 +71,7 @@ export {
   CollectionPlayerModule,
   Dots,
   SliderContent,
-  SliderModule
+  SliderModule,
+  HeroSwiper,
+  DropdownFilters,
 };

@@ -72,7 +72,7 @@ function ObjectDescriptionModule({
         container={true}
         spacing={0}
         direction={'row'}
-        justify={'space-between'}
+        justifyContent={'space-between'}
         className={classes.titleGrid}
       >
         <Grid item={true} xs={12} sm={12} lg={11} md={10}>
@@ -91,7 +91,7 @@ function ObjectDescriptionModule({
         container={true}
         spacing={0}
         direction={'row'}
-        justify={'space-between'}
+        justifyContent={'space-between'}
         className={classes.contentGrid}
       >
         <Grid item={true} xs={12} sm={12} md={3}>

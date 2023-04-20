@@ -1,12 +1,14 @@
+/* eslint-disable react/jsx-key */
 import React, { ReactElement, useState } from 'react';
 import { ButtonBase, Collapse, Grid, Typography } from '@material-ui/core';
 import ArrowRightAltOutlinedIcon from '@material-ui/icons/ArrowRightAltOutlined';
 
 import { CollectionsContext } from '../../types/CollectionsContext';
-import { CollectionCard } from '../CollectionCard/CollectionCard';
 
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { CollectionCard } from '../CollectionCard/CollectionCardNew';
+import { LinkBuilder } from 'src/utils/LinkBuilder';
 
 import useStyles from './collectionsModule.jss';
 
@@ -16,19 +18,27 @@ import useStyles from './collectionsModule.jss';
  */
 export function CollectionsModule({
   collectionModuleClasses = '',
+  section = '',
   initialCards = 4,
 }: {
   collectionModuleClasses?: string;
+  section?: string;
   initialCards?: number;
 }): ReactElement {
+  // const [isOpen, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const classes = useStyles();
   const { t } = useTranslation();
-  // const [isOpen, setOpen] = useState(false);
-
-  const [expanded, setExpanded] = useState(false);
+  const link = new LinkBuilder();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const getCardHref = (id: number, title: string, platform?: string) => {
+    return section === 'guide'
+      ? link.getGuideHref(id, title)
+      : link.getTopicsHref(id, platform);
   };
 
   return (
@@ -42,7 +52,6 @@ export function CollectionsModule({
             container={true}
             spacing={4}
             direction={'row'}
-            justify={'center'}
             alignItems={'center'}
           >
             {/* TODO implement sorting
@@ -56,20 +65,18 @@ export function CollectionsModule({
             {collectionsContext.collections
               .slice(0, initialCards)
               .map(
-                ({ id, previewImageCard, title, subtitle, collectionObjects }, index) => (
+                (
+                  { id, previewImageCard, title, subtitle, platform },
+                  index,
+                ) => (
                   <Grid item={true} key={index} xs={12} sm={6} md={6}>
                     <CollectionCard
                       title={title}
                       subtitle={subtitle}
-                      count={collectionObjects.length}
+                      section={section}
                       image={previewImageCard}
                       actionText={t('collections module discover button')}
-                      tintColor={'rgba(0, 0, 0, 0.5)'}
-                      onClick={() => {
-                        if (collectionsContext?.onCollectionClick) {
-                          collectionsContext.onCollectionClick(id, title);
-                        }
-                      }}
+                      href={getCardHref(id, title, platform)}
                     />
                   </Grid>
                 ),
@@ -83,8 +90,6 @@ export function CollectionsModule({
           >
             <Grid
               style={{
-                // maxWidth: '80rem',
-                // maxHeight: '1600px',
                 paddingTop: '1rem',
                 transition: 'all 1s',
                 overflow: 'hidden',
@@ -92,29 +97,24 @@ export function CollectionsModule({
               container={true}
               spacing={4}
               direction={'row'}
-              justify={'flex-start'}
+              justifyContent={'flex-start'}
               alignItems={'center'}
             >
               {collectionsContext.collections
                 .slice(initialCards)
                 .map(
                   (
-                    { id, previewImageCard, title, subtitle, collectionObjects },
+                    { id, previewImageCard, title, subtitle, platform },
                     index,
                   ) => (
                     <Grid item={true} key={index} xs={12} sm={6} md={6}>
                       <CollectionCard
                         title={title}
                         subtitle={subtitle}
-                        count={collectionObjects.length}
+                        section={section}
                         image={previewImageCard}
                         actionText={t('collections module discover button')}
-                        tintColor={'rgba(0, 0, 0, 0.5)'}
-                        onClick={() => {
-                          if (collectionsContext?.onCollectionClick) {
-                            collectionsContext.onCollectionClick(id, title);
-                          }
-                        }}
+                        href={getCardHref(id, title, platform)}
                       />
                     </Grid>
                   ),
@@ -122,14 +122,29 @@ export function CollectionsModule({
             </Grid>
           </Collapse>
           <Collapse
-            in={!expanded && collectionsContext.collections.length > initialCards}
+            in={
+              !expanded && collectionsContext.collections.length > initialCards
+            }
             timeout="auto"
             unmountOnExit
           >
-            <Grid item xs={12} sm={12} md={12} lg={12} className={classes.titleGridItem}>
-              <ButtonBase onClick={handleExpandClick} className={classes.buttonTitle}>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              className={classes.titleGridItem}
+            >
+              <ButtonBase
+                onClick={handleExpandClick}
+                className={classes.buttonTitle}
+              >
                 <span>
-                  <Typography variant={'h3'} className={classes.showAllButtonTypo}>
+                  <Typography
+                    variant={'h3'}
+                    className={classes.showAllButtonTypo}
+                  >
                     {t('collections module show all button')}
                   </Typography>
                   <ArrowRightAltOutlinedIcon
@@ -140,60 +155,8 @@ export function CollectionsModule({
               </ButtonBase>
             </Grid>
           </Collapse>
-          {/* <Grid
-                        style={{
-                            maxHeight: '1600px',
-                            paddingTop: '1rem',
-                            transition: 'all 1s',
-                            overflow: 'hidden',
-                        }}
-                        container={true}
-                        spacing={4}
-                        direction={'row'}
-                        justify={'center'}
-                        alignItems={'center'}
-                    >
-                        {collectionsContext.collections
-                            .slice(collectionsContext.collections.length - 2)
-                            .map((collectionContextData, index) => (
-                                <Grid item={true} key={index} xs={12} sm={6} md={6}>
-                                    <CollectionCard
-                                        id={collectionContextData.id}
-                                        image={collectionContextData.previewImageCard}
-                                        title={collectionContextData.title}
-                                        subtitle={collectionContextData.subtitle}
-                                        tintColor={'rgba(0, 0, 0, 0.5)'}
-                                        elementCount={collectionContextData.collectionObjects.length}
-                                        onClick={collectionsContext.onCollectionClick}
-                                    />
-                                </Grid>
-                            ))}
-                    </Grid> */}
-          {/* <Grid
-                        style={{
-                            display: !isOpen ? 'flex' : 'none',
-                        }}
-                        container={true}
-                        spacing={4}
-                        direction={'row'}
-                        justify={'center'}
-                        alignItems={'center'}
-                    >
-                        <Grid item={true} xs={12} sm={12} md={12} lg={12} className={classes.titleGridItem}>
-                            <ButtonBase onClick={() => setOpen(!isOpen)} className={classes.buttonTitle}>
-                                <span>
-                                    <Typography variant={'h3'} className={classes.showAllButtonTypo}>
-                                        {t('collections module show all button')}
-                                    </Typography>
-                                    <ArrowRightAltOutlinedIcon className={classes.endArrowButton} fontSize={'large'} />
-                                </span>
-                            </ButtonBase>
-                        </Grid>
-                    </Grid> */}
         </div>
       )}
     </CollectionsContext.Consumer>
   );
 }
-
-// export const CollectionsModule;

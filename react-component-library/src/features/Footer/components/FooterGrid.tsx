@@ -14,7 +14,7 @@ function FooterGrid({
         container={true}
         spacing={0}
         direction={'row'}
-        justify={'flex-start'}
+        justifyContent={'flex-start'}
         alignItems={'flex-start'}
       >
         {children.map((child, index) => (

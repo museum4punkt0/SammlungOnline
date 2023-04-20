@@ -1,16 +1,21 @@
+/* eslint-disable no-console */
 import { createRef, RefObject, useLayoutEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 export type UseHeaderFadeInOutAnimationResult = {
-  display: string;
   opacity: number;
+  visibility: string;
   ref: RefObject<HTMLDivElement>;
 };
 
 const useHeaderFadeInOutAnimation = (): UseHeaderFadeInOutAnimationResult => {
-  const [ref] = useState<RefObject<HTMLDivElement>>(createRef<HTMLDivElement>());
+  const [ref] = useState<RefObject<HTMLDivElement>>(
+    createRef<HTMLDivElement>(),
+  );
   const [appBarOpacity, setAppBarOpacity] = useState<number>(1);
-  const [appBarDisplay, setAppBarDisplay] = useState<'block' | 'none'>('block');
+  const [appBarVisibility, setAppBarVisibility] = useState<
+    'visible' | 'hidden'
+  >('visible');
   const history = useHistory();
 
   const updateAppBarOpacity = () => {
@@ -19,24 +24,29 @@ const useHeaderFadeInOutAnimation = (): UseHeaderFadeInOutAnimationResult => {
     }
     const nativeElement = ref!.current!;
 
-
     const { scrollY } = window;
 
     let opacity;
-    let display: 'none' | 'block';
+    let currectOpacity;
+
+    let visibility: 'visible' | 'hidden';
 
     if (!scrollY) {
       opacity = 1;
-      display = 'block';
-    } else if (scrollY >= nativeElement.offsetHeight) {
+      visibility = 'visible';
+    } else if (scrollY - 50 >= nativeElement.offsetHeight) {
       opacity = 0;
-      display = 'none';
+      visibility = 'hidden';
     } else {
-      opacity = (nativeElement.offsetHeight - scrollY) / nativeElement.offsetHeight;
-      display = opacity === 0 ? 'none' : 'block';
+      currectOpacity =
+        (nativeElement.offsetHeight - scrollY - 50) /
+        nativeElement.offsetHeight;
+      opacity = currectOpacity > 0 ? currectOpacity : 0;
+
+      visibility = opacity === 0 ? 'hidden' : 'visible';
     }
 
-    setAppBarDisplay(display);
+    setAppBarVisibility(visibility);
     setAppBarOpacity(opacity);
   };
 
@@ -50,7 +60,11 @@ const useHeaderFadeInOutAnimation = (): UseHeaderFadeInOutAnimationResult => {
     };
   }, []);
 
-  return { opacity: appBarOpacity, display: appBarDisplay, ref };
+  return {
+    opacity: appBarOpacity,
+    visibility: appBarVisibility,
+    ref,
+  };
 };
 
 export default useHeaderFadeInOutAnimation;

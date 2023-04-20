@@ -13,7 +13,7 @@ class ValueExtractor {
 
   getValuesByKey(key: string): string[] {
     const values = [];
-    for (const attr of this.object.attribute_translations) {
+    for (const attr of this.object.attributes) {
       if (attr.attribute_key === key || attr.attribute?.key === key) {
         if (attr.value && attr.value.trim() !== '') {
           values.push(attr.value);
@@ -34,11 +34,11 @@ class ValueExtractor {
       // find attribute with key...
       if (t.attribute_key === key || t.attribute?.key === key) {
         // ... in case there are multiple attribues with the same key, use the first non-empty
-        return t.value && t.value.trim() !== '';
+        return t.value?.trim() !== '';
       }
       return false;
     };
-    return this.object.attribute_translations?.find(filter)?.value;
+    return this.object.attributes?.find(filter)?.value;
   }
 
   getFirstValueByKey(

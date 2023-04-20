@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   schema: [
     {
@@ -8,7 +9,7 @@ module.exports = {
   ],
   overwrite: true,
   generates: {
-    './src/core/generated/graphql.ts': {
+    './src/generated/graphql.ts': {
       plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
       config: {
         skipTypename: false,
@@ -24,7 +25,7 @@ module.exports = {
         },
       },
     },
-    'src/core/GraphQl/queries/graphql.schema.json': {
+    'src/generated/graphql.schema.json': {
       plugins: ['introspection'],
     },
   },

@@ -6,16 +6,18 @@ class ImageUrlBuilderService implements IImageUrlBuilder {
 
   constructor(private _config: IConfiguration) {}
 
-  public createUrlFromTemplate(template: string, width: number, height: number): string {
+  public createUrlFromTemplate(
+    template: string,
+    width: number,
+    height: number,
+  ): string {
     const _width = width.toString();
     const _height = height.toString();
-
     return template.replace('{width}', _width).replace('{height}', _height);
   }
 
   public createTemplateImageUrl(imageName: string): string {
     const [baseName, type] = this.splitImageIdAndType(imageName);
-
     return `${this._config.IMAGE_PROVIDER_ENDPOINT}/${baseName}_{width}x{height}.${type}`;
   }
 
@@ -33,7 +35,6 @@ class ImageUrlBuilderService implements IImageUrlBuilder {
 
   public buildUrl(id: string, width: number, height: number): string {
     const [imageId, type] = this.splitImageIdAndType(id);
-
     return new URL(
       `${this._config.IMAGE_PROVIDER_ENDPOINT}/${imageId}_${width}x${height}.${type}`,
     ).toString();

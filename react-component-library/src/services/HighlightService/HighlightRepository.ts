@@ -1,7 +1,11 @@
 import { ApolloError, gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 import { QueryRoot, SmbObjects } from '../../generated/graphql';
-import {ConfigLoader, IConfiguration, EGraphqlTranslationAttributesFields} from 'src';
+import {
+  ConfigLoader,
+  IConfiguration,
+  EGraphqlTranslationAttributesFields,
+} from 'src';
 
 const FetchHighlights = gql`
   query FetchHighlights(
@@ -11,9 +15,10 @@ const FetchHighlights = gql`
     $attributes: [String!]!
   ) {
     smb_highlights(
-      order_by: { object: { updated_at: desc } }
+      order_by: { object_id: asc }
       offset: $offset
       limit: $limit
+      distinct_on: object_id
     ) {
       object {
         id
@@ -24,7 +29,7 @@ const FetchHighlights = gql`
           attachment
           primary
         }
-        attribute_translations(
+        attributes(
           where: {
             attribute_key: { _in: $attributes }
             language: { lang: { _eq: $lang } }
@@ -65,16 +70,20 @@ class HighlightRepository {
         offset: offset,
         limit: limit,
         lang: lang,
-        attributes: EGraphqlTranslationAttributesFields.title,
+        attributes: [
+          EGraphqlTranslationAttributesFields.title,
+          EGraphqlTranslationAttributesFields.technicalTerm,
+          EGraphqlTranslationAttributesFields.collection,
+        ],
       },
     });
     let resultData = null;
     let resultCount = 0;
 
     if (!loading && data) {
-      resultData = data.smb_highlights.map((value) => value.object);
+      resultData = data.smb_highlights.map((highlight) => highlight.object);
       if (data.smb_highlights_aggregate.aggregate?.count) {
-        resultCount = data.smb_highlights_aggregate.aggregate?.count;
+        resultCount = data.smb_highlights_aggregate.aggregate.count;
       }
     }
 

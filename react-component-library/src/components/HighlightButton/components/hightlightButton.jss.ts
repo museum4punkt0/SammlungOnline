@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 58,
       margin: '25px 25px 25px 0px',
       cursor: 'pointer',
+      color: 'inherit',
       backgroundColor: theme.palette.text.hint,
       '&:hover': {
         // TODO add to theme

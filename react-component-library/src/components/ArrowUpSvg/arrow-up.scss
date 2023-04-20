@@ -1,0 +1,23 @@
+.arrow-up {
+  position: fixed;
+  bottom: 100px;
+  // display: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  width: 3.75rem;
+  height: 3.75rem;
+  background: #0f0900;
+  outline: none;
+  border: none;
+  z-index: 100;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  // @media (min-width: '500px') {
+  //   display: flex;
+  // }
+}

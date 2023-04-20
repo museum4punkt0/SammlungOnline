@@ -1,7 +1,6 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { IHeaderLinkProps } from '../../types/interfaces';
 
-
 const useStyles = (props: IHeaderLinkProps) =>
   makeStyles((theme: Theme) => {
     return createStyles({
@@ -11,16 +10,16 @@ const useStyles = (props: IHeaderLinkProps) =>
         textDecoration: 'none !important',
         background: 'transparent',
         '&:focus': {
-          outline: '0'
+          outline: '0 !important',
         },
         '&:focus-visible': {
           outline: `4px solid ${props.color}`,
-          '& h1, & h6': {
+          '& h2, & p': {
             color: props.color,
           },
         },
         '&:hover': {
-          '& h1, & h6': {
+          '& h2, & p': {
             color: props.color,
           },
         },
@@ -29,6 +28,7 @@ const useStyles = (props: IHeaderLinkProps) =>
         color: theme.palette.primary.dark,
         textTransform: 'uppercase',
         textAlign: 'end',
+
         transition: theme.transitions.create(['color'], {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,

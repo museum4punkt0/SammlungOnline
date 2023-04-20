@@ -1,4 +1,4 @@
-import HighlightService from "./HighlightService";
-import HighlightRepository from "./HighlightRepository";
+import HighlightService from './HighlightService';
+import HighlightRepository from './HighlightRepository';
 
-export {HighlightService, HighlightRepository}
+export { HighlightService, HighlightRepository };

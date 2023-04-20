@@ -69,7 +69,6 @@ export function CollectionPlayerModule({
     setActiveIndex: (index: number) => setActiveIndex(index),
     onInfoClick: (objectId: string) => {
       const url = `${config.RESEARCH_DOMAIN}/detail/${objectId}`;
-
       window?.open(url, '_blank')?.focus();
     },
   };

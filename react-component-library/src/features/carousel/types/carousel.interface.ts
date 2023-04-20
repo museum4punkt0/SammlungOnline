@@ -19,6 +19,10 @@ export interface ICarouselProps extends CarouselProps {
 export interface ICarouselHeadlineProps {
   href?: string;
   color?: string;
+  variant?: string;
+  text?: string;
+  link?: boolean;
+  assets?: { url: string }[];
   children?: React.ReactNode;
 }
 export interface ICarouselImageCardProps {
@@ -26,6 +30,19 @@ export interface ICarouselImageCardProps {
   caption?: string;
   link?: string | undefined;
   maxWidth?: number;
+  color?: string;
   maxHeight?: number;
 }
 
+export interface ICarouselImageCardNewProps {
+  img?: string;
+  image?: string;
+  title?: string;
+  subTitle?: string;
+  collection?: string;
+  date?: string;
+  link?: string | undefined;
+  maxWidth?: number;
+  color?: string;
+  maxHeight?: number;
+}

@@ -1,0 +1,254 @@
+.language-switch {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+
+  @media (min-width: '900px') {
+    justify-content: center;
+  }
+
+  &__lang {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 3.5rem;
+
+    svg {
+      width: 1.75rem;
+    }
+
+    @media (min-width: '1024px') {
+      width: 3.5rem;
+      height: 3.5rem;
+      display: flex;
+
+      svg {
+        width: 1.75rem;
+      }
+    }
+
+    + .language-switch__lang {
+      margin-left: 0.5rem !important;
+
+      @media (min-width: '1024px') {
+        margin-left: 0.5rem !important;
+      }
+    }
+
+    &--intro {
+      &:hover {
+        background: #0f0900;
+        color: white;
+
+        svg {
+          color: white;
+
+          text {
+            fill: #0f0900;
+          }
+        }
+      }
+    }
+
+    &--topic {
+      background: transparent;
+      color: #f9ff4b;
+
+      svg {
+        color: #f9ff4b;
+
+        text {
+          fill: #0f0900;
+        }
+      }
+
+      &:hover {
+        background: #f9ff4b;
+        color: #0f0900;
+
+        svg {
+          color: #0f0900;
+
+          text {
+            fill: #f9ff4b;
+          }
+        }
+      }
+    }
+
+    &--guide {
+      background: transparent;
+      color: #f84040;
+      svg {
+        color: #f84040;
+
+        text {
+          fill: #0f0900;
+        }
+      }
+
+      &:hover {
+        background: #f84040;
+        color: #0f0900;
+
+        svg {
+          color: #0f0900;
+
+          text {
+            fill: #f84040;
+          }
+        }
+      }
+    }
+
+    &--selected {
+      &-intro {
+        background: #0f0900;
+        color: white;
+
+        svg {
+          color: white;
+
+          text {
+            fill: #0f0900;
+          }
+        }
+      }
+
+      &-topic {
+        background: #f9ff4b;
+        color: #0f0900 !important;
+
+        svg {
+          color: #0f0900 !important;
+
+          text {
+            fill: #f9ff4b !important;
+          }
+        }
+      }
+
+      &-guide {
+        background: #f84040;
+        color: #0f0900 !important;
+
+        svg {
+          color: #0f0900 !important;
+
+          text {
+            fill: #f84040 !important;
+          }
+        }
+      }
+    }
+
+    &--mobile {
+      display: flex !important;
+
+      @media (min-width: '1024px') {
+        display: none;
+      }
+    }
+  }
+
+  button {
+    display: flex;
+
+    p {
+      font-size: 1rem;
+      line-height: 1.25rem;
+
+      @media (min-width: '600px') {
+        font-size: 1.5rem;
+      }
+    }
+
+    &.language-switch__lang {
+      width: 2rem;
+      height: 2rem;
+
+      @media (min-width: '600px') {
+        width: 3.5rem;
+        height: 3.5rem;
+        display: flex;
+      }
+    }
+  }
+
+  &__menu {
+    &__item {
+      &:not(:last-of-type) {
+        margin-right: 1rem;
+      }
+
+      a {
+        display: block;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      &--options {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1.5rem;
+
+        @media (min-width: '1024px') {
+          display: none;
+        }
+      }
+    }
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    &--intro {
+      ul {
+        background: white;
+        a,
+        p {
+          color: #0f0900;
+        }
+      }
+    }
+
+    &--topic {
+      ul {
+        background: #0f0900;
+        a,
+        p {
+          color: #f9ff4b;
+        }
+      }
+    }
+    &--guide {
+      ul {
+        background: #0f0900;
+
+        a,
+        p {
+          color: #f84040;
+        }
+      }
+    }
+  }
+
+  &__language {
+    border-bottom: 0.25rem solid transparent;
+
+    &--selected {
+      border-bottom: 0.25rem solid;
+    }
+  }
+}

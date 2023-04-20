@@ -3,49 +3,92 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      paddingBottom: '2rem',
+      backgroundColor: theme.palette.grey[300],
+      padding: '0 !important',
     },
-    capitalize: { textTransform: 'capitalize' },
-    verticalLine: {
-      [theme.breakpoints.up('lg')]: {
-        position: 'relative',
-        '&::before': {
-          content: "''",
-          display: 'block',
-          height: '50%',
-          width: 2,
-          position: 'absolute',
-          left: '50%',
-          top: '1rem',
-          backgroundColor: 'black',
+
+    contentWrapper: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      padding: '1.5rem !important',
+    },
+
+    innerContent: {
+      display: 'flex',
+      flexDirection: 'column',
+
+      [theme.breakpoints.up(960)]: {
+        paddingRight: '1rem',
+      },
+
+      '& + &': {
+        marginTop: '1.5rem !important',
+        [theme.breakpoints.up(960)]: {
+          marginTop: '0 !important',
+          paddingLeft: '1rem',
+          borderLeft: 'solid 2px',
+          paddingRight: '0',
         },
       },
     },
-    content: {
-      backgroundColor: theme.palette.grey[300],
+
+    header: {
+      display: 'flex',
+      padding: '1.5rem',
     },
-    downloadDialogTitle: {
+
+    title: {
       color: theme.palette.secondary.contrastText,
       textAlign: 'center',
-      paddingBottom: '1rem',
+      flex: '1',
     },
-    downloadDialogDownloadLink: {
-      color: theme.palette.secondary.contrastText,
+
+    closeButton: {
+      padding: '0 !important',
+      marginLeft: '.75rem',
     },
-    downloadImageButton: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    downloadDialogCloseButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-    },
-    downloadDialogContentTypo: {
+
+    sectionTitle: { textTransform: 'capitalize' },
+
+    sectionRichText: {
       color: theme.palette.secondary.contrastText,
       padding: '1rem 0',
       minHeight: '4rem',
+      fontFamily: 'ClanOTNarrow-News, Arial',
+      height: '100%',
+
+      '& p': {
+        marginBottom: '.75rem',
+      },
+
+      '& b': {
+        fontWeight: 'bold',
+      },
+
+      '& a': {
+        color: theme.palette.secondary.contrastText,
+        textDecoration: 'underline',
+        fontWeight: 400,
+
+        '&:hover': {
+          textDecoration: 'underline',
+        },
+
+        '& svg': {
+          marginLeft: '.25rem',
+        },
+      },
+    },
+
+    sectionButton: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: '.5rem',
+    },
+
+    sectionButtonLink: {
+      color: theme.palette.secondary.contrastText,
     },
   }),
 );

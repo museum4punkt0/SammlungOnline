@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       top: 0,
       left: 0,
+      color: 'white',
       [theme.breakpoints.up('sm')]: {
         position: 'absolute',
       },

@@ -1,0 +1,133 @@
+.static-pages {
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 100px);
+  padding-top: 6.25rem;
+  padding-bottom: 6.25rem;
+  color: #0f0900;
+
+  &__content {
+    padding-right: 1rem;
+    padding-left: 1rem;
+    min-height: 100vh;
+    max-width: 960px;
+    width: 100%;
+  }
+
+  &__innerContent {
+    margin-bottom: 0.25rem;
+  }
+
+  &__header {
+    font-family: 'GTWalsheimPro-Black', Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 3.25rem;
+    letter-spacing: 0.0675em;
+    color: inherit;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
+  }
+
+  &__rich-text {
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'GTWalsheimPro-Bold', Arial, sans-serif;
+    }
+    h2 {
+      font-size: 1.75rem;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 2.25rem;
+      letter-spacing: 0.065em;
+      color: inherit;
+      margin-top: 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.75rem;
+      letter-spacing: 0.065em;
+      color: inherit;
+      margin-top: 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    h4 {
+      font-size: 1.313rem;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 2rem;
+      letter-spacing: 0.07875em;
+      color: inherit;
+      margin-top: 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      font-size: 1.125rem;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.875rem;
+      letter-spacing: 0.075em;
+      color: inherit;
+      margin-bottom: 0.5rem;
+      // word-break: break-all;
+    }
+
+    ul,
+    ol {
+      margin: 1rem 0;
+    }
+
+    li {
+      margin: 0.5rem 0;
+      line-height: 1.875rem;
+      letter-spacing: 0.075em;
+    }
+
+    a {
+      color: #0f0900;
+      font-weight: normal;
+      word-break: break-word;
+    }
+
+    svg {
+      margin-left: 0.25rem;
+    }
+  }
+
+  &__asset {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+
+    img {
+      + img {
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  &__iframe {
+    margin-top: 2rem;
+    border: 0;
+    height: 200px;
+    width: 100%;
+    overflow: scroll;
+  }
+}

@@ -1,22 +1,41 @@
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { navHeight } from './components/HeaderDrawer/navigationDrawer.jss';
+// import {
+//   navHeight,
+//   navHeightMob,
+// } from './components/HeaderDrawer/navigationDrawer.jss';
 
 const useStyles = () => {
   return makeStyles((theme: Theme) =>
     createStyles({
-      actionsContainer: {
-        padding: '0 10px',
-      },
       appBar: {
         boxShadow: 'none',
         background: 'transparent',
-        height: navHeight,
+        // height: navHeight,
         zIndex: 1000,
+        display: 'flex',
+        justifyContent: 'center',
+      },
+
+      appBarWithLang: {
+        // height: navHeightMob,
+        // [theme.breakpoints.up(900)]: {
+        //   height: navHeight,
+        // },
+      },
+
+      appBarBlack: {
+        background: '#0F0900 !important',
       },
       toolbar: {
         display: 'flex',
         justifyContent: 'center',
         height: '100%',
+      },
+      drawerHeader: {
+        marginBottom: '.5rem',
+        // height: '64px',
+        display: 'flex',
+        alignItems: 'center',
       },
       wrapper: {
         display: 'flex',
@@ -39,15 +58,16 @@ const useStyles = () => {
       menuButton: {
         alignItems: 'center',
         padding: 0,
-        '&:focus': {
+        '&:focus-visible': {
           outline: `4px solid`,
+          color: 'inhert',
         },
       },
       menuText: {
         marginRight: 10,
-        [theme.breakpoints.down('xs')]: {
-          fontSize: '1.35rem',
-        },
+        // [theme.breakpoints.down('xs')]: {
+        //   fontSize: '1.35rem',
+        // },
         transition: theme.transitions.create(['opacity'], {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
@@ -66,6 +86,26 @@ const useStyles = () => {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
+      },
+      sectionWrapper: {
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
+        [theme.breakpoints.up(500)]: {
+          paddingLeft: '1.5rem',
+          paddingRight: '1.5rem',
+        },
+        [theme.breakpoints.up(678)]: {
+          paddingLeft: '2rem',
+          paddingRight: '2rem',
+        },
+        [theme.breakpoints.up(1024)]: {
+          paddingLeft: '3rem',
+          paddingRight: '3rem',
+        },
+        [theme.breakpoints.up('lg')]: {
+          paddingLeft: '4rem',
+          paddingRight: '4rem',
+        },
       },
     }),
   );

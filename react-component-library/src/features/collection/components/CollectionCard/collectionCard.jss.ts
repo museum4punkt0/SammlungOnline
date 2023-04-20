@@ -8,13 +8,15 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     card: {
       minWidth: '250px',
-      maxWidth: 600,
+      //maxWidth: 600,
       height: xsHeight,
+      width: '100%',
       cursor: 'pointer',
       borderRadius: 0,
       backgroundColor: theme.palette.secondary.main,
       boxShadow: 'none',
       textAlign: 'left',
+      marginRight: '.5rem',
       [theme.breakpoints.up('sm')]: {
         height: mdHeight,
       },
@@ -22,11 +24,19 @@ const useStyles = makeStyles((theme: Theme) => {
         height: lgHeight,
       },
     },
+    cardInner: {
+      height: '100%',
+      position: 'relative',
+    },
     cardMedia: {
       minWidth: '250px',
       backgroundPosition: 'center center',
       backgroundSize: 'cover',
-
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       [theme.breakpoints.only('xs')]: {
         height: xsHeight,
       },
@@ -40,10 +50,12 @@ const useStyles = makeStyles((theme: Theme) => {
     cardContent: {
       textAlign: 'left',
       position: 'relative',
-      top: -Math.abs(xsHeight),
+      maxHeight: '100%',
+      // top: -Math.abs(xsHeight),
       height: xsHeight,
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
       textDecoration: 'none',
+
       '&:hover': {
         '& button span': {
           textDecoration: 'underline',
@@ -51,11 +63,11 @@ const useStyles = makeStyles((theme: Theme) => {
       },
       [theme.breakpoints.up('sm')]: {
         height: lgHeight,
-        top: -Math.abs(mdHeight),
+        // top: -Math.abs(mdHeight),
       },
       [theme.breakpoints.up('lg')]: {
         height: lgHeight,
-        top: -Math.abs(lgHeight),
+        // top: -Math.abs(lgHeight),
       },
       '& *': {
         color: theme.palette.primary.contrastText,
@@ -72,6 +84,9 @@ const useStyles = makeStyles((theme: Theme) => {
       flexDirection: 'column',
       width: '100%',
       paddingTop: '15px',
+      maxHeight: '100%',
+      overflow: 'hidden',
+      overflowY: 'scroll',
       [theme.breakpoints.up('sm')]: {
         width: '100%',
       },

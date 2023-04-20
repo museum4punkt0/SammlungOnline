@@ -10,14 +10,13 @@ import { Grid } from '@material-ui/core';
 import useStyles from './slider.jss';
 import { ISliderProps } from '../../types';
 
-
-
 const SliderComponent: React.FC<ISliderProps> = (props) => {
   const {
     children,
+    silderSlides,
     autoplay = false,
     wrapAround = false,
-    enableKeyboardControls = false,
+    enableKeyboardControls = true,
     pauseOnHover = false,
   } = props;
 
@@ -33,13 +32,21 @@ const SliderComponent: React.FC<ISliderProps> = (props) => {
       dots[index] = (
         <div
           key={index}
-          className={clsx(classes.dot, index === currentSlide && classes.dotActive)}
+          className={clsx(
+            classes.dot,
+            index === currentSlide && classes.dotActive,
+          )}
         />
       );
     }
 
     return (
-      <Grid container wrap={'nowrap'} className={classes.dotWrapper} direction="row">
+      <Grid
+        container
+        wrap={'nowrap'}
+        className={classes.dotWrapper}
+        direction="row"
+      >
         {dots}
       </Grid>
     );
@@ -57,13 +64,14 @@ const SliderComponent: React.FC<ISliderProps> = (props) => {
     return (
       <IconButton
         // disabled={isDisabled}
-        //   aria-label={previousButtonAriaLabel}
-        //   className={classes.arrowContainer}
+        // className={classes.arrowContainer}
+        aria-label={'arrow left'}
+        role="button"
         size="medium"
         onClick={previousSlide}
         style={{ color: 'white' }}
       >
-        <ArrowBackIosOutlinedIcon />
+        {<ArrowBackIosOutlinedIcon />}
       </IconButton>
     );
   };
@@ -81,9 +89,10 @@ const SliderComponent: React.FC<ISliderProps> = (props) => {
     return (
       <IconButton
         // disabled={isDisabled}
-        // aria-label={nextButtonAriaLabel}
-        size="medium"
         // className={classes.arrowContainer}
+        aria-label={'arrow right'}
+        role="button"
+        size="medium"
         onClick={nextSlide}
         style={{ color: 'white' }}
       >
@@ -98,7 +107,10 @@ const SliderComponent: React.FC<ISliderProps> = (props) => {
         autoplay={autoplay}
         wrapAround={wrapAround}
         enableKeyboardControls={enableKeyboardControls}
-        // disableEdgeSwiping
+        renderAnnounceSlideMessage={({ currentSlide, slideCount }) =>
+          `Slide ${currentSlide + 1} von ${slideCount} inhalt: 
+          ${silderSlides && silderSlides[currentSlide]?.slideText}`
+        }
         pauseOnHover={pauseOnHover}
         heightMode={'first'}
         renderBottomCenterControls={BottomCenterControls}

@@ -1,0 +1,41 @@
+@import './section-mixins';
+
+.section {
+  @include section-padding;
+
+  &--secondary {
+    background: #ebf2ff;
+  }
+
+  &--tertiary {
+    background: #feffe4;
+  }
+
+  &--quaternary {
+    background: #fbe7e7;
+  }
+
+  &--quinary {
+    background: #d8d8d8;
+  }
+
+  &--default {
+    background: #ffffff;
+  }
+
+  &--X {
+    @include section-padding-x;
+  }
+
+  &--top-0 {
+    padding-top: 0;
+
+    @media (min-width: '1024px') {
+      padding-top: 0;
+    }
+  }
+
+  &__content-container {
+    @include max-width;
+  }
+}

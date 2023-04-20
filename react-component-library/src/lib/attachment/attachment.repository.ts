@@ -1,9 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
-
 import { QueryRoot, SmbAttachments } from '../../generated/graphql';
-
 import { IRepositoryResponse } from '../repository.interface';
-
 import { FetchExhibitAttachments } from './graphql';
 
 class AttachmentRepository {
@@ -11,10 +8,17 @@ class AttachmentRepository {
     id: number,
     lang: string,
   ): IRepositoryResponse<SmbAttachments[]> {
-    const { loading, error, data } = useQuery<QueryRoot>(FetchExhibitAttachments, {
-      variables: { object_id: id, language: lang },
-    });
-    const attachments = data?.smb_objects_by_pk?.attachments || data?.smb_attachments;
+    const { loading, error, data } = useQuery<QueryRoot>(
+      FetchExhibitAttachments,
+      {
+        variables: {
+          object_id: id,
+          language: lang,
+        },
+      },
+    );
+    const attachments =
+      data?.smb_objects_by_pk?.attachments || data?.smb_attachments;
 
     return { loading, error, data: attachments ?? [] };
   }

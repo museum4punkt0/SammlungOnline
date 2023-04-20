@@ -7,8 +7,8 @@ import RemoveCircleOutlineOutlinedIcon from '@material-ui/icons/RemoveCircleOutl
 
 import useStyles from './imageZoom.jss';
 import { UserOpenSeadragonOptions } from 'use-open-seadragon/lib/types/config/options';
+import { LoadingSpinner } from 'src';
 import { IImageZoomProps } from '../../types';
-
 
 const ImageZoom: React.FC<IImageZoomProps> = ({ src }) => {
   const { zoomIn, zoomOut } = useZoom();
@@ -28,7 +28,7 @@ const ImageZoom: React.FC<IImageZoomProps> = ({ src }) => {
     return [{ type: 'image', url: src }];
   }, [src]);
 
-  const [imageZoomRef] = useOpenSeadragon(sources, osdOptions);
+  const [imageZoomRef, { isReady }] = useOpenSeadragon(sources, osdOptions);
 
   const classes = useStyles();
 
@@ -43,11 +43,15 @@ const ImageZoom: React.FC<IImageZoomProps> = ({ src }) => {
           <RemoveCircleOutlineOutlinedIcon />
         </IconButton>
       </div>
+      {!isReady && <LoadingSpinner styleClasses="spinner--imageZoom" />}
     </>
   );
 };
 
-const propsAreEqual = (previousProps: IImageZoomProps, nextProps: IImageZoomProps) => {
+const propsAreEqual = (
+  previousProps: IImageZoomProps,
+  nextProps: IImageZoomProps,
+) => {
   return previousProps.src !== nextProps.src;
 };
 

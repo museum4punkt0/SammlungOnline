@@ -1,5 +1,4 @@
 import GuideService from './service/GuideService';
-import GuideRepository from './repository/GuideRepository';
 import {
   ITourJsonData,
   ITourData,
@@ -9,7 +8,10 @@ import {
   ITourObjectData,
   IRelatedStation,
 } from './interfaces/IGuideData';
-import { ICollectionContextData, ICollectionObject } from './interfaces/IGuideInterfaces';
+import {
+  ICollectionContextData,
+  ICollectionObject,
+} from './interfaces/IGuideInterfaces';
 
 export {
   ITourJsonData,
@@ -23,4 +25,4 @@ export {
   ICollectionObject,
 };
 
-export { GuideService, GuideRepository };
+export { GuideService };

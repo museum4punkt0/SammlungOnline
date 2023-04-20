@@ -22,6 +22,7 @@ npm i --save git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git
 
 ### How to install in SMB platform projects
 
+- Use node -v `v14.17.3`
 - In both projects (library and platform) run `npm install`
 - In the "react-component-library" run `npm link`
 - In the platform project run `npm link @smb/smb-react-components-library`
@@ -33,6 +34,7 @@ Now you should be able to run `npm run start` in both projects simultaneously, w
 - In the platform project run `npm unlink @smb/smb-react-components-library`
 - In the "react-component-library" run `npm unlink`
 
-## Licenes 
+## Licenes
 
 see ./LICENCES for further licence information
+

@@ -1,14 +1,19 @@
 import { ApolloError } from 'apollo-boost';
 import { SmbObjects } from '../../generated/graphql';
 import HighlightsRepository from './HighlightRepository';
-import LanguageService from '../../utils/LanguageService';
 import ImageUrlBuilder from '../../utils/ImageUrlBuilder';
+import { LinkBuilder } from '../../utils/LinkBuilder';
 import ValueExtractor from '../../utils/ValueExtractor';
-import { ConfigLoader, EGraphqlTranslationAttributesFields, IConfiguration } from 'src';
+import {
+  ConfigLoader,
+  EGraphqlTranslationAttributesFields,
+  IConfiguration,
+} from 'src';
 
 interface HighlightsContextData {
-  img: string;
-  caption: string;
+  image: string;
+  title: string;
+  collection: string;
   link: string;
 }
 
@@ -31,7 +36,7 @@ class HighlightService {
       this.highlightsRepository.fetchHighlightObjects(
         0,
         this.config.CAROUSEL_CONFIG.CAROUSEL_HIGHLIGHTS_COUNT,
-        LanguageService.getCurrentLanguage(),
+        'de',
       );
     const contextData =
       !loading && data
@@ -45,46 +50,69 @@ class HighlightService {
     hightlights: Array<SmbObjects>,
     config: IConfiguration,
   ): Array<HighlightsContextData> {
-    const collection: Array<HighlightsContextData> = [];
-
+    const cards: Array<HighlightsContextData> = [];
     for (const hightlight of hightlights) {
-      collection.push(this.convertCollectionContext(hightlight, config));
+      cards.push(this.convertToCardData(hightlight, config));
     }
-
-    return collection;
+    return cards;
   }
 
-  private convertCollectionContext(
+  private convertToCardData(
     object: SmbObjects,
     config: IConfiguration,
-  ): { id: number; caption: string; img: string; link: string } {
-    const imageUrlBuilder = new ImageUrlBuilder(config);
+  ): {
+    id: number;
+    title: string;
+    collection: string;
+    image: string;
+    link: string;
+  } {
     const valueExtractor = new ValueExtractor(object);
     const titleAtributeCandidates = [
       EGraphqlTranslationAttributesFields.title,
+      EGraphqlTranslationAttributesFields.technicalTerm,
     ];
 
-    const buildImageUrl = (imageId: string, imageSize: number): string => {
-      return imageUrlBuilder.buildUrl(imageId, imageSize, imageSize).toString();
-    };
-    return {
-      id: object.id,
-      caption:
+    const extractTitle = (): string => {
+      return (
         valueExtractor.getFirstValueByKey(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           titleAtributeCandidates.shift()!,
           ...titleAtributeCandidates,
-        ) || '',
-      img:
-        object.attachments?.length && object.attachments[0].attachment
-          ? buildImageUrl(
-            object.attachments[0].attachment,
-            config.CAROUSEL_CONFIG.HIGHLIGHT_CAROUSEL_IMAGE_SIZE,
-          )
-          : '',
-      link:
-        this.config.RESEARCH_DOMAIN
-        + '/detail/'
-        + object.id,
+        ) || ''
+      );
+    };
+
+    const extractCollection = (): string => {
+      let collection =
+        valueExtractor.getValueByKey(
+          EGraphqlTranslationAttributesFields.collection,
+        ) || '';
+      if (collection.includes(',')) {
+        collection = collection.split(',')[0];
+      }
+      return collection;
+    };
+
+    const buildImageUrl = (): string => {
+      if (object.attachments[0]?.attachment) {
+        const image = object.attachments[0].attachment;
+        const dim = config.CAROUSEL_CONFIG.HIGHLIGHT_CAROUSEL_IMAGE_SIZE;
+        return new ImageUrlBuilder(config).buildUrl(image, dim, dim);
+      }
+      return '';
+    };
+    const title = extractTitle();
+    const buildTargetUri = (): string => {
+      return new LinkBuilder().getDetailsLink(object.id, title, true);
+    };
+
+    return {
+      id: object.id,
+      title: title,
+      collection: extractCollection(),
+      image: buildImageUrl(),
+      link: buildTargetUri(),
     };
   }
 }

@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: '1280px',
       padding: '50px',
       margin: 'auto',
+      marginBottom: '3rem',
       backgroundColor: theme.palette.secondary.main,
     },
     contentWrapperHide: {

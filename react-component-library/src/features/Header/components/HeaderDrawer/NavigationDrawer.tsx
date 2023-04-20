@@ -16,7 +16,13 @@ const NavigationDrawer: React.FC<INavigationDrawerProps> = (props) => {
         anchor="top"
         variant="temporary"
         classes={{ paper: classes.drawerPaper }}
-        ModalProps={{ keepMounted: true, disableScrollLock: false }}
+        ModalProps={{
+          keepMounted: true,
+          disableScrollLock: false,
+          BackdropProps: {
+            invisible: true,
+          },
+        }}
         onClose={onClose}
       >
         <div className={classes.content}>{children}</div>

@@ -1,0 +1,52 @@
+.pagination {
+  display: flex;
+  padding: 0 0 1.5rem;
+  border-bottom: 4px solid #0f0900;
+  margin-top: 1.5rem;
+  align-items: center;
+  flex-direction: column;
+
+  @media (min-width: '375px') {
+    flex-direction: row;
+    max-height: 4rem;
+    align-items: unset;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+
+    button {
+      padding: 0 !important;
+    }
+  }
+
+  &__count {
+    &__current {
+      padding: 0 1.5rem;
+
+      @media (min-width: '375px') {
+        padding: 0.5rem;
+      }
+
+      @media (min-width: '400px') {
+        padding: 0 1.5rem;
+      }
+    }
+
+    &__total {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem !important;
+
+      @media (min-width: '375px') {
+        margin-top: 0 !important;
+        margin-left: 0.75rem !important;
+      }
+
+      @media (min-width: '400px') {
+        margin-left: 1.75rem !important;
+      }
+    }
+  }
+}

@@ -1,4 +1,6 @@
-import React, { useCallback, useState } from 'react';
+/* eslint-disable no-console */
+/* eslint-disable react/jsx-key */
+import React, { useCallback, useState, useEffect } from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import HeaderToolbar from './components/HeaderToolbar/HeaderToolbar';
@@ -8,20 +10,20 @@ import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
 import HeaderLogo from './components/HeaderLogo/HeaderLogo';
 import { ButtonBase, Grid } from '@material-ui/core';
 
-import useHeaderLinks from './hooks/use-header-links.hook';
-
+// import useHeaderLinks from './hooks/use-header-links.hook';
 import useStyles from './header.jss';
 import useHeaderFadeInOutAnimation from './hooks/use-header-fade-in-out-animation.hook';
 import { IAppHeaderProps, IHeaderColorPalette } from './types/interfaces';
 import { UseDrawerResult, UseHeaderPaletteResult } from './types';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CommonTheme from '../../typografie/CommonTheme';
+import { SiteConfigService } from 'src/services/SiteConfig';
 
 const useHeaderPalette = (
   palette: IHeaderColorPalette = {},
 ): UseHeaderPaletteResult => {
   const [main, setMain] = useState(palette.main ?? '#ffffff');
-  const [secondary, setSecondary] = useState(palette.secondary ?? '#000000');
-
-  return { main, secondary, handlers: { setMain, setSecondary } };
+  return { main, handlers: { setMain } };
 };
 
 const useDrawer = (): UseDrawerResult => {
@@ -39,14 +41,51 @@ const useDrawer = (): UseDrawerResult => {
 };
 
 const Header: React.FC<IAppHeaderProps> = (props) => {
-  const { configuration } = props;
+  const { isBlackBackground, shouldDisplayLang, currentPortal, configuration } =
+    props;
+  const backgroundColor = '#0f0900f7'; // 97% opacity
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedLink, setSelectedLink] = useState(true);
+  const [color, setColor] = useState('');
+  const [title, setTitle] = useState('');
+  const [drawerColor, setDrawerColor] = useState('');
 
-  const links = useHeaderLinks(configuration);
+  const siteHeaderMenu = new SiteConfigService();
+  const {
+    loading,
+    data: { headerData: links, localizations },
+  } = siteHeaderMenu.getSiteConfigData();
 
+  useEffect(() => {
+    if (!loading && !links) return;
+
+    if (!loading) {
+      links &&
+        links.forEach((link) => {
+          if (link.type === currentPortal) {
+            const color = link?.drawerColor ? link?.drawerColor : link?.color;
+            setSelectedColor(color);
+            setMain(color);
+          }
+        });
+
+      const currentPortalLinkConfig =
+        (links && links.find(({ type }) => type === currentPortal)) ||
+        (links && links[0]);
+
+      const { color, title, drawerColor } = currentPortalLinkConfig;
+
+      setColor(color);
+      setTitle(title);
+      setDrawerColor(drawerColor);
+    }
+  }, [loading]);
+
+  //Header fade out/in animation function
   const {
     ref: appBarRef,
     opacity: appBarOpacity,
-    display: appBarDisplay,
+    visibility: appBarVisibility,
   } = useHeaderFadeInOutAnimation();
 
   const {
@@ -54,28 +93,16 @@ const Header: React.FC<IAppHeaderProps> = (props) => {
     handlers: { closeDrawer, openDrawer },
   } = useDrawer();
 
-  const currentPortalLinkConfig =
-    links.find(({ href }) => href.includes(window?.location?.host)) || links[0];
-  const {
-    color: currentPortalColor,
-    drawerColor: currentPortalDrawerColor,
-    title,
-  } = currentPortalLinkConfig;
-
-  const {
-    main: mainColor,
-    secondary: secondaryColor,
-    handlers,
-  } = useHeaderPalette({
-    main: currentPortalColor,
-    secondary: currentPortalDrawerColor,
+  const { main: mainColor, handlers } = useHeaderPalette({
+    main: drawerColor,
   });
-  const { setSecondary, setMain } = handlers;
+
+  const { setMain } = handlers;
 
   const setCurrentPortalColors = useCallback(() => {
-    setMain(currentPortalColor);
-    setSecondary(currentPortalDrawerColor);
-  }, [currentPortalDrawerColor, currentPortalColor]);
+    drawerColor ? setMain(drawerColor) : setMain(color);
+    setSelectedLink(true);
+  }, [drawerColor]);
 
   const handleDrawerClose = useCallback(() => {
     closeDrawer();
@@ -83,87 +110,128 @@ const Header: React.FC<IAppHeaderProps> = (props) => {
   }, []);
 
   const onLinkMouseOver = (color: string, drawerColor: string) => {
-    setMain(color);
-    setSecondary(drawerColor);
+    drawerColor ? setMain(drawerColor) : setMain(color);
+    setSelectedLink(false);
   };
 
   const classes = useStyles()();
 
+  const getAppBarClass = () => {
+    return isBlackBackground
+      ? `${classes.appBar} ${classes.appBarBlack} ${classes.appBarWithLang}`
+      : `${classes.appBar} ${classes.appBarWithLang}`;
+  };
+
+  const getLogoLink = () => {
+    if (links) {
+      const logoLink = links.filter((link) => link.type === 'INTRO');
+      return logoLink[0].href;
+    }
+    return '/';
+  };
+
   return (
-    <div style={{ position: 'absolute' }}>
-      {!open && (
-        <AppBar
-          position="fixed"
-          className={classes.appBar}
-          ref={appBarRef}
-          style={{ opacity: appBarOpacity, display: appBarDisplay }}
-        >
-          <div className={classes.wrapper}>
-            <HeaderToolbar
-              title={title}
-              color={mainColor}
-              onMenuOpen={openDrawer}
-            />
-          </div>
-        </AppBar>
-      )}
-      <NavigationDrawer
-        open={open}
-        onClose={handleDrawerClose}
-        backgroundColor={secondaryColor}
-      >
-        <Grid
-          className={classes.actionsContainer}
-          container
-          justify="center"
-          alignItems="flex-start"
-        >
-          <Grid
-            item
-            xs={8}
-            container
-            justify="flex-start"
-            alignItems="flex-start"
+    <>
+      <MuiThemeProvider theme={CommonTheme}>
+        {!open && (
+          <AppBar
+            position="fixed"
+            className={getAppBarClass()}
+            ref={appBarRef}
+            style={{
+              opacity: appBarOpacity,
+              visibility: appBarVisibility as any,
+            }}
           >
-            <HeaderLogo color={mainColor} tabIndex={-1} />
-          </Grid>
-          <Grid
-            item
-            xs={4}
-            container
-            justify="flex-end"
-            alignItems="flex-start"
+            {!loading && (
+              <div className={(classes.wrapper, classes.sectionWrapper)}>
+                <HeaderToolbar
+                  configuration={configuration}
+                  title={title}
+                  type={currentPortal}
+                  color={color}
+                  logoLink={getLogoLink()}
+                  localizations={localizations}
+                  shouldDisplayLang={shouldDisplayLang}
+                  onMenuOpen={openDrawer}
+                />
+              </div>
+            )}
+          </AppBar>
+        )}
+        {!loading && (
+          <NavigationDrawer
+            open={open}
+            onClose={handleDrawerClose}
+            backgroundColor={backgroundColor}
           >
-            <ButtonBase
-              className={classes.menuButton}
-              color="inherit"
-              onClick={closeDrawer}
-              style={{ outlineColor: mainColor }}
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="flex-start"
+              className={classes.drawerHeader}
             >
-              <CloseOutlinedIcon
-                className={classes.menuIconClose}
-                style={{ color: mainColor }}
-              />
-            </ButtonBase>
-          </Grid>
-        </Grid>
-        <Grid container direction="column" alignItems="flex-end">
-          {links.map(({ href, color, drawerColor, title, subtitle }, index) => {
-            return (
-              <HeaderLink
-                key={index}
-                href={href}
-                color={color}
-                title={title}
-                subtitle={subtitle}
-                onMouseOver={() => onLinkMouseOver(color, drawerColor)}
-                onMouseLeave={setCurrentPortalColors}
-              />
-            );
-          })}
-        </Grid>
-      </NavigationDrawer>
-    </div>
+              <Grid
+                item
+                xs={8}
+                container
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <HeaderLogo
+                  color={mainColor}
+                  tabIndex={-1}
+                  link={getLogoLink()}
+                />
+              </Grid>
+
+              <Grid
+                item
+                xs={4}
+                container
+                justifyContent="flex-end"
+                alignItems="flex-start"
+              >
+                <ButtonBase
+                  className={classes.menuButton}
+                  color="inherit"
+                  onClick={closeDrawer}
+                  style={{ outlineColor: mainColor }}
+                >
+                  <CloseOutlinedIcon
+                    className={classes.menuIconClose}
+                    style={{ color: mainColor }}
+                  />
+                </ButtonBase>
+              </Grid>
+            </Grid>
+            <Grid container direction="column" alignItems="flex-end">
+              {links &&
+                links.map(
+                  (
+                    { href, color, drawerColor, title, subTitle, type },
+                    index,
+                  ) => {
+                    return (
+                      <HeaderLink
+                        selected={selectedLink && type === currentPortal}
+                        selectedColor={selectedColor}
+                        key={index}
+                        href={href}
+                        color={mainColor}
+                        title={title}
+                        subtitle={subTitle}
+                        onMouseOver={() => onLinkMouseOver(color, drawerColor)}
+                        onMouseLeave={setCurrentPortalColors}
+                      />
+                    );
+                  },
+                )}
+            </Grid>
+          </NavigationDrawer>
+        )}
+      </MuiThemeProvider>
+    </>
   );
 };
 

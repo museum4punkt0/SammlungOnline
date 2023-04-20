@@ -5,6 +5,7 @@ export enum TextModuleType {
   RESEARCH,
   TOPIC,
   GUIDE,
+  INTRO,
 }
 // types HighlightsContextData {
 //     image: string;

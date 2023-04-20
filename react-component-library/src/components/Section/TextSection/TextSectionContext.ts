@@ -5,10 +5,15 @@ export enum TextModuleType {
   RESEARCH,
   TOPIC,
   GUIDE,
-}    
+  INTRO,
+}
 export interface HighlightsContextData {
   image: string;
   title: string;
+  link?: string;
+  subTitle?: string;
+  date?: string;
+  collection?: string;
 }
 
 export interface TextSectionData {
@@ -24,6 +29,9 @@ export interface TextSectionData {
   textColor: string;
   titleColor: string;
   moduleType: TextModuleType;
+  hasSwiperBlock: boolean;
+  sections?: any[];
+  type?: string;
 }
 
 export interface TextSectionContextData {
@@ -34,4 +42,4 @@ export const TextSectionContext = createContext<TextSectionContextData>({
   sections: [],
 });
 
-export default {TextSectionContext};
+export default { TextSectionContext };

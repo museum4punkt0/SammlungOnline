@@ -1,0 +1,24 @@
+.carousel-headline {
+  padding-bottom: 2.5rem;
+
+  &__divider {
+    position: 'relative';
+    height: 0.25rem;
+    background: #0f0900;
+    margin-bottom: 1.75rem;
+  }
+
+  &__video {
+    margin-top: 0.75rem !important;
+  }
+
+  &__text {
+    width: 100%;
+    margin-top: 0.75rem !important;
+    font-weight: 500 !important;
+
+    @media (min-width: '800px') {
+      max-width: 80%;
+    }
+  }
+}

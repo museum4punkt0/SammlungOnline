@@ -10,7 +10,8 @@ import AttachmentRepository from '../../lib/attachment/attachment.repository';
 
 function makeid(length: number) {
   let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const characters =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
 
   for (let i = 0; i < length; i += 1) {
@@ -35,7 +36,8 @@ class AttachmentService {
       error,
       data: rawAttachments,
     } = this._attachmentRepository.fetchExhibitAttachments(id, language);
-    const attachments = rawAttachments?.map(this._mapToAttachment.bind(this)) ?? [];
+    const attachments =
+      rawAttachments?.map(this._mapToAttachment.bind(this)) ?? [];
 
     return { loading, error, data: attachments };
   }
@@ -46,9 +48,14 @@ class AttachmentService {
   }
 
   private _mapToAttachment(attachmentDto: SmbAttachments): IAttachment {
-    const { attachment: filename, credits, license, primary: isPrimary } = attachmentDto;
+    const {
+      attachment: filename,
+      credits,
+      license,
+      primary: isPrimary,
+    } = attachmentDto;
 
-    const src = this._imageUrlBuilder.buildUrl(filename, 1000, 600);
+    const src = this._imageUrlBuilder.buildUrl(filename, 300, 300);
     const downloadFilename = this._createRandomFileName(filename);
 
     return {
@@ -58,8 +65,8 @@ class AttachmentService {
       credits: credits || '',
       primary: !!isPrimary,
       license: {
-        text: license?.licenses_translations[0]?.content,
-        href: license?.link,
+        text: license?.i18n[0]?.content || license?.key,
+        href: license?.link ?? undefined,
         target: '_blank',
       },
     };

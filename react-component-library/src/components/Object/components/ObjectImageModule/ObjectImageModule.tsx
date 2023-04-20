@@ -94,7 +94,7 @@ function ObjectImageModule({
                           className={classes.imgPreview}
                           key={index}
                           style={previewStyle(previewSize(attachment), cropped)}
-                          onClick={(): void =>
+                          onClick={() =>
                             objectContextData.previewClicked(attachment)
                           }
                         />

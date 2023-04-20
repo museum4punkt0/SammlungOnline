@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React, { createRef, ReactElement, RefObject, useState } from 'react';
 
 import { Card, Link } from '@material-ui/core';
@@ -78,7 +79,7 @@ export function CollectionModule({
             container={true}
             spacing={1}
             direction={'row'}
-            justify={'center'}
+            justifyContent={'center'}
             alignItems={'center'}
           >
             {title && (

@@ -9,6 +9,8 @@ export class GraphqlExhibitModel {
 
   public readonly identNumber?: string;
 
+  public readonly findSpot?: string;
+
   public readonly collectionKey?: string;
 
   public readonly location?: string;

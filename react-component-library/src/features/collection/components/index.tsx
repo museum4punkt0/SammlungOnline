@@ -1,4 +1,5 @@
 export * from './CollectionDiscoverModule/CollectionsDiscoverModule';
+export * from './CollectionDiscoverModule/CollectionsDiscoverModuleNew';
 export * from './CollectionCard/CollectionCard';
 export * from './CollectionsModule/CollectionsModule';
 export * from './CollectionContext/CollectionContext';

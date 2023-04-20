@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { ReactElement } from 'react';
 import { TextModuleType, TextSectionData } from 'src';
 import SectionFactory from './SectionFactory';
@@ -5,15 +6,22 @@ import SectionFactory from './SectionFactory';
 export function Sections({
   sections,
   allowedSectionTypes,
+  pagination,
+  hideInOverviewTopicStories = false,
+  id = 'TextSectionBoxModule',
+  hasSvg,
+  isFooter,
 }: {
   sections: TextSectionData[];
   allowedSectionTypes?: TextModuleType[] | undefined;
+  pagination?: boolean;
+  hideInOverviewTopicStories?: boolean;
+  id?: string;
+  hasSvg?: boolean;
+  isFooter?: boolean;
 }): ReactElement {
   return (
-    <div
-      id={'TextSectionBoxModule'}
-      data-testid={'page-text-box-links-module-wrapper'}
-    >
+    <div id={id} data-testid={'page-text-box-links-module-wrapper'}>
       {sections
         .filter((value) => {
           return (
@@ -22,9 +30,15 @@ export function Sections({
           );
         })
         .map((value, index) => (
-          <SectionFactory key={index} textSectionData={value} />
+          <SectionFactory
+            key={index}
+            textSectionData={value}
+            pagination={pagination}
+            hideInOverviewTopicStories={hideInOverviewTopicStories}
+            hasSvg={hasSvg}
+            isFooter={isFooter}
+          />
         ))}
     </div>
   );
 }
-

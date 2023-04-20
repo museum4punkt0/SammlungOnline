@@ -1,0 +1,18 @@
+.collection-card-wrapper {
+  width: 100%;
+  margin-bottom: 1rem !important;
+
+  @media (min-width: '600px') {
+    width: calc(50% - 0.5rem);
+
+    &:nth-child(2n) {
+      margin-left: 1rem;
+    }
+  }
+}
+
+.collection-card-max-width {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}

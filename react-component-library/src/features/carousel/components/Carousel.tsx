@@ -12,12 +12,11 @@ import { ICarouselProps } from '../types/carousel.interface';
 
 const CarouselComponent: React.FC<ICarouselProps> = (props) => {
   const {
-    cellSpacing,
+    // cellSpacing,
     width,
     visibleSlides,
     children,
-    getControlsContainerStyles,
-    color = 'black',
+    color = '#000',
     autoplay = false,
     dragging = true,
     disableEdgeSwiping = true,
@@ -28,9 +27,9 @@ const CarouselComponent: React.FC<ICarouselProps> = (props) => {
     slideIndex,
     slidesToShow: _slidesToShow,
     previousButtonAriaLabel = 'previous',
-    cellAlign = 'left',
+    // cellAlign = 'left',
     slidesToScroll = 1,
-    framePadding = '0 46px',
+    framePadding = '0 0',
     renderBottomCenterControls = null,
   } = props;
 
@@ -44,22 +43,31 @@ const CarouselComponent: React.FC<ICarouselProps> = (props) => {
     const { previousSlide, slideCount, currentSlide } = props;
     const isDisabled = slidesToShow >= slideCount || !currentSlide;
 
-    if (isDisabled) {
-      return null;
-    }
-
     return (
       <IconButton
-        disabled={isDisabled}
         aria-label={previousButtonAriaLabel}
         className={classes.arrowContainer}
         size="medium"
         onClick={previousSlide}
-        style={{ color: isDisabled ? 'rgba(0, 0, 0, 0.54)' : color }}
+        style={getControlsStyle(isDisabled)}
       >
         <ArrowBackIosOutlinedIcon />
       </IconButton>
     );
+  };
+
+  const getControlsStyle = (isDisabled: boolean) => {
+    if (isDisabled)
+      return {
+        color: '#c2c2ba',
+        opacity: '0.4',
+        cursor: 'unset',
+        'background-color': 'transparent',
+      };
+    else
+      return {
+        color: color,
+      };
   };
 
   const CenterRightControls: CarouselRenderControl = (props) => {
@@ -68,18 +76,13 @@ const CarouselComponent: React.FC<ICarouselProps> = (props) => {
     const isDisabled =
       slidesToShow >= slideCount || currentSlide === slideCount - slidesToShow;
 
-    if (isDisabled) {
-      return null;
-    }
-
     return (
       <IconButton
-        disabled={isDisabled}
         aria-label={nextButtonAriaLabel}
         size="medium"
         className={classes.arrowContainer}
         onClick={nextSlide}
-        style={{ color: isDisabled ? 'rgba(0, 0, 0, 0.54)' : color }}
+        style={getControlsStyle(isDisabled)}
       >
         <ArrowForwardIosOutlinedIcon />
       </IconButton>
@@ -92,9 +95,9 @@ const CarouselComponent: React.FC<ICarouselProps> = (props) => {
         transitionMode="fade"
         autoplay={autoplay}
         dragging={dragging}
-        cellAlign={cellAlign}
+        // cellAlign={cellAlign}
         slideIndex={slideIndex}
-        cellSpacing={cellSpacing}
+        // cellSpacing={cellSpacing}
         framePadding={framePadding}
         slidesToShow={slidesToShow}
         slidesToScroll={slidesToScroll}
@@ -102,7 +105,6 @@ const CarouselComponent: React.FC<ICarouselProps> = (props) => {
         enableKeyboardControls={enableKeyboardControls}
         beforeSlide={beforeSlide}
         afterSlide={afterSlide}
-        getControlsContainerStyles={getControlsContainerStyles}
         renderBottomCenterControls={renderBottomCenterControls}
         renderCenterLeftControls={CenterLeftControls}
         renderCenterRightControls={CenterRightControls}

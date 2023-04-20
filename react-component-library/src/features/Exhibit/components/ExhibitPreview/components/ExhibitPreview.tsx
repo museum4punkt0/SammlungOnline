@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 
 import { Typography } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
-import {LazyLoadImage} from '../../../../../components/LazyLoadImage/components/LazyLoadImage';
+import { LazyLoadImage } from '../../../../../components/LazyLoadImage/components/LazyLoadImage';
 
 import useStyles from './exhibitPreview.jss';
 
 import { IExhibitPreviewProps } from '../types';
-import { FallbackImage } from "../../../../../components";
-
+import { FallbackImage } from '../../../../../components';
 
 export const ExhibitPreview: React.FC<IExhibitPreviewProps> = (props) => {
   const { attachments, currentAttachment, creditsLabel, onChange } = props;
@@ -30,9 +29,17 @@ export const ExhibitPreview: React.FC<IExhibitPreviewProps> = (props) => {
   };
 
   return (
-    <Grid className={classes.container} justify="center" container>
+    <Grid className={classes.container} justifyContent="center" container>
       <Grid item lg={1} md={1} sm={12} />
-      <Grid item container justify="center" lg={8} md={8} sm={12} xs={12}>
+      <Grid
+        item
+        container
+        justifyContent="center"
+        lg={8}
+        md={8}
+        sm={12}
+        xs={12}
+      >
         <div className={classes.imgContainer}>
           <LazyLoadImage
             Fallback={renderFallbackImage()}
@@ -58,7 +65,7 @@ export const ExhibitPreview: React.FC<IExhibitPreviewProps> = (props) => {
         item
         container
         alignItems="flex-end"
-        justify="flex-end"
+        justifyContent="flex-end"
         lg={1}
         md={1}
         sm={12}

@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   ButtonBase,
-  CardActionArea,
   Card,
   CardMedia,
   CardContent,
@@ -14,28 +13,42 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import useStyles from './collectionCard.jss';
 import { ICollectionCardProps } from '../../types';
 
-
-
-export const CollectionCardComponent: React.FC<ICollectionCardProps> = (props) => {
-  const { image, title, subtitle, count, onClick, actionText = 'Discover' } = props;
+export const CollectionCardComponent: React.FC<ICollectionCardProps> = (
+  props,
+) => {
+  const {
+    image,
+    title,
+    subtitle,
+    count,
+    onClick,
+    actionText = 'Discover',
+  } = props;
 
   const classes = useStyles();
 
   return (
     <Card className={classes.card} onClick={() => onClick && onClick()}>
-      <CardActionArea tabIndex={-1}>
+      <CardContent tabIndex={-1} className={classes.cardInner}>
         <CardMedia className={classes.cardMedia} image={image} />
         <CardContent className={classes.cardContent}>
           <div className={classes.cardHeader}>
             <div className={classes.cardCountArea}>
-              <PhotoLibraryOutlinedIcon />
-              <Typography variant="caption">{count}</Typography>
+              {count && (
+                <>
+                  <PhotoLibraryOutlinedIcon />
+                  <Typography variant="caption">{count}</Typography>
+                </>
+              )}
             </div>
             <ButtonBase
               className={classes.cardDiscoverButton}
               onClick={() => onClick && onClick()}
             >
-              <Typography variant="caption" className={classes.cardDiscoverButtonTypo}>
+              <Typography
+                variant="caption"
+                className={classes.cardDiscoverButtonTypo}
+              >
                 {actionText}
               </Typography>
               <ArrowRightAltIcon />
@@ -54,7 +67,7 @@ export const CollectionCardComponent: React.FC<ICollectionCardProps> = (props) =
             </div>
           </div>
         </CardContent>
-      </CardActionArea>
+      </CardContent>
     </Card>
   );
 };

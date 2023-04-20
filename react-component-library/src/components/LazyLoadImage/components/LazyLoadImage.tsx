@@ -13,6 +13,7 @@ export const LazyLoadImage: React.FC<ILazyLoadImageProps> = (props) => {
   const {
     width = '100%',
     height = '100%',
+    cssClass = '',
     Fallback = null,
     src = '',
     size = 'contain',
@@ -36,7 +37,10 @@ export const LazyLoadImage: React.FC<ILazyLoadImageProps> = (props) => {
   };
 
   return (
-    <div style={{ ...imageDimensions, position: 'relative' }}>
+    <div
+      style={{ ...imageDimensions, position: 'relative' }}
+      className={cssClass}
+    >
       {(isLoading || isError) && (
         <div className={classes.loaderContainer} style={imageDimensions}>
           {isLoading && <LoadingSpinner />}

@@ -16,7 +16,14 @@ export const ImageZoomModal: React.FC<IImageZoomModal> = ({
 }) => {
   const classes = useStyles();
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      onContextMenu={(event) => {
+        event?.preventDefault();
+        event?.stopPropagation();
+      }}
+    >
       <Backdrop open={open}>
         <div className={classes.container}>
           <ViewerProvider>

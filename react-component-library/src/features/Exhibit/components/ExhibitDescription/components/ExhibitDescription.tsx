@@ -31,7 +31,7 @@ export const ExhibitDescription: React.FC<IExhibitDescriptionProps> = (
         </Grid>
         <Grid
           container
-          justify="flex-end"
+          justifyContent="flex-end"
           item={true}
           xs={12}
           sm={12}
@@ -44,7 +44,7 @@ export const ExhibitDescription: React.FC<IExhibitDescriptionProps> = (
           container
           spacing={0}
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           className={classes.contentGrid}
         >
           <Grid item xs={12} sm={12} md={3}>

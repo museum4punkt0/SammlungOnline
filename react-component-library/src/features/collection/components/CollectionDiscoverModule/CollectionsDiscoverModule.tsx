@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { Grid } from '@material-ui/core';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
@@ -10,20 +11,24 @@ import { useTranslation } from 'react-i18next';
 
 import useStyles from './collectionsDiscoverModule.jss';
 import { LinkBuilder } from '../../../../utils/LinkBuilder';
-import { CollectionCard } from '../../../index';
+import { CollectionCard } from '../CollectionCard/CollectionCardNew';
 import { CollectionsContext } from '../../types/CollectionsContext';
-import { guid, guidNumber } from '../../../../utils/genaratorID';
 // TODO: Probably this implementation is not necessary, CollectionsModule could be used instead.
 
 export function CollectionsDiscoverModule({
   collectionModuleClasses = '',
+  section = '',
 }: {
   collectionModuleClasses?: string;
+  section?: string;
 }): ReactElement {
   const classes = useStyles();
   const { t } = useTranslation();
   const link = new LinkBuilder();
-  const handleTopic = () => link.toTopics(guidNumber(), guid());
+
+  const handleTopic = () => {
+    link.toTopicsHashed('/#topics');
+  };
 
   return (
     <CollectionsContext.Consumer>
@@ -37,7 +42,6 @@ export function CollectionsDiscoverModule({
             className={classes.gridContainer}
             spacing={4}
             direction={'row'}
-            justify={'center'}
             alignItems={'center'}
             data-testid={'collection-discover-module-wrapper'}
           >
@@ -61,15 +65,12 @@ export function CollectionsDiscoverModule({
                     image={collectionContextData.previewImageCard}
                     title={collectionContextData.title}
                     subtitle={collectionContextData.subtitle}
+                    section={section}
                     actionText={t('collections module discover button')}
-                    tintColor={'rgba(0, 0, 0, 0.5)'}
-                    count={collectionContextData.collectionObjects.length}
-                    onClick={() =>
-                      link.toTopics(
-                        collectionContextData.id,
-                        collectionContextData.title,
-                      )
-                    }
+                    href={link.getTopicsHref(
+                      collectionContextData.id,
+                      collectionContextData.platform,
+                    )}
                   />
                 </Grid>
               ),

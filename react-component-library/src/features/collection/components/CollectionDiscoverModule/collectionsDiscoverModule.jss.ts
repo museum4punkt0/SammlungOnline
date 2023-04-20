@@ -7,20 +7,22 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.easeInOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
-      maxWidth: '1280px',
-      margin: 'auto',
-      backgroundColor: theme.palette.primary.main,
+
+      // backgroundColor: theme.palette.primary.main,
+      backgroundColor: '#feffe4',
     },
+
     gridContainer: {
-      [theme.breakpoints.down('md')]: {
-        padding: 16,
-      },
+      maxWidth: '1312px',
+      margin: '0 auto',
+      width: '100%',
     },
     titleGridItem: {
       display: 'block',
     },
     titleArrowButton: {
-      color: theme.palette.primary.contrastText,
+      //color: theme.palette.primary.contrastText,
+      color: 'black',
     },
     buttonTitle: {
       '& > span': {
@@ -33,9 +35,11 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       width: '100%',
       textAlign: 'left',
+      color: 'black',
     },
     titleButtonTypo: {
-      color: theme.palette.primary.contrastText,
+      //color: theme.palette.primary.contrastText,
+      color: 'black',
       fontSize: '1.25rem',
       textTransform: 'uppercase',
       letterSpacing: '2px',

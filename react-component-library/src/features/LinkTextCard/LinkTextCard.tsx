@@ -12,7 +12,7 @@ import { Grid } from '@material-ui/core';
 export function LinkTextCard({
   title,
   subtitle,
-  tintColor,
+  // tintColor,
   textColor = 'white',
   textAreaColor = 'black',
   onClick,
@@ -33,8 +33,6 @@ export function LinkTextCard({
   ariaLabel?: string;
 }): ReactElement {
   const classes = useStyles();
-  // eslint-disable-next-line no-console
-  console.log('tintColor',tintColor)
 
   return (
     <Card
@@ -48,7 +46,7 @@ export function LinkTextCard({
       >
         <Grid container direction={'column'} className={classes.cardTitleArea}>
           <Grid
-            justify={'space-between'}
+            justifyContent={'space-between'}
             style={{ width: '100%' }}
             className={classes.cardTitleWrapper}
           >

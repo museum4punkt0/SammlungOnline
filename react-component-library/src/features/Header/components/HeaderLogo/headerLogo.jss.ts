@@ -9,19 +9,22 @@ const useStyles = (props: IHeaderLogoStyleProps) => {
     return createStyles({
       logoLink: {
         alignSelf: 'flex-start',
-        paddingTop: 5,
         color: props.color,
         zIndex: 1200,
         '&:focus-visible': {
           outline: `4px solid ${props.color}`,
         },
+        display: 'block',
+        height: 64,
+        [theme.breakpoints.down('xs')]: {
+          height: 38,
+        },
+        [theme.breakpoints.down(375)]: {
+          height: 32,
+        },
       },
       logo: {
-        height: 36,
-        width: 185,
-        [theme.breakpoints.down('sm')]: {
-          width: 150,
-        },
+        height: '100%',
       },
     });
   });

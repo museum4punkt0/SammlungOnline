@@ -1,8 +1,4 @@
-import TopicService from './service/TopicService';
-import {TopicCollectionContextData } from './service/TopicService';
-import TopicRepository from './repository/TopicRepository';
-export {
+import TopicService, {
   TopicCollectionContextData,
-  TopicService,
-  TopicRepository
-};
+} from './service/TopicService';
+export { TopicCollectionContextData, TopicService };

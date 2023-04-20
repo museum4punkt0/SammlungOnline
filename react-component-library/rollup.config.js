@@ -5,6 +5,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import url from 'rollup-plugin-url';
 import svgr from '@svgr/rollup';
 import json from '@rollup/plugin-json';
+import styles from "rollup-plugin-styles";
 
 import pkg from './package.json';
 
@@ -16,17 +17,24 @@ export default {
       format: 'cjs',
       exports: 'named',
       sourcemap: true,
+      assetFileNames: "[name][extname]",
     },
     {
       file: pkg.module,
       format: 'es',
       exports: 'named',
       sourcemap: true,
+      assetFileNames: "[name][extname]",
     },
   ],
   plugins: [
+    styles(),
     externals(),
-    url(),
+    url({
+      fileName: '[name][extname]',
+      include: ['**/*.woff2', '**/*.svg'],
+      limit: 60000,
+    }),
     json({ compact: true }),
     svgr(),
     resolve(),

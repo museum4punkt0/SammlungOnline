@@ -1,91 +1,103 @@
+/* eslint-disable react/jsx-key */
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SwiperCarousel } from '../index';
 
 import {
-  TextSectionData,
-  TextSection,
   HighlightService,
+  AssortmentsService,
+  AssortmentsContextData,
   useConfigLoader,
 } from 'src';
 
-import {
-  CarouselImageCard,
-  ICarouselImageCardProps,
-  CarouselHeadline,
-  Carousel,
-  useWidth,
-  EBreakpoints,
-  LoadingSpinner,
-} from 'src';
+import { CarouselHeadline, LoadingSpinner } from 'src';
+import { CollectionCard } from '../collection/components/CollectionCard/CollectionCardNew';
+import { CarouselImageCard } from '../carousel/components/CarouselImageCard/CarouselImageCardNew';
 
-import useStyles from './researchSection.jss';
+// import useStyles from './researchSection.jss';
+import './researchSection.scss';
 
-function ResearchSection({
-  textSectionData,
-}: {
-  textSectionData: TextSectionData;
-}): ReactElement {
+function ResearchSection(): ReactElement {
   const highlightsService = new HighlightService();
+  const assortmentsService = new AssortmentsService();
   const { loading, contextData } = highlightsService.getHighlightsObjects();
+  const { assortmentsLoading, assortmentsContextData } =
+    assortmentsService.getAssortmentObjects();
+
   const { config } = useConfigLoader();
   const { t } = useTranslation();
 
-  const width = useWidth();
-  const slidesToShowMap: Record<EBreakpoints, number> = {
-    xs: 1,
-    sm: 3,
-    md: 4,
-    lg: 6,
-    xl: 6,
-  };
-  const slidesToShow = slidesToShowMap[width];
+  // const classes = useStyles();
 
-  const classes = useStyles();
+  const getCardAssortments = (contextData: Array<AssortmentsContextData>) => {
+    return contextData.map((assortment: AssortmentsContextData) => {
+      return {
+        section: 'research',
+        title: assortment.title,
+        subtitle: assortment.subtitle,
+        href: assortment.link,
+        id: assortment.id,
+        actionText: t('collections.buttons.research'),
+        image: assortment.img,
+      };
+    });
+  };
+
+  const assortments = getCardAssortments(assortmentsContextData);
 
   return (
-    <div
-      className={classes.content}
-      style={{ backgroundColor: textSectionData.moduleBackgroundColor }}
-    >
-      <TextSection textSectionData={textSectionData} isWrapped={true} />
-
-      <div>
+    <>
+      <div className={'research-section'}>
         <CarouselHeadline
           href={config.RESEARCH_DOMAIN}
-          color={textSectionData.titleColor}
+          variant={'h4'}
+          text={t('research.highlights.text')}
+          link={false}
         >
-          {t('highlights from the collection')}
+          {t('research.highlights.title')}
         </CarouselHeadline>
+
         {loading && (
-          <div className={classes.loaderContainer}>
+          <div className={'research-section__loader'}>
             <LoadingSpinner />
           </div>
         )}
-        {!loading && (
-          <Carousel
-            color={'#000'}
-            getControlsContainerStyles={(key) => {
-              switch (key) {
-                case 'CenterLeft':
-                  return {
-                    top: '100px',
-                  };
-                default:
-                  return {
-                    top: '100px',
-                  };
-              }
-            }}
-            cellSpacing={12}
-            slidesToShow={slidesToShow}
-          >
-            {contextData.map((item: ICarouselImageCardProps, index: number) => {
-              return <CarouselImageCard key={index} {...item} />;
-            })}
-          </Carousel>
+        {!loading && contextData.length > 0 && (
+          <SwiperCarousel
+            data={contextData as any}
+            type="auto"
+            sliderComponent={CarouselImageCard}
+            section="research-auto"
+          />
         )}
       </div>
-    </div>
+
+      {!assortmentsLoading && assortments.length > 0 && (
+        <div className={'research-section'}>
+          <CarouselHeadline
+            href={config.RESEARCH_DOMAIN}
+            variant={'h4'}
+            text={t('research.collection.text')}
+            link={false}
+          >
+            {t('research.collection.title')}
+          </CarouselHeadline>
+
+          {assortmentsLoading && (
+            <div className={'research-section__loader'}>
+              <LoadingSpinner />
+            </div>
+          )}
+
+          <SwiperCarousel
+            data={assortments as any}
+            type="pair"
+            sliderComponent={CollectionCard}
+            section="research-pair"
+          />
+        </div>
+      )}
+    </>
   );
 }
 

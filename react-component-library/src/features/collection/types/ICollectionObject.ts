@@ -1,10 +1,11 @@
 import { IImageUrlBuilder } from '../../../services/ImageUrlBuilderService/image-url-builder-service.interaface';
 
-
 export interface ICollectionObject {
   objectId: string;
   imageId: string;
   title: string;
+  text?: string;
+  slug?: string;
   imageUrlBuilder: IImageUrlBuilder;
 }
 

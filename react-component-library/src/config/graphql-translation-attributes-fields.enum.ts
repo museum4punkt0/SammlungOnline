@@ -1,9 +1,11 @@
 export enum EGraphqlTranslationAttributesFields {
   title = 'ObjObjectTitleGrp.TitleTxt',
   technicalTerm = 'ObjTechnicalTermClb',
+  findSpot = 'ObjGeograficGrp.PlaceVoc',
   dating = 'ObjDateGrp.DateTxt',
   identNumber = 'ObjObjectNumberGrp.NumberVrt',
   collectionKey = '__orgUnit',
+  collection = 'ObjOwnerRef',
   location = 'ObjCurrentLocationGrpVrt',
   involvedParties = 'ObjPerAssociationMainParticipantVrt',
   description = 'ObjTextOnlineGrp.TextClb',

@@ -1,20 +1,22 @@
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((_theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     loadingWrapper: {
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: '#000000',
-      },
-      wrapper: {
-        height: '100%',
-        width: '100%',
-      },
-      loadingSpinner: {
-        position: 'relative',
-        top: '50vh',
-      },
+      height: 'calc(100vh)',
+      width: '100vw',
+      top: '-100px',
+      position: 'relative',
+      backgroundColor: '#0F0900',
+    },
+    wrapper: {
+      height: '100%',
+      width: '100%',
+    },
+    loadingSpinner: {
+      position: 'relative',
+      top: '50%',
+    },
   }),
 );
 

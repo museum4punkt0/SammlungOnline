@@ -1,0 +1,32 @@
+.loading-platform {
+  &--intro {
+    background: #fff !important;
+
+    #spinner-div {
+      background-color: #0f0900 !important;
+    }
+  }
+  &--topics {
+    background: #0f0900 !important;
+
+    #spinner-div {
+      background-color: #f9ff4b !important;
+    }
+  }
+
+  &--guide {
+    background: #0f0900 !important;
+
+    #spinner-div {
+      background-color: #f84040 !important;
+    }
+  }
+
+  &--research {
+    background: #fff !important;
+
+    #spinner-div {
+      background-color: #0f0900 !important;
+    }
+  }
+}

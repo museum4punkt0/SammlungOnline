@@ -4,6 +4,8 @@ export interface ICollectionObject {
   objectId: string;
   imageId: string;
   title: string;
+  text?: string;
+  slug?: string;
   imageUrlBuilder: IImageUrlBuilder;
 }
 
@@ -14,6 +16,7 @@ export interface ICollectionContextData {
   previewImageMediaPlayer: string;
   title: string;
   subtitle: string;
+  abstract: string;
   collectionObjects: ICollectionObject[];
   interval?: number;
   selectedObjectIndex?: number;

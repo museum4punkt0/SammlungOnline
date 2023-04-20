@@ -6,6 +6,14 @@ import GraphqlService from './GraphqlService/graphql.service';
 import useRemoveFocusWhenNotTab from '../hooks/use-remove-focus-when-not-tab.hook';
 import useWidth, { EBreakpoints } from '../hooks/use-width';
 import { HighlightService, HighlightRepository } from './HighlightService';
+import TopicStoriesService from './TopicStoriesService/service';
+
+import {
+  AssortmentsService,
+  AssortmentsRepository,
+  AssortmentsContextData,
+} from './AssortmentsService';
+
 export {
   useWidth,
   EBreakpoints,
@@ -29,20 +37,22 @@ export {
   ITourObjectData,
   IRelatedStation,
   GuideService,
-  GuideRepository,
-  ICollectionObject
+  ICollectionObject,
 } from './GuideService';
-export {
-  TopicCollectionContextData,
-  TopicService,
-  TopicRepository,
-} from './TopicService';
+export { TopicCollectionContextData, TopicService } from './TopicService';
 
-export {
-  IntroService,
-  IntroRepository,
-  ITextSectionData,
-  ITextSectionContextData,
-} from './IntroService';
+export { ITextSectionData, ITextSectionContextData } from './IntroService';
 
 export { HighlightService, HighlightRepository };
+export {
+  AssortmentsService,
+  AssortmentsRepository,
+  AssortmentsContextData,
+  TopicStoriesService,
+};
+export {
+  LandingpageService,
+  LandingpageRepository,
+} from './LandingpageService';
+
+export { SiteConfigService, SiteConfigRepository } from './SiteConfig';

@@ -6,15 +6,23 @@ import useStyles from './headerLink.jss';
 import { IHeaderLinkProps } from '../../types/interfaces';
 
 const HeaderLink: React.FC<IHeaderLinkProps> = (props) => {
-  const { title, subtitle, href, onMouseOver, onMouseLeave } = props;
+  const {
+    selected,
+    selectedColor,
+    title,
+    subtitle,
+    href,
+    onMouseOver,
+    onMouseLeave,
+  } = props;
 
   const classes = useStyles(props)();
 
   const mouseOver = () => {
-    onMouseOver && onMouseOver();
+    !selected && onMouseOver && onMouseOver();
   };
   const mouseLeave = () => {
-    onMouseLeave && onMouseLeave();
+    !selected && onMouseLeave && onMouseLeave();
   };
 
   return (
@@ -26,10 +34,20 @@ const HeaderLink: React.FC<IHeaderLinkProps> = (props) => {
       onFocus={mouseOver}
       onBlur={mouseLeave}
     >
-      <Typography variant="h1" className={classes.title}>
+      <Typography
+        variant="h1"
+        component="h2"
+        className={classes.title}
+        style={{ color: selected ? selectedColor : '' }}
+      >
         {title}
       </Typography>
-      <Typography variant="subtitle1" className={classes.subtitle}>
+      <Typography
+        variant="subtitle1"
+        component="p"
+        className={classes.subtitle}
+        style={{ color: selected ? selectedColor : '' }}
+      >
         {subtitle}
       </Typography>
     </Link>

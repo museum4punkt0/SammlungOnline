@@ -36,7 +36,7 @@ export const ExhibitActions: React.FC<IExhibitActionsProps> = (props) => {
       {showImageActions && (
         <IconButton
           color="inherit"
-          aria-label={downloadActionLabel || 'download'}
+          aria-label={downloadActionLabel || 'Download'}
           data-cy={'object-actions-download'}
           onClick={() => onDownload && onDownload()}
         >
@@ -46,7 +46,7 @@ export const ExhibitActions: React.FC<IExhibitActionsProps> = (props) => {
       {showImageActions && (
         <IconButton
           color="inherit"
-          aria-label={zoomActionLabel || 'zoom'}
+          aria-label={zoomActionLabel || 'Zoom'}
           data-cy={'object-actions-zoom'}
           onClick={() => onZoom && onZoom()}
         >

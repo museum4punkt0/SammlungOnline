@@ -5,6 +5,7 @@ const useStyles = makeStyles((_theme: Theme) =>
     extraPadding: {
       paddingLeft: 10,
       paddingRight: 10,
+      border: 'solid red',
     },
   }),
 );

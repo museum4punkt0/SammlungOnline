@@ -1,17 +1,21 @@
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
+/* eslint-disable no-console */
+import React, { ReactElement } from 'react';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Link,
+  Typography,
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import LanguageOutlined from '@material-ui/icons/LanguageOutlined';
 import SaveAltOutlinedIcon from '@material-ui/icons/SaveAltOutlined';
-import clsx from 'clsx';
-import React, { ReactElement } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+
 import { Link as License } from '../../../Object/components/ObjectContext/ObjectContext';
+import { ResearchService } from '../../../../services/ResearchService';
 import useStyles from './objectImageDownloadDialog.jss';
 
 interface IDialogProps {
@@ -22,137 +26,174 @@ interface IDialogProps {
   onClose: () => void;
 }
 
+const licenseCodePlaceholderText = '(licenseCode)';
+const externalLinkIcon = `
+ <svg className={classes.svg} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 195 191">
+  <g fill="#000">
+   <path d="M185.818,0.161 L128.778,0.161 C123.807,0.161 119.778,4.19 119.778,9.161 C119.778,14.132 123.807,18.161 128.778,18.161 L164.09,18.161 L77.79,104.461 C74.275,107.976 74.275,113.674 77.79,117.189 C79.548,118.946 81.851,119.825 84.154,119.825 C86.457,119.825 88.76,118.946 90.518,117.189 L176.818,30.889 L176.818,66.202 C176.818,71.173 180.847,75.202 185.818,75.202 C190.789,75.202 194.818,71.173 194.818,66.202 L194.818,9.162 C194.818,4.19 190.789,0.161 185.818,0.161 Z" />
+   <path d="M149,75.201 C144.029,75.201 140,79.23 140,84.201 L140,172.657 L18,172.657 L18,50.657 L111.778,50.657 C116.749,50.657 120.778,46.628 120.778,41.657 C120.778,36.686 116.749,32.657 111.778,32.657 L9,32.657 C4.029,32.657 0,36.686 0,41.657 L0,181.657 C0,186.628 4.029,190.657 9,190.657 L149,190.657 C153.971,190.657 158,186.628 158,181.657 L158,84.201 C158,79.23 153.971,75.201 149,75.201 Z" />
+  </g>
+ </svg>
+`;
+
 export function ObjectImageDownloadDialog({
   filename,
   isOpen,
   image,
+  license,
   onClose,
 }: IDialogProps): ReactElement {
   const classes = useStyles();
-  const { t } = useTranslation();
+  const researchService = new ResearchService();
+  const { loading, data } = researchService.getResearchModalData();
+
+  const formatText = (text: string | undefined | null) => {
+    const formattedText = (text || '')
+      .replace(/<\/a>/g, `${externalLinkIcon}</a>`)
+      .replace(
+        `${licenseCodePlaceholderText}`,
+        `<a href="${license.href}" aria-label="Link zu: ${
+          license.text
+        }" target="${license.target || '_blank'}">${
+          license.text
+        }${externalLinkIcon}</a>`,
+      );
+    return formattedText;
+  };
+
+  const getDialogVariant = () => {
+    if (data?.download && data?.web) return 'md';
+    return 'xs';
+  };
+
+  const getDialogContentVariant = () => {
+    if (data?.download && data?.web) return 6;
+    return 12;
+  };
 
   return (
-    <React.Fragment>
+    <>
       <Dialog
         style={{ zIndex: 1400 }}
         fullWidth
-        maxWidth={'md'}
+        maxWidth={getDialogVariant()}
         open={isOpen}
         onClose={onClose}
       >
-        <DialogTitle className={classes.content} disableTypography={true}>
-          <Typography variant={'h3'} className={classes.downloadDialogTitle}>
-            {t('dialog download title')}
-          </Typography>
-          <IconButton
-            data-cy="dialog-close"
-            onClick={onClose}
-            className={classes.downloadDialogCloseButton}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent
-          className={clsx(
-            classes.content,
-            classes.verticalLine,
-            classes.container,
-          )}
-        >
-          <Grid container spacing={6}>
-            {/*TODO use license from props*/}
-            <Grid item={true} md={6}>
-              <Typography
-                className={classes.capitalize}
-                xs-align="left"
-                sm-align="center"
-                variant="h4"
-              >
-                {t('download noncommercial use')}
-              </Typography>
-              <Typography className={classes.downloadDialogContentTypo}>
-                <Trans t={t} i18nKey={'download image dialog content'}>
-                  Die von Ihnen ausgewählte Werkabbildung unterliegt den
-                  Lizenzbedingungen gemäß: CC NC-BY-SA der Staatlichen Museen zu
-                  Berlin – Preußischer Kulturbesitz und schließt eine
-                  kommerzielle Nutzung eindeutig aus. Mit dem Herunterladen der
-                  Abbildung erklären Sie sich mit den Lizenzbedingungen
-                  rechtsverbindlich einverstanden.
-                </Trans>
-              </Typography>
-            </Grid>
-            <Grid item={true} md={6}>
-              <Typography
-                className={classes.capitalize}
-                xs-align="left"
-                sm-align="center"
-                variant="h4"
-              >
-                {t('download commercial use')}
-              </Typography>
-              <Typography className={classes.downloadDialogContentTypo}>
-                <Trans t={t} i18nKey={'download image dialog content right'}>
-                  Falls Sie eine kommerzielle Nutzung beabsichtigen wenden Sie
-                  sich bitte an die
-                  <Link
-                    href={t('link to bpk')}
-                    rel={'noreferrer'}
-                    target={'_blank'}
-                  >
-                    bpk – Bildagentur Preußischer Kulturbesitz
-                  </Link>
-                  <br />
-                  <br />
-                  Bei der Verwendung für wissenschaftliche Publikationen bitten
-                  wir um die
-                  <Link
-                    href={t('link to bpk')}
-                    rel={'noreferrer'}
-                    target={'_blank'}
-                  >
-                    Zusendung eines Belegexemplars.
-                  </Link>
-                </Trans>
-              </Typography>
-            </Grid>
-            <Grid item={true} xs={12} md={6}>
-              <Link
-                href={image}
-                className={classes.downloadImageButton}
-                download={filename}
-                target={'_blank'}
-                data-cy="download-dialog-download"
-              >
-                <Typography
-                  component="div"
-                  variant={'h4'}
-                  className={clsx(classes.downloadDialogDownloadLink)}
-                >
-                  {t('download')}
+        {!loading && data && (
+          <>
+            <DialogTitle className={classes.container} disableTypography={true}>
+              <div className={classes.header}>
+                <Typography variant={'h3'} className={classes.title}>
+                  {data.title}
                 </Typography>
-                <SaveAltOutlinedIcon fontSize={'large'} />
-              </Link>
-            </Grid>
-            <Grid item={true} xs={12} md={6}>
-              <Link
-                href={t('link to bpk')}
-                className={classes.downloadImageButton}
-                target={'_blank'}
-              >
-                <Typography
-                  component="div"
-                  variant={'h4'}
-                  className={clsx(classes.downloadDialogDownloadLink)}
+                <IconButton
+                  data-cy="dialog-close"
+                  onClick={onClose}
+                  className={classes.closeButton}
                 >
-                  {t('website bpk')}
-                </Typography>
-                <LanguageOutlined fontSize={'large'} />
-              </Link>
-            </Grid>
-          </Grid>
-        </DialogContent>
+                  <CloseIcon fontSize="large" />
+                </IconButton>
+              </div>
+            </DialogTitle>
+
+            <DialogContent className={classes.container}>
+              <div className={classes.contentWrapper}>
+                {data.download && (
+                  <Grid
+                    item={true}
+                    className={classes.innerContent}
+                    md={getDialogContentVariant()}
+                  >
+                    {data.download.header && (
+                      <Typography
+                        className={classes.sectionTitle}
+                        xs-align="left"
+                        sm-align="center"
+                        variant="h4"
+                      >
+                        {data.download.header}
+                      </Typography>
+                    )}
+                    {data.download.text && (
+                      <Typography
+                        className={classes.sectionRichText}
+                        component={'div'}
+                        variant="body1"
+                        dangerouslySetInnerHTML={{
+                          __html: `${formatText(data.download.text)}`,
+                        }}
+                      />
+                    )}
+                    {data.download.buttonText && (
+                      <Link
+                        href={image}
+                        className={classes.sectionButton}
+                        download={filename}
+                        target={'_blank'}
+                        data-cy="download-dialog-download"
+                      >
+                        <Typography
+                          component="div"
+                          variant={'h4'}
+                          className={classes.sectionButtonLink}
+                        >
+                          {data.download.buttonText}
+                        </Typography>
+                        <SaveAltOutlinedIcon fontSize={'large'} />
+                      </Link>
+                    )}
+                  </Grid>
+                )}
+                {data.web && (
+                  <Grid
+                    item={true}
+                    className={classes.innerContent}
+                    md={getDialogContentVariant()}
+                  >
+                    {data.web.header && (
+                      <Typography
+                        className={classes.sectionTitle}
+                        xs-align="left"
+                        sm-align="center"
+                        variant="h4"
+                      >
+                        {data.web.header}
+                      </Typography>
+                    )}
+                    {data.web.text && (
+                      <Typography
+                        className={classes.sectionRichText}
+                        component={'div'}
+                        variant="body1"
+                        dangerouslySetInnerHTML={{
+                          __html: `${formatText(data.web.text)}`,
+                        }}
+                      />
+                    )}
+                    {data.web.buttonLink && (
+                      <Link
+                        href={data.web.buttonLink}
+                        className={classes.sectionButton}
+                        target={'_blank'}
+                      >
+                        <Typography
+                          component="div"
+                          variant={'h4'}
+                          className={classes.sectionButtonLink}
+                        >
+                          {data.web.buttonText}
+                        </Typography>
+                        <LanguageOutlined fontSize={'large'} />
+                      </Link>
+                    )}
+                  </Grid>
+                )}
+              </div>
+            </DialogContent>
+          </>
+        )}
       </Dialog>
-    </React.Fragment>
+    </>
   );
 }
-

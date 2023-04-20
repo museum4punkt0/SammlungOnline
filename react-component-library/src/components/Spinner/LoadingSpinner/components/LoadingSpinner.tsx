@@ -2,10 +2,12 @@ import React from 'react';
 import clsx from 'clsx';
 
 import useStyles from './loadingSpinner.jss';
+import './loadingSpinner.scss';
 import { ILoadingSpinnerProps } from '../types';
 
-
-const LoadingSpinner: React.FC<ILoadingSpinnerProps> = ({ styleClasses = '' }) => {
+const LoadingSpinner: React.FC<ILoadingSpinnerProps> = ({
+  styleClasses = '',
+}) => {
   const classes = useStyles();
 
   return (
@@ -13,9 +15,9 @@ const LoadingSpinner: React.FC<ILoadingSpinnerProps> = ({ styleClasses = '' }) =
       data-testid={'default-loading-spinner'}
       className={clsx(classes.spinner, styleClasses)}
     >
-      <div className={classes.bounce1} />
-      <div className={classes.bounce2} />
-      <div className={classes.bounce3} />
+      <div className={classes.bounce1} id={'spinner-div'} />
+      <div className={classes.bounce2} id={'spinner-div'} />
+      <div className={classes.bounce3} id={'spinner-div'} />
     </div>
   );
 };
