@@ -114,7 +114,7 @@ SMB Themen nutzt keine zusätzlichen Services. Alle notwendigen Container sind o
 
 ## Lizenz
 
-Copyright (c) 2020-2022 / museum4punkt0
+Copyright (c) 2020-2023 / museum4punkt0
 
 Die hier hinterlegte Anwendung wird unter der GNU GPLv3 Lizenz veröffentlicht. Sämtliche verwendete Programmteile Dritter sind mit der jeweiligen Lizenz in der Datei `react-component-library/LICENSES` aufgeführt. Alle verwendeten Bibliotheken stehen unter Open-Source Lizenzen. Diese sind:
 - Apache 2.0
