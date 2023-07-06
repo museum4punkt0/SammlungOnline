@@ -5,7 +5,7 @@ services:
     build:
       context: ./../
       dockerfile: docker/Dockerfile
-    image: xailabs/hasura-auth
+    image: smb/hasura-auth
     container_name: smb-hasura-auth
     restart: unless-stopped
     environment:

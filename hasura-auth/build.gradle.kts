@@ -11,7 +11,7 @@ plugins {
 
 description = "Webhook implementation for Hasura authentication."
 group = "com.xailabs.microservices"
-version = "2.0.0"
+version = "2.5.55"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
