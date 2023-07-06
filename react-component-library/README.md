@@ -10,7 +10,7 @@ npm run start
 
 ## Introduction
 
-This is a components library for sharing React components via GitLab. It is based on material-ui.
+This is a components library for sharing React components and SMB services via GitLab. It is based on material-ui.
 
 ## Using library
 
@@ -33,6 +33,10 @@ Now you should be able to run `npm run start` in both projects simultaneously, w
 
 - In the platform project run `npm unlink @smb/smb-react-components-library`
 - In the "react-component-library" run `npm unlink`
+
+### Translations
+
+- Must be added for each field that needs translation in `src/config/locales/<lang: de | en>/translation.ts`
 
 ## Licenes
 

@@ -8,9 +8,17 @@ export interface IExhibitDescriptionProps {
   children?: React.ReactNode;
   exhibitId: number;
 }
+
+export interface IGridItemContent {
+  formatted: string;
+  href: string;
+  html?: boolean;
+  markup?: string;
+}
+
 export interface IGridItem {
   title: string;
-  content: string | { formatted: string; href: string; html?: boolean }[];
+  content: string | IGridItemContent[];
 }
 
 export interface IExhibitDescriptionGridProps {

@@ -16,7 +16,7 @@ import SaveAltOutlinedIcon from '@material-ui/icons/SaveAltOutlined';
 
 import { Link as License } from '../../../Object/components/ObjectContext/ObjectContext';
 import { ResearchService } from '../../../../services/ResearchService';
-import useStyles from './objectImageDownloadDialog.jss';
+import useStyles from '../dialog.jss';
 
 interface IDialogProps {
   filename: string;

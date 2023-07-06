@@ -58,6 +58,9 @@ const globalStyles = (theme: Theme) => ({
       minHeight: '100%',
       backgroundColor: theme.palette.primary.main,
       fontSize: 16,
+      '@media (max-width: 500px)': {
+        fontSize: 10,
+      }
     },
     body: {
       minHeight: '100%',

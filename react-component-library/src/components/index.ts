@@ -11,6 +11,7 @@ export * from './NoDataPage';
 import Highlights from './Highlights';
 export * from './FallbackImage/components/FallbackImage';
 export * from './PlattformLinks/components';
+export * from './SafeEscapedHTML';
 import ArrowUpSvg from './ArrowUpSvg';
 
 export { Highlights, ArrowUpSvg };

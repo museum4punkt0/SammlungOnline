@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme: Theme) => {
       '& + &': {
         marginTop: '1rem',
       },
+      ' a': {
+        color: theme.palette.text.secondary,
+      },
     },
     contentLink: {
       color: theme.palette.text.secondary,

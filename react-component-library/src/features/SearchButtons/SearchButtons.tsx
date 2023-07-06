@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 
-import { getOrgUnitObject } from '../../config/orgUnitConfig';
+import { getOrgUnitsGrouped } from '../../config/orgUnitConfig';
 import useConfigLoader from '../../hooks/useConfigLoader.hook';
 import LanguageService from 'src/utils/LanguageService';
 
@@ -26,12 +26,12 @@ export interface ISearchButtonsData {
 }
 
 function SearchButtons({ data }: { data: ISearchButtonsData }): ReactElement {
-  const [links, setLinks] = useState<any[]>([]);
+  const [collectionLinks, setCollectionLinks] = useState<any[]>([]);
   const lang = LanguageService.getCurrentStrapiLanguage();
 
   useEffect(() => {
-    const res = getOrgUnitObject();
-    setLinks(res);
+    const groupings = getOrgUnitsGrouped();
+    setCollectionLinks(groupings);
   }, []);
 
   const { config } = useConfigLoader();
@@ -79,27 +79,27 @@ function SearchButtons({ data }: { data: ISearchButtonsData }): ReactElement {
           </div>
         )}
 
-        {links.length > 0 &&
-          links.map((level, index) => {
+        {collectionLinks.length > 0 &&
+          collectionLinks.map((level, levelIdx) => {
             return (
-              data.searchButtonGroupHeadline[index].title && (
+              data.searchButtonGroupHeadline[levelIdx].title && (
                 <div
-                  key={`level-${index}`}
+                  key={`level-${levelIdx}`}
                   className={'intro-section__links-wrapper'}
                 >
                   <Typography variant={'h6'} component={'h5'}>
-                    {`${data.searchButtonGroupHeadline[index].title}`}
+                    {`${data.searchButtonGroupHeadline[levelIdx].title}`}
                   </Typography>
                   <div className={'intro-section__links-container'}>
                     {level?.links.length &&
-                      level?.links.map((link: any, index: number) => (
+                      level.links.map((link: any, collectionIdx: number) => (
                         <React.Fragment
-                          key={`sammlung_link_${index}_${link.name}`}
+                          key={`sammlung_link_${collectionIdx}_${link.value.replace(/(\s|\*)/g, "")}`}
                         >
                           {link.isActive ? (
                             <Link
                               href={`${config.RESEARCH_DOMAIN}/?collectionKey=${link.value}`}
-                              aria-label={`Suchen in ${link.name}`}
+                              aria-label={`Suchen in ${link.name.substring(link.name.indexOf('|') + 1)}`} // special case for 'SIM | Musikinstrumenten-Museum'
                               variant="body2"
                               rel="noopener noreferrer"
                               className="intro-section__link"

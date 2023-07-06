@@ -5,8 +5,26 @@ import {
   FetchExhibitById,
   FetchManyExhibitsById,
 } from '../../lib/exhibit/graphql';
-import { GraphqlExhibitModel } from '../../lib/exhibit/graphql-exhibit.model';
-import { ExhibitModel } from '../../lib/exhibit/exhibit.model';
+import {
+  GraphqlExhibitModel,
+  IAsset,
+  ICulturalReference,
+  IDateRange,
+  IDescription,
+  IExhibition,
+  IGeographicalReference,
+  IIconClass,
+  IInvolvedParty,
+  IMarkupWithId,
+  IMaterialAndTechnique,
+  ITechnicalTerm,
+  ITitle,
+} from '../../lib/exhibit/graphql-exhibit.model';
+import {
+  ExhibitModel,
+  ExhibitModelFlat,
+  ExhibitModelFull,
+} from '../../lib/exhibit/exhibit.model';
 import {
   IConfiguration,
   GraphqlService,
@@ -20,18 +38,31 @@ export interface IExhibitWithAttachmentOnly {
   src: string | null;
 }
 
+/**
+ * Service used to get Exhibits from the search API
+ * todo: too much use of the any keyword - makes typing useless
+ */
 class ExhibitService {
   constructor(
     private readonly _config: IConfiguration,
     private readonly _graphqlService: GraphqlService,
     private readonly _imageUrlBuilderService: IImageUrlBuilder,
-  ) {}
+  ) { }
 
+  /**
+   * Gets one exhibit from the search API by ID and converts it to corresponding model. Uses `?projection=full`.
+   *
+   * -----
+   * TODO: model conversion should be based on projection (full|flat|id)
+   *    currently there is only full projection (hardcoded in url bellow)
+   *    used but it should be provided as param
+   * @param id object id
+   * @returns error or ExhibitModelFull
+   */
   public async findOne(id: number): Promise<ExhibitModel | Error> {
     try {
       const { data } = await axios.get(
         `${this._config.ELASTIC_API_URL}/${id}/?projection=full`,
-        // `${this._config.ELASTIC_API_URL}/${id}`,
       );
 
       if (!data) {
@@ -46,6 +77,8 @@ class ExhibitService {
         return this.mapToExhibitModel(data);
       }
     } catch (error) {
+      //fixme: should let error bubble up on a higher level in a try-catch
+      // bad design to have multiple possible types in same variable
       return new Error(error as any);
     }
   }
@@ -58,20 +91,17 @@ class ExhibitService {
 
     return (
       exhibitsWithAttachmentOnly.smb_objects?.map(({ id, attachments }) => {
-        const attachment = attachments.length
-          ? attachments[0].attachment
-          : null;
-
+        const filename = attachments[0]?.attachment
+        const src = filename && this._imageUrlBuilderService.buildUrl(filename, 300, 300);
         return {
           id: id,
-          src: attachment
-            ? this._imageUrlBuilderService.buildUrl(attachment, 300, 300)
-            : '',
+          src: src ?? '',
         };
       }) ?? []
     );
   }
 
+  // todo: needs documenting - difficult to understand o
   public mapTranslatesToExhibit(object: SmbObjects): ExhibitModel {
     const dto = { id: object.id } as any;
 
@@ -102,9 +132,10 @@ class ExhibitService {
       location: dto[EGraphqlTranslationAttributesFields.location],
       findSpot: dto[EGraphqlTranslationAttributesFields.findSpot],
       involvedParties: dto[EGraphqlTranslationAttributesFields.involvedParties],
-      longDescription: dto[EGraphqlTranslationAttributesFields.description],
+      description: dto[EGraphqlTranslationAttributesFields.description],
       geographicalReferences:
         dto[EGraphqlTranslationAttributesFields.geographicalReferences],
+      culturalReferences: dto[EGraphqlTranslationAttributesFields.culturalReferences],
       materialAndTechnique:
         dto[EGraphqlTranslationAttributesFields.materialAndTechnique],
       dimensionsAndWeight:
@@ -112,86 +143,157 @@ class ExhibitService {
     };
   }
 
+  /**
+   * Converts a GraphqlExhibitModel to ExhibitModel
+   * @param dto
+   */
   public mapToExhibitModel(dto: GraphqlExhibitModel | any): ExhibitModel {
     const getTitle = (): string => {
-      if (dto?.titles?.length) {
-        return dto.titles[0];
+      // Prio1: title
+      if (dto.title) {
+        return dto.title;
       }
-      return dto?.technicalTerm || dto?.identNumber || '[Ohne Titel]';
-    };
-
-    const getKeywords = () => {
-      if (dto.keywords) {
-        return dto.keywords;
-      } else if (dto.iconography || dto.iconclasses) return [];
-    };
-
-    const getSearchIndexerObject = (attribute: string, arr: any) => {
-      if (!arr || !arr.length) return '';
-      return arr.map((item: any) => {
-        if (typeof item !== 'string') {
-          if (attribute === 'involvedParties') {
-            return {
-              formatted: item.formatted,
-              href: item.formatted.replace(
-                `${item.name}`,
-                `<a href=${this._config.RESEARCH_DOMAIN}/?controls=none&conditions=AND%2B${attribute}.id%2B${item.id}>${item.name}</a>`,
-              ),
-              html: true,
-            };
-          } else {
-            return {
-              formatted: item.formatted,
-              href: `${this._config.RESEARCH_DOMAIN}/?controls=none&conditions=AND%2B${attribute}.id%2B${item.id}`,
-              html: false,
-            };
-          }
-        }
-        return item;
-      });
+      // Prio2: first of titles
+      if (dto.titles?.length) {
+        return (typeof dto.titles[0] === 'string') ? dto.titles[0] : (dto.titles[0] as any).formatted;
+      }
+      // Prio3: technical term
+      if (dto.technicalTerm) {
+        return (typeof dto.technicalTerm === 'string') ? dto.technicalTerm : dto.technicalTerm.formatted;
+      }
+      // Prio4: ident number
+      // else: [Ohne Titel]
+      return dto.identNumber || '[Ohne Titel]';
     };
 
     return {
       acquisition: dto.acquisition,
+      archiveContent: dto.archiveContent,
       attachments: dto.attachments,
       collection: dto.collection,
       collectionKey: dto.collectionKey ?? 'default',
       compilation: dto.compilation,
       creditLine: dto.creditLine,
+      culturalReferences: dto.culturalReferences,
       dating: dto.dating,
-      description: dto.longDescription,
+      description: dto.description,
       dimensionsAndWeight: dto.dimensionsAndWeight,
-      exhibited: dto.exhibit,
+      exhibit: dto.exhibit || dto.exhibited,
+      exhibited: dto.exhibit || dto.exhibited,
       exhibitions: dto.exhibitions,
       exhibitionSpace: dto.exhibitionSpace,
-      geographicalReferences: getSearchIndexerObject(
-        'geographicalReferences',
-        dto.geographicalReferences,
-      ),
+      geographicalReferences: dto.geographicalReferences,
       highlight: dto.highlight,
+      iconclasses: dto.iconclasses,
+      iconography: dto.iconography,
       id: dto.id,
       identNumber: dto.identNumber,
-      involvedParties: getSearchIndexerObject(
-        'involvedParties',
-        dto.involvedParties,
-      ),
-      literature: dto?.literature,
+      inscriptions: dto.inscriptions,
+      involvedParties: dto.involvedParties,
+      keywords: dto.keywords ?? [],
+      literature: dto.literature,
       location: dto.location,
-      materialAndTechnique: getSearchIndexerObject(
-        'materialAndTechnique',
-        dto.materialAndTechnique,
-      ),
+      materialAndTechnique: dto.materialAndTechnique,
       provenance: dto.provenance,
       provenanceEvaluation: dto.provenanceEvaluation,
-      signatures: dto?.signatures,
+      signatures: dto.signatures,
       src: dto.src,
       technicalTerm: dto.technicalTerm,
-      inscriptions: dto.inscriptions,
-      keywords: getKeywords(),
-      iconography: dto.iconography,
-      iconclasses: dto.iconclasses,
       title: getTitle(),
       titles: dto.titles,
+    };
+  }
+
+  /**
+   * Converts GraphqlExhibitModel to ExhibitModelFlat.
+   * Should only be used on data fetched from a flat projection endpoint
+   * @param dto
+   */
+  public mapFlat(dto: GraphqlExhibitModel): ExhibitModelFlat {
+    return {
+      id: dto.id,
+      assets: dto.assets as number[],
+      archiveContent: dto.archiveContent,
+      attachments: dto.attachments,
+      assortments: dto.assortments,
+      collection: dto.collection,
+      collectionKey: dto.collectionKey,
+      compilation: dto.compilation,
+      creditLine: dto.creditLine,
+      culturalReferences: dto.culturalReferences as string[],
+      dateRange: dto.dateRange as string,
+      dating: dto.dating,
+      description: dto.description as IDescription,
+      dimensionsAndWeight: dto.dimensionsAndWeight,
+      exhibit: dto.exhibit,
+      exhibitionSpace: dto.exhibitionSpace,
+      exhibitions: dto.exhibitions as string[],
+      findSpot: dto.findSpot,
+      geographicalReferences: dto.geographicalReferences as string[],
+      highlight: dto.highlight,
+      iconclasses: dto.iconclasses as string[],
+      iconography: dto.iconography as string[],
+      identNumber: dto.identNumber,
+      inscriptions: dto.inscriptions,
+      involvedParties: dto.involvedParties as string[],
+      keywords: dto.keywords as string[],
+      literature: dto.literature,
+      location: dto.location,
+      materialAndTechnique: dto.materialAndTechnique as string[],
+      permalink: dto.permalink,
+      provenance: dto.provenance,
+      provenanceEvaluation: dto.provenanceEvaluation,
+      signatures: dto.signatures,
+      technicalTerm: dto.technicalTerm as string,
+      title: dto.title,
+      titles: dto.titles as string[],
+    };
+  }
+
+  /**
+   * Converts GraphqlExhibitModel to ExhibitModelFull.
+   * Should only be used on data fetched from a full projection endpoint
+   * @param dto
+   */
+  public mapFull(dto: GraphqlExhibitModel): ExhibitModelFull {
+    return {
+      id: dto.id,
+      acquisition: dto.acquisition,
+      archiveContent: dto.archiveContent,
+      assets: dto.assets as IAsset[],
+      attachments: dto.attachments,
+      assortments: dto.assortments,
+      collection: dto.collection,
+      collectionKey: dto.collectionKey,
+      compilation: dto.compilation,
+      creditLine: dto.creditLine,
+      culturalReferences: dto.culturalReferences as ICulturalReference[],
+      dateRange: dto.dateRange as IDateRange,
+      dating: dto.dating,
+      description: dto.description as IDescription,
+      dimensionsAndWeight: dto.dimensionsAndWeight,
+      exhibit: dto.exhibit,
+      exhibitionSpace: dto.exhibitionSpace,
+      exhibitions: dto.exhibitions as IExhibition[],
+      findSpot: dto.findSpot,
+      geographicalReferences: dto.geographicalReferences as IGeographicalReference[],
+      highlight: dto.highlight,
+      iconclasses: dto.iconclasses as IIconClass[],
+      iconography: dto.iconography as IMarkupWithId[],
+      identNumber: dto.identNumber,
+      inscriptions: dto.inscriptions,
+      involvedParties: dto.involvedParties as IInvolvedParty[],
+      keywords: dto.keywords as IMarkupWithId[],
+      literature: dto.literature,
+      location: dto.location,
+      materialAndTechnique: dto.materialAndTechnique as IMaterialAndTechnique[],
+      permalink: dto.permalink,
+      provenance: dto.provenance,
+      provenanceEvaluation: dto.provenanceEvaluation,
+      signatures: dto.signatures,
+      technicalTerm: dto.technicalTerm as ITechnicalTerm,
+      title: dto.title,
+      titles: dto.titles as ITitle[],
     };
   }
 }

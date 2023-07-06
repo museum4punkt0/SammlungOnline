@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -19,7 +18,7 @@ export type Scalars = {
   I18NLocaleCode: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
-  /** The `Long` scalar type represents 52-bit integers */
+  /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
   Long: any;
   IndexModulesDynamicZoneInput: any;
   SmbLandingpageModuleDynamicZoneInput: any;
@@ -43,6 +42,16 @@ export type QueryRoot = {
   smb_attributes: Array<SmbAttributes>;
   /** fetch data from the table: "smb.attributes" using primary key columns */
   smb_attributes_by_pk?: Maybe<SmbAttributes>;
+  /** fetch data from the table: "smb.buildings" */
+  smb_buildings: Array<SmbBuildings>;
+  /** fetch data from the table: "smb.buildings" using primary key columns */
+  smb_buildings_by_pk?: Maybe<SmbBuildings>;
+  /** fetch data from the table: "smb.collections" */
+  smb_collections: Array<SmbCollections>;
+  /** fetch data from the table: "smb.collections" using primary key columns */
+  smb_collections_by_pk?: Maybe<SmbCollections>;
+  /** fetch data from the table: "smb.cultural_references" */
+  smb_cultural_references: Array<SmbCulturalReferences>;
   /** fetch data from the table: "smb.exhibitions" */
   smb_exhibitions: Array<SmbExhibitions>;
   /** fetch data from the table: "smb.geographical_references" */
@@ -65,6 +74,8 @@ export type QueryRoot = {
   smb_objects_aggregate: SmbObjectsAggregate;
   /** fetch data from the table: "smb.objects" using primary key columns */
   smb_objects_by_pk?: Maybe<SmbObjects>;
+  /** fetch data from the table: "smb.org_unit" */
+  smb_org_unit: Array<SmbOrgUnit>;
   /** fetch data from the table: "smb.persons" */
   smb_persons: Array<SmbPersons>;
   /** fetch data from the table: "smb.persons_objects" */
@@ -131,6 +142,43 @@ export type QueryRootSmbAttributesArgs = {
 
 export type QueryRootSmbAttributesByPkArgs = {
   key: Scalars['String'];
+};
+
+
+export type QueryRootSmbBuildingsArgs = {
+  distinct_on?: InputMaybe<Array<SmbBuildingsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbBuildingsOrderBy>>;
+  where?: InputMaybe<SmbBuildingsBoolExp>;
+};
+
+
+export type QueryRootSmbBuildingsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type QueryRootSmbCollectionsArgs = {
+  distinct_on?: InputMaybe<Array<SmbCollectionsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCollectionsOrderBy>>;
+  where?: InputMaybe<SmbCollectionsBoolExp>;
+};
+
+
+export type QueryRootSmbCollectionsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type QueryRootSmbCulturalReferencesArgs = {
+  distinct_on?: InputMaybe<Array<SmbCulturalReferencesSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCulturalReferencesOrderBy>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
 };
 
 
@@ -229,6 +277,15 @@ export type QueryRootSmbObjectsByPkArgs = {
 };
 
 
+export type QueryRootSmbOrgUnitArgs = {
+  distinct_on?: InputMaybe<Array<SmbOrgUnitSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbOrgUnitOrderBy>>;
+  where?: InputMaybe<SmbOrgUnitBoolExp>;
+};
+
+
 export type QueryRootSmbPersonsArgs = {
   distinct_on?: InputMaybe<Array<SmbPersonsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -295,6 +352,7 @@ export type SmbAssortmentsOrderBy = {
   i18n_aggregate?: InputMaybe<SmbAssortmentsTranslationAggregateOrderBy>;
   key?: InputMaybe<OrderBy>;
   preview_image?: InputMaybe<OrderBy>;
+  searchValue?: InputMaybe<OrderBy>;
 };
 
 /** order by aggregate values of table "smb.assortments_translation" */
@@ -344,6 +402,7 @@ export type SmbAssortmentsBoolExp = {
   i18n?: InputMaybe<SmbAssortmentsTranslationBoolExp>;
   key?: InputMaybe<StringComparisonExp>;
   preview_image?: InputMaybe<StringComparisonExp>;
+  searchValue?: InputMaybe<StringComparisonExp>;
 };
 
 /** Boolean expression to filter rows from the table "smb.assortments_translation". All fields are combined with a logical 'AND'. */
@@ -406,6 +465,8 @@ export type SmbAssortments = {
   i18n: Array<SmbAssortmentsTranslation>;
   key: Scalars['String'];
   preview_image?: Maybe<Scalars['String']>;
+  /** A computed field, executes function "smb.build_search_value_a" */
+  searchValue?: Maybe<Scalars['String']>;
 };
 
 
@@ -468,6 +529,8 @@ export enum SmbAttachmentsSelectColumn {
   /** column name */
   CREDITS = 'credits',
   /** column name */
+  ID = 'id',
+  /** column name */
   MEDIA_TYPE = 'media_type',
   /** column name */
   PRIMARY = 'primary'
@@ -477,8 +540,10 @@ export enum SmbAttachmentsSelectColumn {
 export type SmbAttachmentsOrderBy = {
   attachment?: InputMaybe<OrderBy>;
   credits?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   license?: InputMaybe<SmbLicensesOrderBy>;
   media_type?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
   primary?: InputMaybe<OrderBy>;
 };
 
@@ -515,9 +580,24 @@ export type SmbAttachmentsBoolExp = {
   _or?: InputMaybe<Array<SmbAttachmentsBoolExp>>;
   attachment?: InputMaybe<StringComparisonExp>;
   credits?: InputMaybe<StringComparisonExp>;
+  id?: InputMaybe<BigintComparisonExp>;
   license?: InputMaybe<SmbLicensesBoolExp>;
   media_type?: InputMaybe<StringComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
   primary?: InputMaybe<BooleanComparisonExp>;
+};
+
+/** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
+export type BigintComparisonExp = {
+  _eq?: InputMaybe<Scalars['bigint']>;
+  _gt?: InputMaybe<Scalars['bigint']>;
+  _gte?: InputMaybe<Scalars['bigint']>;
+  _in?: InputMaybe<Array<Scalars['bigint']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['bigint']>;
+  _lte?: InputMaybe<Scalars['bigint']>;
+  _neq?: InputMaybe<Scalars['bigint']>;
+  _nin?: InputMaybe<Array<Scalars['bigint']>>;
 };
 
 /** Boolean expression to filter rows from the table "smb.licenses". All fields are combined with a logical 'AND'. */
@@ -558,13 +638,16 @@ export type SmbAttachments = {
   __typename?: 'smb_attachments';
   attachment: Scalars['String'];
   credits?: Maybe<Scalars['String']>;
+  id: Scalars['bigint'];
   /** An object relationship */
   license?: Maybe<SmbLicenses>;
   media_type?: Maybe<Scalars['String']>;
+  /** A computed field, executes function "smb.get_attachment_filename" */
+  name?: Maybe<Scalars['String']>;
   primary?: Maybe<Scalars['Boolean']>;
 };
 
-/** Unused - Supposed to store license deeds for image downloads */
+/** License deeds for attachments */
 export type SmbLicenses = {
   __typename?: 'smb_licenses';
   /** An array relationship */
@@ -574,7 +657,7 @@ export type SmbLicenses = {
 };
 
 
-/** Unused - Supposed to store license deeds for image downloads */
+/** License deeds for attachments */
 export type SmbLicensesI18nArgs = {
   distinct_on?: InputMaybe<Array<SmbLicensesTranslationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -598,7 +681,7 @@ export type SmbLicensesTranslationOrderBy = {
   license_text?: InputMaybe<OrderBy>;
 };
 
-/** Unused - Supposed to store license deed translations */
+/** columns and relationships of "smb.licenses_translation" */
 export type SmbLicensesTranslation = {
   __typename?: 'smb_licenses_translation';
   content: Scalars['String'];
@@ -675,66 +758,91 @@ export enum SmbAttributesSelectColumn {
   KEY = 'key'
 }
 
-/** select columns of table "smb.exhibitions" */
-export enum SmbExhibitionsSelectColumn {
+/** select columns of table "smb.buildings" */
+export enum SmbBuildingsSelectColumn {
   /** column name */
-  DESCRIPTION = 'description',
-  /** column name */
-  END_DATE = 'end_date',
-  /** column name */
-  LOCATION = 'location',
-  /** column name */
-  START_DATE = 'start_date',
+  KEY = 'key',
   /** column name */
   TITLE = 'title'
 }
 
-/** Ordering options when selecting data from "smb.exhibitions". */
-export type SmbExhibitionsOrderBy = {
-  description?: InputMaybe<OrderBy>;
-  end_date?: InputMaybe<OrderBy>;
-  location?: InputMaybe<OrderBy>;
-  start_date?: InputMaybe<OrderBy>;
+/** Ordering options when selecting data from "smb.buildings". */
+export type SmbBuildingsOrderBy = {
+  key?: InputMaybe<OrderBy>;
+  searchValue?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
 };
 
-/** Boolean expression to filter rows from the table "smb.exhibitions". All fields are combined with a logical 'AND'. */
-export type SmbExhibitionsBoolExp = {
-  _and?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
-  _not?: InputMaybe<SmbExhibitionsBoolExp>;
-  _or?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
-  description?: InputMaybe<StringComparisonExp>;
-  end_date?: InputMaybe<StringComparisonExp>;
-  location?: InputMaybe<StringComparisonExp>;
-  start_date?: InputMaybe<StringComparisonExp>;
+/** Boolean expression to filter rows from the table "smb.buildings". All fields are combined with a logical 'AND'. */
+export type SmbBuildingsBoolExp = {
+  _and?: InputMaybe<Array<SmbBuildingsBoolExp>>;
+  _not?: InputMaybe<SmbBuildingsBoolExp>;
+  _or?: InputMaybe<Array<SmbBuildingsBoolExp>>;
+  key?: InputMaybe<StringComparisonExp>;
+  searchValue?: InputMaybe<StringComparisonExp>;
   title?: InputMaybe<StringComparisonExp>;
 };
 
-/** exhibitions */
-export type SmbExhibitions = {
-  __typename?: 'smb_exhibitions';
-  description?: Maybe<Scalars['String']>;
-  end_date?: Maybe<Scalars['String']>;
-  location?: Maybe<Scalars['String']>;
-  start_date?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
+/** List of all Museum buildings */
+export type SmbBuildings = {
+  __typename?: 'smb_buildings';
+  key: Scalars['String'];
+  /** A computed field, executes function "smb.build_search_value_b" */
+  searchValue?: Maybe<Scalars['String']>;
+  /** Display title used for all languages */
+  title: Scalars['String'];
 };
 
-/** select columns of table "smb.geographical_references" */
-export enum SmbGeographicalReferencesSelectColumn {
+/** select columns of table "smb.collections" */
+export enum SmbCollectionsSelectColumn {
   /** column name */
-  DETAILS = 'details',
+  KEY = 'key',
+  /** column name */
+  TITLE = 'title',
+  /** column name */
+  TYPE = 'type'
+}
+
+/** Ordering options when selecting data from "smb.collections". */
+export type SmbCollectionsOrderBy = {
+  key?: InputMaybe<OrderBy>;
+  searchValue?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "smb.collections". All fields are combined with a logical 'AND'. */
+export type SmbCollectionsBoolExp = {
+  _and?: InputMaybe<Array<SmbCollectionsBoolExp>>;
+  _not?: InputMaybe<SmbCollectionsBoolExp>;
+  _or?: InputMaybe<Array<SmbCollectionsBoolExp>>;
+  key?: InputMaybe<StringComparisonExp>;
+  searchValue?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<StringComparisonExp>;
+};
+
+/** Enum type definition of MDS collection keys */
+export type SmbCollections = {
+  __typename?: 'smb_collections';
+  key: Scalars['String'];
+  /** A computed field, executes function "smb.build_search_value_c" */
+  searchValue?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
+  type: Scalars['String'];
+};
+
+/** select columns of table "smb.cultural_references" */
+export enum SmbCulturalReferencesSelectColumn {
   /** column name */
   SEQUENCE = 'sequence'
 }
 
-/** Ordering options when selecting data from "smb.geographical_references". */
-export type SmbGeographicalReferencesOrderBy = {
-  details?: InputMaybe<OrderBy>;
-  geopol_voc?: InputMaybe<SmbThesaurusOrderBy>;
+/** Ordering options when selecting data from "smb.cultural_references". */
+export type SmbCulturalReferencesOrderBy = {
+  denomination_voc?: InputMaybe<SmbThesaurusOrderBy>;
   language?: InputMaybe<SmbLanguageOrderBy>;
-  place_voc?: InputMaybe<SmbThesaurusOrderBy>;
-  role_voc?: InputMaybe<SmbThesaurusOrderBy>;
+  name_voc?: InputMaybe<SmbThesaurusOrderBy>;
   sequence?: InputMaybe<OrderBy>;
   type_voc?: InputMaybe<SmbThesaurusOrderBy>;
 };
@@ -780,16 +888,14 @@ export type SmbThesaurusMinOrderBy = {
   name?: InputMaybe<OrderBy>;
 };
 
-/** Boolean expression to filter rows from the table "smb.geographical_references". All fields are combined with a logical 'AND'. */
-export type SmbGeographicalReferencesBoolExp = {
-  _and?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
-  _not?: InputMaybe<SmbGeographicalReferencesBoolExp>;
-  _or?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
-  details?: InputMaybe<StringComparisonExp>;
-  geopol_voc?: InputMaybe<SmbThesaurusBoolExp>;
+/** Boolean expression to filter rows from the table "smb.cultural_references". All fields are combined with a logical 'AND'. */
+export type SmbCulturalReferencesBoolExp = {
+  _and?: InputMaybe<Array<SmbCulturalReferencesBoolExp>>;
+  _not?: InputMaybe<SmbCulturalReferencesBoolExp>;
+  _or?: InputMaybe<Array<SmbCulturalReferencesBoolExp>>;
+  denomination_voc?: InputMaybe<SmbThesaurusBoolExp>;
   language?: InputMaybe<SmbLanguageBoolExp>;
-  place_voc?: InputMaybe<SmbThesaurusBoolExp>;
-  role_voc?: InputMaybe<SmbThesaurusBoolExp>;
+  name_voc?: InputMaybe<SmbThesaurusBoolExp>;
   sequence?: InputMaybe<IntComparisonExp>;
   type_voc?: InputMaybe<SmbThesaurusBoolExp>;
 };
@@ -827,18 +933,15 @@ export type IntComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['Int']>>;
 };
 
-/** geographic locations collected from repeatable group items */
-export type SmbGeographicalReferences = {
-  __typename?: 'smb_geographical_references';
-  details?: Maybe<Scalars['String']>;
+/** cultural references collected from repeatable group items */
+export type SmbCulturalReferences = {
+  __typename?: 'smb_cultural_references';
   /** An object relationship */
-  geopol_voc?: Maybe<SmbThesaurus>;
+  denomination_voc?: Maybe<SmbThesaurus>;
   /** An object relationship */
   language: SmbLanguage;
   /** An object relationship */
-  place_voc?: Maybe<SmbThesaurus>;
-  /** An object relationship */
-  role_voc?: Maybe<SmbThesaurus>;
+  name_voc?: Maybe<SmbThesaurus>;
   sequence: Scalars['Int'];
   /** An object relationship */
   type_voc?: Maybe<SmbThesaurus>;
@@ -903,6 +1006,97 @@ export enum SmbThesaurusSelectColumn {
   NAME = 'name'
 }
 
+/** select columns of table "smb.exhibitions" */
+export enum SmbExhibitionsSelectColumn {
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  END_DATE = 'end_date',
+  /** column name */
+  LOCATION = 'location',
+  /** column name */
+  START_DATE = 'start_date',
+  /** column name */
+  TITLE = 'title'
+}
+
+/** Ordering options when selecting data from "smb.exhibitions". */
+export type SmbExhibitionsOrderBy = {
+  description?: InputMaybe<OrderBy>;
+  end_date?: InputMaybe<OrderBy>;
+  location?: InputMaybe<OrderBy>;
+  start_date?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "smb.exhibitions". All fields are combined with a logical 'AND'. */
+export type SmbExhibitionsBoolExp = {
+  _and?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
+  _not?: InputMaybe<SmbExhibitionsBoolExp>;
+  _or?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
+  description?: InputMaybe<StringComparisonExp>;
+  end_date?: InputMaybe<StringComparisonExp>;
+  location?: InputMaybe<StringComparisonExp>;
+  start_date?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+};
+
+/** exhibitions */
+export type SmbExhibitions = {
+  __typename?: 'smb_exhibitions';
+  description?: Maybe<Scalars['String']>;
+  end_date?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  start_date?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+};
+
+/** select columns of table "smb.geographical_references" */
+export enum SmbGeographicalReferencesSelectColumn {
+  /** column name */
+  DETAILS = 'details',
+  /** column name */
+  SEQUENCE = 'sequence'
+}
+
+/** Ordering options when selecting data from "smb.geographical_references". */
+export type SmbGeographicalReferencesOrderBy = {
+  details?: InputMaybe<OrderBy>;
+  geopol_voc?: InputMaybe<SmbThesaurusOrderBy>;
+  language?: InputMaybe<SmbLanguageOrderBy>;
+  place_voc?: InputMaybe<SmbThesaurusOrderBy>;
+  sequence?: InputMaybe<OrderBy>;
+  type_voc?: InputMaybe<SmbThesaurusOrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "smb.geographical_references". All fields are combined with a logical 'AND'. */
+export type SmbGeographicalReferencesBoolExp = {
+  _and?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
+  _not?: InputMaybe<SmbGeographicalReferencesBoolExp>;
+  _or?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
+  details?: InputMaybe<StringComparisonExp>;
+  geopol_voc?: InputMaybe<SmbThesaurusBoolExp>;
+  language?: InputMaybe<SmbLanguageBoolExp>;
+  place_voc?: InputMaybe<SmbThesaurusBoolExp>;
+  sequence?: InputMaybe<IntComparisonExp>;
+  type_voc?: InputMaybe<SmbThesaurusBoolExp>;
+};
+
+/** geographic locations collected from repeatable group items */
+export type SmbGeographicalReferences = {
+  __typename?: 'smb_geographical_references';
+  details?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  geopol_voc?: Maybe<SmbThesaurus>;
+  /** An object relationship */
+  language: SmbLanguage;
+  /** An object relationship */
+  place_voc?: Maybe<SmbThesaurus>;
+  sequence: Scalars['Int'];
+  /** An object relationship */
+  type_voc?: Maybe<SmbThesaurus>;
+};
+
 /** select columns of table "smb.highlights" */
 export enum SmbHighlightsSelectColumn {
   /** column name */
@@ -913,32 +1107,51 @@ export enum SmbHighlightsSelectColumn {
 export type SmbHighlightsOrderBy = {
   object?: InputMaybe<SmbObjectsOrderBy>;
   object_id?: InputMaybe<OrderBy>;
+  org_unit?: InputMaybe<SmbOrgUnitOrderBy>;
 };
 
 /** Ordering options when selecting data from "smb.objects". */
 export type SmbObjectsOrderBy = {
   attachments_aggregate?: InputMaybe<SmbAttachmentsAggregateOrderBy>;
   attributes_aggregate?: InputMaybe<SmbAttributeTranslationsAggregateOrderBy>;
+  collectionKey?: InputMaybe<OrderBy>;
+  compilation?: InputMaybe<OrderBy>;
+  cultural_references_aggregate?: InputMaybe<SmbCulturalReferencesAggregateOrderBy>;
   exhibition_space?: InputMaybe<OrderBy>;
   geographical_references_aggregate?: InputMaybe<SmbGeographicalReferencesAggregateOrderBy>;
   highlights_aggregate?: InputMaybe<SmbHighlightsAggregateOrderBy>;
   id?: InputMaybe<OrderBy>;
   involved_parties_aggregate?: InputMaybe<SmbPersonsObjectsAggregateOrderBy>;
+  location?: InputMaybe<SmbThesaurusOrderBy>;
   materials_and_techniques_aggregate?: InputMaybe<SmbMaterialReferencesAggregateOrderBy>;
   updated_at?: InputMaybe<OrderBy>;
 };
 
 /** order by aggregate values of table "smb.attachments" */
 export type SmbAttachmentsAggregateOrderBy = {
+  avg?: InputMaybe<SmbAttachmentsAvgOrderBy>;
   count?: InputMaybe<OrderBy>;
   max?: InputMaybe<SmbAttachmentsMaxOrderBy>;
   min?: InputMaybe<SmbAttachmentsMinOrderBy>;
+  stddev?: InputMaybe<SmbAttachmentsStddevOrderBy>;
+  stddev_pop?: InputMaybe<SmbAttachmentsStddevPopOrderBy>;
+  stddev_samp?: InputMaybe<SmbAttachmentsStddevSampOrderBy>;
+  sum?: InputMaybe<SmbAttachmentsSumOrderBy>;
+  var_pop?: InputMaybe<SmbAttachmentsVarPopOrderBy>;
+  var_samp?: InputMaybe<SmbAttachmentsVarSampOrderBy>;
+  variance?: InputMaybe<SmbAttachmentsVarianceOrderBy>;
+};
+
+/** order by avg() on columns of table "smb.attachments" */
+export type SmbAttachmentsAvgOrderBy = {
+  id?: InputMaybe<OrderBy>;
 };
 
 /** order by max() on columns of table "smb.attachments" */
 export type SmbAttachmentsMaxOrderBy = {
   attachment?: InputMaybe<OrderBy>;
   credits?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   media_type?: InputMaybe<OrderBy>;
 };
 
@@ -946,7 +1159,43 @@ export type SmbAttachmentsMaxOrderBy = {
 export type SmbAttachmentsMinOrderBy = {
   attachment?: InputMaybe<OrderBy>;
   credits?: InputMaybe<OrderBy>;
+  id?: InputMaybe<OrderBy>;
   media_type?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "smb.attachments" */
+export type SmbAttachmentsStddevOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "smb.attachments" */
+export type SmbAttachmentsStddevPopOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "smb.attachments" */
+export type SmbAttachmentsStddevSampOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** order by sum() on columns of table "smb.attachments" */
+export type SmbAttachmentsSumOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "smb.attachments" */
+export type SmbAttachmentsVarPopOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "smb.attachments" */
+export type SmbAttachmentsVarSampOrderBy = {
+  id?: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "smb.attachments" */
+export type SmbAttachmentsVarianceOrderBy = {
+  id?: InputMaybe<OrderBy>;
 };
 
 /** order by aggregate values of table "smb.attribute_translations" */
@@ -966,6 +1215,71 @@ export type SmbAttributeTranslationsMaxOrderBy = {
 export type SmbAttributeTranslationsMinOrderBy = {
   attribute_key?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
+};
+
+/** order by aggregate values of table "smb.cultural_references" */
+export type SmbCulturalReferencesAggregateOrderBy = {
+  avg?: InputMaybe<SmbCulturalReferencesAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<SmbCulturalReferencesMaxOrderBy>;
+  min?: InputMaybe<SmbCulturalReferencesMinOrderBy>;
+  stddev?: InputMaybe<SmbCulturalReferencesStddevOrderBy>;
+  stddev_pop?: InputMaybe<SmbCulturalReferencesStddevPopOrderBy>;
+  stddev_samp?: InputMaybe<SmbCulturalReferencesStddevSampOrderBy>;
+  sum?: InputMaybe<SmbCulturalReferencesSumOrderBy>;
+  var_pop?: InputMaybe<SmbCulturalReferencesVarPopOrderBy>;
+  var_samp?: InputMaybe<SmbCulturalReferencesVarSampOrderBy>;
+  variance?: InputMaybe<SmbCulturalReferencesVarianceOrderBy>;
+};
+
+/** order by avg() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesAvgOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesMaxOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesMinOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesStddevOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesStddevPopOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesStddevSampOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by sum() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesSumOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesVarPopOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesVarSampOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesVarianceOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
 };
 
 /** order by aggregate values of table "smb.geographical_references" */
@@ -1232,6 +1546,16 @@ export type SmbMaterialReferencesVarianceOrderBy = {
   sequence?: InputMaybe<OrderBy>;
 };
 
+/** Ordering options when selecting data from "smb.org_unit". */
+export type SmbOrgUnitOrderBy = {
+  collectionKey?: InputMaybe<OrderBy>;
+  highlights_aggregate?: InputMaybe<SmbHighlightsAggregateOrderBy>;
+  is_compilation?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  searchValue?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+};
+
 /** Boolean expression to filter rows from the table "smb.highlights". All fields are combined with a logical 'AND'. */
 export type SmbHighlightsBoolExp = {
   _and?: InputMaybe<Array<SmbHighlightsBoolExp>>;
@@ -1239,6 +1563,7 @@ export type SmbHighlightsBoolExp = {
   _or?: InputMaybe<Array<SmbHighlightsBoolExp>>;
   object?: InputMaybe<SmbObjectsBoolExp>;
   object_id?: InputMaybe<BigintComparisonExp>;
+  org_unit?: InputMaybe<SmbOrgUnitBoolExp>;
 };
 
 /** Boolean expression to filter rows from the table "smb.objects". All fields are combined with a logical 'AND'. */
@@ -1248,12 +1573,16 @@ export type SmbObjectsBoolExp = {
   _or?: InputMaybe<Array<SmbObjectsBoolExp>>;
   attachments?: InputMaybe<SmbAttachmentsBoolExp>;
   attributes?: InputMaybe<SmbAttributeTranslationsBoolExp>;
+  collectionKey?: InputMaybe<StringComparisonExp>;
+  compilation?: InputMaybe<StringComparisonExp>;
+  cultural_references?: InputMaybe<SmbCulturalReferencesBoolExp>;
   exhibition_space?: InputMaybe<StringComparisonExp>;
   geographical_references?: InputMaybe<SmbGeographicalReferencesBoolExp>;
   highlights?: InputMaybe<SmbHighlightsBoolExp>;
   highlights_aggregate?: InputMaybe<SmbHighlightsAggregateBoolExp>;
   id?: InputMaybe<BigintComparisonExp>;
   involved_parties?: InputMaybe<SmbPersonsObjectsBoolExp>;
+  location?: InputMaybe<SmbThesaurusBoolExp>;
   materials_and_techniques?: InputMaybe<SmbMaterialReferencesBoolExp>;
   updated_at?: InputMaybe<TimestamptzComparisonExp>;
 };
@@ -1269,24 +1598,12 @@ export type SmbHighlightsAggregateBoolExpCount = {
   predicate: IntComparisonExp;
 };
 
-/** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
-export type BigintComparisonExp = {
-  _eq?: InputMaybe<Scalars['bigint']>;
-  _gt?: InputMaybe<Scalars['bigint']>;
-  _gte?: InputMaybe<Scalars['bigint']>;
-  _in?: InputMaybe<Array<Scalars['bigint']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['bigint']>;
-  _lte?: InputMaybe<Scalars['bigint']>;
-  _neq?: InputMaybe<Scalars['bigint']>;
-  _nin?: InputMaybe<Array<Scalars['bigint']>>;
-};
-
 /** Boolean expression to filter rows from the table "smb.persons_objects". All fields are combined with a logical 'AND'. */
 export type SmbPersonsObjectsBoolExp = {
   _and?: InputMaybe<Array<SmbPersonsObjectsBoolExp>>;
   _not?: InputMaybe<SmbPersonsObjectsBoolExp>;
   _or?: InputMaybe<Array<SmbPersonsObjectsBoolExp>>;
+  attribution_voc?: InputMaybe<SmbThesaurusBoolExp>;
   object?: InputMaybe<SmbObjectsBoolExp>;
   person?: InputMaybe<SmbPersonsBoolExp>;
   role_voc?: InputMaybe<SmbThesaurusBoolExp>;
@@ -1330,12 +1647,28 @@ export type TimestamptzComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
 };
 
+/** Boolean expression to filter rows from the table "smb.org_unit". All fields are combined with a logical 'AND'. */
+export type SmbOrgUnitBoolExp = {
+  _and?: InputMaybe<Array<SmbOrgUnitBoolExp>>;
+  _not?: InputMaybe<SmbOrgUnitBoolExp>;
+  _or?: InputMaybe<Array<SmbOrgUnitBoolExp>>;
+  collectionKey?: InputMaybe<StringComparisonExp>;
+  highlights?: InputMaybe<SmbHighlightsBoolExp>;
+  highlights_aggregate?: InputMaybe<SmbHighlightsAggregateBoolExp>;
+  is_compilation?: InputMaybe<BooleanComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
+  searchValue?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+};
+
 /** SMB highlight objects */
 export type SmbHighlights = {
   __typename?: 'smb_highlights';
   /** An object relationship */
   object: SmbObjects;
   object_id: Scalars['bigint'];
+  /** An object relationship */
+  org_unit: SmbOrgUnit;
 };
 
 /** SMB objects fetched from MDS */
@@ -1345,6 +1678,10 @@ export type SmbObjects = {
   attachments: Array<SmbAttachments>;
   /** An array relationship */
   attributes: Array<SmbAttributeTranslations>;
+  collectionKey?: Maybe<Scalars['String']>;
+  compilation?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  cultural_references: Array<SmbCulturalReferences>;
   exhibition_space?: Maybe<Scalars['String']>;
   /** An array relationship */
   geographical_references: Array<SmbGeographicalReferences>;
@@ -1355,6 +1692,8 @@ export type SmbObjects = {
   id: Scalars['bigint'];
   /** An array relationship */
   involved_parties: Array<SmbPersonsObjects>;
+  /** An object relationship */
+  location?: Maybe<SmbThesaurus>;
   /** An array relationship */
   materials_and_techniques: Array<SmbMaterialReferences>;
   updated_at: Scalars['timestamptz'];
@@ -1378,6 +1717,16 @@ export type SmbObjectsAttributesArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<SmbAttributeTranslationsOrderBy>>;
   where?: InputMaybe<SmbAttributeTranslationsBoolExp>;
+};
+
+
+/** SMB objects fetched from MDS */
+export type SmbObjectsCulturalReferencesArgs = {
+  distinct_on?: InputMaybe<Array<SmbCulturalReferencesSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCulturalReferencesOrderBy>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
 };
 
 
@@ -1528,6 +1877,7 @@ export enum SmbPersonsObjectsSelectColumn {
 
 /** Ordering options when selecting data from "smb.persons_objects". */
 export type SmbPersonsObjectsOrderBy = {
+  attribution_voc?: InputMaybe<SmbThesaurusOrderBy>;
   object?: InputMaybe<SmbObjectsOrderBy>;
   person?: InputMaybe<SmbPersonsOrderBy>;
   role_voc?: InputMaybe<SmbThesaurusOrderBy>;
@@ -1546,6 +1896,8 @@ export type SmbPersonsOrderBy = {
 /** involved parties; persons who are stakeholders on objects */
 export type SmbPersonsObjects = {
   __typename?: 'smb_persons_objects';
+  /** An object relationship */
+  attribution_voc?: Maybe<SmbThesaurus>;
   /** An object relationship */
   object: SmbObjects;
   /** An object relationship */
@@ -1604,6 +1956,41 @@ export type SmbMaterialReferences = {
   specific_type_voc?: Maybe<SmbThesaurus>;
   /** An object relationship */
   type_voc?: Maybe<SmbThesaurus>;
+};
+
+/** Org-units fetched from MDS, used to group SMB objects */
+export type SmbOrgUnit = {
+  __typename?: 'smb_org_unit';
+  collectionKey?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  highlights: Array<SmbHighlights>;
+  /** An aggregate relationship */
+  highlights_aggregate: SmbHighlightsAggregate;
+  is_compilation?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  /** A computed field, executes function "smb.build_search_value_o" */
+  searchValue?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+};
+
+
+/** Org-units fetched from MDS, used to group SMB objects */
+export type SmbOrgUnitHighlightsArgs = {
+  distinct_on?: InputMaybe<Array<SmbHighlightsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbHighlightsOrderBy>>;
+  where?: InputMaybe<SmbHighlightsBoolExp>;
+};
+
+
+/** Org-units fetched from MDS, used to group SMB objects */
+export type SmbOrgUnitHighlightsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<SmbHighlightsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbHighlightsOrderBy>>;
+  where?: InputMaybe<SmbHighlightsBoolExp>;
 };
 
 /** select columns of table "smb.language" */
@@ -1724,6 +2111,16 @@ export type SmbObjectsVarianceFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** select columns of table "smb.org_unit" */
+export enum SmbOrgUnitSelectColumn {
+  /** column name */
+  IS_COMPILATION = 'is_compilation',
+  /** column name */
+  NAME = 'name',
+  /** column name */
+  TITLE = 'title'
+}
+
 /** select columns of table "smb.persons" */
 export enum SmbPersonsSelectColumn {
   /** column name */
@@ -1834,6 +2231,9 @@ export type StrapiHbfQuery = {
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   index?: Maybe<IndexEntityResponse>;
   me?: Maybe<UsersPermissionsMe>;
+  qrReader?: Maybe<QrReaderEntityResponse>;
+  room?: Maybe<RoomEntityResponse>;
+  rooms?: Maybe<RoomEntityResponseCollection>;
   siteConfig?: Maybe<SiteConfigEntityResponse>;
   smbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   smbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -1844,8 +2244,12 @@ export type StrapiHbfQuery = {
   story?: Maybe<StoryEntityResponse>;
   topic?: Maybe<TopicEntityResponse>;
   topics?: Maybe<TopicEntityResponseCollection>;
+  tour?: Maybe<TourEntityResponse>;
+  tours?: Maybe<TourEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
+  uploadFolder?: Maybe<UploadFolderEntityResponse>;
+  uploadFolders?: Maybe<UploadFolderEntityResponseCollection>;
   usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
@@ -1886,12 +2290,33 @@ export type StrapiHbfQueryIndexArgs = {
 };
 
 
+export type StrapiHbfQueryQrReaderArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type StrapiHbfQueryRoomArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiHbfQueryRoomsArgs = {
+  filters?: InputMaybe<RoomFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiHbfQuerySiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
 export type StrapiHbfQuerySmbGuidepageArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
@@ -1950,6 +2375,21 @@ export type StrapiHbfQueryTopicsArgs = {
 };
 
 
+export type StrapiHbfQueryTourArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiHbfQueryToursArgs = {
+  filters?: InputMaybe<TourFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiHbfQueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -1957,6 +2397,18 @@ export type StrapiHbfQueryUploadFileArgs = {
 
 export type StrapiHbfQueryUploadFilesArgs = {
   filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type StrapiHbfQueryUploadFolderArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type StrapiHbfQueryUploadFoldersArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -2014,6 +2466,7 @@ export type DateTimeFilterInput = {
   containsi?: InputMaybe<Scalars['DateTime']>;
   endsWith?: InputMaybe<Scalars['DateTime']>;
   eq?: InputMaybe<Scalars['DateTime']>;
+  eqi?: InputMaybe<Scalars['DateTime']>;
   gt?: InputMaybe<Scalars['DateTime']>;
   gte?: InputMaybe<Scalars['DateTime']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
@@ -2057,6 +2510,7 @@ export type StringFilterInput = {
   containsi?: InputMaybe<Scalars['String']>;
   endsWith?: InputMaybe<Scalars['String']>;
   eq?: InputMaybe<Scalars['String']>;
+  eqi?: InputMaybe<Scalars['String']>;
   gt?: InputMaybe<Scalars['String']>;
   gte?: InputMaybe<Scalars['String']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -2080,6 +2534,7 @@ export type IntFilterInput = {
   containsi?: InputMaybe<Scalars['Int']>;
   endsWith?: InputMaybe<Scalars['Int']>;
   eq?: InputMaybe<Scalars['Int']>;
+  eqi?: InputMaybe<Scalars['Int']>;
   gt?: InputMaybe<Scalars['Int']>;
   gte?: InputMaybe<Scalars['Int']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
@@ -2103,6 +2558,7 @@ export type BooleanFilterInput = {
   containsi?: InputMaybe<Scalars['Boolean']>;
   endsWith?: InputMaybe<Scalars['Boolean']>;
   eq?: InputMaybe<Scalars['Boolean']>;
+  eqi?: InputMaybe<Scalars['Boolean']>;
   gt?: InputMaybe<Scalars['Boolean']>;
   gte?: InputMaybe<Scalars['Boolean']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
@@ -2133,6 +2589,7 @@ export type IdFilterInput = {
   containsi?: InputMaybe<Scalars['ID']>;
   endsWith?: InputMaybe<Scalars['ID']>;
   eq?: InputMaybe<Scalars['ID']>;
+  eqi?: InputMaybe<Scalars['ID']>;
   gt?: InputMaybe<Scalars['ID']>;
   gte?: InputMaybe<Scalars['ID']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -2162,10 +2619,12 @@ export type StoryFiltersInput = {
   not?: InputMaybe<StoryFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<StoryFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
+  room?: InputMaybe<RoomFiltersInput>;
   sitemap_exclude?: InputMaybe<BooleanFilterInput>;
   slug?: InputMaybe<StringFilterInput>;
   title?: InputMaybe<StringFilterInput>;
   topic?: InputMaybe<TopicFiltersInput>;
+  tours?: InputMaybe<TourFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   versionNumber?: InputMaybe<IntFilterInput>;
   versions?: InputMaybe<StoryFiltersInput>;
@@ -2179,6 +2638,28 @@ export type ComponentConfigPageConfigFiltersInput = {
   or?: InputMaybe<Array<InputMaybe<ComponentConfigPageConfigFiltersInput>>>;
   teaser_text?: InputMaybe<StringFilterInput>;
   year?: InputMaybe<StringFilterInput>;
+};
+
+export type RoomFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<RoomFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  floor?: InputMaybe<StringFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  isVisibleInListView?: InputMaybe<BooleanFilterInput>;
+  locale?: InputMaybe<StringFilterInput>;
+  localizations?: InputMaybe<RoomFiltersInput>;
+  not?: InputMaybe<RoomFiltersInput>;
+  objects?: InputMaybe<StoryFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<RoomFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  sitemap_exclude?: InputMaybe<BooleanFilterInput>;
+  slug?: InputMaybe<StringFilterInput>;
+  text?: InputMaybe<StringFilterInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+  versionNumber?: InputMaybe<IntFilterInput>;
+  versions?: InputMaybe<RoomFiltersInput>;
+  vuid?: InputMaybe<StringFilterInput>;
 };
 
 export type TopicFiltersInput = {
@@ -2252,6 +2733,27 @@ export type ComponentComponentsSimpleLinkFiltersInput = {
   not?: InputMaybe<ComponentComponentsSimpleLinkFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ComponentComponentsSimpleLinkFiltersInput>>>;
   title?: InputMaybe<StringFilterInput>;
+};
+
+export type TourFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<TourFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  isVisibleInListView?: InputMaybe<BooleanFilterInput>;
+  locale?: InputMaybe<StringFilterInput>;
+  localizations?: InputMaybe<TourFiltersInput>;
+  not?: InputMaybe<TourFiltersInput>;
+  objects?: InputMaybe<StoryFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<TourFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  sitemap_exclude?: InputMaybe<BooleanFilterInput>;
+  slug?: InputMaybe<StringFilterInput>;
+  text?: InputMaybe<StringFilterInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+  versionNumber?: InputMaybe<IntFilterInput>;
+  versions?: InputMaybe<TourFiltersInput>;
+  vuid?: InputMaybe<StringFilterInput>;
 };
 
 export type PaginationArg = {
@@ -2390,9 +2892,11 @@ export type Story = {
   localizations?: Maybe<StoryRelationResponseCollection>;
   modules?: Maybe<Array<Maybe<StoryModulesDynamicZone>>>;
   publishedAt?: Maybe<Scalars['DateTime']>;
+  room?: Maybe<RoomEntityResponse>;
   slug: Scalars['String'];
   title?: Maybe<Scalars['String']>;
   topic?: Maybe<TopicEntityResponse>;
+  tours?: Maybe<TourRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   versionNumber?: Maybe<Scalars['Int']>;
   versions?: Maybe<StoryRelationResponseCollection>;
@@ -2402,6 +2906,14 @@ export type Story = {
 
 export type StoryLocalizationsArgs = {
   filters?: InputMaybe<StoryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type StoryToursArgs = {
+  filters?: InputMaybe<TourFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -2461,7 +2973,7 @@ export type UploadFile = {
   width?: Maybe<Scalars['Int']>;
 };
 
-export type GenericMorph = Category | ComponentComponentsBannerCard | ComponentComponentsBreadcrumbsLink | ComponentComponentsButtonComponent | ComponentComponentsCardLinkComponent | ComponentComponentsContentCardComponent | ComponentComponentsCookie | ComponentComponentsEasyDbItems | ComponentComponentsEasyDbRef | ComponentComponentsHeadlineComponent | ComponentComponentsImageCard | ComponentComponentsImageMapCard | ComponentComponentsImageScrollCard | ComponentComponentsLegalPages | ComponentComponentsLinkComponent | ComponentComponentsMediaComponent | ComponentComponentsModelInfoPoints | ComponentComponentsNavigationLinkComponent | ComponentComponentsRichTextComponent | ComponentComponentsSimpleLink | ComponentComponentsSlug | ComponentComponentsSmbCollectionsBlock | ComponentComponentsSmbDownloadModule | ComponentComponentsSmbHeaderMenuItems | ComponentComponentsSmbHighlightsBlock | ComponentComponentsSmbLegalPagesBlock | ComponentComponentsSmbResearchModal | ComponentComponentsSmbSearchButtonBlock | ComponentComponentsSmbSection | ComponentComponentsSmbTextCard | ComponentComponentsSmbVideoBlock | ComponentComponentsSmbWebModule | ComponentComponentsStoryComponent | ComponentComponentsTagComponent | ComponentComponentsTextComponent | ComponentConfigHeroSwiperItem | ComponentConfigIndexConfig | ComponentConfigPageConfig | ComponentConfigTheme | ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | I18NLocale | Index | SiteConfig | SmbGuidepage | SmbLandingpage | SmbResearchpage | SmbSiteConfig | SmbTopicspage | Story | Topic | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Category | ComponentComponentsBannerCard | ComponentComponentsBreadcrumbsLink | ComponentComponentsButtonComponent | ComponentComponentsCardLinkComponent | ComponentComponentsContentCardComponent | ComponentComponentsCookie | ComponentComponentsEasyDbItems | ComponentComponentsEasyDbRef | ComponentComponentsHeadlineComponent | ComponentComponentsImageCard | ComponentComponentsImageMapCard | ComponentComponentsImageScrollCard | ComponentComponentsLegalPages | ComponentComponentsLinkComponent | ComponentComponentsMediaComponent | ComponentComponentsModelInfoPoints | ComponentComponentsNavigationLinkComponent | ComponentComponentsRichTextComponent | ComponentComponentsSimpleLink | ComponentComponentsSlug | ComponentComponentsSmbCollectionsBlock | ComponentComponentsSmbDownloadModule | ComponentComponentsSmbHeaderMenuItems | ComponentComponentsSmbHighlightsBlock | ComponentComponentsSmbLegalPagesBlock | ComponentComponentsSmbResearchModal | ComponentComponentsSmbSearchButtonBlock | ComponentComponentsSmbSection | ComponentComponentsSmbTextCard | ComponentComponentsSmbVideoBlock | ComponentComponentsSmbWebModule | ComponentComponentsStoryComponent | ComponentComponentsTagComponent | ComponentComponentsTextComponent | ComponentConfigHeroSwiperItem | ComponentConfigIndexConfig | ComponentConfigPageConfig | ComponentConfigTheme | ComponentGlobal3DModel | ComponentGlobal3DNewModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | I18NLocale | Index | QrReader | Room | SiteConfig | SmbGuidepage | SmbLandingpage | SmbResearchpage | SmbSiteConfig | SmbTopicspage | Story | Topic | Tour | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type ComponentComponentsBannerCard = {
   __typename?: 'ComponentComponentsBannerCard';
@@ -2799,6 +3311,8 @@ export type UploadFileFiltersInput = {
   caption?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   ext?: InputMaybe<StringFilterInput>;
+  folder?: InputMaybe<UploadFolderFiltersInput>;
+  folderPath?: InputMaybe<StringFilterInput>;
   formats?: InputMaybe<JsonFilterInput>;
   hash?: InputMaybe<StringFilterInput>;
   height?: InputMaybe<IntFilterInput>;
@@ -2817,6 +3331,22 @@ export type UploadFileFiltersInput = {
   width?: InputMaybe<IntFilterInput>;
 };
 
+export type UploadFolderFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  children?: InputMaybe<UploadFolderFiltersInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  files?: InputMaybe<UploadFileFiltersInput>;
+  id?: InputMaybe<IdFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<UploadFolderFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  parent?: InputMaybe<UploadFolderFiltersInput>;
+  path?: InputMaybe<StringFilterInput>;
+  pathId?: InputMaybe<IntFilterInput>;
+  sitemap_exclude?: InputMaybe<BooleanFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
 export type JsonFilterInput = {
   and?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
   between?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
@@ -2824,6 +3354,7 @@ export type JsonFilterInput = {
   containsi?: InputMaybe<Scalars['JSON']>;
   endsWith?: InputMaybe<Scalars['JSON']>;
   eq?: InputMaybe<Scalars['JSON']>;
+  eqi?: InputMaybe<Scalars['JSON']>;
   gt?: InputMaybe<Scalars['JSON']>;
   gte?: InputMaybe<Scalars['JSON']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
@@ -2847,6 +3378,7 @@ export type FloatFilterInput = {
   containsi?: InputMaybe<Scalars['Float']>;
   endsWith?: InputMaybe<Scalars['Float']>;
   eq?: InputMaybe<Scalars['Float']>;
+  eqi?: InputMaybe<Scalars['Float']>;
   gt?: InputMaybe<Scalars['Float']>;
   gte?: InputMaybe<Scalars['Float']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
@@ -3282,6 +3814,22 @@ export type ComponentComponentsModelInfoPointsFiltersInput = {
   text?: InputMaybe<StringFilterInput>;
 };
 
+export type ComponentGlobal3DNewModel = {
+  __typename?: 'ComponentGlobal3DNewModel';
+  header?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  modelGLB: UploadFileRelationResponseCollection;
+  modelJSON: UploadFileEntityResponse;
+  theme?: Maybe<ComponentConfigTheme>;
+};
+
+
+export type ComponentGlobal3DNewModelModelGlbArgs = {
+  filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type ComponentGlobalCardImageModule = {
   __typename?: 'ComponentGlobalCardImageModule';
   headline?: Maybe<ComponentComponentsHeadlineComponent>;
@@ -3484,6 +4032,7 @@ export type LongFilterInput = {
   containsi?: InputMaybe<Scalars['Long']>;
   endsWith?: InputMaybe<Scalars['Long']>;
   eq?: InputMaybe<Scalars['Long']>;
+  eqi?: InputMaybe<Scalars['Long']>;
   gt?: InputMaybe<Scalars['Long']>;
   gte?: InputMaybe<Scalars['Long']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
@@ -3700,12 +4249,93 @@ export type IndexEntity = {
   id?: Maybe<Scalars['ID']>;
 };
 
-export type IndexModulesDynamicZone = ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | Error;
+export type IndexModulesDynamicZone = ComponentGlobal3DModel | ComponentGlobal3DNewModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | Error;
 
 export type Error = {
   __typename?: 'Error';
   code: Scalars['String'];
   message?: Maybe<Scalars['String']>;
+};
+
+export type QrReader = {
+  __typename?: 'QrReader';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  isVisibleInListView?: Maybe<Scalars['Boolean']>;
+  json?: Maybe<Scalars['JSON']>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  versionNumber?: Maybe<Scalars['Int']>;
+  versions?: Maybe<QrReaderRelationResponseCollection>;
+  vuid?: Maybe<Scalars['String']>;
+};
+
+
+export type QrReaderVersionsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type QrReaderRelationResponseCollection = {
+  __typename?: 'QrReaderRelationResponseCollection';
+  data: Array<QrReaderEntity>;
+};
+
+export type QrReaderEntity = {
+  __typename?: 'QrReaderEntity';
+  attributes?: Maybe<QrReader>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type Room = {
+  __typename?: 'Room';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  floor?: Maybe<Scalars['String']>;
+  isVisibleInListView?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  localizations?: Maybe<RoomRelationResponseCollection>;
+  objects?: Maybe<StoryRelationResponseCollection>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  slug?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  versionNumber?: Maybe<Scalars['Int']>;
+  versions?: Maybe<RoomRelationResponseCollection>;
+  vuid?: Maybe<Scalars['String']>;
+};
+
+
+export type RoomLocalizationsArgs = {
+  filters?: InputMaybe<RoomFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type RoomObjectsArgs = {
+  filters?: InputMaybe<StoryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type RoomVersionsArgs = {
+  filters?: InputMaybe<RoomFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type RoomRelationResponseCollection = {
+  __typename?: 'RoomRelationResponseCollection';
+  data: Array<RoomEntity>;
+};
+
+export type RoomEntity = {
+  __typename?: 'RoomEntity';
+  attributes?: Maybe<Room>;
+  id?: Maybe<Scalars['ID']>;
 };
 
 export type SiteConfig = {
@@ -3722,6 +4352,7 @@ export type SiteConfig = {
   languageSwitcher: Scalars['Boolean'];
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<SiteConfigRelationResponseCollection>;
+  showQrScanner: Scalars['Boolean'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -3779,8 +4410,28 @@ export type SmbGuidepage = {
   createdAt?: Maybe<Scalars['DateTime']>;
   fallbackHeader?: Maybe<Scalars['String']>;
   fallbackText?: Maybe<Scalars['String']>;
+  header_image?: Maybe<UploadFileEntityResponse>;
+  locale?: Maybe<Scalars['String']>;
+  localizations?: Maybe<SmbGuidepageRelationResponseCollection>;
+  over_image_text?: Maybe<Scalars['String']>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type SmbGuidepageLocalizationsArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+export type SmbGuidepageRelationResponseCollection = {
+  __typename?: 'SmbGuidepageRelationResponseCollection';
+  data: Array<SmbGuidepageEntity>;
+};
+
+export type SmbGuidepageEntity = {
+  __typename?: 'SmbGuidepageEntity';
+  attributes?: Maybe<SmbGuidepage>;
+  id?: Maybe<Scalars['ID']>;
 };
 
 export type SmbLandingpage = {
@@ -3834,8 +4485,11 @@ export type SmbResearchpage = {
   header?: Maybe<Scalars['String']>;
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<SmbResearchpageRelationResponseCollection>;
+  maintenance_text?: Maybe<Scalars['String']>;
+  maintenance_text_long?: Maybe<Scalars['String']>;
   modalDialog?: Maybe<ComponentComponentsSmbResearchModal>;
   publishedAt?: Maybe<Scalars['DateTime']>;
+  show_maintenance_popup?: Maybe<Scalars['Boolean']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -3930,6 +4584,101 @@ export type SmbTopicspageEntity = {
   __typename?: 'SmbTopicspageEntity';
   attributes?: Maybe<SmbTopicspage>;
   id?: Maybe<Scalars['ID']>;
+};
+
+export type Tour = {
+  __typename?: 'Tour';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  isVisibleInListView?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  localizations?: Maybe<TourRelationResponseCollection>;
+  objects?: Maybe<StoryRelationResponseCollection>;
+  publishedAt?: Maybe<Scalars['DateTime']>;
+  slug?: Maybe<Scalars['String']>;
+  teaser_image?: Maybe<UploadFileEntityResponse>;
+  text?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  versionNumber?: Maybe<Scalars['Int']>;
+  versions?: Maybe<TourRelationResponseCollection>;
+  vuid?: Maybe<Scalars['String']>;
+};
+
+
+export type TourLocalizationsArgs = {
+  filters?: InputMaybe<TourFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type TourObjectsArgs = {
+  filters?: InputMaybe<StoryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type TourVersionsArgs = {
+  filters?: InputMaybe<TourFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type TourRelationResponseCollection = {
+  __typename?: 'TourRelationResponseCollection';
+  data: Array<TourEntity>;
+};
+
+export type TourEntity = {
+  __typename?: 'TourEntity';
+  attributes?: Maybe<Tour>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type UploadFolder = {
+  __typename?: 'UploadFolder';
+  children?: Maybe<UploadFolderRelationResponseCollection>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  files?: Maybe<UploadFileRelationResponseCollection>;
+  name: Scalars['String'];
+  parent?: Maybe<UploadFolderEntityResponse>;
+  path: Scalars['String'];
+  pathId: Scalars['Int'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type UploadFolderChildrenArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type UploadFolderFilesArgs = {
+  filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type UploadFolderRelationResponseCollection = {
+  __typename?: 'UploadFolderRelationResponseCollection';
+  data: Array<UploadFolderEntity>;
+};
+
+export type UploadFolderEntity = {
+  __typename?: 'UploadFolderEntity';
+  attributes?: Maybe<UploadFolder>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type UploadFolderEntityResponse = {
+  __typename?: 'UploadFolderEntityResponse';
+  data?: Maybe<UploadFolderEntity>;
 };
 
 export type UsersPermissionsPermission = {
@@ -4054,7 +4803,12 @@ export type UsersPermissionsUser = {
   username: Scalars['String'];
 };
 
-export type StoryModulesDynamicZone = ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | Error;
+export type StoryModulesDynamicZone = ComponentGlobal3DModel | ComponentGlobal3DNewModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | Error;
+
+export type RoomEntityResponse = {
+  __typename?: 'RoomEntityResponse';
+  data?: Maybe<RoomEntity>;
+};
 
 export type ResponseCollectionMeta = {
   __typename?: 'ResponseCollectionMeta';
@@ -4120,6 +4874,17 @@ export type UsersPermissionsMeRole = {
   type?: Maybe<Scalars['String']>;
 };
 
+export type QrReaderEntityResponse = {
+  __typename?: 'QrReaderEntityResponse';
+  data?: Maybe<QrReaderEntity>;
+};
+
+export type RoomEntityResponseCollection = {
+  __typename?: 'RoomEntityResponseCollection';
+  data: Array<RoomEntity>;
+  meta: ResponseCollectionMeta;
+};
+
 export type SiteConfigEntityResponse = {
   __typename?: 'SiteConfigEntityResponse';
   data?: Maybe<SiteConfigEntity>;
@@ -4128,12 +4893,6 @@ export type SiteConfigEntityResponse = {
 export type SmbGuidepageEntityResponse = {
   __typename?: 'SmbGuidepageEntityResponse';
   data?: Maybe<SmbGuidepageEntity>;
-};
-
-export type SmbGuidepageEntity = {
-  __typename?: 'SmbGuidepageEntity';
-  attributes?: Maybe<SmbGuidepage>;
-  id?: Maybe<Scalars['ID']>;
 };
 
 export type SmbLandingpageEntityResponse = {
@@ -4168,9 +4927,26 @@ export type TopicEntityResponseCollection = {
   meta: ResponseCollectionMeta;
 };
 
+export type TourEntityResponse = {
+  __typename?: 'TourEntityResponse';
+  data?: Maybe<TourEntity>;
+};
+
+export type TourEntityResponseCollection = {
+  __typename?: 'TourEntityResponseCollection';
+  data: Array<TourEntity>;
+  meta: ResponseCollectionMeta;
+};
+
 export type UploadFileEntityResponseCollection = {
   __typename?: 'UploadFileEntityResponseCollection';
   data: Array<UploadFileEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type UploadFolderEntityResponseCollection = {
+  __typename?: 'UploadFolderEntityResponseCollection';
+  data: Array<UploadFolderEntity>;
   meta: ResponseCollectionMeta;
 };
 
@@ -4199,6 +4975,9 @@ export type StrapiIslQuery = {
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   index?: Maybe<IndexEntityResponse>;
   me?: Maybe<UsersPermissionsMe>;
+  qrReader?: Maybe<QrReaderEntityResponse>;
+  room?: Maybe<RoomEntityResponse>;
+  rooms?: Maybe<RoomEntityResponseCollection>;
   siteConfig?: Maybe<SiteConfigEntityResponse>;
   smbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   smbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -4209,8 +4988,12 @@ export type StrapiIslQuery = {
   story?: Maybe<StoryEntityResponse>;
   topic?: Maybe<TopicEntityResponse>;
   topics?: Maybe<TopicEntityResponseCollection>;
+  tour?: Maybe<TourEntityResponse>;
+  tours?: Maybe<TourEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
+  uploadFolder?: Maybe<UploadFolderEntityResponse>;
+  uploadFolders?: Maybe<UploadFolderEntityResponseCollection>;
   usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
@@ -4251,12 +5034,33 @@ export type StrapiIslQueryIndexArgs = {
 };
 
 
+export type StrapiIslQueryQrReaderArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type StrapiIslQueryRoomArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiIslQueryRoomsArgs = {
+  filters?: InputMaybe<RoomFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiIslQuerySiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
 export type StrapiIslQuerySmbGuidepageArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
@@ -4315,6 +5119,21 @@ export type StrapiIslQueryTopicsArgs = {
 };
 
 
+export type StrapiIslQueryTourArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiIslQueryToursArgs = {
+  filters?: InputMaybe<TourFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiIslQueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -4322,6 +5141,18 @@ export type StrapiIslQueryUploadFileArgs = {
 
 export type StrapiIslQueryUploadFilesArgs = {
   filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type StrapiIslQueryUploadFolderArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type StrapiIslQueryUploadFoldersArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -4358,6 +5189,9 @@ export type StrapiKgmQuery = {
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   index?: Maybe<IndexEntityResponse>;
   me?: Maybe<UsersPermissionsMe>;
+  qrReader?: Maybe<QrReaderEntityResponse>;
+  room?: Maybe<RoomEntityResponse>;
+  rooms?: Maybe<RoomEntityResponseCollection>;
   siteConfig?: Maybe<SiteConfigEntityResponse>;
   smbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   smbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -4368,8 +5202,12 @@ export type StrapiKgmQuery = {
   story?: Maybe<StoryEntityResponse>;
   topic?: Maybe<TopicEntityResponse>;
   topics?: Maybe<TopicEntityResponseCollection>;
+  tour?: Maybe<TourEntityResponse>;
+  tours?: Maybe<TourEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
+  uploadFolder?: Maybe<UploadFolderEntityResponse>;
+  uploadFolders?: Maybe<UploadFolderEntityResponseCollection>;
   usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
@@ -4410,12 +5248,33 @@ export type StrapiKgmQueryIndexArgs = {
 };
 
 
+export type StrapiKgmQueryQrReaderArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type StrapiKgmQueryRoomArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiKgmQueryRoomsArgs = {
+  filters?: InputMaybe<RoomFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiKgmQuerySiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
 export type StrapiKgmQuerySmbGuidepageArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
@@ -4474,6 +5333,21 @@ export type StrapiKgmQueryTopicsArgs = {
 };
 
 
+export type StrapiKgmQueryTourArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiKgmQueryToursArgs = {
+  filters?: InputMaybe<TourFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiKgmQueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -4481,6 +5355,18 @@ export type StrapiKgmQueryUploadFileArgs = {
 
 export type StrapiKgmQueryUploadFilesArgs = {
   filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type StrapiKgmQueryUploadFolderArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type StrapiKgmQueryUploadFoldersArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -4517,6 +5403,9 @@ export type StrapiSmbQuery = {
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   index?: Maybe<IndexEntityResponse>;
   me?: Maybe<UsersPermissionsMe>;
+  qrReader?: Maybe<QrReaderEntityResponse>;
+  room?: Maybe<RoomEntityResponse>;
+  rooms?: Maybe<RoomEntityResponseCollection>;
   siteConfig?: Maybe<SiteConfigEntityResponse>;
   smbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   smbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -4527,8 +5416,12 @@ export type StrapiSmbQuery = {
   story?: Maybe<StoryEntityResponse>;
   topic?: Maybe<TopicEntityResponse>;
   topics?: Maybe<TopicEntityResponseCollection>;
+  tour?: Maybe<TourEntityResponse>;
+  tours?: Maybe<TourEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
+  uploadFolder?: Maybe<UploadFolderEntityResponse>;
+  uploadFolders?: Maybe<UploadFolderEntityResponseCollection>;
   usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
@@ -4569,12 +5462,33 @@ export type StrapiSmbQueryIndexArgs = {
 };
 
 
+export type StrapiSmbQueryQrReaderArgs = {
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type StrapiSmbQueryRoomArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiSmbQueryRoomsArgs = {
+  filters?: InputMaybe<RoomFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiSmbQuerySiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
 export type StrapiSmbQuerySmbGuidepageArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
@@ -4633,6 +5547,21 @@ export type StrapiSmbQueryTopicsArgs = {
 };
 
 
+export type StrapiSmbQueryTourArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiSmbQueryToursArgs = {
+  filters?: InputMaybe<TourFiltersInput>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
 export type StrapiSmbQueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -4640,6 +5569,18 @@ export type StrapiSmbQueryUploadFileArgs = {
 
 export type StrapiSmbQueryUploadFilesArgs = {
   filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type StrapiSmbQueryUploadFolderArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type StrapiSmbQueryUploadFoldersArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -4679,10 +5620,15 @@ export type MutationRoot = {
 
 export type StrapiHbfMutation = {
   __typename?: 'strapi_hbfMutation';
+  /** Change user password. Confirm with the current password. */
+  changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createCategoryLocalization?: Maybe<CategoryEntityResponse>;
   createIndexLocalization?: Maybe<IndexEntityResponse>;
+  createRoom?: Maybe<RoomEntityResponse>;
+  createRoomLocalization?: Maybe<RoomEntityResponse>;
   createSiteConfigLocalization?: Maybe<SiteConfigEntityResponse>;
+  createSmbGuidepageLocalization?: Maybe<SmbGuidepageEntityResponse>;
   createSmbLandingpageLocalization?: Maybe<SmbLandingpageEntityResponse>;
   createSmbResearchpageLocalization?: Maybe<SmbResearchpageEntityResponse>;
   createSmbSiteConfigLocalization?: Maybe<SmbSiteConfigEntityResponse>;
@@ -4691,13 +5637,18 @@ export type StrapiHbfMutation = {
   createStoryLocalization?: Maybe<StoryEntityResponse>;
   createTopic?: Maybe<TopicEntityResponse>;
   createTopicLocalization?: Maybe<TopicEntityResponse>;
+  createTour?: Maybe<TourEntityResponse>;
+  createTourLocalization?: Maybe<TourEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
+  createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteCategory?: Maybe<CategoryEntityResponse>;
   deleteIndex?: Maybe<IndexEntityResponse>;
+  deleteQrReader?: Maybe<QrReaderEntityResponse>;
+  deleteRoom?: Maybe<RoomEntityResponse>;
   deleteSiteConfig?: Maybe<SiteConfigEntityResponse>;
   deleteSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   deleteSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -4706,7 +5657,9 @@ export type StrapiHbfMutation = {
   deleteSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   deleteStory?: Maybe<StoryEntityResponse>;
   deleteTopic?: Maybe<TopicEntityResponse>;
+  deleteTour?: Maybe<TourEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
+  deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -4725,6 +5678,8 @@ export type StrapiHbfMutation = {
   updateCategory?: Maybe<CategoryEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateIndex?: Maybe<IndexEntityResponse>;
+  updateQrReader?: Maybe<QrReaderEntityResponse>;
+  updateRoom?: Maybe<RoomEntityResponse>;
   updateSiteConfig?: Maybe<SiteConfigEntityResponse>;
   updateSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   updateSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -4733,12 +5688,21 @@ export type StrapiHbfMutation = {
   updateSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   updateStory?: Maybe<StoryEntityResponse>;
   updateTopic?: Maybe<TopicEntityResponse>;
+  updateTour?: Maybe<TourEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
+  updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
+};
+
+
+export type StrapiHbfMutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
 };
 
 
@@ -4762,8 +5726,28 @@ export type StrapiHbfMutationCreateIndexLocalizationArgs = {
 };
 
 
+export type StrapiHbfMutationCreateRoomArgs = {
+  data: RoomInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiHbfMutationCreateRoomLocalizationArgs = {
+  data?: InputMaybe<RoomInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiHbfMutationCreateSiteConfigLocalizationArgs = {
   data?: InputMaybe<SiteConfigInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiHbfMutationCreateSmbGuidepageLocalizationArgs = {
+  data?: InputMaybe<SmbGuidepageInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
@@ -4823,8 +5807,26 @@ export type StrapiHbfMutationCreateTopicLocalizationArgs = {
 };
 
 
+export type StrapiHbfMutationCreateTourArgs = {
+  data: TourInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiHbfMutationCreateTourLocalizationArgs = {
+  data?: InputMaybe<TourInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiHbfMutationCreateUploadFileArgs = {
   data: UploadFileInput;
+};
+
+
+export type StrapiHbfMutationCreateUploadFolderArgs = {
+  data: UploadFolderInput;
 };
 
 
@@ -4849,7 +5851,18 @@ export type StrapiHbfMutationDeleteIndexArgs = {
 };
 
 
+export type StrapiHbfMutationDeleteRoomArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiHbfMutationDeleteSiteConfigArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiHbfMutationDeleteSmbGuidepageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
@@ -4886,7 +5899,18 @@ export type StrapiHbfMutationDeleteTopicArgs = {
 };
 
 
+export type StrapiHbfMutationDeleteTourArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiHbfMutationDeleteUploadFileArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type StrapiHbfMutationDeleteUploadFolderArgs = {
   id: Scalars['ID'];
 };
 
@@ -4960,6 +5984,18 @@ export type StrapiHbfMutationUpdateIndexArgs = {
 };
 
 
+export type StrapiHbfMutationUpdateQrReaderArgs = {
+  data: QrReaderInput;
+};
+
+
+export type StrapiHbfMutationUpdateRoomArgs = {
+  data: RoomInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiHbfMutationUpdateSiteConfigArgs = {
   data: SiteConfigInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
@@ -4968,6 +6004,7 @@ export type StrapiHbfMutationUpdateSiteConfigArgs = {
 
 export type StrapiHbfMutationUpdateSmbGuidepageArgs = {
   data: SmbGuidepageInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -5009,8 +6046,21 @@ export type StrapiHbfMutationUpdateTopicArgs = {
 };
 
 
+export type StrapiHbfMutationUpdateTourArgs = {
+  data: TourInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiHbfMutationUpdateUploadFileArgs = {
   data: UploadFileInput;
+  id: Scalars['ID'];
+};
+
+
+export type StrapiHbfMutationUpdateUploadFolderArgs = {
+  data: UploadFolderInput;
   id: Scalars['ID'];
 };
 
@@ -5033,6 +6083,12 @@ export type StrapiHbfMutationUploadArgs = {
   info?: InputMaybe<FileInfoInput>;
   ref?: InputMaybe<Scalars['String']>;
   refId?: InputMaybe<Scalars['ID']>;
+};
+
+export type UsersPermissionsLoginPayload = {
+  __typename?: 'UsersPermissionsLoginPayload';
+  jwt?: Maybe<Scalars['String']>;
+  user: UsersPermissionsMe;
 };
 
 export type CategoryInput = {
@@ -5085,8 +6141,22 @@ export type ComponentConfigIndexConfigInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
+export type RoomInput = {
+  floor?: InputMaybe<Scalars['String']>;
+  isVisibleInListView?: InputMaybe<Scalars['Boolean']>;
+  objects?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
+  slug?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  versionNumber?: InputMaybe<Scalars['Int']>;
+  versions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  vuid?: InputMaybe<Scalars['String']>;
+};
+
 export type SiteConfigInput = {
-  breadcrumbsLink?: InputMaybe<ComponentComponentsSimpleLinkInput>;
+  breadcrumbsLink?: InputMaybe<ComponentComponentsBreadcrumbsLinkInput>;
   cookies?: InputMaybe<ComponentComponentsCookieInput>;
   copyright?: InputMaybe<Scalars['String']>;
   footerPrimaryLinkItems?: InputMaybe<Array<InputMaybe<ComponentComponentsNavigationLinkComponentInput>>>;
@@ -5095,10 +6165,13 @@ export type SiteConfigInput = {
   headerMenuItems?: InputMaybe<Array<InputMaybe<ComponentComponentsNavigationLinkComponentInput>>>;
   headerTitle?: InputMaybe<Scalars['String']>;
   languageSwitcher?: InputMaybe<Scalars['Boolean']>;
+  showQrScanner?: InputMaybe<Scalars['Boolean']>;
   sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ComponentComponentsSimpleLinkInput = {
+export type ComponentComponentsBreadcrumbsLinkInput = {
+  collapseText?: InputMaybe<Scalars['String']>;
+  expandText?: InputMaybe<Scalars['String']>;
   href?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   title?: InputMaybe<Scalars['String']>;
@@ -5121,6 +6194,15 @@ export type ComponentComponentsNavigationLinkComponentInput = {
   title?: InputMaybe<Scalars['String']>;
 };
 
+export type SmbGuidepageInput = {
+  fallbackHeader?: InputMaybe<Scalars['String']>;
+  fallbackText?: InputMaybe<Scalars['String']>;
+  header_image?: InputMaybe<Scalars['ID']>;
+  over_image_text?: InputMaybe<Scalars['String']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type SmbLandingpageInput = {
   heroSwiperItems?: InputMaybe<Array<InputMaybe<ComponentConfigHeroSwiperItemInput>>>;
   module?: InputMaybe<Array<Scalars['SmbLandingpageModuleDynamicZoneInput']>>;
@@ -5140,8 +6222,11 @@ export type ComponentConfigHeroSwiperItemInput = {
 
 export type SmbResearchpageInput = {
   header?: InputMaybe<Scalars['String']>;
+  maintenance_text?: InputMaybe<Scalars['String']>;
+  maintenance_text_long?: InputMaybe<Scalars['String']>;
   modalDialog?: InputMaybe<ComponentComponentsSmbResearchModalInput>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
+  show_maintenance_popup?: InputMaybe<Scalars['Boolean']>;
   sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -5217,10 +6302,12 @@ export type StoryInput = {
   isVisibleInListView?: InputMaybe<Scalars['Boolean']>;
   modules?: InputMaybe<Array<Scalars['StoryModulesDynamicZoneInput']>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
+  room?: InputMaybe<Scalars['ID']>;
   sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
   slug?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   topic?: InputMaybe<Scalars['ID']>;
+  tours?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   versionNumber?: InputMaybe<Scalars['Int']>;
   versions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   vuid?: InputMaybe<Scalars['String']>;
@@ -5283,10 +6370,32 @@ export type ComponentGlobalTextCardModuleInput = {
   theme?: InputMaybe<ComponentConfigThemeInput>;
 };
 
+export type ComponentComponentsSimpleLinkInput = {
+  href?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type TourInput = {
+  isVisibleInListView?: InputMaybe<Scalars['Boolean']>;
+  objects?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
+  slug?: InputMaybe<Scalars['String']>;
+  teaser_image?: InputMaybe<Scalars['ID']>;
+  text?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  versionNumber?: InputMaybe<Scalars['Int']>;
+  versions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  vuid?: InputMaybe<Scalars['String']>;
+};
+
 export type UploadFileInput = {
   alternativeText?: InputMaybe<Scalars['String']>;
   caption?: InputMaybe<Scalars['String']>;
   ext?: InputMaybe<Scalars['String']>;
+  folder?: InputMaybe<Scalars['ID']>;
+  folderPath?: InputMaybe<Scalars['String']>;
   formats?: InputMaybe<Scalars['JSON']>;
   hash?: InputMaybe<Scalars['String']>;
   height?: InputMaybe<Scalars['Int']>;
@@ -5299,6 +6408,16 @@ export type UploadFileInput = {
   size?: InputMaybe<Scalars['Float']>;
   url?: InputMaybe<Scalars['String']>;
   width?: InputMaybe<Scalars['Int']>;
+};
+
+export type UploadFolderInput = {
+  children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  files?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  name?: InputMaybe<Scalars['String']>;
+  parent?: InputMaybe<Scalars['ID']>;
+  path?: InputMaybe<Scalars['String']>;
+  pathId?: InputMaybe<Scalars['Int']>;
+  sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UsersPermissionsRoleInput = {
@@ -5332,12 +6451,6 @@ export type UsersPermissionsDeleteRolePayload = {
   ok: Scalars['Boolean'];
 };
 
-export type UsersPermissionsLoginPayload = {
-  __typename?: 'UsersPermissionsLoginPayload';
-  jwt?: Maybe<Scalars['String']>;
-  user: UsersPermissionsMe;
-};
-
 export type UsersPermissionsPasswordPayload = {
   __typename?: 'UsersPermissionsPasswordPayload';
   ok: Scalars['Boolean'];
@@ -5361,11 +6474,14 @@ export type FileInfoInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
-export type SmbGuidepageInput = {
-  fallbackHeader?: InputMaybe<Scalars['String']>;
-  fallbackText?: InputMaybe<Scalars['String']>;
+export type QrReaderInput = {
+  isVisibleInListView?: InputMaybe<Scalars['Boolean']>;
+  json?: InputMaybe<Scalars['JSON']>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
+  versionNumber?: InputMaybe<Scalars['Int']>;
+  versions?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  vuid?: InputMaybe<Scalars['String']>;
 };
 
 export type UsersPermissionsUpdateRolePayload = {
@@ -5375,10 +6491,15 @@ export type UsersPermissionsUpdateRolePayload = {
 
 export type StrapiIslMutation = {
   __typename?: 'strapi_islMutation';
+  /** Change user password. Confirm with the current password. */
+  changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createCategoryLocalization?: Maybe<CategoryEntityResponse>;
   createIndexLocalization?: Maybe<IndexEntityResponse>;
+  createRoom?: Maybe<RoomEntityResponse>;
+  createRoomLocalization?: Maybe<RoomEntityResponse>;
   createSiteConfigLocalization?: Maybe<SiteConfigEntityResponse>;
+  createSmbGuidepageLocalization?: Maybe<SmbGuidepageEntityResponse>;
   createSmbLandingpageLocalization?: Maybe<SmbLandingpageEntityResponse>;
   createSmbResearchpageLocalization?: Maybe<SmbResearchpageEntityResponse>;
   createSmbSiteConfigLocalization?: Maybe<SmbSiteConfigEntityResponse>;
@@ -5387,13 +6508,18 @@ export type StrapiIslMutation = {
   createStoryLocalization?: Maybe<StoryEntityResponse>;
   createTopic?: Maybe<TopicEntityResponse>;
   createTopicLocalization?: Maybe<TopicEntityResponse>;
+  createTour?: Maybe<TourEntityResponse>;
+  createTourLocalization?: Maybe<TourEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
+  createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteCategory?: Maybe<CategoryEntityResponse>;
   deleteIndex?: Maybe<IndexEntityResponse>;
+  deleteQrReader?: Maybe<QrReaderEntityResponse>;
+  deleteRoom?: Maybe<RoomEntityResponse>;
   deleteSiteConfig?: Maybe<SiteConfigEntityResponse>;
   deleteSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   deleteSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -5402,7 +6528,9 @@ export type StrapiIslMutation = {
   deleteSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   deleteStory?: Maybe<StoryEntityResponse>;
   deleteTopic?: Maybe<TopicEntityResponse>;
+  deleteTour?: Maybe<TourEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
+  deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -5421,6 +6549,8 @@ export type StrapiIslMutation = {
   updateCategory?: Maybe<CategoryEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateIndex?: Maybe<IndexEntityResponse>;
+  updateQrReader?: Maybe<QrReaderEntityResponse>;
+  updateRoom?: Maybe<RoomEntityResponse>;
   updateSiteConfig?: Maybe<SiteConfigEntityResponse>;
   updateSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   updateSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -5429,12 +6559,21 @@ export type StrapiIslMutation = {
   updateSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   updateStory?: Maybe<StoryEntityResponse>;
   updateTopic?: Maybe<TopicEntityResponse>;
+  updateTour?: Maybe<TourEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
+  updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
+};
+
+
+export type StrapiIslMutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
 };
 
 
@@ -5458,8 +6597,28 @@ export type StrapiIslMutationCreateIndexLocalizationArgs = {
 };
 
 
+export type StrapiIslMutationCreateRoomArgs = {
+  data: RoomInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiIslMutationCreateRoomLocalizationArgs = {
+  data?: InputMaybe<RoomInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiIslMutationCreateSiteConfigLocalizationArgs = {
   data?: InputMaybe<SiteConfigInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiIslMutationCreateSmbGuidepageLocalizationArgs = {
+  data?: InputMaybe<SmbGuidepageInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
@@ -5519,8 +6678,26 @@ export type StrapiIslMutationCreateTopicLocalizationArgs = {
 };
 
 
+export type StrapiIslMutationCreateTourArgs = {
+  data: TourInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiIslMutationCreateTourLocalizationArgs = {
+  data?: InputMaybe<TourInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiIslMutationCreateUploadFileArgs = {
   data: UploadFileInput;
+};
+
+
+export type StrapiIslMutationCreateUploadFolderArgs = {
+  data: UploadFolderInput;
 };
 
 
@@ -5545,7 +6722,18 @@ export type StrapiIslMutationDeleteIndexArgs = {
 };
 
 
+export type StrapiIslMutationDeleteRoomArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiIslMutationDeleteSiteConfigArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiIslMutationDeleteSmbGuidepageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
@@ -5582,7 +6770,18 @@ export type StrapiIslMutationDeleteTopicArgs = {
 };
 
 
+export type StrapiIslMutationDeleteTourArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiIslMutationDeleteUploadFileArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type StrapiIslMutationDeleteUploadFolderArgs = {
   id: Scalars['ID'];
 };
 
@@ -5656,6 +6855,18 @@ export type StrapiIslMutationUpdateIndexArgs = {
 };
 
 
+export type StrapiIslMutationUpdateQrReaderArgs = {
+  data: QrReaderInput;
+};
+
+
+export type StrapiIslMutationUpdateRoomArgs = {
+  data: RoomInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiIslMutationUpdateSiteConfigArgs = {
   data: SiteConfigInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
@@ -5664,6 +6875,7 @@ export type StrapiIslMutationUpdateSiteConfigArgs = {
 
 export type StrapiIslMutationUpdateSmbGuidepageArgs = {
   data: SmbGuidepageInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -5705,8 +6917,21 @@ export type StrapiIslMutationUpdateTopicArgs = {
 };
 
 
+export type StrapiIslMutationUpdateTourArgs = {
+  data: TourInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiIslMutationUpdateUploadFileArgs = {
   data: UploadFileInput;
+  id: Scalars['ID'];
+};
+
+
+export type StrapiIslMutationUpdateUploadFolderArgs = {
+  data: UploadFolderInput;
   id: Scalars['ID'];
 };
 
@@ -5733,10 +6958,15 @@ export type StrapiIslMutationUploadArgs = {
 
 export type StrapiKgmMutation = {
   __typename?: 'strapi_kgmMutation';
+  /** Change user password. Confirm with the current password. */
+  changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createCategoryLocalization?: Maybe<CategoryEntityResponse>;
   createIndexLocalization?: Maybe<IndexEntityResponse>;
+  createRoom?: Maybe<RoomEntityResponse>;
+  createRoomLocalization?: Maybe<RoomEntityResponse>;
   createSiteConfigLocalization?: Maybe<SiteConfigEntityResponse>;
+  createSmbGuidepageLocalization?: Maybe<SmbGuidepageEntityResponse>;
   createSmbLandingpageLocalization?: Maybe<SmbLandingpageEntityResponse>;
   createSmbResearchpageLocalization?: Maybe<SmbResearchpageEntityResponse>;
   createSmbSiteConfigLocalization?: Maybe<SmbSiteConfigEntityResponse>;
@@ -5745,13 +6975,18 @@ export type StrapiKgmMutation = {
   createStoryLocalization?: Maybe<StoryEntityResponse>;
   createTopic?: Maybe<TopicEntityResponse>;
   createTopicLocalization?: Maybe<TopicEntityResponse>;
+  createTour?: Maybe<TourEntityResponse>;
+  createTourLocalization?: Maybe<TourEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
+  createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteCategory?: Maybe<CategoryEntityResponse>;
   deleteIndex?: Maybe<IndexEntityResponse>;
+  deleteQrReader?: Maybe<QrReaderEntityResponse>;
+  deleteRoom?: Maybe<RoomEntityResponse>;
   deleteSiteConfig?: Maybe<SiteConfigEntityResponse>;
   deleteSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   deleteSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -5760,7 +6995,9 @@ export type StrapiKgmMutation = {
   deleteSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   deleteStory?: Maybe<StoryEntityResponse>;
   deleteTopic?: Maybe<TopicEntityResponse>;
+  deleteTour?: Maybe<TourEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
+  deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -5779,6 +7016,8 @@ export type StrapiKgmMutation = {
   updateCategory?: Maybe<CategoryEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateIndex?: Maybe<IndexEntityResponse>;
+  updateQrReader?: Maybe<QrReaderEntityResponse>;
+  updateRoom?: Maybe<RoomEntityResponse>;
   updateSiteConfig?: Maybe<SiteConfigEntityResponse>;
   updateSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   updateSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -5787,12 +7026,21 @@ export type StrapiKgmMutation = {
   updateSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   updateStory?: Maybe<StoryEntityResponse>;
   updateTopic?: Maybe<TopicEntityResponse>;
+  updateTour?: Maybe<TourEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
+  updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
+};
+
+
+export type StrapiKgmMutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
 };
 
 
@@ -5816,8 +7064,28 @@ export type StrapiKgmMutationCreateIndexLocalizationArgs = {
 };
 
 
+export type StrapiKgmMutationCreateRoomArgs = {
+  data: RoomInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiKgmMutationCreateRoomLocalizationArgs = {
+  data?: InputMaybe<RoomInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiKgmMutationCreateSiteConfigLocalizationArgs = {
   data?: InputMaybe<SiteConfigInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiKgmMutationCreateSmbGuidepageLocalizationArgs = {
+  data?: InputMaybe<SmbGuidepageInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
@@ -5877,8 +7145,26 @@ export type StrapiKgmMutationCreateTopicLocalizationArgs = {
 };
 
 
+export type StrapiKgmMutationCreateTourArgs = {
+  data: TourInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiKgmMutationCreateTourLocalizationArgs = {
+  data?: InputMaybe<TourInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiKgmMutationCreateUploadFileArgs = {
   data: UploadFileInput;
+};
+
+
+export type StrapiKgmMutationCreateUploadFolderArgs = {
+  data: UploadFolderInput;
 };
 
 
@@ -5903,7 +7189,18 @@ export type StrapiKgmMutationDeleteIndexArgs = {
 };
 
 
+export type StrapiKgmMutationDeleteRoomArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiKgmMutationDeleteSiteConfigArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiKgmMutationDeleteSmbGuidepageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
@@ -5940,7 +7237,18 @@ export type StrapiKgmMutationDeleteTopicArgs = {
 };
 
 
+export type StrapiKgmMutationDeleteTourArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiKgmMutationDeleteUploadFileArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type StrapiKgmMutationDeleteUploadFolderArgs = {
   id: Scalars['ID'];
 };
 
@@ -6014,6 +7322,18 @@ export type StrapiKgmMutationUpdateIndexArgs = {
 };
 
 
+export type StrapiKgmMutationUpdateQrReaderArgs = {
+  data: QrReaderInput;
+};
+
+
+export type StrapiKgmMutationUpdateRoomArgs = {
+  data: RoomInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiKgmMutationUpdateSiteConfigArgs = {
   data: SiteConfigInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
@@ -6022,6 +7342,7 @@ export type StrapiKgmMutationUpdateSiteConfigArgs = {
 
 export type StrapiKgmMutationUpdateSmbGuidepageArgs = {
   data: SmbGuidepageInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -6063,8 +7384,21 @@ export type StrapiKgmMutationUpdateTopicArgs = {
 };
 
 
+export type StrapiKgmMutationUpdateTourArgs = {
+  data: TourInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiKgmMutationUpdateUploadFileArgs = {
   data: UploadFileInput;
+  id: Scalars['ID'];
+};
+
+
+export type StrapiKgmMutationUpdateUploadFolderArgs = {
+  data: UploadFolderInput;
   id: Scalars['ID'];
 };
 
@@ -6091,10 +7425,15 @@ export type StrapiKgmMutationUploadArgs = {
 
 export type StrapiSmbMutation = {
   __typename?: 'strapi_smbMutation';
+  /** Change user password. Confirm with the current password. */
+  changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createCategoryLocalization?: Maybe<CategoryEntityResponse>;
   createIndexLocalization?: Maybe<IndexEntityResponse>;
+  createRoom?: Maybe<RoomEntityResponse>;
+  createRoomLocalization?: Maybe<RoomEntityResponse>;
   createSiteConfigLocalization?: Maybe<SiteConfigEntityResponse>;
+  createSmbGuidepageLocalization?: Maybe<SmbGuidepageEntityResponse>;
   createSmbLandingpageLocalization?: Maybe<SmbLandingpageEntityResponse>;
   createSmbResearchpageLocalization?: Maybe<SmbResearchpageEntityResponse>;
   createSmbSiteConfigLocalization?: Maybe<SmbSiteConfigEntityResponse>;
@@ -6103,13 +7442,18 @@ export type StrapiSmbMutation = {
   createStoryLocalization?: Maybe<StoryEntityResponse>;
   createTopic?: Maybe<TopicEntityResponse>;
   createTopicLocalization?: Maybe<TopicEntityResponse>;
+  createTour?: Maybe<TourEntityResponse>;
+  createTourLocalization?: Maybe<TourEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
+  createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteCategory?: Maybe<CategoryEntityResponse>;
   deleteIndex?: Maybe<IndexEntityResponse>;
+  deleteQrReader?: Maybe<QrReaderEntityResponse>;
+  deleteRoom?: Maybe<RoomEntityResponse>;
   deleteSiteConfig?: Maybe<SiteConfigEntityResponse>;
   deleteSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   deleteSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -6118,7 +7462,9 @@ export type StrapiSmbMutation = {
   deleteSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   deleteStory?: Maybe<StoryEntityResponse>;
   deleteTopic?: Maybe<TopicEntityResponse>;
+  deleteTour?: Maybe<TourEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
+  deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -6137,6 +7483,8 @@ export type StrapiSmbMutation = {
   updateCategory?: Maybe<CategoryEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updateIndex?: Maybe<IndexEntityResponse>;
+  updateQrReader?: Maybe<QrReaderEntityResponse>;
+  updateRoom?: Maybe<RoomEntityResponse>;
   updateSiteConfig?: Maybe<SiteConfigEntityResponse>;
   updateSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
   updateSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
@@ -6145,12 +7493,21 @@ export type StrapiSmbMutation = {
   updateSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
   updateStory?: Maybe<StoryEntityResponse>;
   updateTopic?: Maybe<TopicEntityResponse>;
+  updateTour?: Maybe<TourEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
+  updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   upload: UploadFileEntityResponse;
+};
+
+
+export type StrapiSmbMutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
 };
 
 
@@ -6174,8 +7531,28 @@ export type StrapiSmbMutationCreateIndexLocalizationArgs = {
 };
 
 
+export type StrapiSmbMutationCreateRoomArgs = {
+  data: RoomInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiSmbMutationCreateRoomLocalizationArgs = {
+  data?: InputMaybe<RoomInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiSmbMutationCreateSiteConfigLocalizationArgs = {
   data?: InputMaybe<SiteConfigInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiSmbMutationCreateSmbGuidepageLocalizationArgs = {
+  data?: InputMaybe<SmbGuidepageInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
@@ -6235,8 +7612,26 @@ export type StrapiSmbMutationCreateTopicLocalizationArgs = {
 };
 
 
+export type StrapiSmbMutationCreateTourArgs = {
+  data: TourInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiSmbMutationCreateTourLocalizationArgs = {
+  data?: InputMaybe<TourInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiSmbMutationCreateUploadFileArgs = {
   data: UploadFileInput;
+};
+
+
+export type StrapiSmbMutationCreateUploadFolderArgs = {
+  data: UploadFolderInput;
 };
 
 
@@ -6261,7 +7656,18 @@ export type StrapiSmbMutationDeleteIndexArgs = {
 };
 
 
+export type StrapiSmbMutationDeleteRoomArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiSmbMutationDeleteSiteConfigArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type StrapiSmbMutationDeleteSmbGuidepageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
@@ -6298,7 +7704,18 @@ export type StrapiSmbMutationDeleteTopicArgs = {
 };
 
 
+export type StrapiSmbMutationDeleteTourArgs = {
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiSmbMutationDeleteUploadFileArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type StrapiSmbMutationDeleteUploadFolderArgs = {
   id: Scalars['ID'];
 };
 
@@ -6372,6 +7789,18 @@ export type StrapiSmbMutationUpdateIndexArgs = {
 };
 
 
+export type StrapiSmbMutationUpdateQrReaderArgs = {
+  data: QrReaderInput;
+};
+
+
+export type StrapiSmbMutationUpdateRoomArgs = {
+  data: RoomInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiSmbMutationUpdateSiteConfigArgs = {
   data: SiteConfigInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
@@ -6380,6 +7809,7 @@ export type StrapiSmbMutationUpdateSiteConfigArgs = {
 
 export type StrapiSmbMutationUpdateSmbGuidepageArgs = {
   data: SmbGuidepageInput;
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
@@ -6421,8 +7851,21 @@ export type StrapiSmbMutationUpdateTopicArgs = {
 };
 
 
+export type StrapiSmbMutationUpdateTourArgs = {
+  data: TourInput;
+  id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
 export type StrapiSmbMutationUpdateUploadFileArgs = {
   data: UploadFileInput;
+  id: Scalars['ID'];
+};
+
+
+export type StrapiSmbMutationUpdateUploadFolderArgs = {
+  data: UploadFolderInput;
   id: Scalars['ID'];
 };
 
@@ -6471,6 +7914,22 @@ export type SubscriptionRoot = {
   smb_attributes_by_pk?: Maybe<SmbAttributes>;
   /** fetch data from the table in a streaming manner: "smb.attributes" */
   smb_attributes_stream: Array<SmbAttributes>;
+  /** fetch data from the table: "smb.buildings" */
+  smb_buildings: Array<SmbBuildings>;
+  /** fetch data from the table: "smb.buildings" using primary key columns */
+  smb_buildings_by_pk?: Maybe<SmbBuildings>;
+  /** fetch data from the table in a streaming manner: "smb.buildings" */
+  smb_buildings_stream: Array<SmbBuildings>;
+  /** fetch data from the table: "smb.collections" */
+  smb_collections: Array<SmbCollections>;
+  /** fetch data from the table: "smb.collections" using primary key columns */
+  smb_collections_by_pk?: Maybe<SmbCollections>;
+  /** fetch data from the table in a streaming manner: "smb.collections" */
+  smb_collections_stream: Array<SmbCollections>;
+  /** fetch data from the table: "smb.cultural_references" */
+  smb_cultural_references: Array<SmbCulturalReferences>;
+  /** fetch data from the table in a streaming manner: "smb.cultural_references" */
+  smb_cultural_references_stream: Array<SmbCulturalReferences>;
   /** fetch data from the table: "smb.exhibitions" */
   smb_exhibitions: Array<SmbExhibitions>;
   /** fetch data from the table in a streaming manner: "smb.exhibitions" */
@@ -6509,6 +7968,10 @@ export type SubscriptionRoot = {
   smb_objects_by_pk?: Maybe<SmbObjects>;
   /** fetch data from the table in a streaming manner: "smb.objects" */
   smb_objects_stream: Array<SmbObjects>;
+  /** fetch data from the table: "smb.org_unit" */
+  smb_org_unit: Array<SmbOrgUnit>;
+  /** fetch data from the table in a streaming manner: "smb.org_unit" */
+  smb_org_unit_stream: Array<SmbOrgUnit>;
   /** fetch data from the table: "smb.persons" */
   smb_persons: Array<SmbPersons>;
   /** fetch data from the table: "smb.persons_objects" */
@@ -6618,6 +8081,64 @@ export type SubscriptionRootSmbAttributesStreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<SmbAttributesStreamCursorInput>>;
   where?: InputMaybe<SmbAttributesBoolExp>;
+};
+
+
+export type SubscriptionRootSmbBuildingsArgs = {
+  distinct_on?: InputMaybe<Array<SmbBuildingsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbBuildingsOrderBy>>;
+  where?: InputMaybe<SmbBuildingsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbBuildingsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type SubscriptionRootSmbBuildingsStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbBuildingsStreamCursorInput>>;
+  where?: InputMaybe<SmbBuildingsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCollectionsArgs = {
+  distinct_on?: InputMaybe<Array<SmbCollectionsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCollectionsOrderBy>>;
+  where?: InputMaybe<SmbCollectionsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCollectionsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type SubscriptionRootSmbCollectionsStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbCollectionsStreamCursorInput>>;
+  where?: InputMaybe<SmbCollectionsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCulturalReferencesArgs = {
+  distinct_on?: InputMaybe<Array<SmbCulturalReferencesSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCulturalReferencesOrderBy>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCulturalReferencesStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbCulturalReferencesStreamCursorInput>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
 };
 
 
@@ -6772,6 +8293,22 @@ export type SubscriptionRootSmbObjectsStreamArgs = {
 };
 
 
+export type SubscriptionRootSmbOrgUnitArgs = {
+  distinct_on?: InputMaybe<Array<SmbOrgUnitSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbOrgUnitOrderBy>>;
+  where?: InputMaybe<SmbOrgUnitBoolExp>;
+};
+
+
+export type SubscriptionRootSmbOrgUnitStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbOrgUnitStreamCursorInput>>;
+  where?: InputMaybe<SmbOrgUnitBoolExp>;
+};
+
+
 export type SubscriptionRootSmbPersonsArgs = {
   distinct_on?: InputMaybe<Array<SmbPersonsSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6917,6 +8454,7 @@ export type SmbAttachmentsStreamCursorInput = {
 export type SmbAttachmentsStreamCursorValueInput = {
   attachment?: InputMaybe<Scalars['String']>;
   credits?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['bigint']>;
   media_type?: InputMaybe<Scalars['String']>;
   primary?: InputMaybe<Scalars['Boolean']>;
 };
@@ -6947,6 +8485,49 @@ export type SmbAttributesStreamCursorInput = {
 export type SmbAttributesStreamCursorValueInput = {
   datatype?: InputMaybe<Scalars['String']>;
   key?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "smb_buildings" */
+export type SmbBuildingsStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbBuildingsStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbBuildingsStreamCursorValueInput = {
+  key?: InputMaybe<Scalars['String']>;
+  /** Display title used for all languages */
+  title?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "smb_collections" */
+export type SmbCollectionsStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbCollectionsStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbCollectionsStreamCursorValueInput = {
+  key?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "smb_cultural_references" */
+export type SmbCulturalReferencesStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbCulturalReferencesStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbCulturalReferencesStreamCursorValueInput = {
+  sequence?: InputMaybe<Scalars['Int']>;
 };
 
 /** Streaming cursor of the table "smb_exhibitions" */
@@ -7061,6 +8642,21 @@ export type SmbObjectsStreamCursorValueInput = {
   exhibition_space?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['bigint']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "smb_org_unit" */
+export type SmbOrgUnitStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbOrgUnitStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbOrgUnitStreamCursorValueInput = {
+  is_compilation?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 /** Streaming cursor of the table "smb_persons_objects" */

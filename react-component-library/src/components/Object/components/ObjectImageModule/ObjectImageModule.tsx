@@ -67,7 +67,7 @@ function ObjectImageModule({
               variant={'caption'}
               className={clsx(classes.pictureCredits)}
             >
-              {t('attachment attribute picture credits')}:{' '}
+              {t('details.attachment.pictureCredits')}:{' '}
               {currentAttachment.credits || 'Staatliche Museen zu Berlin'}
               {currentAttachment.license && (
                 <a

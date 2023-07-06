@@ -1,2 +1,3 @@
-import ImageUrlBuilder from './ImageUrlBuilder'
-export{ImageUrlBuilder}
+import ImageUrlBuilder from './ImageUrlBuilder';
+export{ImageUrlBuilder};
+export * from './language-helper';

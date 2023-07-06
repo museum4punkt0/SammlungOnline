@@ -4,7 +4,7 @@ import { IConfiguration } from '../config/configuration';
 const createSlug = (text?: string): string => {
   const slug = text
     ?.replace(/[ /.+]/g, '-')
-    ?.replace(/['"()?!:]/g, '')
+    ?.replace(/['"()?!:,]/g, '')
     ?.toLowerCase();
   return slug ? encodeURIComponent(slug) : '';
 };

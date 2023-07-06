@@ -119,7 +119,7 @@ export function SliderModule({
       <SliderContent activeIndex={activeIndex}>{children}</SliderContent>
       {arrows && (
         <IconButton
-          aria-label={t('carousel button left')}
+          aria-label={t('carousel.previousTopic')}
           className={classes.arrowBack}
           color="inherit"
           onClick={decrementActiveIndex}
@@ -129,7 +129,7 @@ export function SliderModule({
       )}
       {arrows && (
         <IconButton
-          aria-label={t('carousel button right')}
+          aria-label={t('carousel.nextTopic')}
           className={classes.arrowForward}
           color="inherit"
           onClick={incrementActiveIndex}

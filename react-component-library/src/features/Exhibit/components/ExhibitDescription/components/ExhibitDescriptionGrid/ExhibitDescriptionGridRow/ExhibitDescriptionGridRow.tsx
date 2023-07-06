@@ -7,7 +7,6 @@ import {
   Button,
   IconButton,
   Tooltip,
-  Link,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import LinkOutlinedIcon from '@material-ui/icons/LinkOutlined';
@@ -18,7 +17,17 @@ import {
   copyToClipboard,
   shortenPermalink,
 } from '../../../../../../../utils/helperFunctions';
+import { SafeEscapedHTML } from '../../../../../../../components';
 
+/**
+ * Component used to render a row in the grid of detail view
+ *
+ * -----
+ * @param title - title of the row (appears in first column)
+ * @param content - content of the row (appears in second column)
+ * @param permalink - if it's the row with permalink (last row)
+ * @constructor
+ */
 export const ExhibitDescriptionGridRow: React.FC<
   IExhibitDescriptionGridRowProps
 > = ({ title, content, permalink }) => {
@@ -28,6 +37,7 @@ export const ExhibitDescriptionGridRow: React.FC<
     copyToClipboard(content as string);
   };
 
+  // todo: use linkBuilder to build the internal links
   return (
     <Grid className={classes.row} container>
       <Grid item xs={12} sm={4} md={5} className={classes.cell}>
@@ -51,25 +61,14 @@ export const ExhibitDescriptionGridRow: React.FC<
       <Grid item xs={12} sm={8} md={7} className={classes.cellLink}>
         {Array.isArray(content) &&
           content.map((link, index) => {
+            const data = link as unknown as {
+              markup: string;
+              formatted: string;
+            };
             return (
               <React.Fragment key={index}>
-                {!link?.html ? (
-                  <Link
-                    key={`description_grid_row_link_${index}`}
-                    href={link.href}
-                    variant="body1"
-                    className={classes.contentLink}
-                  >
-                    {link.formatted}
-                  </Link>
-                ) : (
-                  <Typography
-                    className={classes.content}
-                    component={'div'}
-                    key={`description_grid_row_text_${index}`}
-                    dangerouslySetInnerHTML={{ __html: link.href }}
-                  />
-                )}
+                <SafeEscapedHTML htmlString={data.markup ?? data.formatted}
+                                 cssClassNames={classes.content}/>
               </React.Fragment>
             );
           })}

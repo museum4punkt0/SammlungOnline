@@ -146,6 +146,7 @@ const PRODUCTION: IConfiguration = {
 const LOCAL: IConfiguration = {
   ...STAGE,
   stage: AppStage.LOCAL,
+  PRODUCTION_READY: false,
   INTRO_DOMAIN: 'http://localhost:3000',
   TOPICS_DOMAIN: 'http://localhost:3001',
   GUIDE_DOMAIN: 'http://localhost:3002',

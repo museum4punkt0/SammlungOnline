@@ -7,6 +7,13 @@ import {
   ComponentComponentsSmbDownloadModule,
 } from '../../../generated/graphql';
 import { LanguageService } from 'src';
+import {ApolloError} from "apollo-boost";
+
+interface ServiceResponce {
+  loading: boolean;
+  error: ApolloError | undefined;
+  data: any | null;
+}
 
 class ResearchService {
   getResearchModalData() {
@@ -22,6 +29,22 @@ class ResearchService {
 
     return { loading, error, data: convertedSectionsData };
   }
+
+  getMaintenanceModalData(): ServiceResponce {
+    const lang = LanguageService.getDefaultLanguage();
+    const researchRepository = new ResearchRepository();
+    const { loading, error, data } =
+      researchRepository.fetchMaintenanceModal(lang);
+
+    let convertedSectionsData;
+
+    if (!loading && data) {
+      convertedSectionsData = data;
+    }
+
+    return { loading, error, data: convertedSectionsData };
+  }
+
 
   convertModuleData(
     items: ComponentComponentsSmbResearchModal,

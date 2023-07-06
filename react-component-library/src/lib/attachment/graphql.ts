@@ -7,7 +7,9 @@ export const FetchExhibitAttachments = gql`
         order_by: [{ primary: desc }, { attachment: asc }]
         limit: 10
       ) {
+        id
         attachment
+        name
         primary
         credits
         license {

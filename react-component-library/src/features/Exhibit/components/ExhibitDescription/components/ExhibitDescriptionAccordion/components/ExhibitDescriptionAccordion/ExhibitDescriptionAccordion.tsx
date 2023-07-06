@@ -1,30 +1,20 @@
 /* eslint-disable react/jsx-key */
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Tooltip from '@material-ui/core/Tooltip';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import OpenInNew from '@material-ui/icons/OpenInNew';
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Link,
-} from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './exhibitDescriptionAccordion.jss';
 import { IExhibitDescriptionAccordionProps } from '../../../../types';
+import { SafeEscapedHTML } from '../../../../../../../../components';
 
 export const ExhibitDescriptionAccordion: React.FC<
   IExhibitDescriptionAccordionProps
 > = (props) => {
   const { title, content, listTitle, keywordsList, expanded = false } = props;
   const [expandedState, setExpandedState] = React.useState(expanded);
-  const { t } = useTranslation();
 
   const handleChange = (
     _event: React.ChangeEvent<Record<string, unknown>>,
@@ -34,7 +24,8 @@ export const ExhibitDescriptionAccordion: React.FC<
   };
 
   const classes = useStyles();
-  // We need a valid id for the arria-labeledby attribute
+  
+  // We need a valid id for the aria-labeledby attribute
   const generateValidId = (titleString: string) => {
     return titleString.replace(/\W/g, '_');
   };
@@ -49,45 +40,14 @@ export const ExhibitDescriptionAccordion: React.FC<
     }
   };
 
-  const renderInternalLinks = false;
-
   const renderListItem = (item: any, _index: number) => {
-    const externalUrlName = t('details.externalUrl');
     return (
       <li key={_index}>
-        {renderInternalLinks && item.internalUrl ? (
-          <Tooltip title={`${t('tooltip.title')} ${item.text}`} arrow={true}>
-            <Link
-              href={item.internalUrl}
-              className={classes.listItemText}
-              aria-label={item.text}
-              variant="body2"
-            >
-              {item.text}
-            </Link>
-          </Tooltip>
-        ) : (
-          <Typography variant="body2" className={classes.listItemText}>
-            {item.text}
-          </Typography>
-        )}
-        {item.externalUrl && (
-          <>
-            <span>|</span>
-            <Tooltip title={`${t('tooltip.title')} ${item.text}`} arrow={true}>
-              <Link
-                href={item.externalUrl}
-                className={classes.listItemText}
-                aria-label={item.text}
-              >
-                {externalUrlName}
-                <span className={classes.icon}>
-                  <OpenInNew />
-                </span>
-              </Link>
-            </Tooltip>
-          </>
-        )}
+        <SafeEscapedHTML
+          htmlString={item.text}
+          cssClassNames={`${classes.listItemText} ${classes.iconclassRow}`}
+          htmlTag={'p'}
+        />
       </li>
     );
   };
@@ -110,17 +70,18 @@ export const ExhibitDescriptionAccordion: React.FC<
       >
         <Typography
           variant="h4"
-          id={title ?? generateValidId(title)}
+          id={generateValidId(title)}
           className={classes.contrastTextHeader}
         >
-          {title}
+          {/*in case there is html in title*/}
+          <SafeEscapedHTML htmlString={title} />
         </Typography>
       </AccordionSummary>
 
       <AccordionDetails style={{ display: 'inherit' }}>
-        {!listTitle && (
+        {listTitle && (
           <Typography
-            variant="h5"
+            variant="body1"
             id={generateValidId('listTitle')}
             className={classes.contrastTextTitle}
           >
@@ -147,8 +108,7 @@ export const ExhibitDescriptionAccordion: React.FC<
                     </Typography>
                   )}
                   <ul className={getListClassName(listItem.layout)}>
-                    {listItem?.list &&
-                      listItem?.list?.length > 0 &&
+                    {listItem?.list?.length > 0 &&
                       listItem?.list.map((item, _index) => {
                         return renderListItem(item, _index);
                       })}
@@ -167,6 +127,7 @@ export const ExhibitDescriptionAccordion: React.FC<
               listTitle ? generateValidId(listTitle) : generateValidId(title)
             }
           >
+            {/*literature and other texts*/}
             {content.map((listItem, i) => {
               return (
                 <ListItem dense disableGutters key={i}>
@@ -180,7 +141,7 @@ export const ExhibitDescriptionAccordion: React.FC<
                     }}
                     className={classes.listItemText}
                   >
-                    {listItem}
+                    <SafeEscapedHTML htmlString={listItem} htmlTag={'span'} />
                   </ListItemText>
                 </ListItem>
               );
@@ -188,7 +149,7 @@ export const ExhibitDescriptionAccordion: React.FC<
           </List>
         ) : (
           <Typography variant="body2" className={classes.contrastText}>
-            {content}
+            <SafeEscapedHTML htmlString={content} htmlTag={'span'} />
           </Typography>
         )}
       </AccordionDetails>

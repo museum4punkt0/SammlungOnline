@@ -10,6 +10,7 @@ export enum EGraphqlTranslationAttributesFields {
   involvedParties = 'ObjPerAssociationMainParticipantVrt',
   description = 'ObjTextOnlineGrp.TextClb',
   geographicalReferences = 'ObjGeograficGrp.PlaceVoc',
+  culturalReferences = 'ObjCulturalContextGrp.NameVoc',
   materialAndTechnique = 'ObjMaterialTechniqueGrp.ExportClb',
   dimensionsAndWeight = 'ObjDimAllGrp.PreviewVrt',
 }

@@ -22,6 +22,9 @@ const useStyles = makeStyles(() => {
       textTransform: 'uppercase',
       marginBottom: '0.5rem',
     },
+    secondary: {
+      fontSize: '.9rem',
+    },
   });
 });
 

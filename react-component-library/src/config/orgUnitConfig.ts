@@ -142,7 +142,7 @@ export const ORG_UNIT_LIST = [
   {
     name: 'Skulpturensammlung und Museum für Byzantinische Kunst',
     isActive: true,
-    value: 'SBM* OR SKS* OR MSB*',
+    value: 'MSB* OR SBM* OR SKS*',
     email: 'mailto:sbm@smb.spk-berlin.de',
     anfrage: 'mailto:kontakt@bpk-images.de',
     url: 'https://www.smb.museum/museen-einrichtungen/skulpturensammlung/home/',
@@ -205,38 +205,31 @@ export const ORG_UNIT_LIST = [
 ];
 
 const OrgSublevels = [
-  { level: 0, title: 'search.sublevel.title.staatlichen-sammlung' },
-  { level: 1, title: 'search.sublevel.title.staatlichen-insitute' },
+  { level: 0, title: 'search.sublevel.title.staatlichenSammlung' },
+  { level: 1, title: 'search.sublevel.title.staatlichenInstitute' },
   { level: 2, title: 'search.sublevel.title.musikforschung' },
 ];
 
-export const getOrgUnitURL = (val: string, url: string) => {
-  const res = ORG_UNIT_LIST.filter((org) => {
-    const tempArr = org.value.split('OR');
-    const searchValue = tempArr.filter((value) => {
-      const formattedValue = value.split('*').join('').trim();
-      return val.startsWith(formattedValue);
-    })[0];
-
-    if (org.emailMap && org.value.includes(searchValue)) {
-      const orgRes = org.emailMap.filter((map) => map.value === val);
-      if (orgRes.length) {
-        org.email = orgRes[0].email;
-      }
-    }
-
-    return org.value.includes(searchValue);
+export const getOrgUnitURL = (key: string, linkAttr: string): string | undefined => {
+  const orgUnit = ORG_UNIT_LIST.find((org) => {
+    return org.value.split('OR').some((val) => {
+      const cleanKey = val.indexOf('*') > -1 ? val.trim().substring(0, val.indexOf('*')) : val.trim();
+      return key.startsWith(cleanKey);
+    });
   });
-
-  if (res.length > 0 && res[0][url]) return res[0][url];
-  else return null;
+  if (orgUnit) {
+    if ('email' === linkAttr && orgUnit.emailMap) {
+      return orgUnit.emailMap.find(it => it.value === key)?.email;
+    }
+    return orgUnit[linkAttr];
+  }
 };
 
-export const getOrgUnitObject = () => {
-  const orgObject = OrgSublevels.map((item) => {
+export const getOrgUnitsGrouped = (): Array<{ title: string, links: any[] }> => {
+  const orgObject = OrgSublevels.map((group) => {
     return {
-      title: item.title,
-      links: ORG_UNIT_LIST.filter((org) => org.level === item.level),
+      title: group.title,
+      links: ORG_UNIT_LIST.filter((org) => org.level === group.level),
     };
   });
   return orgObject;

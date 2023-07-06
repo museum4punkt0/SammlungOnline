@@ -15,7 +15,7 @@ export const FallbackImage: React.FC<IFallbackImageProps> = (props) => {
   } = props;
 
   const classes = useStyles();
-
+  const multiline = text.split('LINEBREAK');
   return (
     <div
       role="img"
@@ -24,9 +24,21 @@ export const FallbackImage: React.FC<IFallbackImageProps> = (props) => {
       style={{ height, width }}
     >
       <Typography variant="body2" className={classes.headline}>
-        {text}
+        {multiline[0]}
       </Typography>
       <NoSimOutlinedIcon fontSize="large" />
+      {multiline.map((textLine, index) => {
+        if (index > 0)
+          return (
+            <Typography
+              key={index}
+              variant={'body2'}
+              className={classes.secondary}
+            >
+              {textLine}
+            </Typography>
+          );
+      })}
     </div>
   );
 };

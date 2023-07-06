@@ -50,14 +50,13 @@ export const ExhibitPreview: React.FC<IExhibitPreviewProps> = (props) => {
         </div>
         <Typography variant="caption" className={classes.pictureCredits}>
           {credits && `${creditsLabel}: ${credits}`}
-          {license && (
-            <a
-              className={classes.license}
-              href={license.href}
-              target={license.target || '_blank'}
-            >
+          {license && license.href && (
+            <a className={classes.license} href={license.href} target={license.target || '_blank'}>
               {license.text}
             </a>
+          )}
+          {license && !license.href && (
+            <div className={classes.license}>{license.text}</div>
           )}
         </Typography>
       </Grid>

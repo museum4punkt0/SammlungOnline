@@ -30,7 +30,7 @@ export const ImageZoomModal: React.FC<IImageZoomModal> = ({
             <ImageZoom src={src} />
           </ViewerProvider>
           <IconButton className={classes.closeButton} onClick={onClose}>
-            <CloseOutlinedIcon />
+            <CloseOutlinedIcon fontSize={'large'}/>
           </IconButton>
         </div>
       </Backdrop>

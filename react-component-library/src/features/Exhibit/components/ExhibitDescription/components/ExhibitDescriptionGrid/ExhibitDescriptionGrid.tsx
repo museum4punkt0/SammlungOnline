@@ -22,7 +22,7 @@ export const ExhibitDescriptionGrid: React.FC<IExhibitDescriptionGridProps> = ({
   }, [items]);
 
   const classes = useStyles();
-
+  //todo: create internal links
   return (
     <Grid className={classes.container} container>
       {gridItems &&

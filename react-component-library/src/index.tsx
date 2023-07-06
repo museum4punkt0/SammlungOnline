@@ -4,7 +4,7 @@ export { CollectionsModule } from './features/collection/components/CollectionsM
 export { IImageUrlBuilder } from './services/ImageUrlBuilderService/image-url-builder-service.interaface';
 export { LinkBuilder } from './utils/LinkBuilder';
 export * from './utils/helperFunctions';
-export { ImageUrlBuilder } from './utils';
+export { ImageUrlBuilder, getLanguageOptionIcon } from './utils';
 
 export * from './features/collection/types';
 export * from './features/carousel/types/carousel.interface';

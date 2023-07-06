@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 const TRANSLATION_DE = {
   accessibility: 'Barrierefreiheit',
-  'attachment attribute picture credits': 'Fotonachweis',
   back: 'Zurück',
   'button play': 'Objekte des Themas abspielen',
   breadcrumb: {
@@ -9,8 +8,6 @@ const TRANSLATION_DE = {
     noTitle: 'Ohne Titel',
     research: 'Recherche',
   },
-  'carousel button left': 'Vorheriges Thema',
-  'carousel button right': 'Nächstes Thema',
   carousel: {
     nextTopic: 'Nächstes Thema',
     nextTour: 'Nächste Tour',
@@ -23,16 +20,13 @@ const TRANSLATION_DE = {
     buttons: {
       guide: 'Einblick',
       research: 'Anschauen',
-      topics: 'Story Erleben',
     },
   },
   'discover other collections': 'Andere Kollektionen entdecken',
-  download: 'Download',
   'download image': 'Bild herunterladen',
   duration: 'Dauer',
   details: {
     aside: {
-      contact: 'Kontakt',
       'contact and feedback': 'Kontakt und Feedback',
       'image request': 'Bildanfrage stellen',
       permalinkCopied: 'Permalink kopieren',
@@ -41,8 +35,16 @@ const TRANSLATION_DE = {
       tours: 'Touren',
       toursTestData: 'Verlinkung zum Touren',
     },
-    attachment: { pictureCredits: 'Fotonachweis' },
-    externalUrl: 'ICONCLASS',
+    attachment: {
+      pictureCredits: 'Credit',
+      missingImageReasons: {
+        '5802648': 'Ohne Abbildungen LINEBREAK aus ethischen Gründen',
+        '6545994': 'Ohne Abbildungen LINEBREAK - Kriegsverlust -',
+        '6548841': 'Ohne Abbildungen LINEBREAK aus lizenzrechtlichen Gründen',
+      },
+    },
+    externalSearch: 'Link zu {{value}} auf {{domain}}',
+    internalSearch: 'Interne Suche nach {{field}} {{value}}',
     referencesToOtherExhibits: 'Weitere Objekte aus den Sammlungen',
   },
   end: 'Ende',
@@ -58,13 +60,9 @@ const TRANSLATION_DE = {
   header: {
     logo: 'Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz',
   },
-  'highlights from the collection': 'Highlights aus den Sammlungen',
-  'history back': 'Zurück',
   image: {
     notFoundText: 'Ohne Abbildungen',
   },
-  imprint: 'Impressum',
-  'lastly added': 'Zuletzt hinzugefügt',
   notFoundPage: {
     title: 'SEITE NICHT GEFUNDEN',
     description: 'Leider existiert die angeforderte Seite nicht.',
@@ -75,20 +73,20 @@ const TRANSLATION_DE = {
   'object desc no data available': 'Keine Daten vorhanden.',
   'play button': 'Abspielen',
   place: 'Ort',
-  privacy: 'Datenschutz',
   'routes in the collection': 'Touren aus den Sammlungen',
   start: 'Start',
   search: {
     sublevel: {
       title: {
         musikforschung: 'Sammlung des Staatlichen Instituts für Musikforschung',
-        'staatlichen-insitute': 'Institute der Staatlichen Museen zu Berlin',
-        'staatlichen-sammlung': 'Sammlungen der Staatlichen Museen zu Berlin',
+        staatlichenInstitute: 'Institute der Staatlichen Museen zu Berlin',
+        staatlichenSammlung: 'Sammlungen der Staatlichen Museen zu Berlin',
       },
     },
     exhibit: {
       attributes: {
         acquisition: 'Erwerbung',
+        archiveContent: 'Enthält',
         collection: 'Sammlung',
         dating: 'Datierung',
         datingFromTo: 'Datierung von/bis',
@@ -97,6 +95,7 @@ const TRANSLATION_DE = {
         exhibitions: 'Ausstellungen',
         findSpot: 'Fundort',
         geographicalReferences: 'Geografische Bezüge',
+        culturalReferences: 'Kulturelle Bezüge',
         iconclasses: 'Iconclass',
         iconography: 'Ikonografie',
         identNumber: 'Ident. Nr.',
@@ -109,6 +108,7 @@ const TRANSLATION_DE = {
         noData: 'Keine Daten vorhanden.',
         permalink: 'Permalink',
         provenance: 'Provenienz',
+        provenanceEvaluation: 'Provenienz',
         signatures: 'Signaturen und Inschriften',
         technicalTerm: 'Objektbezeichnung',
         title: 'Titel',
@@ -147,6 +147,18 @@ const TRANSLATION_DE = {
       addCondition: 'Suche verfeinern',
       search: 'Suche auslösen',
     },
+    sorting: {
+      label: 'Sortieren nach',
+      relevance: 'Relevanz',
+      lastUpdate: 'Zuletzt aktualisiert',
+      identNumber: 'Ident. Nr.',
+      titleAsc: 'Titel (A-Z, ÄÖÜ)',
+      titleDesc: 'Titel (ÜÖÄ, Z-A)',
+      dateAsc: 'Datierung (Älteste zuerst)',
+      dateDesc: 'Datierung (Neueste zuerst)',
+      termAsc: 'Objektbezeichnung (A-Z, ÄÖÜ)',
+      termDesc: 'Objektbezeichnung (ÜÖÄ, Z-A)',
+    },
     filters: {
       location: 'Standort',
       collection: 'Sammlungen und Institute',
@@ -160,6 +172,7 @@ const TRANSLATION_DE = {
       attributes: {
         attachments: 'Abbildungen',
         acquisition: 'Erwerbung',
+        archiveContent: 'Enthält',
         collection: 'Sammlung',
         collectionKey: 'Sammlung',
         compilation: 'Bestand',
@@ -176,6 +189,7 @@ const TRANSLATION_DE = {
         findSpot: 'Fundort',
         fulltext: 'Volltext',
         geographicalReferences: 'Geografische Bezüge',
+        culturalReferences: 'Kulturelle Bezüge',
         id: 'Id',
         identNumber: 'Ident. Nr.',
         involvedParties: 'Beteiligte',
@@ -239,11 +253,6 @@ const TRANSLATION_DE = {
     },
   },
   'zoom in': 'Hineinzoomen',
-  'website bpk': 'Website BPK',
-  tooltip: {
-    title: 'Suchergebnisse:',
-  },
-
   language: {
     de: {
       label: 'Deutsch',

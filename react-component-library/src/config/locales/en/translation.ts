@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 const TRANSLATION_EN = {
   accessibility: 'Accessibility',
-  'attachment attribute picture credits': 'Picture Credits',
   back: 'Back',
   'button play': 'Play',
   breadcrumb: {
@@ -9,8 +8,6 @@ const TRANSLATION_EN = {
     noTitle: 'No title',
     research: 'Research',
   },
-  'carousel button left': 'Previous Topic',
-  'carousel button right': 'Next Topic',
   carousel: {
     nextTopic: 'Next Topic',
     nextTour: 'Next Tour',
@@ -23,16 +20,13 @@ const TRANSLATION_EN = {
     buttons: {
       guide: 'Insight',
       research: 'View',
-      topics: 'Experience Story',
     },
   },
   'discover other collections': 'Discover More Collections',
-  download: 'Download',
   'download image': 'Download Image',
   duration: 'Duration',
   details: {
     aside: {
-      contact: 'Contact',
       'contact and feedback': 'Contact and Feedback',
       'image request': 'Submit Image Request',
       permalinkCopied: 'Copy Permalink',
@@ -41,8 +35,16 @@ const TRANSLATION_EN = {
       tours: 'Tours',
       toursTestData: 'TEST-Tour',
     },
-    attachment: { pictureCredits: 'Picture Credits' },
-    externalUrl: 'ICONCLASS',
+    attachment: {
+      pictureCredits: 'Credit',
+      missingImageReasons: {
+        '5802648': 'Without Image LINEBREAK due to ethical reasons',
+        '6545994': 'Without Image LINEBREAK - martial loss -',
+        '6548841': 'Without Image LINEBREAK due to legal reasons',
+      },
+    },
+    externalSearch: 'Link to {{value}} at {{domain}}',
+    internalSearch: 'Internal search for {{field}} {{value}}',
     referencesToOtherExhibits: 'More Objects from the Online Collection',
   },
   end: 'End',
@@ -58,13 +60,9 @@ const TRANSLATION_EN = {
   header: {
     logo: 'Die Staatlichen Museen zu Berlin Preußischer Kulturbesitz',
   },
-  'highlights from the collection': 'Highlights from the Online Collection',
-  'history back': 'Back',
   image: {
     notFoundText: 'No image available',
   },
-  imprint: 'Impressum',
-  'lastly added': 'Newest',
   notFoundPage: {
     title: 'PAGE NOT FOUND',
     description: 'The requested page does not exist.',
@@ -75,20 +73,20 @@ const TRANSLATION_EN = {
   'object desc no data available': 'No data available.',
   'play button': 'Play',
   place: 'Place',
-  privacy: 'Privacy',
   'routes in the collection': 'Tours through the Collection',
   start: 'Start',
   search: {
     sublevel: {
       title: {
         musikforschung:
-          'Collection of des Staatliches Institut für Musikforschung',
-        'staatlichen-insitute': 'Institutes of Staatliche Museen zu Berlin',
-        'staatlichen-sammlung': 'Collections of Staatliche Museen zu Berlin',
+          'Collection of the Staatliches Institut für Musikforschung',
+        staatlichenInstitute: 'Institutes of Staatliche Museen zu Berlin',
+        staatlichenSammlung: 'Collections of Staatliche Museen zu Berlin',
       },
     },
     exhibit: {
       attributes: {
+        archiveContent: 'Contains',
         acquisition: 'Acquisition',
         collection: 'Collection',
         dating: 'Dating',
@@ -98,6 +96,7 @@ const TRANSLATION_EN = {
         exhibitions: 'Exhibitions',
         findSpot: 'Find Spot',
         geographicalReferences: 'Geographical References',
+        culturalReferences: 'Cultural References',
         iconclasses: 'Icon Classes',
         iconography: 'Iconography',
         identNumber: 'Ident Number',
@@ -110,6 +109,7 @@ const TRANSLATION_EN = {
         noData: 'No data available',
         permalink: 'Permalink',
         provenance: 'Provenance',
+        provenanceEvaluation: 'Provenance',
         signatures: 'Signatures',
         technicalTerm: 'Technical Term',
         title: 'Title',
@@ -136,17 +136,29 @@ const TRANSLATION_EN = {
     },
   },
   searchForm: {
-    advancedSearch: '',
+    advancedSearch: 'Advanced search',
     labels: {
-      search: '',
-      searchLong: '',
-      noFiltersSelected: '',
-      filtersSelected: '',
+      search: 'Search',
+      searchLong: 'Search for people or terms',
+      noFiltersSelected: 'all',
+      filtersSelected: 'Active filters',
     },
     actions: {
       clear: '',
       addCondition: '',
       search: '',
+    },
+    sorting: {
+      label: 'Sort by',
+      relevance: 'Relevance',
+      lastUpdate: 'Last updated',
+      identNumber: 'Ident Number',
+      titleAsc: 'Title (A-Z, ÄÖÜ)',
+      titleDesc: 'Title (ÜÖÄ, Z-A)',
+      dateAsc: 'Dating (oldest first)',
+      dateDesc: 'Dating (newest first)',
+      termAsc: 'Technical Term (A-Z, ÄÖÜ)',
+      termDesc: 'Technical Term (ÜÖÄ, Z-A)',
     },
     filters: {
       location: 'Locations',
@@ -161,6 +173,7 @@ const TRANSLATION_EN = {
       attributes: {
         attachments: 'Attachments',
         acquisition: 'Acquisition',
+        archiveContent: 'Contains',
         collection: 'Collection',
         collectionKey: 'Collection',
         compilation: 'Stock',
@@ -177,6 +190,7 @@ const TRANSLATION_EN = {
         findSpot: 'Find Spot',
         fulltext: 'Full text',
         geographicalReferences: 'Geographical Reference',
+        culturalReferences: 'Cultural References',
         id: 'ID',
         identNumber: 'Ident Number',
         involvedParties: 'Involved Party',
@@ -240,11 +254,6 @@ const TRANSLATION_EN = {
     },
   },
   'zoom in': 'Zoom in',
-  'website bpk': 'Website BPK',
-  tooltip: {
-    title: 'Search Results:',
-  },
-
   language: {
     de: {
       label: 'Deutsch',

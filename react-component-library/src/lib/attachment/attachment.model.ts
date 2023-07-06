@@ -5,6 +5,7 @@ export interface ILicense {
 }
 
 export interface IAttachment {
+  id?: number;
   src: string;
   filename: string;
   downloadFilename: string;

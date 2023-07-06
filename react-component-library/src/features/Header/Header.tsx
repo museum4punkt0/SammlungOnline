@@ -41,8 +41,13 @@ const useDrawer = (): UseDrawerResult => {
 };
 
 const Header: React.FC<IAppHeaderProps> = (props) => {
-  const { isBlackBackground, shouldDisplayLang, currentPortal, configuration } =
-    props;
+  const {
+    isBlackBackground,
+    shouldDisplayLang,
+    currentPortal,
+    configuration,
+    children,
+  } = props;
   const backgroundColor = '#0f0900f7'; // 97% opacity
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedLink, setSelectedLink] = useState(true);
@@ -154,7 +159,9 @@ const Header: React.FC<IAppHeaderProps> = (props) => {
                   localizations={localizations}
                   shouldDisplayLang={shouldDisplayLang}
                   onMenuOpen={openDrawer}
-                />
+                >
+                  {children}
+                </HeaderToolbar>
               </div>
             )}
           </AppBar>

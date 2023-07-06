@@ -13,6 +13,10 @@ const useStyles = makeStyles(() =>
       right: 0,
       top: 0,
       color: '#fff',
+      marginTop: '0px',
+      '@media (max-width: 500px)': {
+        marginTop: '5%'
+      }
     },
   }),
 );

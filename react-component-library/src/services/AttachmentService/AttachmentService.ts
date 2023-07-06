@@ -8,18 +8,6 @@ import LanguageService from '../LanguageService/service/LanguageService';
 import { IRepositoryResponse } from '../../lib/repository.interface';
 import AttachmentRepository from '../../lib/attachment/attachment.repository';
 
-function makeid(length: number) {
-  let result = '';
-  const characters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-
-  for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
 class AttachmentService {
   private readonly _imageUrlBuilder: ImageUrlBuilderService;
   private readonly _attachmentRepository: AttachmentRepository;
@@ -42,26 +30,23 @@ class AttachmentService {
     return { loading, error, data: attachments };
   }
 
-  private _createRandomFileName(imageName: string): string {
-    const [, imageType] = this._imageUrlBuilder.splitImageIdAndType(imageName);
-    return makeid(12).concat('.').concat(imageType);
-  }
-
   private _mapToAttachment(attachmentDto: SmbAttachments): IAttachment {
     const {
       attachment: filename,
+      name: downloadFilename,
       credits,
       license,
       primary: isPrimary,
     } = attachmentDto;
 
     const src = this._imageUrlBuilder.buildUrl(filename, 300, 300);
-    const downloadFilename = this._createRandomFileName(filename);
 
     return {
+      id: attachmentDto.id,
       src,
       filename,
-      downloadFilename,
+      downloadFilename:
+        downloadFilename || filename.substring(filename.lastIndexOf('/') + 1),
       credits: credits || '',
       primary: !!isPrimary,
       license: {

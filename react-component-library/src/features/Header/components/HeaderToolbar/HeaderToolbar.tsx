@@ -27,6 +27,7 @@ const HeaderToolbar: React.FC<IAppHeaderToolbarProps> = (props) => {
     shouldDisplayLang,
     logoLink,
     localizations,
+    children,
   } = props;
 
   const classes = useStyles(props)();
@@ -48,7 +49,9 @@ const HeaderToolbar: React.FC<IAppHeaderToolbarProps> = (props) => {
             localizations={localizations}
           />
         )}
+        {children}
       </div>
+
 
       <ButtonBase
         className={`header-toolbar__menu ${classes.menuButtonFocus}`}

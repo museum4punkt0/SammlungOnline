@@ -1,19 +1,20 @@
 import { IConfiguration } from '../../config/configuration';
 import { IImageUrlBuilder } from './image-url-builder-service.interaface';
 
-class ImageUrlBuilderService implements IImageUrlBuilder {
-  private _defaultImageType = 'webp';
+const DEFAULT_IMAGE_TYPESUFFIX = 'jpg';
 
-  constructor(private _config: IConfiguration) {}
+class ImageUrlBuilderService implements IImageUrlBuilder {
+
+  constructor(private _config: IConfiguration) { }
 
   public createUrlFromTemplate(
     template: string,
     width: number,
     height: number,
   ): string {
-    const _width = width.toString();
-    const _height = height.toString();
-    return template.replace('{width}', _width).replace('{height}', _height);
+    const w = width.toString();
+    const h = height.toString();
+    return template.replace('{width}', w).replace('{height}', h);
   }
 
   public createTemplateImageUrl(imageName: string): string {
@@ -22,21 +23,21 @@ class ImageUrlBuilderService implements IImageUrlBuilder {
   }
 
   public splitImageIdAndType(
-    id: string,
-    fallbackType = this._defaultImageType,
+    filename: string,
+    fallbackType = DEFAULT_IMAGE_TYPESUFFIX,
   ): [string, string] {
-    const parts = id.split(/\.([^\\.]{3,})$/);
+    const parts = filename.split(/\.([^\\.]{3,})$/);
+    // expect len=3 because there is an empty string at the end -> ['name', 'suffix', '']
     if (parts.length !== 3) {
       return [parts.join('.'), fallbackType];
     }
-
     return [parts[0], parts[1]];
   }
 
-  public buildUrl(id: string, width: number, height: number): string {
-    const [imageId, type] = this.splitImageIdAndType(id);
+  public buildUrl(filename: string, width: number, height: number): string {
+    const [name, type] = this.splitImageIdAndType(filename);
     return new URL(
-      `${this._config.IMAGE_PROVIDER_ENDPOINT}/${imageId}_${width}x${height}.${type}`,
+      `${this._config.IMAGE_PROVIDER_ENDPOINT}/${name}_${width}x${height}.${type}`,
     ).toString();
   }
 }
