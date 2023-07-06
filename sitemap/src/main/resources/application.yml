@@ -15,7 +15,7 @@ sitemap:
   guide-base-url: ${GUIDE_BASE_URL}
   # url of the ISL portal
   isl-base-url: ${ISL_BASE_URL}
-  # additional url part to distinguish between the strapi's and the frontends is placed after the base url
+  # additional url part to distinguish between the strapi's and the frontends; placed after the base url
   strapi-platform:
     smb: ${SMB_URL_INFIX:sammlungen-online}
     hbf: ${HBF_URL_INFIX:hamburger-bahnhof}
