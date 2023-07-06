@@ -1,10 +1,12 @@
 package de.smbonline.mdssync.dto
 
+import org.apache.commons.lang3.tuple.Pair
+
 class ObjPerson(
         person: Person,
         override val objectId: Long,
         override val sequence: Int,
-        val role: Thesaurus
+        val role: Pair<Thesaurus, Thesaurus?>
 ) : Person(person.mdsId), ObjRelation {
     init {
         dateOfBirth = person.dateOfBirth
@@ -18,6 +20,6 @@ class ObjPerson(
     }
 
     override fun toString(): String {
-        return "InvolvedParty{object=$objectId, person=$mdsId, role=${role.mdsId}"
+        return "InvolvedParty{object=$objectId, person=$mdsId, role=${role.left.mdsId}"
     }
 }

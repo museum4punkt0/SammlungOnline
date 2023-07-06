@@ -2,7 +2,8 @@ logging.level:
   performance: INFO
   sync-results: INFO # DON'T CHANGE THIS! results are always logged with INFO level
   de.smbonline: INFO
-  de.smbonline.mdssync.exec.resolvers: DEBUG
+#  de.smbonline.mdssync.api.MdsSessionHandler: TRACE
+#  de.smbonline.mdssync.exec.resolvers: DEBUG
   de.smbonline.mdssync.exec.SyncExecuter: DEBUG
   de.smbonline.mdssync.exec.ThesaurusSyncRunner: DEBUG
   org.apache.catalina: WARN
@@ -18,14 +19,14 @@ scheduler:
   # NOTE: MDS is rebooted every night at 23:30 (lasts 10min) - No jobs should be running at this time!!!
   jobs:
     enabled: ${SCHEDULER_JOBS_ENABLED:false}
-    # from 06:00 to 22:00 o'clock every 15min on every day
-    sync-incremental.cron: 0 */15 6-22 * * *
-    # every night at 22:30
-    sync-attachments.cron: 0 30 22 * * *
-    # every night at 23:45
-    sync-thesaurus.cron: 0 45 23 * * *
-    # every night at 01:00
-    sync-persons.cron: 0 0 1 * * *
+    # from 06:00 to 19:00 o'clock every 10min on every day
+    sync-incremental.cron: 0 */10 6-19 * * *
+    # from 06:00 to 20:00 o'clock every 25min on every day
+    sync-attachments.cron: 0 */25 6-20 * * *
+    # every evening at 21:30
+    sync-thesaurus.cron: 0 30 21 * * *
+    # every night at 00:00
+    sync-persons.cron: 0 0 0 * * *
     # every night at 02:30
     ##disable for now, not perfectly implemented
     sync-exhibitions.cron: "-"
@@ -43,9 +44,11 @@ mds-api:
   base-url: ${MDS_API_BASEURL}
   webservice-path: /ria-ws/application
   module-path-template: ${mds-api.webservice-path}/module/{moduleName}
+  health-check-object-id: ${MDS_API_HEALTHCHECK_OBJECTID:1}
   ssl-validation-enabled: false
   approval-filter-enabled: true
-  token-lifetime: ${MDS_API_TOKEN_LIFETIME:20}
+  auto-load-attachments: false
+  token-lifetime: ${MDS_API_TOKEN_LIFETIME:10} # minutes
   fields:
     # attribute,value
     deleted-filter: __orgUnit,SysTrashBinOrgUnit_global
@@ -61,13 +64,14 @@ image-processing:
   base-url: ${IMGP_BASE_URL:http://smb-image-provider:80/images}
   user: ${IMGP_USER}
   pass: ${IMGP_PASS}
-  max-dimensions: ${IMG_MAX_DIMENSION:5000}
+  max-dimensions: ${IMG_MAX_DIMENSION:5000} # px
+  max-original-size: ${IMG_MAX_ORIGINAL_SIZE:150} # Mbytes
   default-image-type: ${IMG_DEFAULT_TYPE:jpg}
   max-images-per-object: ${IMG_MAX_PER_OBJECT:10}
 
 graphql:
   endpoint: ${HASURA_ENDPOINT:http://smb-hasura:8080/v1/graphql}
-  in-memory-cache-size: 1024
+  in-memory-cache-size: 1024 # bytes
   headers:
     X-Hasura-Admin-Secret: ${HASURA_SECRET}
 

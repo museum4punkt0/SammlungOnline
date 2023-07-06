@@ -14,12 +14,26 @@ import java.util.Arrays;
 public class SyncResult {
 
     public enum Status {
+        /**
+         * Just started the sync - we don't know the status yet
+         */
+        TBD,
+        /**
+         * Sync finished without actually syncing something
+         */
         NOOP,
+        /**
+         * Sync finished successfully
+         */
         SUCCESS,
-        ERROR
+        /**
+         * Sync finished with (partial) errors
+         */
+        ERROR,
     }
 
     public static final SyncResult NOOP = new SyncResult(new Long[0], new Long[0], new Long[0], Duration.ZERO);
+    public static final SyncResult ASYNC = new SyncResult(Status.TBD, Duration.ZERO);
 
     private final Long[] successfulIds;
     private final Long[] failedIds;

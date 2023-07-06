@@ -48,6 +48,7 @@ public class CreditsResolver {
     public static final String DATES_GROUP_NAME = "ObjDateGrp";
 
     public static final String RIGHTSHOLDER_VOC_NAME = "HolderVoc";
+    public static final String LICENSE_VOC_NAME = "LicenceVoc";
 
     public static final String TITLE_ATTRIBUTE_NAME = "TitleTxt";
     public static final String PERSON_ATTRIBUTE_NAME = "PerNennformTxt";
@@ -55,7 +56,7 @@ public class CreditsResolver {
     public static final String DATE_ATTRIBUTE_NAME = "PreviewVrt";
 
     private static final Pair<String, String> RIGHTSHOLDER_DISTINGUISHER = Pair.of("NotesClb", "Urheberrecht");
-    private static final Pair<String, String> IMAGE_RIGHTS_DISTINGUISHER = Pair.of("TypeVoc", "Bildrechte");
+    private static final Pair<String, String> IMAGE_RIGHTS_DISTINGUISHER = Pair.of(VOC_TYPE, "Bildrechte");
 
     private final MdsApiClientFactory clientFactory;
 
@@ -134,10 +135,10 @@ public class CreditsResolver {
         // filter "Beteiligte" by "Urheberrecht"
         List<ModuleReferenceItem> artists = involvedParties.getModuleReferenceItem().stream()
                 .sorted(Comparator.comparingInt(ValueExtractor::extractSortInfo))
-                .filter(i -> {
+                .filter(item -> {
                     String key = RIGHTSHOLDER_DISTINGUISHER.getKey();
                     String value = RIGHTSHOLDER_DISTINGUISHER.getValue();
-                    return findFirst(i.getDataField(), f -> key.equals(f.getName()) && value.equals(extractValue(f))) != null;
+                    return findFirst(item.getDataField(), field -> key.equals(field.getName()) && value.equals(extractValue(field))) != null;
                 })
                 .toList();
         if (artists.isEmpty()) {
@@ -161,17 +162,17 @@ public class CreditsResolver {
     }
 
     private static String extractLicenseKey(final ModuleItem mediaItem) {
-        String rightsHolder = extractRightsHolderKey(mediaItem);
-        return rightsHolder == null ? Licenses.STANDARD_LICENSE : rightsHolder;
+        String rights = extractImageRights(mediaItem);
+        return rights == null ? Licenses.STANDARD_LICENSE : rights;
     }
 
-    private static @Nullable String extractRightsHolderKey(final ModuleItem mediaItem) {
+    private static @Nullable String extractImageRights(final ModuleItem mediaItem) {
         RepeatableGroup rightsGroup = findGroup(mediaItem.getRepeatableGroup(), RIGHTS_GROUP_NAME);
         if (rightsGroup == null) {
             return null;
         }
 
-        List<String> rightsHolders = rightsGroup.getRepeatableGroupItem()
+        List<String> imageRights = rightsGroup.getRepeatableGroupItem()
                 .stream()
                 .sorted(Comparator.comparingInt(ValueExtractor::extractSortInfo))
                 .map(right -> {
@@ -181,16 +182,26 @@ public class CreditsResolver {
                     if (typeVoc == null) {
                         return null;
                     }
-                    // filter for rights holder info
-                    VocabularyReferenceItem holderVoc = findVocRefItem(right.getVocabularyReference(), RIGHTSHOLDER_VOC_NAME);
-                    return holderVoc == null ? null : holderVoc.getName();
+                    // filter for license
+                    VocabularyReferenceItem licenceVoc = findVocRefItem(right.getVocabularyReference(), LICENSE_VOC_NAME);
+                    if (licenceVoc == null) {
+                        return null;
+                    }
+                    // either copyright/rights holder info or standard license
+                    if ("Copyright".equals(licenceVoc.getName())) {
+                        VocabularyReferenceItem holderVoc = findVocRefItem(right.getVocabularyReference(), RIGHTSHOLDER_VOC_NAME);
+                        // must never be null in case of copyright, but...
+                        return holderVoc == null ? null : holderVoc.getName();
+                    } else {
+                        return licenceVoc.getName();
+                    }
                 })
                 .filter(Objects::nonNull)
                 .toList();
-        if (rightsHolders.size() > 1) {
-            LOGGER.warn("Found {} rights holders for media {}. Using {}", rightsHolders.size(), mediaItem.getId(), rightsHolders.get(0));
+        if (imageRights.size() > 1) {
+            LOGGER.warn("Found {} rights holders for media {}. Using {}", imageRights.size(), mediaItem.getId(), imageRights.get(0));
         }
-        return rightsHolders.isEmpty() ? null : rightsHolders.get(0);
+        return imageRights.isEmpty() ? null : imageRights.get(0);
     }
 
     private static @Nullable String extractAdditionalCredits(final ModuleItem mediaItem) {

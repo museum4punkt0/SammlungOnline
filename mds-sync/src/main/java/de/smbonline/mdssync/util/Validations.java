@@ -14,6 +14,19 @@ import java.time.OffsetDateTime;
 public final class Validations {
 
     /**
+     * Ensures given lower-bound is less than given upper-bound. Throws exception if not.
+     *
+     * @param lower requested lower bound
+     * @param upper requested upper bound
+     * @throws ValidationException if lower is not less than upper
+     */
+    public static void ensureLowerLessThanUpper(final Number lower, final Number upper) {
+        if (lower.doubleValue() >= upper.doubleValue()) {
+            throw new ValidationException("start must be before end");
+        }
+    }
+
+    /**
      * Ensures given start time is before given end time. Throws exception if not.
      *
      * @param start requested start time

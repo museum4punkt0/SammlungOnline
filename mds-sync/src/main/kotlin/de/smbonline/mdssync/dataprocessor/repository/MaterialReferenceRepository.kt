@@ -5,6 +5,7 @@ import com.apollographql.apollo.coroutines.await
 import de.smbonline.mdssync.dataprocessor.graphql.client.GraphQlClient
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteMaterialReferencesMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchMaterialReferenceIdsByObjectIdAndLanguageQuery
+import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchMaterialReferencesByThesaurusIdQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.InsertOrUpdateMaterialReferenceMutation
 import de.smbonline.mdssync.dataprocessor.repository.util.ensureNoError
 import de.smbonline.mdssync.dto.MaterialReference
@@ -13,7 +14,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.math.BigDecimal
 
 @Repository
 class MaterialReferenceRepository @Autowired constructor(
@@ -23,7 +23,7 @@ class MaterialReferenceRepository @Autowired constructor(
 ) {
     companion object {
         val LOGGER: Logger = LoggerFactory.getLogger(MaterialReferenceRepository::class.java)
-        val SPECIFIC_TYPE_VOCS = arrayOf("MaterialVoc", "TechniqueVoc", "MatTechVoc", "PhotographyVoc", "PresentationVoc")
+        val SPECIFIC_MATERIAL_VOCS = arrayOf("MaterialVoc", "TechniqueVoc", "MatTechVoc", "PhotographyVoc", "PresentationVoc")
     }
 
     /**
@@ -33,12 +33,22 @@ class MaterialReferenceRepository @Autowired constructor(
      * @return list of MaterialReference ids
      */
     suspend fun getMaterialReferenceIds(objectId: Long, lang: String): Array<Long> {
-        val result = graphQlClient.client.query(
-                FetchMaterialReferenceIdsByObjectIdAndLanguageQuery(objectId, lang)
-        ).await()
+        val result = graphQlClient.client.query(FetchMaterialReferenceIdsByObjectIdAndLanguageQuery(objectId, lang)).await()
+        return result.data?.smb_material_references?.map {
+            (it.id as Number).toLong()
+        }.orEmpty().sorted().toTypedArray()
+    }
 
-        return result.data?.smb_material_references
-                ?.map { (it.id as BigDecimal).longValueExact() }.orEmpty().toTypedArray()
+    /**
+     * Fetches all ids of objects that have a relation entry in MaterialReferences for the vocabulary with the given id.
+     * @param vocId id of vocabulary entry
+     * @return list of Object ids
+     */
+    suspend fun getRelatedObjectIds(vocId: Long): Array<Long> {
+        val result = graphQlClient.client.query(FetchMaterialReferencesByThesaurusIdQuery(vocId)).await()
+        return result.data?.smb_material_references?.map {
+            (it.objectId as Number).toLong()
+        }.orEmpty().distinct().toTypedArray()
     }
 
     suspend fun saveMaterialReferences(references: List<MaterialReference>, language: String): Array<Long> {
@@ -48,7 +58,7 @@ class MaterialReferenceRepository @Autowired constructor(
             // create thesaurus entries if not yet present
             val mapping = thesaurusRepository.ensureThesauriExist(ref.thesauri)
             // assign material-references to object
-            val specificTypeVoc = ref.thesauri.find { SPECIFIC_TYPE_VOCS.contains(it.type) }
+            val specificTypeVoc = ref.thesauri.find { SPECIFIC_MATERIAL_VOCS.contains(it.type) }
             val typeVoc = ref.thesauri.find { it.type == "TypeVoc" }
             ids += upsertMaterialReference(
                     ref.objectId, ref.mdsId, languageId, ref.sequence, ref.details, mapping[specificTypeVoc], mapping[typeVoc]
@@ -62,9 +72,7 @@ class MaterialReferenceRepository @Autowired constructor(
      * @param materialRefIds ids of MaterialReferences
      */
     suspend fun deleteAll(materialRefIds: List<Long>) {
-        graphQlClient.client.mutate(
-                DeleteMaterialReferencesMutation(materialRefIds)
-        ).await() // await is sort-of important, otherwise deletion is not performed!?
+        graphQlClient.client.mutate(DeleteMaterialReferencesMutation(materialRefIds)).await()
     }
 
     private suspend fun upsertMaterialReference(
@@ -77,7 +85,8 @@ class MaterialReferenceRepository @Autowired constructor(
             typeVoc: Long?): Long {
         val result = graphQlClient.client.mutate(
                 InsertOrUpdateMaterialReferenceMutation(
-                        objectId, materialId,
+                        objectId,
+                        materialId,
                         languageId,
                         sequence,
                         Input.optional(details),
@@ -89,6 +98,6 @@ class MaterialReferenceRepository @Autowired constructor(
 
         result.data?.insert_smb_material_references_one
                 ?: throw SyncFailedException("failed to save material reference $materialId for object $objectId")
-        return (result.data!!.insert_smb_material_references_one!!.id as BigDecimal).longValueExact()
+        return (result.data!!.insert_smb_material_references_one!!.id as Number).toLong()
     }
 }

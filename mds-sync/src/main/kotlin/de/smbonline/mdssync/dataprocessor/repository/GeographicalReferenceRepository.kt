@@ -5,6 +5,7 @@ import com.apollographql.apollo.coroutines.await
 import de.smbonline.mdssync.dataprocessor.graphql.client.GraphQlClient
 import de.smbonline.mdssync.dataprocessor.graphql.queries.DeleteGeographicalReferencesMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchGeographicalReferenceIdsByObjectIdAndLanguageQuery
+import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchGeographicalReferencesByThesaurusIdQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.InsertOrUpdateGeographicalReferenceMutation
 import de.smbonline.mdssync.dataprocessor.repository.util.ensureNoError
 import de.smbonline.mdssync.dto.GeographicalReference
@@ -32,13 +33,22 @@ class GeographicalReferenceRepository @Autowired constructor(
      * @return list of GeographicalReference ids
      */
     suspend fun getGeographicalReferenceIds(objectId: Long, lang: String): Array<Long> {
-        val result = graphQlClient.client.query(
-                FetchGeographicalReferenceIdsByObjectIdAndLanguageQuery(objectId, lang)
-        ).await()
-
+        val result = graphQlClient.client.query(FetchGeographicalReferenceIdsByObjectIdAndLanguageQuery(objectId, lang)).await()
         return result.data?.smb_geographical_references?.map {
-            (it.id as BigDecimal).longValueExact()
-        }.orEmpty().toTypedArray()
+            (it.id as Number).toLong()
+        }.orEmpty().sorted().toTypedArray()
+    }
+
+    /**
+     * Fetches all ids of objects that have a relation entry in GeographicalReferences for the vocabulary with the given id.
+     * @param vocId id of vocabulary entry
+     * @return list of Object ids
+     */
+    suspend fun getRelatedObjectIds(vocId: Long): Array<Long> {
+        val result = graphQlClient.client.query(FetchGeographicalReferencesByThesaurusIdQuery(vocId)).await()
+        return result.data?.smb_geographical_references?.map {
+            (it.objectId as Number).toLong()
+        }.orEmpty().distinct().toTypedArray()
     }
 
     suspend fun saveGeographicalReferences(references: List<GeographicalReference>, language: String): Array<Long> {
@@ -50,10 +60,9 @@ class GeographicalReferenceRepository @Autowired constructor(
             // assign object geo-references to object
             val geopolVoc = ref.thesauri.find { it.type == "GeopolVoc" }
             val placeVoc = ref.thesauri.find { it.type.matches(Regex("^Place.*Voc$")) }
-            val roleVoc = ref.thesauri.find { it.type == "RoleVoc" }
             val typeVoc = ref.thesauri.find { it.type == "TypeVoc" }
             ids += upsertGeographicalReference(
-                    ref.objectId, ref.mdsId, languageId, ref.sequence, ref.details, mapping[geopolVoc], mapping[placeVoc], mapping[roleVoc], mapping[typeVoc])
+                    ref.objectId, ref.mdsId, languageId, ref.sequence, ref.details, mapping[geopolVoc], mapping[placeVoc], mapping[typeVoc])
         }
         return ids.toTypedArray()
     }
@@ -63,9 +72,7 @@ class GeographicalReferenceRepository @Autowired constructor(
      * @param geoRefIds ids of GeographicalReferences
      */
     suspend fun deleteAll(geoRefIds: List<Long>) {
-        graphQlClient.client.mutate(
-                DeleteGeographicalReferencesMutation(geoRefIds)
-        ).await() // await is sort-of important, otherwise deletion is not performed!?
+        graphQlClient.client.mutate(DeleteGeographicalReferencesMutation(geoRefIds)).await()
     }
 
     private suspend fun upsertGeographicalReference(
@@ -74,20 +81,25 @@ class GeographicalReferenceRepository @Autowired constructor(
             languageId: Long,
             sequence: Int,
             details: String?,
-            geopolVoc: Long?, placeVoc: Long?, roleVoc: Long?, typeVoc: Long?): Long {
+            geopolVoc: Long?,
+            placeVoc: Long?,
+            typeVoc: Long?): Long {
         val result = graphQlClient.client.mutate(
                 InsertOrUpdateGeographicalReferenceMutation(
-                        objectId, geoItemId,
+                        objectId,
+                        geoItemId,
                         languageId,
                         sequence,
                         Input.optional(details),
-                        Input.optional(geopolVoc), Input.optional(placeVoc), Input.optional(roleVoc), Input.optional(typeVoc)
+                        Input.optional(geopolVoc),
+                        Input.optional(placeVoc),
+                        Input.optional(typeVoc)
                 )
         ).await()
         ensureNoError(result)
 
         result.data?.insert_smb_geographical_references_one
                 ?: throw SyncFailedException("failed to save geographical reference $geoItemId for object $objectId")
-        return (result.data!!.insert_smb_geographical_references_one!!.id as BigDecimal).longValueExact()
+        return (result.data!!.insert_smb_geographical_references_one!!.id as Number).toLong()
     }
 }

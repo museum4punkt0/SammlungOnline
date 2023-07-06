@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service
 @Service
 class IgnorableKeyService @Autowired constructor(private val ignorableKeyRepo: IgnorableKeyRepository) {
 
-    fun getIgnorableKeys(): List<String> {
+    fun getIgnorableKeys(): Array<String> {
         val data: List<IgnorableKeyData>
         runBlocking {
             data = ignorableKeyRepo.fetchAllIgnorableKeys()
         }
-        return data.map { it.key }.sorted()
+        return data.map { it.key }.sorted().toTypedArray()
     }
 }

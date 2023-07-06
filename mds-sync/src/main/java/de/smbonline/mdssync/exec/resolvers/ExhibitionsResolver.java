@@ -14,7 +14,7 @@ import de.smbonline.mdssync.exc.ErrorHandling;
 import de.smbonline.mdssync.exc.MdsApiConnectionException;
 import de.smbonline.mdssync.exec.parsers.ModuleItemParser;
 import de.smbonline.mdssync.exec.parsers.ModuleItemParserFactory;
-import de.smbonline.mdssync.index.SearchIndexerConfig;
+import de.smbonline.mdssync.index.SearchIndexerClient;
 import de.smbonline.mdssync.jaxb.search.response.DataField;
 import de.smbonline.mdssync.jaxb.search.response.Module;
 import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
@@ -47,10 +47,10 @@ public class ExhibitionsResolver extends ModuleItemResolverBase<ParsedMdsItem> {
     public ExhibitionsResolver(
             final MdsApiConfig mdsConfig,
             final MdsApiClientFactory clientFactory,
-            final SearchIndexerConfig indexerConfig,
+            final SearchIndexerClient indexerClient,
             final ExhibitionService exhibitionService,
             final DataQueue<WrapperDTO> dataQueue) {
-        super(MODULE_EXHIBITIONS, mdsConfig, indexerConfig, clientFactory, dataQueue);
+        super(MODULE_EXHIBITIONS, mdsConfig, indexerClient, clientFactory, dataQueue);
         this.exhibitionService = exhibitionService;
     }
 

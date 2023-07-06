@@ -107,12 +107,12 @@ class SyncExecuterTest {
         private final IgnorableKeyService ignorableKeyService = Mockito.mock(IgnorableKeyService.class);
 
         public Services ignorableKeys(final String... keys) {
-            Mockito.when(ignorableKeyService.getIgnorableKeys()).thenReturn(Arrays.asList(keys));
+            Mockito.when(ignorableKeyService.getIgnorableKeys()).thenReturn(keys);
             return this;
         }
 
         public Services languages(final String... isoKeys) {
-            Mockito.when(languageService.getSupportedLanguages()).thenReturn(Arrays.asList(isoKeys));
+            Mockito.when(languageService.getSupportedLanguages()).thenReturn(isoKeys);
             return this;
         }
     }

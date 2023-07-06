@@ -18,8 +18,6 @@ import static de.smbonline.mdssync.util.MdsConstants.*;
 @Component
 public class MdsConnectionHealthIndicator implements HealthIndicator {
 
-    private static final Long MDS_TEST_OBJECT_ID = 1L;
-
     private final MdsApiConfig mdsConfig;
     private final MdsSessionHandler sessionHandler;
 
@@ -33,7 +31,7 @@ public class MdsConnectionHealthIndicator implements HealthIndicator {
     public Health health() {
         try {
             MdsApiClient apiClient = new MdsApiClient(this.mdsConfig, MODULE_OBJECTS, this.sessionHandler);
-            apiClient.get(MDS_TEST_OBJECT_ID, null);
+            apiClient.get(this.mdsConfig.getHealthCheckObjectId(), null);
         } catch (Exception e) {
             return Health.down().withException(e).build();
         }

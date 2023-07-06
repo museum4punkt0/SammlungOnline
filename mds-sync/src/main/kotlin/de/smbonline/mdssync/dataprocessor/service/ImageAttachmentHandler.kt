@@ -11,7 +11,6 @@ import de.smbonline.mdssync.util.Licenses
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.math.BigDecimal
 
 @Component
 class ImageAttachmentHandler @Autowired constructor(
@@ -35,39 +34,44 @@ class ImageAttachmentHandler @Autowired constructor(
 
     override fun delete(element: Media) {
         runBlocking {
-            deleteImage(element)
+            deleteImages(element)
         }
     }
 
     override suspend fun deleteAll(objectId: Long) {
-        val images = attachmentRepository.getAttachments(objectId, MediaType.IMAGE)
+        val images = attachmentRepository.getObjectAttachments(objectId, MediaType.IMAGE)
         for (image in images) {
-            val imageId = (image.id as BigDecimal).longValueExact()
             webDavRepository.delete(image.filename)
-            attachmentRepository.deleteAttachment(imageId)
         }
+        attachmentRepository.deleteObjectAttachments(objectId, images.map { (it.id as Number).toLong() }.toTypedArray())
     }
 
     private suspend fun updateIfExisting(element: Media) {
-        val attachment = attachmentRepository.getAttachment(element.mdsId) ?: return
-        webDavRepository.insertOrUpdate(attachment.filename, element.base64)
-        // just to trigger the modified_at timestamp, we save what is already saved
-        attachmentRepository.saveAttachment(
-                element.mdsId,
-                (attachment.objectId as BigDecimal).longValueExact(),
-                attachment.filename,
-                attachment.primary ?: false,
-                element.mediaType,
-                (attachment.licenseId as BigDecimal).longValueExact(),
-                attachment.credits
-        )
+        val existing = attachmentRepository.getAttachments(element.mdsId)
+        if (existing.isNotEmpty()) {
+            webDavRepository.insertOrUpdate(element.filePath, element.base64)
+            // just to trigger the modified_at timestamp, we save what is already saved
+            existing.forEach {
+                // keep old license info, we can be certain it was resolved via full object-sync
+                // and hence is more reliable than the half-baked credits from image sync
+                attachmentRepository.saveObjectAttachment(
+                        element.mdsId,
+                        (it.objectId as Number).toLong(),
+                        element.filePath,
+                        it.primary ?: false,
+                        element.mediaType,
+                        (it.licenseId as Number).toLong(),
+                        it.credits
+                )
+            }
+        }
     }
 
     private suspend fun saveOrUpdateImage(element: ObjImage) {
         if (objectRepository.existsObject(element.objectId)) {
             val licenseId = licenseRepository.fetchOrInsertLicense(element.credits.licenseKey)
             webDavRepository.insertOrUpdate(element.filePath, element.base64)
-            attachmentRepository.saveAttachment(
+            attachmentRepository.saveObjectAttachment(
                     element.mdsId,
                     element.objectId,
                     element.filePath,
@@ -79,10 +83,11 @@ class ImageAttachmentHandler @Autowired constructor(
         }
     }
 
-    private suspend fun deleteImage(element: Media) {
-        val image = attachmentRepository.getAttachment(element.mdsId) ?: return
-        val imageId = (image.id as BigDecimal).longValueExact()
-        webDavRepository.delete(image.filename)
-        attachmentRepository.deleteAttachment(imageId)
+    private suspend fun deleteImages(element: Media) {
+        val existing = attachmentRepository.getAttachments(element.mdsId)
+        if (existing.isNotEmpty()) {
+            existing.forEach { webDavRepository.delete(it.filename) }
+            attachmentRepository.deleteAttachments(element.mdsId)
+        }
     }
 }

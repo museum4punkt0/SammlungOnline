@@ -1,6 +1,7 @@
 package de.smbonline.mdssync.rest;
 
 import de.smbonline.mdssync.api.MdsApiConfig;
+import de.smbonline.mdssync.dataprocessor.service.ObjectService;
 import de.smbonline.mdssync.dto.SyncCycleType;
 import de.smbonline.mdssync.exec.SyncController;
 import de.smbonline.mdssync.exec.SyncResult;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -51,23 +54,27 @@ public class AdminRestController {
     public static final String SEARCH_INDEXER_SHOULD_UPDATE = "search.indexer.should.update";
     public static final String APPROVAL_FILTER_ENABLED = "mds.approval.filter.enabled";
     public static final String MDS_TOKEN_LIFETIME = "mds.token.lifetime";
+    public static final String HEALTHCHECK_OBJECTID = "mds.healthcheck.objectid";
 
     // spring beans
     private final MdsApiConfig mdsApiConfig;
     private final SearchIndexerConfig indexerConfig;
     private final SyncScheduler syncScheduler;
     private final SyncController syncController;
+    private final ObjectService objectService;
 
     @Autowired
     public AdminRestController(
             final MdsApiConfig mdsApiConfig,
             final SearchIndexerConfig indexerConfig,
             final SyncScheduler syncScheduler,
-            final SyncController syncController) {
+            final SyncController syncController,
+            final ObjectService objectService) {
         this.mdsApiConfig = mdsApiConfig;
         this.indexerConfig = indexerConfig;
         this.syncScheduler = syncScheduler;
         this.syncController = syncController;
+        this.objectService = objectService;
     }
 
     @GetMapping
@@ -76,10 +83,11 @@ public class AdminRestController {
         return "Hello from AdminController!";
     }
 
-    @GetMapping(path = "configure", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "config", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> getSupportedConfigurationKeys() {
         Data config = new Data()
                 .setAttribute(MDS_SSL_VALIDATION_ENABLED, this.mdsApiConfig.isSslValidationEnabled())
+                .setAttribute(HEALTHCHECK_OBJECTID, this.mdsApiConfig.getHealthCheckObjectId())
                 .setAttribute(APPROVAL_FILTER_ENABLED, this.mdsApiConfig.isApprovalFilterEnabled())
                 .setAttribute(MDS_TOKEN_LIFETIME, this.mdsApiConfig.getTokenLifetime())
                 .setAttribute(SCHEDULER_JOBS_ENABLED, this.syncScheduler.isEnabled())
@@ -89,12 +97,16 @@ public class AdminRestController {
         return ResponseEntity.ok(config);
     }
 
-    @PostMapping(path = "configure", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "config", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Data> configure(final @RequestBody Data config) {
 
         if (config.hasAttribute(MDS_SSL_VALIDATION_ENABLED)) {
             this.mdsApiConfig.setSslValidationEnabled(toBoolean(config.getAttribute(MDS_SSL_VALIDATION_ENABLED)));
             config.removeAttribute(MDS_SSL_VALIDATION_ENABLED);
+        }
+        if (config.hasAttribute(HEALTHCHECK_OBJECTID)) {
+            this.mdsApiConfig.setHealthCheckObjectId(toInteger(config.getAttribute(HEALTHCHECK_OBJECTID)));
+            config.removeAttribute(HEALTHCHECK_OBJECTID);
         }
         if (config.hasAttribute(APPROVAL_FILTER_ENABLED)) {
             this.mdsApiConfig.setApprovalFilterEnabled(toBoolean(config.getAttribute(APPROVAL_FILTER_ENABLED)));
@@ -147,11 +159,29 @@ public class AdminRestController {
     public ResponseEntity<Data> indexTrigger(final @RequestBody Data event) {
         LOGGER.info("Index event received: {}", event);
 
-        Long id = extractId(event);
-        Data request = new Data()
-                .setAttribute(ATTR_IDS, Collections.singletonList(id))
-                .setAttribute(ATTR_MODULE, getModuleForTable(requireNonNull(event.getNestedTypedAttribute("table.name"))));
-        SyncResult result = runManualSyncByIds(request);
+        String table = requireNonNull(event.getNestedTypedAttribute("table.name"));
+
+        String module = null;
+        Collection<Long> ids = null;
+        switch (table) {
+            case "collections" -> {
+                module = MODULE_OBJECTS;
+                ids = collectObjectIdsForCollection(requireNonNull(event.getNestedTypedAttribute("event.data.new.key")), true);
+            }
+            case "org_unit" -> {
+                module = MODULE_OBJECTS;
+                ids = collectObjectIdsForCollection(requireNonNull(event.getNestedTypedAttribute("event.data.new.name")), false);
+            }
+            default -> {
+                module = getModuleForTable(table);
+                ids = Collections.singletonList(extractId(event));
+            }
+        }
+
+        Data idRequest = new Data()
+                .setAttribute(ATTR_MODULE, module)
+                .setAttribute(ATTR_IDS, ids);
+        SyncResult result = runManualSyncByIds(idRequest);
         Data response = toResponse(result);
         return ResponseEntity.status(requireNonNull(response.getTypedAttribute(ATTR_STATUS))).body(response);
     }
@@ -173,6 +203,10 @@ public class AdminRestController {
         return id.longValue();
     }
 
+    private Collection<Long> collectObjectIdsForCollection(final String collectionKey, final boolean wildcard) {
+        return Arrays.asList(objectService.getIdsForCollection(collectionKey, wildcard));
+    }
+
     @GetMapping(path = "sync", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getSyncState() {
         return ResponseEntity.ok(this.syncController.getState());
@@ -184,7 +218,6 @@ public class AdminRestController {
         Data response = toResponse(result);
         return ResponseEntity.status(requireNonNull(response.getTypedAttribute(ATTR_STATUS))).body(response);
     }
-
 
     @PostMapping(path = "sync", produces = MediaType.APPLICATION_JSON_VALUE, consumes = APPLICATION_XML_VALUE)
     public ResponseEntity<Data> executeSync(final @RequestBody Application xml) {
@@ -198,25 +231,30 @@ public class AdminRestController {
         SyncCycleType type = data.hasAttribute(ATTR_TYPE)
                 ? SyncCycleType.valueOf(data.getTypedAttribute(ATTR_TYPE)) : SyncCycleType.MANUAL;
 
-        Data response;
+        Data response = null;
         if (type == SyncCycleType.MANUAL) {
             response = executeManualSync(data);
         } else {
-            SyncResult result = SyncResult.NOOP;
             if (type == SyncCycleType.ASSORTMENTS) {
-                result = this.syncController.resolveAssortments();
-            }
-            if (type == SyncCycleType.DELETIONS) {
-                result = this.syncController.removeDeleted();
-            }
-            if (type == SyncCycleType.HIGHLIGHTS) {
-                result = this.syncController.resolveHighlights();
-            }
-            if (type == SyncCycleType.INCREMENTAL) {
+                SyncResult result = this.syncController.resolveAssortments();
+                response = toResponse(result);
+            } else if (type == SyncCycleType.DELETIONS) {
+                SyncResult result = this.syncController.removeDeleted();
+                response = toResponse(result);
+            } else if (type == SyncCycleType.HIGHLIGHTS) {
+                SyncResult result = this.syncController.resolveHighlights();
+                response = toResponse(result);
+            } else if (type == SyncCycleType.INCREMENTAL) {
                 String module = data.hasAttribute(ATTR_MODULE) ? data.getTypedAttribute(ATTR_MODULE) : MODULE_OBJECTS;
-                result = runIncrementalSync(module);
+                SyncResult result = runIncrementalSync(requireNonNull(module));
+                response = toResponse(result);
             }
-            response = toResponse(result);
+        }
+
+        if (response == null) {
+            response = new Data()
+                    .setAttribute(ATTR_STATUS, HttpStatus.NOT_IMPLEMENTED)
+                    .setAttribute(ATTR_INFO, "Unimplemented sync type " + type + ". Please inform the developer.");
         }
         return ResponseEntity.status(requireNonNull(response.getTypedAttribute(ATTR_STATUS))).body(response);
     }
@@ -233,15 +271,15 @@ public class AdminRestController {
             return toResponse(result);
         }
         String message = syncBoth
-                ? "can't handle id-sync and timerange-sync at the same time"
-                : "missing fields, either '" + ATTR_IDS + "' or '" + ATTR_MODIFIED_FROM + "'/'" + ATTR_MODIFIED_TO + "' required. Or did you want to specify a different " + ATTR_TYPE + "?";
+                ? "Can't handle id-sync and timerange-sync at the same time"
+                : "Missing fields, either '" + ATTR_IDS + "' or '" + ATTR_MODIFIED_FROM + "'/'" + ATTR_MODIFIED_TO + "' required. Or did you want to specify a different " + ATTR_TYPE + "?";
         return new Data()
                 .setAttribute(ATTR_STATUS, HttpStatus.EXPECTATION_FAILED)
                 .setAttribute(ATTR_RESULT, SyncResult.NOOP.toJson())
                 .setAttribute(ATTR_INFO, message);
     }
 
-    private SyncResult runIncrementalSync(final String module) {
+    private @Nullable SyncResult runIncrementalSync(final String module) {
         return switch (module) {
             case MODULE_EXHIBITIONS -> this.syncController.resolveExhibitions();
             case MODULE_MULTIMEDIA -> this.syncController.resolveAttachments();
@@ -249,7 +287,7 @@ public class AdminRestController {
             case MODULE_OBJECTS -> this.syncController.nextIncremental();
             case MODULE_PERSON -> this.syncController.resolvePersons();
             case VOCABULARY -> this.syncController.resolveThesauri();
-            default -> SyncResult.NOOP;
+            default -> null;
         };
     }
 
@@ -288,13 +326,19 @@ public class AdminRestController {
     private SyncResult runRecalculationByIds(final Data data) {
         Long[] ids = collectIdsAsLongArray(requireNonNull(data.getTypedAttribute(ATTR_IDS)));
         // FIXME implement - fetch objects with attribute translations, then for each recalculate exhibition_space and update the object
-        return SyncResult.NOOP;
+        return null;
     }
 
-    private Data toResponse(final SyncResult result) {
-        Data response = new Data()
-                .setAttribute(ATTR_STATUS, toHttpStatus(result))
-                .setAttribute(ATTR_RESULT, result.toJson());
+    private Data toResponse(final @Nullable SyncResult result) {
+        if (result == null) {
+            return new Data()
+                    .setAttribute(ATTR_STATUS, HttpStatus.NOT_IMPLEMENTED)
+                    .setAttribute(ATTR_INFO, "Couldn't find a suitable sync runner for input. Do you have a typo in the json?");
+        }
+        Data response = new Data().setAttribute(ATTR_STATUS, toHttpStatus(result));
+        if (result.getStatus() != SyncResult.Status.TBD) {
+            response.setAttribute(ATTR_RESULT, result.toJson());
+        }
         if (result.getStatus() != SyncResult.Status.NOOP) {
             response.setAttribute(ATTR_INFO, this.syncController.getState());
         }
@@ -303,6 +347,7 @@ public class AdminRestController {
 
     private HttpStatus toHttpStatus(final SyncResult result) {
         return switch (result.getStatus()) {
+            case TBD -> HttpStatus.ACCEPTED;
             case NOOP -> HttpStatus.LOCKED;
             case SUCCESS -> HttpStatus.OK;
             case ERROR -> HttpStatus.INTERNAL_SERVER_ERROR;

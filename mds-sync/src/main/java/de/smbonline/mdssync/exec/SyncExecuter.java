@@ -38,7 +38,6 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -105,6 +104,10 @@ public class SyncExecuter implements PartialSyncRunner {
 
     public String getModuleName() {
         return this.moduleName;
+    }
+
+    public Config getConfig() {
+        return this.config;
     }
 
     // FIXME remove this and make it a constructor argument
@@ -189,6 +192,11 @@ public class SyncExecuter implements PartialSyncRunner {
         }
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{module=" + this.moduleName + "}";
+    }
+
     /**
      * @return sync result
      * @throws IllegalStateException if sync has already been started with this instance
@@ -268,10 +276,12 @@ public class SyncExecuter implements PartialSyncRunner {
             String[] languages = getSupportedLanguages();
             // run first round with default language
             runSync(entityIds, ResolverContext.of(languages[0], true));
-            Long[] successfulIds = this.state.successfulIds.toArray(new Long[0]);
-            // update for all the other languages
-            for (int i = 1; i < languages.length; i++) {
-                runSync(successfulIds, ResolverContext.of(languages[i], true));
+            // update for all the other languages - except Attachments which are single-language
+            if (languages.length > 1 && !MODULE_MULTIMEDIA.equals(this.moduleName)) {
+                Long[] successfulIds = this.state.successfulIds.toArray(new Long[0]);
+                for (int i = 1; i < languages.length; i++) {
+                    runSync(successfulIds, ResolverContext.of(languages[i], true));
+                }
             }
 
             this.syncWatch.stop();
@@ -279,7 +289,8 @@ public class SyncExecuter implements PartialSyncRunner {
             result = createResultSnapshot();
 
             if (Objects.requireNonNull(result.getSkippedIds()).length != 0) {
-                LOGGER.warn("Sync diff - Requested {} ids, only {} were handled.", this.state.expectedTotalSize, this.state.processedIds.size());
+                int sum = this.state.successfulIds.size() + this.state.failedIds.size();
+                LOGGER.warn("Sync diff - Requested {} ids, only {} were handled.", this.state.expectedTotalSize, sum);
                 if (LOGGER.isTraceEnabled()) {
                     LOGGER.warn("  Skipped ids: {}", Arrays.toString(result.getSkippedIds()));
                 }
@@ -400,7 +411,7 @@ public class SyncExecuter implements PartialSyncRunner {
         if (this.state.amendmentSearchRequired) {
             SearchRequestHelper helper = searchRequestHelper();
             String sort = "+" + FIELD_ID; // means id ASC
-            Not excludes = helper.buildExcludeFilter(this.state.processedIds.toArray(Long[]::new));
+            Not excludes = SearchRequestHelper.buildExcludeFilter(this.state.processedIds.toArray(Long[]::new));
             Search request = helper.buildSearchPayload(0, Integer.MAX_VALUE, start, end, sort, excludes);
             Module response = mdsClient().search(request, ctx.language);
             ResolverResult last = resolver().parseAndProcess(response, ctx);
@@ -419,7 +430,6 @@ public class SyncExecuter implements PartialSyncRunner {
                 this.state.processedIds.addAll(Arrays.asList(requestedIds));
             }
             Search request = searchRequestHelper().buildSearchPayload(requestedIds);
-            request.setLoadAttachment(false);
             Module response = mdsClient().search(request, ctx.language);
             // process paginated search results
             ResolverResult chunkResult = resolver().parseAndProcess(response, ctx);
@@ -444,8 +454,6 @@ public class SyncExecuter implements PartialSyncRunner {
         // execute paginated search
         String sort = "+" + FIELD_ID; // means id ASC
         Search payload = searchRequestHelper().buildSearchPayload(offset, limit, start, end, sort);
-        // only load attachments when we are explicitly syncing the Multimedia module
-        payload.setLoadAttachment(MODULE_MULTIMEDIA.equals(this.moduleName));
         Module response = mdsClient().search(payload, ctx.language);
 
         // convert JAXB objects to DTOs, then enqueue DTOs for updating
@@ -491,10 +499,8 @@ public class SyncExecuter implements PartialSyncRunner {
     }
 
     private String[] getSupportedLanguages() {
-        List<String> languages = this.langService.getSupportedLanguages();
-        return languages.isEmpty()
-                ? new String[]{this.config.getDefaultLanguage()}
-                : languages.toArray(String[]::new);
+        String[] languages = this.langService.getSupportedLanguages();
+        return languages.length == 0 ? new String[]{this.config.getDefaultLanguage()} : languages;
     }
 
     private void updateState(final ResolverResult result) {

@@ -9,4 +9,6 @@ data class PrincipalObject(override val mdsId: Long, var language: String) : Par
     var exhibitionSpace: String? = null
     var geoLocs: List<GeographicalReference> = mutableListOf()
     var materials: List<MaterialReference> = mutableListOf()
+    var culturalRefs: List<CulturalReference> = mutableListOf()
+    var locationVoc: Thesaurus? = null
 }

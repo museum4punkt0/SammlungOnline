@@ -31,7 +31,7 @@ public final class MdsConstants {
     public static final String VOC_ROLE = "RoleVoc";
     public static final String VOC_TYPE = "TypeVoc";
 
-    // yeah, i know indexed values are not final - let's pretend anyways
+    // Yeah, I know indexed values are not final - let's pretend anyways...
     public static final String[] DEFAULT_BLACKLISTED_VALUES = {"to do", "null"};
 
     public static final String[] BLACKLISTED_ROLE_NAMES = {"Leihgeber", "Mäzen", "Nachlasser", "Person", "Veräußerer", "Vorbesitzer"};

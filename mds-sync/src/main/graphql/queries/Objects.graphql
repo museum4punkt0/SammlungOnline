@@ -5,15 +5,67 @@ query FetchObject($mdsId: bigint!) {
     }
 }
 
+query FetchObjectIds($from:bigint!, $to:bigint!, $limit:Int) {
+    smb_objects(
+        limit: $limit,
+        where: {
+            _and: [
+                {id: {_gte: $from}},
+                {id: {_lte: $to}}
+            ]},
+        order_by: [{id: asc}]
+    ) {
+        id
+    }
+}
+
+query FetchObjectIdsByCollection($key: String!) {
+    smb_objects:smb_attribute_translations(
+        where: {
+            _and: [
+                {attribute_key: {_eq: "__orgUnit"}},
+                {value: {_like: $key}}
+            ]},
+        order_by: [{object_id: asc}]
+    ) {
+        id:object_id
+    }
+}
+
+query FetchObjectIdsByOrgUnit($key: String!) {
+    smb_objects:smb_attribute_translations(
+        where: {
+            _and: [
+                {attribute_key: {_eq: "__orgUnit"}},
+                {value: {_eq: $key}}
+            ]},
+        order_by: [{object_id: asc}]
+    ) {
+        id:object_id
+    }
+}
+
+query FetchObjectsByLocationId($vocId: bigint!) {
+    smb_objects(where: {location_voc_id: {_eq: $vocId}}) {
+        id
+        createdAt:created_at
+        updatedAt:updated_at
+    }
+}
+
 # Insert new Object if not exists
-mutation InsertOrUpdateObject($mdsId: bigint!, $exhibitionSpace: String) {
-    insert_smb_objects_one(object: {
-        id: $mdsId
-        exhibition_space: $exhibitionSpace
-    }, on_conflict: {
-        constraint: objects_pkey,
-        update_columns: [exhibition_space]
-    }) {
+mutation InsertOrUpdateObject($mdsId: bigint!, $exhibitionSpace: String, $locId: bigint) {
+    insert_smb_objects_one(
+        object: {
+            id: $mdsId
+            exhibition_space: $exhibitionSpace
+            location_voc_id: $locId
+        },
+        on_conflict: {
+            constraint: objects_pkey,
+            update_columns: [exhibition_space, location_voc_id]
+        }
+    ) {
         id
     }
 }

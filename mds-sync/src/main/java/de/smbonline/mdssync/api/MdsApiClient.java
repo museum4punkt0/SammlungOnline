@@ -20,11 +20,14 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import static de.smbonline.mdssync.util.Lookup.*;
+import static de.smbonline.mdssync.util.MdsConstants.*;
 import static de.smbonline.mdssync.util.Misc.*;
 
 /**
@@ -71,18 +74,27 @@ public class MdsApiClient {
      * @return found item or null
      */
     public @Nullable ModuleItem get(final Long mdsId, final @Nullable String lang) throws MdsApiConnectionException {
+
+        // collect params
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put(MODULE_NAME_PATH_VARIABLE, this.moduleName);
+        params.put("id", mdsId);
+        params.put("inclAttachment", MODULE_MULTIMEDIA.equals(this.moduleName)); // if we are fetching an item from the Multimedia module, resolve the actual attachment
+
+        // build the request
         HttpHeaders headers = new HttpHeaders();
         if (StringUtils.isNotEmpty(lang)) {
             headers.set(HttpHeaders.ACCEPT_LANGUAGE, lang);
         }
         HttpEntity<?> request = new HttpEntity<>(headers);
+
+        // call the API
         ResponseEntity<Application> response = invokeWithRetries(() -> client().exchange(
-                this.mdsConfig.getModulePathTemplate() + "/" + mdsId,
-                HttpMethod.GET,
-                request,
-                Application.class,
-                Collections.singletonMap(MODULE_NAME_PATH_VARIABLE, this.moduleName))
-        );
+                this.mdsConfig.getModulePathTemplate() + "/{id}?loadThumbnailExtraLarge={inclAttachment}",
+                HttpMethod.GET, request, Application.class, params
+        ));
+
+        // return
         List<ModuleItem> results = extractResponseBody(response).getModuleItem();
         return results.isEmpty() ? null : results.get(0);
     }
@@ -155,8 +167,13 @@ public class MdsApiClient {
             try {
                 return apiCall.call();
             } catch (Exception exc) {
-                if (exc instanceof HttpStatusCodeException httpExc && httpExc.getStatusCode() == HttpStatus.NOT_FOUND) {
-                    return ResponseEntity.notFound().build();
+                if (exc instanceof HttpStatusCodeException httpExc) {
+                    if (httpExc.getStatusCode() == HttpStatus.NOT_FOUND) {
+                        return ResponseEntity.notFound().build();
+                    }
+                    if (httpExc.getStatusCode() == HttpStatus.FORBIDDEN && this.sessionHandler != null) {
+                        this.sessionHandler.refreshSessionToken();
+                    }
                 }
                 if (i < MAX_RETRY_ATTEMPTS) {
                     LOGGER.warn("Failed to communicate with MDS-API. Retrying...");

@@ -9,7 +9,7 @@ query FetchAttachmentsByObjectId($objectId: bigint!) {
 }
 
 # Return all Images/Videos/Audios/PDFs of an Object
-query FetchAttachmentsByObjectAndTypeId($objectId: bigint!, $type: String!) {
+query FetchAttachmentsByObjectIdAndType($objectId: bigint!, $type: String!) {
     smb_attachments(
         where: {object_id: {_eq: $objectId}, media_type: {_eq: $type}},
         order_by: [{ primary: desc }]
@@ -18,48 +18,74 @@ query FetchAttachmentsByObjectAndTypeId($objectId: bigint!, $type: String!) {
     }
 }
 
-# Fetch a single Attachment by name
-query FetchAttachmentByFilename($filename: String!) {
-    smb_attachments(where: {attachment: {_eq: $filename}}) {
+# Fetch all Attachments with given id - this is only one in regular cases
+query FetchAttachments($id: bigint!) {
+    smb_attachments(where: {id: {_eq: $id}}) {
         ...attachmentData
     }
 }
 
 # Fetch a single Attachment by id
-query FetchAttachmentById($id: bigint!) {
-    smb_attachments_by_pk(id: $id) {
+query FetchAttachment($id: bigint!, $objectId: bigint!) {
+    smb_attachments_by_pk(id: $id, object_id: $objectId) {
         ...attachmentData
     }
 }
 
-# Insert or update an Attachment
+# Return all blocked attachment ids
+query FetchBlockedAttachments {
+    smb_blocked_attachments {
+        ...blockedAttachmentData
+    }
+}
+
+# Insert or update an Attachment for an Object
 mutation InsertOrUpdateAttachment($id: bigint!, $filename: String!, $primary: Boolean!, $objectId: bigint!, $mediaType: String!, $licenseId: bigint!, $credits: String) {
-    insert_smb_attachments_one(object: {
-        id: $id,
-        attachment: $filename,
-        primary: $primary,
-        object_id: $objectId,
-        license_id: $licenseId,
-        credits: $credits,
-        media_type: $mediaType,
-    }, on_conflict: {
-        constraint: attachments_pkey,
-        update_columns: [primary, object_id, license_id, credits, media_type],
-    }) {
+    insert_smb_attachments_one(
+        object: {
+            id: $id,
+            attachment: $filename,
+            primary: $primary,
+            object_id: $objectId,
+            license_id: $licenseId,
+            credits: $credits,
+            media_type: $mediaType,
+        },
+        on_conflict: {
+            constraint: attachments_pkey,
+            update_columns: [primary, attachment, media_type, license_id, credits],
+        }
+    ) {
         id
     }
 }
 
-# Delete an Attachment by id
-mutation DeleteAttachment($attachmentId: bigint!) {
-    delete_smb_attachments_by_pk(id: $attachmentId) {
-        id
+# Delete all Attachments with given id - this is only one in regular cases
+mutation DeleteAttachments($attachmentId: bigint!) {
+    delete_smb_attachments(where: {id: {_eq: $attachmentId}}) {
+        count:affected_rows
+        returning {
+            id
+        }
     }
 }
-
 # Delete all Attachments for an Object
 mutation DeleteAttachmentsByObjectId($objectId: bigint!) {
     delete_smb_attachments(where: {object_id: {_eq: $objectId}}) {
+        count:affected_rows
+        returning {
+            id
+        }
+    }
+}
+
+# Delete all Attachments of a specific for an Object
+mutation DeleteAttachmentsByObjectIdAndType($objectId: bigint!, $type: String!) {
+    delete_smb_attachments(where: {
+        object_id: {_eq: $objectId},
+        media_type: {_eq: $type}
+    }) {
+        count:affected_rows
         returning {
             id
         }

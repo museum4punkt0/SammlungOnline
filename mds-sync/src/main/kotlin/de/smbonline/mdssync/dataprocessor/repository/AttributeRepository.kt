@@ -22,8 +22,6 @@ import java.io.SyncFailedException
 import java.math.BigDecimal
 import kotlin.math.min
 
-// TODO remove access to LanguageRepository here. This should be done in service layer (AttributeService).
-
 @Repository
 class AttributeRepository @Autowired constructor(
         private val graphQlClient: GraphQlClient,

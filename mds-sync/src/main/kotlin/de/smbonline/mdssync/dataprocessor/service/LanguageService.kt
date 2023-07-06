@@ -12,11 +12,12 @@ class LanguageService {
     @Autowired
     lateinit var languageRepository: LanguageRepository
 
-    fun getSupportedLanguages(): List<String> {
-        val data: List<LanguageData>
+    fun getSupportedLanguages(): Array<String> {
+        val data: Array<String>
         runBlocking {
-            data = languageRepository.fetchLanguages().filter { it.syncEnabled == true }
+            data = languageRepository.fetchLanguages()
+                    .filter { it.syncEnabled == true }.map { it.code }.toTypedArray()
         }
-        return data.map { it.code }
+        return data
     }
 }

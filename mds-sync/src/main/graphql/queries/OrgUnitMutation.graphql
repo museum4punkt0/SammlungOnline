@@ -7,7 +7,7 @@ mutation InsertOrgUnit($orgUnitName: String!) {
     }
 }
 
-# Delte an OrgUnit by id
+# Delete an OrgUnit by id
 mutation DeleteOrgUnit($orgUnitId: bigint!) {
     delete_smb_org_unit_by_pk(id: $orgUnitId) {
         id

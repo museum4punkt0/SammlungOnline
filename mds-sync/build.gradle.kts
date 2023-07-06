@@ -14,7 +14,7 @@ plugins {
 
 description = "Sync for MDS objects, highlights and attachments."
 group = "de.smb-online"
-version = "2.0.0"
+version = "2.5.55"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -42,7 +42,9 @@ dependencies {
     implementation("org.apache.commons:commons-lang3")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.imgscalr:imgscalr-lib:4.2")
-    implementation("io.sentry:sentry-spring-boot-starter:6.11.0")
+    implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4") // better image support
+    implementation("com.twelvemonkeys.imageio:imageio-tiff:3.9.4")
+    implementation("io.sentry:sentry-spring-boot-starter:6.16.0")
     // kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

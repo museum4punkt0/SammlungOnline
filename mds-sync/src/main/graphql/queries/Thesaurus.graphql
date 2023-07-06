@@ -22,7 +22,7 @@ query FetchThesauri($instance: String!) {
     }
 }
 
-# Return one Thesurus entry by MDS id and type
+# Return one Thesaurus entry by MDS id and type
 query FetchThesaurusByMdsIdAndType($mdsId:bigint!, $type:String!) {
     smb_thesaurus(limit: 1, where: {
         mds_id: {_eq: $mdsId},

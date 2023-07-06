@@ -1,25 +1,3 @@
-input BooleanFilterInput {
-  and: [Boolean]
-  between: [Boolean]
-  contains: Boolean
-  containsi: Boolean
-  endsWith: Boolean
-  eq: Boolean
-  gt: Boolean
-  gte: Boolean
-  in: [Boolean]
-  lt: Boolean
-  lte: Boolean
-  ne: Boolean
-  not: BooleanFilterInput
-  notContains: Boolean
-  notContainsi: Boolean
-  notIn: [Boolean]
-  notNull: Boolean
-  or: [Boolean]
-  startsWith: Boolean
-}
-
 """
 Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
 """
@@ -35,1382 +13,6 @@ input Boolean_comparison_exp {
   _nin: [Boolean!]
 }
 
-type Category {
-  createdAt: DateTime
-  hero: ComponentGlobalRichtextModule
-  isVisibleInListView: Boolean
-  locale: String
-  localizations(filters: CategoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): CategoryRelationResponseCollection
-  publishedAt: DateTime
-  slug: String
-  stories(filters: StoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): StoryRelationResponseCollection
-  subtitle: String
-  teaser_image: UploadFileEntityResponse
-  title: String
-  updatedAt: DateTime
-  versionNumber: Int
-  versions(filters: CategoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): CategoryRelationResponseCollection
-  vuid: String
-}
-
-type CategoryEntity {
-  attributes: Category
-  id: ID
-}
-
-type CategoryEntityResponse {
-  data: CategoryEntity
-}
-
-type CategoryEntityResponseCollection {
-  data: [CategoryEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input CategoryFiltersInput {
-  and: [CategoryFiltersInput]
-  createdAt: DateTimeFilterInput
-  hero: ComponentGlobalRichtextModuleFiltersInput
-  id: IDFilterInput
-  isVisibleInListView: BooleanFilterInput
-  locale: StringFilterInput
-  localizations: CategoryFiltersInput
-  not: CategoryFiltersInput
-  or: [CategoryFiltersInput]
-  publishedAt: DateTimeFilterInput
-  sitemap_exclude: BooleanFilterInput
-  slug: StringFilterInput
-  stories: StoryFiltersInput
-  subtitle: StringFilterInput
-  title: StringFilterInput
-  updatedAt: DateTimeFilterInput
-  versionNumber: IntFilterInput
-  versions: CategoryFiltersInput
-  vuid: StringFilterInput
-}
-
-input CategoryInput {
-  hero: ComponentGlobalRichtextModuleInput
-  isVisibleInListView: Boolean
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-  slug: String
-  stories: [ID]
-  subtitle: String
-  teaser_image: ID
-  title: String
-  versionNumber: Int
-  versions: [ID]
-  vuid: String
-}
-
-type CategoryRelationResponseCollection {
-  data: [CategoryEntity!]!
-}
-
-type ComponentComponentsBannerCard {
-  headline: String!
-  id: ID!
-  subHeadline: String
-  text: String
-}
-
-type ComponentComponentsBreadcrumbsLink {
-  collapseText: String
-  expandText: String
-  href: String
-  id: ID!
-  title: String
-}
-
-input ComponentComponentsBreadcrumbsLinkInput {
-  collapseText: String
-  expandText: String
-  href: String
-  id: ID
-  title: String
-}
-
-type ComponentComponentsButtonComponent {
-  closedState: String
-  id: ID!
-  openState: String
-}
-
-type ComponentComponentsCardLinkComponent {
-  firstLinkHref: String
-  firstLinkTitle: String
-  headline: String
-  id: ID!
-  secondLinkHref: String
-  secondLinkTitle: String
-  thirdLinkHref: String
-  thirdLinkTitle: String
-}
-
-input ComponentComponentsCardLinkComponentFiltersInput {
-  and: [ComponentComponentsCardLinkComponentFiltersInput]
-  firstLinkHref: StringFilterInput
-  firstLinkTitle: StringFilterInput
-  headline: StringFilterInput
-  not: ComponentComponentsCardLinkComponentFiltersInput
-  or: [ComponentComponentsCardLinkComponentFiltersInput]
-  secondLinkHref: StringFilterInput
-  secondLinkTitle: StringFilterInput
-  thirdLinkHref: StringFilterInput
-  thirdLinkTitle: StringFilterInput
-}
-
-type ComponentComponentsContentCardComponent {
-  backgroundColor: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDCOLOR
-  backgroundStyle: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDSTYLE
-  borderColor: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERCOLOR
-  borderWidth: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERWIDTH
-  cardWidth: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CARDWIDTH
-  contentAlignment: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CONTENTALIGNMENT
-  headline: String
-  headlineAlignment: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEALIGNMENT
-  headlineColor: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINECOLOR
-  headlineDecoration: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEDECORATION
-  headlineFontSize: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEFONTSIZE
-  headlineOrientation: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEORIENTATION
-  headlineStyle: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINESTYLE
-  headlineWeight: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEWEIGHT
-  id: ID!
-  image: UploadFileEntityResponse
-  imagePosition: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_IMAGEPOSITION
-  link: ComponentComponentsLinkComponent
-  linkColor: ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_LINKCOLOR
-}
-
-input ComponentComponentsContentCardComponentFiltersInput {
-  and: [ComponentComponentsContentCardComponentFiltersInput]
-  backgroundColor: StringFilterInput
-  backgroundStyle: StringFilterInput
-  borderColor: StringFilterInput
-  borderWidth: StringFilterInput
-  cardWidth: StringFilterInput
-  contentAlignment: StringFilterInput
-  headline: StringFilterInput
-  headlineAlignment: StringFilterInput
-  headlineColor: StringFilterInput
-  headlineDecoration: StringFilterInput
-  headlineFontSize: StringFilterInput
-  headlineOrientation: StringFilterInput
-  headlineStyle: StringFilterInput
-  headlineWeight: StringFilterInput
-  imagePosition: StringFilterInput
-  link: ComponentComponentsLinkComponentFiltersInput
-  linkColor: StringFilterInput
-  not: ComponentComponentsContentCardComponentFiltersInput
-  or: [ComponentComponentsContentCardComponentFiltersInput]
-}
-
-type ComponentComponentsCookie {
-  button: String
-  headline: String
-  id: ID!
-  overlayText: String
-  showCookie: Boolean
-  text: String
-}
-
-input ComponentComponentsCookieInput {
-  button: String
-  headline: String
-  id: ID
-  overlayText: String
-  showCookie: Boolean
-  text: String
-}
-
-type ComponentComponentsEasyDbItems {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-  headline: String
-  id: ID!
-  layout: ENUM_COMPONENTCOMPONENTSEASYDBITEMS_LAYOUT
-  text: String
-  textColumns: ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTCOLUMNS
-  textPosition: ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTPOSITION
-}
-
-type ComponentComponentsEasyDbRef {
-  id: ID!
-  objectFit: ENUM_COMPONENTCOMPONENTSEASYDBREF_OBJECTFIT
-  ref: String!
-}
-
-input ComponentComponentsEasyDbRefFiltersInput {
-  and: [ComponentComponentsEasyDbRefFiltersInput]
-  not: ComponentComponentsEasyDbRefFiltersInput
-  objectFit: StringFilterInput
-  or: [ComponentComponentsEasyDbRefFiltersInput]
-  ref: StringFilterInput
-}
-
-type ComponentComponentsHeadlineComponent {
-  headline: String
-  id: ID!
-  level: Int!
-}
-
-type ComponentComponentsImageCard {
-  asset: UploadFileEntityResponse!
-  header: String
-  id: ID!
-  slug: String
-  subHeader: String
-}
-
-type ComponentComponentsImageMapCard {
-  headline: String
-  id: ID!
-  image: UploadFileEntityResponse
-  text: String
-  xCoordinates: Long!
-  yCoordinates: Long!
-}
-
-input ComponentComponentsImageMapCardFiltersInput {
-  and: [ComponentComponentsImageMapCardFiltersInput]
-  headline: StringFilterInput
-  not: ComponentComponentsImageMapCardFiltersInput
-  or: [ComponentComponentsImageMapCardFiltersInput]
-  text: StringFilterInput
-  xCoordinates: LongFilterInput
-  yCoordinates: LongFilterInput
-}
-
-type ComponentComponentsImageScrollCard {
-  headline: String!
-  id: ID!
-  subHeadline: String
-}
-
-type ComponentComponentsLegalPages {
-  block(filters: ComponentComponentsSmbLegalPagesBlockFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsSmbLegalPagesBlock]
-  footerLink: String
-  header: String
-  id: ID!
-  matomo: Boolean
-  slug: String
-}
-
-type ComponentComponentsLinkComponent {
-  category: CategoryEntityResponse
-  href: String
-  id: ID!
-  story: StoryEntityResponse
-  title: String
-  topic: TopicEntityResponse
-}
-
-input ComponentComponentsLinkComponentFiltersInput {
-  and: [ComponentComponentsLinkComponentFiltersInput]
-  category: CategoryFiltersInput
-  href: StringFilterInput
-  not: ComponentComponentsLinkComponentFiltersInput
-  or: [ComponentComponentsLinkComponentFiltersInput]
-  story: StoryFiltersInput
-  title: StringFilterInput
-  topic: TopicFiltersInput
-}
-
-type ComponentComponentsMediaComponent {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection!
-  headline: String
-  id: ID!
-  layout: ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_LAYOUT
-  text: String
-  textColumns: ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTCOLUMNS
-  textPosition: ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTPOSITION
-  thumbnail: UploadFileEntityResponse
-  youtubeVideoUrl: String
-}
-
-type ComponentComponentsModelInfoPoints {
-  asset: UploadFileEntityResponse!
-  headline: String
-  id: ID!
-  slug: ENUM_COMPONENTCOMPONENTSMODELINFOPOINTS_SLUG
-  text: String
-}
-
-input ComponentComponentsModelInfoPointsFiltersInput {
-  and: [ComponentComponentsModelInfoPointsFiltersInput]
-  headline: StringFilterInput
-  not: ComponentComponentsModelInfoPointsFiltersInput
-  or: [ComponentComponentsModelInfoPointsFiltersInput]
-  slug: StringFilterInput
-  text: StringFilterInput
-}
-
-type ComponentComponentsNavigationLinkComponent {
-  href: String
-  id: ID!
-  slug: ENUM_COMPONENTCOMPONENTSNAVIGATIONLINKCOMPONENT_SLUG
-  subTitle: String
-  title: String
-}
-
-input ComponentComponentsNavigationLinkComponentFiltersInput {
-  and: [ComponentComponentsNavigationLinkComponentFiltersInput]
-  href: StringFilterInput
-  not: ComponentComponentsNavigationLinkComponentFiltersInput
-  or: [ComponentComponentsNavigationLinkComponentFiltersInput]
-  slug: StringFilterInput
-  subTitle: StringFilterInput
-  title: StringFilterInput
-}
-
-input ComponentComponentsNavigationLinkComponentInput {
-  href: String
-  id: ID
-  slug: ENUM_COMPONENTCOMPONENTSNAVIGATIONLINKCOMPONENT_SLUG
-  subTitle: String
-  title: String
-}
-
-type ComponentComponentsRichTextComponent {
-  headline: String
-  id: ID!
-  layout: ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_LAYOUT
-  level: Int
-  text: String
-  textColumns: ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_TEXTCOLUMNS
-}
-
-input ComponentComponentsRichTextComponentFiltersInput {
-  and: [ComponentComponentsRichTextComponentFiltersInput]
-  headline: StringFilterInput
-  layout: StringFilterInput
-  level: IntFilterInput
-  not: ComponentComponentsRichTextComponentFiltersInput
-  or: [ComponentComponentsRichTextComponentFiltersInput]
-  text: StringFilterInput
-  textColumns: StringFilterInput
-}
-
-input ComponentComponentsRichTextComponentInput {
-  headline: String
-  id: ID
-  layout: ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_LAYOUT
-  level: Int
-  text: String
-  textColumns: ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_TEXTCOLUMNS
-}
-
-type ComponentComponentsSimpleLink {
-  href: String
-  id: ID!
-  title: String
-}
-
-input ComponentComponentsSimpleLinkFiltersInput {
-  and: [ComponentComponentsSimpleLinkFiltersInput]
-  href: StringFilterInput
-  not: ComponentComponentsSimpleLinkFiltersInput
-  or: [ComponentComponentsSimpleLinkFiltersInput]
-  title: StringFilterInput
-}
-
-input ComponentComponentsSimpleLinkInput {
-  href: String
-  id: ID
-  title: String
-}
-
-type ComponentComponentsSlug {
-  id: ID!
-  slug: String
-}
-
-type ComponentComponentsSmbCollectionsBlock {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-  cardCtaText: String
-  headline: String
-  id: ID!
-  text: String
-  type: ENUM_COMPONENTCOMPONENTSSMBCOLLECTIONSBLOCK_TYPE!
-}
-
-type ComponentComponentsSmbDownloadModule {
-  buttonText: String
-  header: String
-  id: ID!
-  text: String
-}
-
-input ComponentComponentsSmbDownloadModuleInput {
-  buttonText: String
-  header: String
-  id: ID
-  text: String
-}
-
-type ComponentComponentsSmbHeaderMenuItems {
-  headline: String
-  href: String
-  id: ID!
-  subHeadline: String
-  type: ENUM_COMPONENTCOMPONENTSSMBHEADERMENUITEMS_TYPE!
-}
-
-input ComponentComponentsSmbHeaderMenuItemsFiltersInput {
-  and: [ComponentComponentsSmbHeaderMenuItemsFiltersInput]
-  headline: StringFilterInput
-  href: StringFilterInput
-  not: ComponentComponentsSmbHeaderMenuItemsFiltersInput
-  or: [ComponentComponentsSmbHeaderMenuItemsFiltersInput]
-  subHeadline: StringFilterInput
-  type: StringFilterInput
-}
-
-input ComponentComponentsSmbHeaderMenuItemsInput {
-  headline: String
-  href: String
-  id: ID
-  subHeadline: String
-  type: ENUM_COMPONENTCOMPONENTSSMBHEADERMENUITEMS_TYPE
-}
-
-type ComponentComponentsSmbHighlightsBlock {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-  headline: String
-  id: ID!
-  text: String
-  type: ENUM_COMPONENTCOMPONENTSSMBHIGHLIGHTSBLOCK_TYPE!
-}
-
-type ComponentComponentsSmbLegalPagesBlock {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-  id: ID!
-  text: String
-  videoAssets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-}
-
-input ComponentComponentsSmbLegalPagesBlockFiltersInput {
-  and: [ComponentComponentsSmbLegalPagesBlockFiltersInput]
-  not: ComponentComponentsSmbLegalPagesBlockFiltersInput
-  or: [ComponentComponentsSmbLegalPagesBlockFiltersInput]
-  text: StringFilterInput
-}
-
-type ComponentComponentsSmbResearchModal {
-  downloadSection: ComponentComponentsSmbDownloadModule
-  id: ID!
-  webSection: ComponentComponentsSmbWebModule
-}
-
-input ComponentComponentsSmbResearchModalInput {
-  downloadSection: ComponentComponentsSmbDownloadModuleInput
-  id: ID
-  webSection: ComponentComponentsSmbWebModuleInput
-}
-
-type ComponentComponentsSmbSearchButtonBlock {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-  headline: String!
-  id: ID!
-  searchButtonGroupHeadline1: String
-  searchButtonGroupHeadline2: String
-  searchButtonGroupHeadline3: String
-  text: String
-}
-
-type ComponentComponentsSmbSection {
-  CollectionsBlock: ComponentComponentsSmbCollectionsBlock
-  HighlightsBlock: ComponentComponentsSmbHighlightsBlock
-  SearchButtonBlock: ComponentComponentsSmbSearchButtonBlock
-  TextBlock: ComponentComponentsSmbTextCard
-  Type: ENUM_COMPONENTCOMPONENTSSMBSECTION_TYPE
-  VideoBlock: ComponentComponentsSmbVideoBlock
-  id: ID!
-}
-
-type ComponentComponentsSmbTextCard {
-  headline: String!
-  id: ID!
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-  text: String!
-}
-
-input ComponentComponentsSmbTextCardInput {
-  headline: String
-  id: ID
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-  text: String
-}
-
-type ComponentComponentsSmbVideoBlock {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection!
-  headline: String
-  id: ID!
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-}
-
-input ComponentComponentsSmbVideoBlockInput {
-  assets: [ID]
-  headline: String
-  id: ID
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-}
-
-type ComponentComponentsSmbWebModule {
-  buttonLink: String
-  buttonText: String
-  header: String
-  id: ID!
-  text: String
-}
-
-input ComponentComponentsSmbWebModuleInput {
-  buttonLink: String
-  buttonText: String
-  header: String
-  id: ID
-  text: String
-}
-
-type ComponentComponentsStoryComponent {
-  alignment: ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_ALIGNMENT
-  asset: UploadFileEntityResponse
-  border: Boolean
-  cardText: String!
-  headline: String
-  href: String
-  id: ID!
-  story: StoryEntityResponse
-  title: String
-  weight: ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_WEIGHT
-  youtubeVideoUrl: String
-}
-
-input ComponentComponentsStoryComponentFiltersInput {
-  alignment: StringFilterInput
-  and: [ComponentComponentsStoryComponentFiltersInput]
-  border: BooleanFilterInput
-  cardText: StringFilterInput
-  headline: StringFilterInput
-  href: StringFilterInput
-  not: ComponentComponentsStoryComponentFiltersInput
-  or: [ComponentComponentsStoryComponentFiltersInput]
-  story: StoryFiltersInput
-  title: StringFilterInput
-  weight: StringFilterInput
-  youtubeVideoUrl: StringFilterInput
-}
-
-type ComponentComponentsTagComponent {
-  href: String
-  id: ID!
-  story: StoryEntityResponse
-  tag: String
-  weight: ENUM_COMPONENTCOMPONENTSTAGCOMPONENT_WEIGHT
-}
-
-input ComponentComponentsTagComponentFiltersInput {
-  and: [ComponentComponentsTagComponentFiltersInput]
-  href: StringFilterInput
-  not: ComponentComponentsTagComponentFiltersInput
-  or: [ComponentComponentsTagComponentFiltersInput]
-  story: StoryFiltersInput
-  tag: StringFilterInput
-  weight: StringFilterInput
-}
-
-input ComponentComponentsTagComponentInput {
-  href: String
-  id: ID
-  story: ID
-  tag: String
-  weight: ENUM_COMPONENTCOMPONENTSTAGCOMPONENT_WEIGHT
-}
-
-type ComponentComponentsTextComponent {
-  id: ID!
-  text: String
-}
-
-type ComponentConfigHeroSwiperItem {
-  caption: String
-  href: String
-  id: ID!
-  image: UploadFileEntityResponse!
-  mobileImage: UploadFileEntityResponse
-  tabletImage: UploadFileEntityResponse
-  title: String!
-}
-
-input ComponentConfigHeroSwiperItemFiltersInput {
-  and: [ComponentConfigHeroSwiperItemFiltersInput]
-  caption: StringFilterInput
-  href: StringFilterInput
-  not: ComponentConfigHeroSwiperItemFiltersInput
-  or: [ComponentConfigHeroSwiperItemFiltersInput]
-  title: StringFilterInput
-}
-
-input ComponentConfigHeroSwiperItemInput {
-  caption: String
-  href: String
-  id: ID
-  image: ID
-  mobileImage: ID
-  tabletImage: ID
-  title: String
-}
-
-type ComponentConfigIndexConfig {
-  id: ID!
-  teaser_iamge: UploadFileEntityResponse
-  teaser_text: String
-  title: String
-}
-
-input ComponentConfigIndexConfigInput {
-  id: ID
-  teaser_iamge: ID
-  teaser_text: String
-  title: String
-}
-
-type ComponentConfigPageConfig {
-  author: String
-  id: ID!
-  teaser_image: UploadFileEntityResponse!
-  teaser_text: String!
-  year: String
-}
-
-input ComponentConfigPageConfigFiltersInput {
-  and: [ComponentConfigPageConfigFiltersInput]
-  author: StringFilterInput
-  not: ComponentConfigPageConfigFiltersInput
-  or: [ComponentConfigPageConfigFiltersInput]
-  teaser_text: StringFilterInput
-  year: StringFilterInput
-}
-
-input ComponentConfigPageConfigInput {
-  author: String
-  id: ID
-  teaser_image: ID
-  teaser_text: String
-  year: String
-}
-
-type ComponentConfigTheme {
-  id: ID!
-  themes: ENUM_COMPONENTCONFIGTHEME_THEMES
-}
-
-input ComponentConfigThemeFiltersInput {
-  and: [ComponentConfigThemeFiltersInput]
-  not: ComponentConfigThemeFiltersInput
-  or: [ComponentConfigThemeFiltersInput]
-  themes: StringFilterInput
-}
-
-input ComponentConfigThemeInput {
-  id: ID
-  themes: ENUM_COMPONENTCONFIGTHEME_THEMES
-}
-
-type ComponentGlobal3DModel {
-  header: String
-  id: ID!
-  infoPoints(filters: ComponentComponentsModelInfoPointsFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsModelInfoPoints]
-  modelFile: UploadFileEntityResponse!
-  modelPointSvg: UploadFileEntityResponse!
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalCardImageModule {
-  headline: ComponentComponentsHeadlineComponent
-  id: ID!
-  layout: ENUM_COMPONENTGLOBALCARDIMAGEMODULE_LAYOUT
-  position: ENUM_COMPONENTGLOBALCARDIMAGEMODULE_POSITION
-  showInMenu: Boolean
-  stories(filters: ComponentComponentsStoryComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsStoryComponent]
-  textAlignment: ENUM_COMPONENTGLOBALCARDIMAGEMODULE_TEXTALIGNMENT
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalColorSeparatorModule {
-  id: ID!
-  theme: ComponentConfigTheme!
-}
-
-input ComponentGlobalColorSeparatorModuleFiltersInput {
-  and: [ComponentGlobalColorSeparatorModuleFiltersInput]
-  not: ComponentGlobalColorSeparatorModuleFiltersInput
-  or: [ComponentGlobalColorSeparatorModuleFiltersInput]
-  theme: ComponentConfigThemeFiltersInput
-}
-
-input ComponentGlobalColorSeparatorModuleInput {
-  id: ID
-  theme: ComponentConfigThemeInput
-}
-
-type ComponentGlobalContentModule {
-  contentCards(filters: ComponentComponentsContentCardComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsContentCardComponent]
-  id: ID!
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalEasyDbImageModule {
-  easyDBRef(filters: ComponentComponentsEasyDbRefFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsEasyDbRef]!
-  headline: ComponentComponentsHeadlineComponent
-  id: ID!
-  mediaItems: ComponentComponentsEasyDbItems
-  showInMenu: Boolean
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalFilterModule {
-  categories(filters: CategoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): CategoryRelationResponseCollection
-  header: String
-  id: ID!
-  text: String
-}
-
-type ComponentGlobalHeroModule {
-  heroAsset: UploadFileEntityResponse
-  heroBackgroundTheme: ENUM_COMPONENTGLOBALHEROMODULE_HEROBACKGROUNDTHEME
-  heroText: ComponentComponentsTextComponent
-  id: ID!
-}
-
-type ComponentGlobalImageBannerModule {
-  backgroundAsset: UploadFileEntityResponse!
-  card: ComponentComponentsBannerCard
-  id: ID!
-  position: ENUM_COMPONENTGLOBALIMAGEBANNERMODULE_POSITION
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalImageMapModule {
-  cards(filters: ComponentComponentsImageMapCardFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsImageMapCard]
-  id: ID!
-  moduleAsset: UploadFileEntityResponse!
-  moduleHeadline: String
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalImagePlayerModule {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-  buttonText: String
-  id: ID!
-}
-
-type ComponentGlobalImageScrollModule {
-  asset: UploadFileEntityResponse!
-  card: ComponentComponentsImageScrollCard!
-  id: ID!
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalLinkedStoriesModule {
-  header: String
-  id: ID!
-  storiesLinks(filters: StoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): StoryRelationResponseCollection
-}
-
-type ComponentGlobalLinksModule {
-  cardLinks(filters: ComponentComponentsCardLinkComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsCardLinkComponent]
-  id: ID!
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalMediaModule {
-  gridAlignment: ENUM_COMPONENTGLOBALMEDIAMODULE_GRIDALIGNMENT
-  headline: ComponentComponentsHeadlineComponent
-  id: ID!
-  link: ComponentComponentsLinkComponent
-  mediaItems: ComponentComponentsMediaComponent
-  showInMenu: Boolean
-  subHeadline: String
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalRichtextModule {
-  id: ID!
-  richText: ComponentComponentsRichTextComponent
-  showInMenu: Boolean
-  theme: ComponentConfigTheme
-}
-
-input ComponentGlobalRichtextModuleFiltersInput {
-  and: [ComponentGlobalRichtextModuleFiltersInput]
-  not: ComponentGlobalRichtextModuleFiltersInput
-  or: [ComponentGlobalRichtextModuleFiltersInput]
-  richText: ComponentComponentsRichTextComponentFiltersInput
-  showInMenu: BooleanFilterInput
-  theme: ComponentConfigThemeFiltersInput
-}
-
-input ComponentGlobalRichtextModuleInput {
-  id: ID
-  richText: ComponentComponentsRichTextComponentInput
-  showInMenu: Boolean
-  theme: ComponentConfigThemeInput
-}
-
-type ComponentGlobalRouteNavigationModule {
-  backwardsLink: ComponentComponentsLinkComponent
-  forwardLink: ComponentComponentsLinkComponent
-  icon: Boolean
-  id: ID!
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalSammlungOnlineAdapter {
-  headline: ComponentComponentsHeadlineComponent
-  id: ID!
-  mediaItems: ComponentComponentsEasyDbItems
-  ref(filters: ComponentComponentsEasyDbRefFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsEasyDbRef]!
-  showInMenu: Boolean
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalSeparatorModule {
-  id: ID!
-  separatorHeadline: String
-  showInMenu: Boolean
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalStoriesContainerModule {
-  active: Boolean
-  id: ID!
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalTagCarouselModule {
-  href: String
-  id: ID!
-  story: StoryEntityResponse
-  tag: String
-  theme: ComponentConfigTheme
-  weight: ENUM_COMPONENTGLOBALTAGCAROUSELMODULE_WEIGHT
-}
-
-type ComponentGlobalTagCloudModule {
-  id: ID!
-  primaryTags(filters: ComponentComponentsTagComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsTagComponent]
-  quaternaryTags(filters: ComponentComponentsTagComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsTagComponent]
-  secondaryTags(filters: ComponentComponentsTagComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsTagComponent]
-  tagsSeparator: Boolean
-  tertiaryTags(filters: ComponentComponentsTagComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsTagComponent]
-  theme: ComponentConfigTheme!
-}
-
-input ComponentGlobalTagCloudModuleFiltersInput {
-  and: [ComponentGlobalTagCloudModuleFiltersInput]
-  not: ComponentGlobalTagCloudModuleFiltersInput
-  or: [ComponentGlobalTagCloudModuleFiltersInput]
-  primaryTags: ComponentComponentsTagComponentFiltersInput
-  quaternaryTags: ComponentComponentsTagComponentFiltersInput
-  secondaryTags: ComponentComponentsTagComponentFiltersInput
-  tagsSeparator: BooleanFilterInput
-  tertiaryTags: ComponentComponentsTagComponentFiltersInput
-  theme: ComponentConfigThemeFiltersInput
-}
-
-input ComponentGlobalTagCloudModuleInput {
-  id: ID
-  primaryTags: [ComponentComponentsTagComponentInput]
-  quaternaryTags: [ComponentComponentsTagComponentInput]
-  secondaryTags: [ComponentComponentsTagComponentInput]
-  tagsSeparator: Boolean
-  tertiaryTags: [ComponentComponentsTagComponentInput]
-  theme: ComponentConfigThemeInput
-}
-
-type ComponentGlobalTextCardModule {
-  buttonLink: ComponentComponentsSimpleLink
-  cardHeadline: String
-  id: ID!
-  separatorHeadline: String
-  text: String
-  theme: ComponentConfigTheme!
-}
-
-input ComponentGlobalTextCardModuleFiltersInput {
-  and: [ComponentGlobalTextCardModuleFiltersInput]
-  buttonLink: ComponentComponentsSimpleLinkFiltersInput
-  cardHeadline: StringFilterInput
-  not: ComponentGlobalTextCardModuleFiltersInput
-  or: [ComponentGlobalTextCardModuleFiltersInput]
-  separatorHeadline: StringFilterInput
-  text: StringFilterInput
-  theme: ComponentConfigThemeFiltersInput
-}
-
-input ComponentGlobalTextCardModuleInput {
-  buttonLink: ComponentComponentsSimpleLinkInput
-  cardHeadline: String
-  id: ID
-  separatorHeadline: String
-  text: String
-  theme: ComponentConfigThemeInput
-}
-
-type ComponentGlobalTextDrawerModule {
-  assets(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
-  button: ComponentComponentsButtonComponent
-  drawerHeadline: String
-  drawerSubHeadline: String
-  id: ID!
-  showInMenu: Boolean
-  text: String
-  theme: ComponentConfigTheme
-}
-
-type ComponentGlobalVideoModule {
-  id: ID!
-  placeholderImage: UploadFileEntityResponse!
-  video: UploadFileEntityResponse!
-}
-
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar DateTime
-
-input DateTimeFilterInput {
-  and: [DateTime]
-  between: [DateTime]
-  contains: DateTime
-  containsi: DateTime
-  endsWith: DateTime
-  eq: DateTime
-  gt: DateTime
-  gte: DateTime
-  in: [DateTime]
-  lt: DateTime
-  lte: DateTime
-  ne: DateTime
-  not: DateTimeFilterInput
-  notContains: DateTime
-  notContainsi: DateTime
-  notIn: [DateTime]
-  notNull: Boolean
-  or: [DateTime]
-  startsWith: DateTime
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDCOLOR {
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDSTYLE {
-  transparent
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERCOLOR {
-  gradient
-  primary
-  secondary
-  tertiary
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERWIDTH {
-  large
-  medium
-  small
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CARDWIDTH {
-  full
-  half
-  oneThird
-  twoThirds
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CONTENTALIGNMENT {
-  center
-  right
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEALIGNMENT {
-  center
-  right
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINECOLOR {
-  gradient
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEDECORATION {
-  underline
-  uppercase
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEFONTSIZE {
-  extraLarge
-  large
-  medium
-  small
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEORIENTATION {
-  vertical
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINESTYLE {
-  italic
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEWEIGHT {
-  bold
-  light
-  medium
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_IMAGEPOSITION {
-  bottom
-  left
-  right
-  top
-}
-
-enum ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_LINKCOLOR {
-  gradient
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum ENUM_COMPONENTCOMPONENTSEASYDBITEMS_LAYOUT {
-  column
-  row
-}
-
-enum ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTCOLUMNS {
-  col1
-  col2
-  col3
-}
-
-enum ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTPOSITION {
-  above
-  below
-}
-
-enum ENUM_COMPONENTCOMPONENTSEASYDBREF_OBJECTFIT {
-  contain
-  cover
-}
-
-enum ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_LAYOUT {
-  column
-  row
-}
-
-enum ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTCOLUMNS {
-  col1
-  col2
-  col3
-}
-
-enum ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTPOSITION {
-  above
-  below
-}
-
-enum ENUM_COMPONENTCOMPONENTSMODELINFOPOINTS_SLUG {
-  SpriteA1
-  SpriteA2
-  SpriteA3
-  SpriteA4
-  SpriteB1
-  SpriteB2
-  SpriteB3
-  SpriteB4
-}
-
-enum ENUM_COMPONENTCOMPONENTSNAVIGATIONLINKCOMPONENT_SLUG {
-  primary
-  quaternary
-  quinary
-  secondary
-  tertiary
-}
-
-enum ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_LAYOUT {
-  col
-  row
-}
-
-enum ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_TEXTCOLUMNS {
-  col1
-  col2
-  col3
-}
-
-enum ENUM_COMPONENTCOMPONENTSSMBCOLLECTIONSBLOCK_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TOPIC
-}
-
-enum ENUM_COMPONENTCOMPONENTSSMBHEADERMENUITEMS_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TOPIC
-}
-
-enum ENUM_COMPONENTCOMPONENTSSMBHIGHLIGHTSBLOCK_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TOPIC
-}
-
-enum ENUM_COMPONENTCOMPONENTSSMBSECTION_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TEXT
-  TOPIC
-}
-
-enum ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_ALIGNMENT {
-  left
-  right
-}
-
-enum ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_WEIGHT {
-  size1
-  size2
-  size3
-}
-
-enum ENUM_COMPONENTCOMPONENTSTAGCOMPONENT_WEIGHT {
-  default
-  large
-  medium
-}
-
-enum ENUM_COMPONENTCONFIGTHEME_THEMES {
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum ENUM_COMPONENTGLOBALCARDIMAGEMODULE_LAYOUT {
-  float
-  parallel
-  translate
-}
-
-enum ENUM_COMPONENTGLOBALCARDIMAGEMODULE_POSITION {
-  down
-  up
-}
-
-enum ENUM_COMPONENTGLOBALCARDIMAGEMODULE_TEXTALIGNMENT {
-  center
-}
-
-enum ENUM_COMPONENTGLOBALHEROMODULE_HEROBACKGROUNDTHEME {
-  primary
-  quaternary
-  quinary
-  secondary
-  tertiary
-}
-
-enum ENUM_COMPONENTGLOBALIMAGEBANNERMODULE_POSITION {
-  center
-  end
-  start
-}
-
-enum ENUM_COMPONENTGLOBALMEDIAMODULE_GRIDALIGNMENT {
-  default
-  left
-  right
-}
-
-enum ENUM_COMPONENTGLOBALTAGCAROUSELMODULE_WEIGHT {
-  size1
-  size2
-  size3
-}
-
-type Error {
-  code: String!
-  message: String
-}
-
-input FileInfoInput {
-  alternativeText: String
-  caption: String
-  name: String
-}
-
-input FloatFilterInput {
-  and: [Float]
-  between: [Float]
-  contains: Float
-  containsi: Float
-  endsWith: Float
-  eq: Float
-  gt: Float
-  gte: Float
-  in: [Float]
-  lt: Float
-  lte: Float
-  ne: Float
-  not: FloatFilterInput
-  notContains: Float
-  notContainsi: Float
-  notIn: [Float]
-  notNull: Boolean
-  or: [Float]
-  startsWith: Float
-}
-
-union GenericMorph = Category | ComponentComponentsBannerCard | ComponentComponentsBreadcrumbsLink | ComponentComponentsButtonComponent | ComponentComponentsCardLinkComponent | ComponentComponentsContentCardComponent | ComponentComponentsCookie | ComponentComponentsEasyDbItems | ComponentComponentsEasyDbRef | ComponentComponentsHeadlineComponent | ComponentComponentsImageCard | ComponentComponentsImageMapCard | ComponentComponentsImageScrollCard | ComponentComponentsLegalPages | ComponentComponentsLinkComponent | ComponentComponentsMediaComponent | ComponentComponentsModelInfoPoints | ComponentComponentsNavigationLinkComponent | ComponentComponentsRichTextComponent | ComponentComponentsSimpleLink | ComponentComponentsSlug | ComponentComponentsSmbCollectionsBlock | ComponentComponentsSmbDownloadModule | ComponentComponentsSmbHeaderMenuItems | ComponentComponentsSmbHighlightsBlock | ComponentComponentsSmbLegalPagesBlock | ComponentComponentsSmbResearchModal | ComponentComponentsSmbSearchButtonBlock | ComponentComponentsSmbSection | ComponentComponentsSmbTextCard | ComponentComponentsSmbVideoBlock | ComponentComponentsSmbWebModule | ComponentComponentsStoryComponent | ComponentComponentsTagComponent | ComponentComponentsTextComponent | ComponentConfigHeroSwiperItem | ComponentConfigIndexConfig | ComponentConfigPageConfig | ComponentConfigTheme | ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | I18NLocale | Index | SiteConfig | SmbGuidepage | SmbLandingpage | SmbResearchpage | SmbSiteConfig | SmbTopicspage | Story | Topic | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser
-
-type I18NLocale {
-  code: String
-  createdAt: DateTime
-  name: String
-  updatedAt: DateTime
-}
-
-"""
-A string used to identify an i18n locale
-"""
-scalar I18NLocaleCode
-
-type I18NLocaleEntity {
-  attributes: I18NLocale
-  id: ID
-}
-
-type I18NLocaleEntityResponse {
-  data: I18NLocaleEntity
-}
-
-type I18NLocaleEntityResponseCollection {
-  data: [I18NLocaleEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input I18NLocaleFiltersInput {
-  and: [I18NLocaleFiltersInput]
-  code: StringFilterInput
-  createdAt: DateTimeFilterInput
-  id: IDFilterInput
-  name: StringFilterInput
-  not: I18NLocaleFiltersInput
-  or: [I18NLocaleFiltersInput]
-  updatedAt: DateTimeFilterInput
-}
-
-input IDFilterInput {
-  and: [ID]
-  between: [ID]
-  contains: ID
-  containsi: ID
-  endsWith: ID
-  eq: ID
-  gt: ID
-  gte: ID
-  in: [ID]
-  lt: ID
-  lte: ID
-  ne: ID
-  not: IDFilterInput
-  notContains: ID
-  notContainsi: ID
-  notIn: [ID]
-  notNull: Boolean
-  or: [ID]
-  startsWith: ID
-}
-
-type Index {
-  config: ComponentConfigIndexConfig
-  createdAt: DateTime
-  locale: String
-  localizations(publicationState: PublicationState = LIVE): IndexRelationResponseCollection
-  modules: [IndexModulesDynamicZone]
-  publishedAt: DateTime
-  updatedAt: DateTime
-}
-
-type IndexEntity {
-  attributes: Index
-  id: ID
-}
-
-type IndexEntityResponse {
-  data: IndexEntity
-}
-
-input IndexInput {
-  config: ComponentConfigIndexConfigInput
-  modules: [IndexModulesDynamicZoneInput!]
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-}
-
-union IndexModulesDynamicZone = ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | Error
-
-scalar IndexModulesDynamicZoneInput
-
-type IndexRelationResponseCollection {
-  data: [IndexEntity!]!
-}
-
-input IntFilterInput {
-  and: [Int]
-  between: [Int]
-  contains: Int
-  containsi: Int
-  endsWith: Int
-  eq: Int
-  gt: Int
-  gte: Int
-  in: [Int]
-  lt: Int
-  lte: Int
-  ne: Int
-  not: IntFilterInput
-  notContains: Int
-  notContainsi: Int
-  notIn: [Int]
-  notNull: Boolean
-  or: [Int]
-  startsWith: Int
-}
-
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
@@ -1424,387 +26,6 @@ input Int_comparison_exp {
   _lte: Int
   _neq: Int
   _nin: [Int!]
-}
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON
-
-input JSONFilterInput {
-  and: [JSON]
-  between: [JSON]
-  contains: JSON
-  containsi: JSON
-  endsWith: JSON
-  eq: JSON
-  gt: JSON
-  gte: JSON
-  in: [JSON]
-  lt: JSON
-  lte: JSON
-  ne: JSON
-  not: JSONFilterInput
-  notContains: JSON
-  notContainsi: JSON
-  notIn: [JSON]
-  notNull: Boolean
-  or: [JSON]
-  startsWith: JSON
-}
-
-"""
-The `Long` scalar type represents 52-bit integers
-"""
-scalar Long
-
-input LongFilterInput {
-  and: [Long]
-  between: [Long]
-  contains: Long
-  containsi: Long
-  endsWith: Long
-  eq: Long
-  gt: Long
-  gte: Long
-  in: [Long]
-  lt: Long
-  lte: Long
-  ne: Long
-  not: LongFilterInput
-  notContains: Long
-  notContainsi: Long
-  notIn: [Long]
-  notNull: Boolean
-  or: [Long]
-  startsWith: Long
-}
-
-type Pagination {
-  page: Int!
-  pageCount: Int!
-  pageSize: Int!
-  total: Int!
-}
-
-input PaginationArg {
-  limit: Int
-  page: Int
-  pageSize: Int
-  start: Int
-}
-
-enum PublicationState {
-  LIVE
-  PREVIEW
-}
-
-type ResponseCollectionMeta {
-  pagination: Pagination!
-}
-
-type SiteConfig {
-  breadcrumbsLink: ComponentComponentsBreadcrumbsLink
-  cookies: ComponentComponentsCookie
-  copyright: String
-  createdAt: DateTime
-  footerPrimaryLinkItems(filters: ComponentComponentsNavigationLinkComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsNavigationLinkComponent]
-  footerSecondaryLinkItems(filters: ComponentComponentsNavigationLinkComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsNavigationLinkComponent]
-  footerTertiaryLinkItems(filters: ComponentComponentsNavigationLinkComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsNavigationLinkComponent]
-  headerMenuItems(filters: ComponentComponentsNavigationLinkComponentFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsNavigationLinkComponent]
-  headerTitle: String!
-  languageSwitcher: Boolean!
-  locale: String
-  localizations: SiteConfigRelationResponseCollection
-  updatedAt: DateTime
-}
-
-type SiteConfigEntity {
-  attributes: SiteConfig
-  id: ID
-}
-
-type SiteConfigEntityResponse {
-  data: SiteConfigEntity
-}
-
-input SiteConfigInput {
-  breadcrumbsLink: ComponentComponentsBreadcrumbsLinkInput
-  cookies: ComponentComponentsCookieInput
-  copyright: String
-  footerPrimaryLinkItems: [ComponentComponentsNavigationLinkComponentInput]
-  footerSecondaryLinkItems: [ComponentComponentsNavigationLinkComponentInput]
-  footerTertiaryLinkItems: [ComponentComponentsNavigationLinkComponentInput]
-  headerMenuItems: [ComponentComponentsNavigationLinkComponentInput]
-  headerTitle: String
-  languageSwitcher: Boolean
-  sitemap_exclude: Boolean
-}
-
-type SiteConfigRelationResponseCollection {
-  data: [SiteConfigEntity!]!
-}
-
-type SmbGuidepage {
-  createdAt: DateTime
-  fallbackHeader: String
-  fallbackText: String
-  publishedAt: DateTime
-  updatedAt: DateTime
-}
-
-type SmbGuidepageEntity {
-  attributes: SmbGuidepage
-  id: ID
-}
-
-type SmbGuidepageEntityResponse {
-  data: SmbGuidepageEntity
-}
-
-input SmbGuidepageInput {
-  fallbackHeader: String
-  fallbackText: String
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-}
-
-type SmbLandingpage {
-  createdAt: DateTime
-  heroSwiperItems(filters: ComponentConfigHeroSwiperItemFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentConfigHeroSwiperItem]
-  locale: String
-  localizations(publicationState: PublicationState = LIVE): SmbLandingpageRelationResponseCollection
-  module: [SmbLandingpageModuleDynamicZone]
-  publishedAt: DateTime
-  updatedAt: DateTime
-}
-
-type SmbLandingpageEntity {
-  attributes: SmbLandingpage
-  id: ID
-}
-
-type SmbLandingpageEntityResponse {
-  data: SmbLandingpageEntity
-}
-
-input SmbLandingpageInput {
-  heroSwiperItems: [ComponentConfigHeroSwiperItemInput]
-  module: [SmbLandingpageModuleDynamicZoneInput!]
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-}
-
-union SmbLandingpageModuleDynamicZone = ComponentComponentsSmbSection | Error
-
-scalar SmbLandingpageModuleDynamicZoneInput
-
-type SmbLandingpageRelationResponseCollection {
-  data: [SmbLandingpageEntity!]!
-}
-
-type SmbResearchpage {
-  createdAt: DateTime
-  header: String
-  locale: String
-  localizations(publicationState: PublicationState = LIVE): SmbResearchpageRelationResponseCollection
-  modalDialog: ComponentComponentsSmbResearchModal
-  publishedAt: DateTime
-  updatedAt: DateTime
-}
-
-type SmbResearchpageEntity {
-  attributes: SmbResearchpage
-  id: ID
-}
-
-type SmbResearchpageEntityResponse {
-  data: SmbResearchpageEntity
-}
-
-input SmbResearchpageInput {
-  header: String
-  modalDialog: ComponentComponentsSmbResearchModalInput
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-}
-
-type SmbResearchpageRelationResponseCollection {
-  data: [SmbResearchpageEntity!]!
-}
-
-type SmbSiteConfig {
-  contactTextBlock: ComponentComponentsSmbTextCard
-  contactVideoBlock: ComponentComponentsSmbVideoBlock
-  copyright: String
-  createdAt: DateTime
-  headerMenuItems(filters: ComponentComponentsSmbHeaderMenuItemsFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentComponentsSmbHeaderMenuItems]
-  legalPages: [SmbSiteConfigLegalPagesDynamicZone]
-  locale: String
-  localizations(publicationState: PublicationState = LIVE): SmbSiteConfigRelationResponseCollection
-  publishedAt: DateTime
-  updatedAt: DateTime
-}
-
-type SmbSiteConfigEntity {
-  attributes: SmbSiteConfig
-  id: ID
-}
-
-type SmbSiteConfigEntityResponse {
-  data: SmbSiteConfigEntity
-}
-
-input SmbSiteConfigInput {
-  contactTextBlock: ComponentComponentsSmbTextCardInput
-  contactVideoBlock: ComponentComponentsSmbVideoBlockInput
-  copyright: String
-  headerMenuItems: [ComponentComponentsSmbHeaderMenuItemsInput]
-  legalPages: [SmbSiteConfigLegalPagesDynamicZoneInput!]
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-}
-
-union SmbSiteConfigLegalPagesDynamicZone = ComponentComponentsLegalPages | Error
-
-scalar SmbSiteConfigLegalPagesDynamicZoneInput
-
-type SmbSiteConfigRelationResponseCollection {
-  data: [SmbSiteConfigEntity!]!
-}
-
-type SmbTopicspage {
-  createdAt: DateTime
-  heroFallbackAsset: UploadFileEntityResponse!
-  heroFallbackHeader: String!
-  heroFallbackText: String!
-  locale: String
-  localizations(publicationState: PublicationState = LIVE): SmbTopicspageRelationResponseCollection
-  publishedAt: DateTime
-  updatedAt: DateTime
-}
-
-type SmbTopicspageEntity {
-  attributes: SmbTopicspage
-  id: ID
-}
-
-type SmbTopicspageEntityResponse {
-  data: SmbTopicspageEntity
-}
-
-input SmbTopicspageInput {
-  heroFallbackAsset: ID
-  heroFallbackHeader: String
-  heroFallbackText: String
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-}
-
-type SmbTopicspageRelationResponseCollection {
-  data: [SmbTopicspageEntity!]!
-}
-
-type Story {
-  category: CategoryEntityResponse
-  config: ComponentConfigPageConfig
-  createdAt: DateTime
-  displayInHero: Boolean
-  isVisibleInListView: Boolean
-  locale: String
-  localizations(filters: StoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): StoryRelationResponseCollection
-  modules: [StoryModulesDynamicZone]
-  publishedAt: DateTime
-  slug: String!
-  title: String
-  topic: TopicEntityResponse
-  updatedAt: DateTime
-  versionNumber: Int
-  versions(filters: StoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): StoryRelationResponseCollection
-  vuid: String
-}
-
-type StoryEntity {
-  attributes: Story
-  id: ID
-}
-
-type StoryEntityResponse {
-  data: StoryEntity
-}
-
-type StoryEntityResponseCollection {
-  data: [StoryEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input StoryFiltersInput {
-  and: [StoryFiltersInput]
-  category: CategoryFiltersInput
-  config: ComponentConfigPageConfigFiltersInput
-  createdAt: DateTimeFilterInput
-  displayInHero: BooleanFilterInput
-  id: IDFilterInput
-  isVisibleInListView: BooleanFilterInput
-  locale: StringFilterInput
-  localizations: StoryFiltersInput
-  not: StoryFiltersInput
-  or: [StoryFiltersInput]
-  publishedAt: DateTimeFilterInput
-  sitemap_exclude: BooleanFilterInput
-  slug: StringFilterInput
-  title: StringFilterInput
-  topic: TopicFiltersInput
-  updatedAt: DateTimeFilterInput
-  versionNumber: IntFilterInput
-  versions: StoryFiltersInput
-  vuid: StringFilterInput
-}
-
-input StoryInput {
-  category: ID
-  config: ComponentConfigPageConfigInput
-  displayInHero: Boolean
-  isVisibleInListView: Boolean
-  modules: [StoryModulesDynamicZoneInput!]
-  publishedAt: DateTime
-  sitemap_exclude: Boolean
-  slug: String
-  title: String
-  topic: ID
-  versionNumber: Int
-  versions: [ID]
-  vuid: String
-}
-
-union StoryModulesDynamicZone = ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | Error
-
-scalar StoryModulesDynamicZoneInput
-
-type StoryRelationResponseCollection {
-  data: [StoryEntity!]!
-}
-
-input StringFilterInput {
-  and: [String]
-  between: [String]
-  contains: String
-  containsi: String
-  endsWith: String
-  eq: String
-  gt: String
-  gte: String
-  in: [String]
-  lt: String
-  lte: String
-  ne: String
-  not: StringFilterInput
-  notContains: String
-  notContainsi: String
-  notIn: [String]
-  notNull: Boolean
-  or: [String]
-  startsWith: String
 }
 
 """
@@ -1860,354 +81,6 @@ input String_comparison_exp {
   does the column match the given SQL regular expression
   """
   _similar: String
-}
-
-type Topic {
-  createdAt: DateTime
-  isVisibleInListView: Boolean
-  locale: String
-  localizations(filters: TopicFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): TopicRelationResponseCollection
-  publishedAt: DateTime
-  seperator_01: ComponentGlobalColorSeparatorModule
-  seperator_02: ComponentGlobalColorSeparatorModule
-  slug: String
-  stories(filters: StoryFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): StoryRelationResponseCollection
-  tagCloud: ComponentGlobalTagCloudModule
-  text: String
-  textCard: ComponentGlobalTextCardModule
-  title: String
-  updatedAt: DateTime
-  versionNumber: Int
-  versions(filters: TopicFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): TopicRelationResponseCollection
-  vuid: String
-}
-
-type TopicEntity {
-  attributes: Topic
-  id: ID
-}
-
-type TopicEntityResponse {
-  data: TopicEntity
-}
-
-type TopicEntityResponseCollection {
-  data: [TopicEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input TopicFiltersInput {
-  and: [TopicFiltersInput]
-  createdAt: DateTimeFilterInput
-  id: IDFilterInput
-  isVisibleInListView: BooleanFilterInput
-  locale: StringFilterInput
-  localizations: TopicFiltersInput
-  not: TopicFiltersInput
-  or: [TopicFiltersInput]
-  publishedAt: DateTimeFilterInput
-  seperator_01: ComponentGlobalColorSeparatorModuleFiltersInput
-  seperator_02: ComponentGlobalColorSeparatorModuleFiltersInput
-  sitemap_exclude: BooleanFilterInput
-  slug: StringFilterInput
-  stories: StoryFiltersInput
-  tagCloud: ComponentGlobalTagCloudModuleFiltersInput
-  text: StringFilterInput
-  textCard: ComponentGlobalTextCardModuleFiltersInput
-  title: StringFilterInput
-  updatedAt: DateTimeFilterInput
-  versionNumber: IntFilterInput
-  versions: TopicFiltersInput
-  vuid: StringFilterInput
-}
-
-input TopicInput {
-  isVisibleInListView: Boolean
-  publishedAt: DateTime
-  seperator_01: ComponentGlobalColorSeparatorModuleInput
-  seperator_02: ComponentGlobalColorSeparatorModuleInput
-  sitemap_exclude: Boolean
-  slug: String
-  stories: [ID]
-  tagCloud: ComponentGlobalTagCloudModuleInput
-  text: String
-  textCard: ComponentGlobalTextCardModuleInput
-  title: String
-  versionNumber: Int
-  versions: [ID]
-  vuid: String
-}
-
-type TopicRelationResponseCollection {
-  data: [TopicEntity!]!
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar Upload
-
-type UploadFile {
-  alternativeText: String
-  caption: String
-  createdAt: DateTime
-  ext: String
-  formats: JSON
-  hash: String!
-  height: Int
-  mime: String!
-  name: String!
-  previewUrl: String
-  provider: String!
-  provider_metadata: JSON
-  related: [GenericMorph]
-  size: Float!
-  updatedAt: DateTime
-  url: String!
-  width: Int
-}
-
-type UploadFileEntity {
-  attributes: UploadFile
-  id: ID
-}
-
-type UploadFileEntityResponse {
-  data: UploadFileEntity
-}
-
-type UploadFileEntityResponseCollection {
-  data: [UploadFileEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input UploadFileFiltersInput {
-  alternativeText: StringFilterInput
-  and: [UploadFileFiltersInput]
-  caption: StringFilterInput
-  createdAt: DateTimeFilterInput
-  ext: StringFilterInput
-  formats: JSONFilterInput
-  hash: StringFilterInput
-  height: IntFilterInput
-  id: IDFilterInput
-  mime: StringFilterInput
-  name: StringFilterInput
-  not: UploadFileFiltersInput
-  or: [UploadFileFiltersInput]
-  previewUrl: StringFilterInput
-  provider: StringFilterInput
-  provider_metadata: JSONFilterInput
-  sitemap_exclude: BooleanFilterInput
-  size: FloatFilterInput
-  updatedAt: DateTimeFilterInput
-  url: StringFilterInput
-  width: IntFilterInput
-}
-
-input UploadFileInput {
-  alternativeText: String
-  caption: String
-  ext: String
-  formats: JSON
-  hash: String
-  height: Int
-  mime: String
-  name: String
-  previewUrl: String
-  provider: String
-  provider_metadata: JSON
-  sitemap_exclude: Boolean
-  size: Float
-  url: String
-  width: Int
-}
-
-type UploadFileRelationResponseCollection {
-  data: [UploadFileEntity!]!
-}
-
-type UsersPermissionsCreateRolePayload {
-  ok: Boolean!
-}
-
-type UsersPermissionsDeleteRolePayload {
-  ok: Boolean!
-}
-
-input UsersPermissionsLoginInput {
-  identifier: String!
-  password: String!
-  provider: String! = "local"
-}
-
-type UsersPermissionsLoginPayload {
-  jwt: String
-  user: UsersPermissionsMe!
-}
-
-type UsersPermissionsMe {
-  blocked: Boolean
-  confirmed: Boolean
-  email: String
-  id: ID!
-  role: UsersPermissionsMeRole
-  username: String!
-}
-
-type UsersPermissionsMeRole {
-  description: String
-  id: ID!
-  name: String!
-  type: String
-}
-
-type UsersPermissionsPasswordPayload {
-  ok: Boolean!
-}
-
-type UsersPermissionsPermission {
-  action: String!
-  createdAt: DateTime
-  role: UsersPermissionsRoleEntityResponse
-  updatedAt: DateTime
-}
-
-type UsersPermissionsPermissionEntity {
-  attributes: UsersPermissionsPermission
-  id: ID
-}
-
-input UsersPermissionsPermissionFiltersInput {
-  action: StringFilterInput
-  and: [UsersPermissionsPermissionFiltersInput]
-  createdAt: DateTimeFilterInput
-  id: IDFilterInput
-  not: UsersPermissionsPermissionFiltersInput
-  or: [UsersPermissionsPermissionFiltersInput]
-  role: UsersPermissionsRoleFiltersInput
-  updatedAt: DateTimeFilterInput
-}
-
-type UsersPermissionsPermissionRelationResponseCollection {
-  data: [UsersPermissionsPermissionEntity!]!
-}
-
-input UsersPermissionsRegisterInput {
-  email: String!
-  password: String!
-  username: String!
-}
-
-type UsersPermissionsRole {
-  createdAt: DateTime
-  description: String
-  name: String!
-  permissions(filters: UsersPermissionsPermissionFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UsersPermissionsPermissionRelationResponseCollection
-  type: String
-  updatedAt: DateTime
-  users(filters: UsersPermissionsUserFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UsersPermissionsUserRelationResponseCollection
-}
-
-type UsersPermissionsRoleEntity {
-  attributes: UsersPermissionsRole
-  id: ID
-}
-
-type UsersPermissionsRoleEntityResponse {
-  data: UsersPermissionsRoleEntity
-}
-
-type UsersPermissionsRoleEntityResponseCollection {
-  data: [UsersPermissionsRoleEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input UsersPermissionsRoleFiltersInput {
-  and: [UsersPermissionsRoleFiltersInput]
-  createdAt: DateTimeFilterInput
-  description: StringFilterInput
-  id: IDFilterInput
-  name: StringFilterInput
-  not: UsersPermissionsRoleFiltersInput
-  or: [UsersPermissionsRoleFiltersInput]
-  permissions: UsersPermissionsPermissionFiltersInput
-  type: StringFilterInput
-  updatedAt: DateTimeFilterInput
-  users: UsersPermissionsUserFiltersInput
-}
-
-input UsersPermissionsRoleInput {
-  description: String
-  name: String
-  permissions: [ID]
-  type: String
-  users: [ID]
-}
-
-type UsersPermissionsUpdateRolePayload {
-  ok: Boolean!
-}
-
-type UsersPermissionsUser {
-  blocked: Boolean
-  confirmed: Boolean
-  createdAt: DateTime
-  email: String!
-  provider: String
-  role: UsersPermissionsRoleEntityResponse
-  updatedAt: DateTime
-  username: String!
-}
-
-type UsersPermissionsUserEntity {
-  attributes: UsersPermissionsUser
-  id: ID
-}
-
-type UsersPermissionsUserEntityResponse {
-  data: UsersPermissionsUserEntity
-}
-
-type UsersPermissionsUserEntityResponseCollection {
-  data: [UsersPermissionsUserEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input UsersPermissionsUserFiltersInput {
-  and: [UsersPermissionsUserFiltersInput]
-  blocked: BooleanFilterInput
-  confirmationToken: StringFilterInput
-  confirmed: BooleanFilterInput
-  createdAt: DateTimeFilterInput
-  email: StringFilterInput
-  id: IDFilterInput
-  not: UsersPermissionsUserFiltersInput
-  or: [UsersPermissionsUserFiltersInput]
-  password: StringFilterInput
-  provider: StringFilterInput
-  resetPasswordToken: StringFilterInput
-  role: UsersPermissionsRoleFiltersInput
-  sitemap_exclude: BooleanFilterInput
-  updatedAt: DateTimeFilterInput
-  username: StringFilterInput
-}
-
-input UsersPermissionsUserInput {
-  blocked: Boolean
-  confirmationToken: String
-  confirmed: Boolean
-  email: String
-  password: String
-  provider: String
-  resetPasswordToken: String
-  role: ID
-  sitemap_exclude: Boolean
-  username: String
-}
-
-type UsersPermissionsUserRelationResponseCollection {
-  data: [UsersPermissionsUserEntity!]!
 }
 
 scalar _int8
@@ -2293,7 +166,7 @@ type mutation_root {
   """
   delete single row from the table: "smb.attachments"
   """
-  delete_smb_attachments_by_pk(id: bigint!): smb_attachments
+  delete_smb_attachments_by_pk(id: bigint!, object_id: bigint!): smb_attachments
   """
   delete data from the table: "smb.attribute_approval"
   """
@@ -2319,6 +192,22 @@ type mutation_root {
   """
   delete_smb_attributes_by_pk(key: String!): smb_attributes
   """
+  delete data from the table: "smb.blocked_attachments"
+  """
+  delete_smb_blocked_attachments("""filter the rows which have to be deleted""" where: smb_blocked_attachments_bool_exp!): smb_blocked_attachments_mutation_response
+  """
+  delete single row from the table: "smb.blocked_attachments"
+  """
+  delete_smb_blocked_attachments_by_pk(id: bigint!): smb_blocked_attachments
+  """
+  delete data from the table: "smb.buildings"
+  """
+  delete_smb_buildings("""filter the rows which have to be deleted""" where: smb_buildings_bool_exp!): smb_buildings_mutation_response
+  """
+  delete single row from the table: "smb.buildings"
+  """
+  delete_smb_buildings_by_pk(key: String!): smb_buildings
+  """
   delete data from the table: "smb.collections"
   """
   delete_smb_collections("""filter the rows which have to be deleted""" where: smb_collections_bool_exp!): smb_collections_mutation_response
@@ -2326,6 +215,14 @@ type mutation_root {
   delete single row from the table: "smb.collections"
   """
   delete_smb_collections_by_pk(key: String!): smb_collections
+  """
+  delete data from the table: "smb.cultural_references"
+  """
+  delete_smb_cultural_references("""filter the rows which have to be deleted""" where: smb_cultural_references_bool_exp!): smb_cultural_references_mutation_response
+  """
+  delete single row from the table: "smb.cultural_references"
+  """
+  delete_smb_cultural_references_by_pk(id: bigint!): smb_cultural_references
   """
   delete data from the table: "smb.exhibitions"
   """
@@ -2551,6 +448,22 @@ type mutation_root {
   """
   insert_smb_attributes_one("""the row to be inserted""" object: smb_attributes_insert_input!, """upsert condition""" on_conflict: smb_attributes_on_conflict): smb_attributes
   """
+  insert data into the table: "smb.blocked_attachments"
+  """
+  insert_smb_blocked_attachments("""the rows to be inserted""" objects: [smb_blocked_attachments_insert_input!]!, """upsert condition""" on_conflict: smb_blocked_attachments_on_conflict): smb_blocked_attachments_mutation_response
+  """
+  insert a single row into the table: "smb.blocked_attachments"
+  """
+  insert_smb_blocked_attachments_one("""the row to be inserted""" object: smb_blocked_attachments_insert_input!, """upsert condition""" on_conflict: smb_blocked_attachments_on_conflict): smb_blocked_attachments
+  """
+  insert data into the table: "smb.buildings"
+  """
+  insert_smb_buildings("""the rows to be inserted""" objects: [smb_buildings_insert_input!]!, """upsert condition""" on_conflict: smb_buildings_on_conflict): smb_buildings_mutation_response
+  """
+  insert a single row into the table: "smb.buildings"
+  """
+  insert_smb_buildings_one("""the row to be inserted""" object: smb_buildings_insert_input!, """upsert condition""" on_conflict: smb_buildings_on_conflict): smb_buildings
+  """
   insert data into the table: "smb.collections"
   """
   insert_smb_collections("""the rows to be inserted""" objects: [smb_collections_insert_input!]!, """upsert condition""" on_conflict: smb_collections_on_conflict): smb_collections_mutation_response
@@ -2558,6 +471,14 @@ type mutation_root {
   insert a single row into the table: "smb.collections"
   """
   insert_smb_collections_one("""the row to be inserted""" object: smb_collections_insert_input!, """upsert condition""" on_conflict: smb_collections_on_conflict): smb_collections
+  """
+  insert data into the table: "smb.cultural_references"
+  """
+  insert_smb_cultural_references("""the rows to be inserted""" objects: [smb_cultural_references_insert_input!]!, """upsert condition""" on_conflict: smb_cultural_references_on_conflict): smb_cultural_references_mutation_response
+  """
+  insert a single row into the table: "smb.cultural_references"
+  """
+  insert_smb_cultural_references_one("""the row to be inserted""" object: smb_cultural_references_insert_input!, """upsert condition""" on_conflict: smb_cultural_references_on_conflict): smb_cultural_references
   """
   insert data into the table: "smb.exhibitions"
   """
@@ -2726,7 +647,6 @@ type mutation_root {
   insert a single row into the table: "smb.user_role"
   """
   insert_smb_user_role_one("""the row to be inserted""" object: smb_user_role_insert_input!, """upsert condition""" on_conflict: smb_user_role_on_conflict): smb_user_role
-  strapi_smb: strapi_smbMutation
   """
   update data of the table: "smb.assortments"
   """
@@ -2812,6 +732,30 @@ type mutation_root {
   """
   update_smb_attributes_many("""updates to execute, in order""" updates: [smb_attributes_updates!]!): [smb_attributes_mutation_response]
   """
+  update data of the table: "smb.blocked_attachments"
+  """
+  update_smb_blocked_attachments("""increments the numeric columns with given value of the filtered values""" _inc: smb_blocked_attachments_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_blocked_attachments_set_input, """filter the rows which have to be updated""" where: smb_blocked_attachments_bool_exp!): smb_blocked_attachments_mutation_response
+  """
+  update single row of the table: "smb.blocked_attachments"
+  """
+  update_smb_blocked_attachments_by_pk("""increments the numeric columns with given value of the filtered values""" _inc: smb_blocked_attachments_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_blocked_attachments_set_input, pk_columns: smb_blocked_attachments_pk_columns_input!): smb_blocked_attachments
+  """
+  update multiples rows of table: "smb.blocked_attachments"
+  """
+  update_smb_blocked_attachments_many("""updates to execute, in order""" updates: [smb_blocked_attachments_updates!]!): [smb_blocked_attachments_mutation_response]
+  """
+  update data of the table: "smb.buildings"
+  """
+  update_smb_buildings("""sets the columns of the filtered rows to the given values""" _set: smb_buildings_set_input, """filter the rows which have to be updated""" where: smb_buildings_bool_exp!): smb_buildings_mutation_response
+  """
+  update single row of the table: "smb.buildings"
+  """
+  update_smb_buildings_by_pk("""sets the columns of the filtered rows to the given values""" _set: smb_buildings_set_input, pk_columns: smb_buildings_pk_columns_input!): smb_buildings
+  """
+  update multiples rows of table: "smb.buildings"
+  """
+  update_smb_buildings_many("""updates to execute, in order""" updates: [smb_buildings_updates!]!): [smb_buildings_mutation_response]
+  """
   update data of the table: "smb.collections"
   """
   update_smb_collections("""sets the columns of the filtered rows to the given values""" _set: smb_collections_set_input, """filter the rows which have to be updated""" where: smb_collections_bool_exp!): smb_collections_mutation_response
@@ -2823,6 +767,18 @@ type mutation_root {
   update multiples rows of table: "smb.collections"
   """
   update_smb_collections_many("""updates to execute, in order""" updates: [smb_collections_updates!]!): [smb_collections_mutation_response]
+  """
+  update data of the table: "smb.cultural_references"
+  """
+  update_smb_cultural_references("""increments the numeric columns with given value of the filtered values""" _inc: smb_cultural_references_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_cultural_references_set_input, """filter the rows which have to be updated""" where: smb_cultural_references_bool_exp!): smb_cultural_references_mutation_response
+  """
+  update single row of the table: "smb.cultural_references"
+  """
+  update_smb_cultural_references_by_pk("""increments the numeric columns with given value of the filtered values""" _inc: smb_cultural_references_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_cultural_references_set_input, pk_columns: smb_cultural_references_pk_columns_input!): smb_cultural_references
+  """
+  update multiples rows of table: "smb.cultural_references"
+  """
+  update_smb_cultural_references_many("""updates to execute, in order""" updates: [smb_cultural_references_updates!]!): [smb_cultural_references_mutation_response]
   """
   update data of the table: "smb.exhibitions"
   """
@@ -3155,7 +1111,7 @@ type query_root {
   """
   fetch data from the table: "smb.attachments" using primary key columns
   """
-  smb_attachments_by_pk(id: bigint!): smb_attachments
+  smb_attachments_by_pk(id: bigint!, object_id: bigint!): smb_attachments
   """
   fetch data from the table: "smb.attribute_approval"
   """
@@ -3193,6 +1149,30 @@ type query_root {
   """
   smb_attributes_by_pk(key: String!): smb_attributes
   """
+  fetch data from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): [smb_blocked_attachments!]!
+  """
+  fetch aggregated fields from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments_aggregate("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): smb_blocked_attachments_aggregate!
+  """
+  fetch data from the table: "smb.blocked_attachments" using primary key columns
+  """
+  smb_blocked_attachments_by_pk(id: bigint!): smb_blocked_attachments
+  """
+  fetch data from the table: "smb.buildings"
+  """
+  smb_buildings("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): [smb_buildings!]!
+  """
+  fetch aggregated fields from the table: "smb.buildings"
+  """
+  smb_buildings_aggregate("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): smb_buildings_aggregate!
+  """
+  fetch data from the table: "smb.buildings" using primary key columns
+  """
+  smb_buildings_by_pk(key: String!): smb_buildings
+  """
   fetch data from the table: "smb.collections"
   """
   smb_collections("""distinct select on columns""" distinct_on: [smb_collections_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_collections_order_by!], """filter the rows returned""" where: smb_collections_bool_exp): [smb_collections!]!
@@ -3204,6 +1184,18 @@ type query_root {
   fetch data from the table: "smb.collections" using primary key columns
   """
   smb_collections_by_pk(key: String!): smb_collections
+  """
+  fetch data from the table: "smb.cultural_references"
+  """
+  smb_cultural_references("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
+  """
+  fetch aggregated fields from the table: "smb.cultural_references"
+  """
+  smb_cultural_references_aggregate("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): smb_cultural_references_aggregate!
+  """
+  fetch data from the table: "smb.cultural_references" using primary key columns
+  """
+  smb_cultural_references_by_pk(id: bigint!): smb_cultural_references
   """
   fetch data from the table: "smb.exhibitions"
   """
@@ -3456,7 +1448,6 @@ type query_root {
   fetch data from the table: "smb.user_role" using primary key columns
   """
   smb_user_role_by_pk(id: bigint!): smb_user_role
-  strapi_smb: strapi_smbQuery
 }
 
 """
@@ -3482,6 +1473,10 @@ type smb_assortments {
   id: bigint!
   key: String!
   preview_image: String
+  """
+  A computed field, executes function "smb.build_search_value_a"
+  """
+  searchValue: String
   search_query: String
   search_query_type: String!
 }
@@ -3532,6 +1527,7 @@ input smb_assortments_bool_exp {
   id: bigint_comparison_exp
   key: String_comparison_exp
   preview_image: String_comparison_exp
+  searchValue: String_comparison_exp
   search_query: String_comparison_exp
   search_query_type: String_comparison_exp
 }
@@ -4072,6 +2068,7 @@ input smb_assortments_order_by {
   id: order_by
   key: order_by
   preview_image: order_by
+  searchValue: order_by
   search_query: order_by
   search_query_type: order_by
 }
@@ -4737,6 +2734,10 @@ type smb_attachments {
   license: smb_licenses
   license_id: bigint
   media_type: String
+  """
+  A computed field, executes function "smb.get_attachment_filename"
+  """
+  name: String
   object_id: bigint!
   primary: Boolean
   updated_at: timestamptz!
@@ -4854,6 +2855,7 @@ input smb_attachments_bool_exp {
   license: smb_licenses_bool_exp
   license_id: bigint_comparison_exp
   media_type: String_comparison_exp
+  name: String_comparison_exp
   object_id: bigint_comparison_exp
   primary: Boolean_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -4864,11 +2866,7 @@ unique or primary key constraints on table "smb.attachments"
 """
 enum smb_attachments_constraint {
   """
-  unique or primary key constraint on columns "attachment"
-  """
-  attachments_filename_ukey
-  """
-  unique or primary key constraint on columns "id"
+  unique or primary key constraint on columns "id", "object_id"
   """
   attachments_pkey
 }
@@ -4988,6 +2986,7 @@ input smb_attachments_order_by {
   license: smb_licenses_order_by
   license_id: order_by
   media_type: order_by
+  name: order_by
   object_id: order_by
   primary: order_by
   updated_at: order_by
@@ -4998,6 +2997,7 @@ primary key columns input for table: smb.attachments
 """
 input smb_attachments_pk_columns_input {
   id: bigint!
+  object_id: bigint!
 }
 
 """
@@ -6587,11 +4587,497 @@ input smb_attributes_updates {
 }
 
 """
-Enum type definition of MDS collection keys
+Info about blocked attachments; the linked license overrides what is returned by MDS
+"""
+type smb_blocked_attachments {
+  """
+  An array relationship
+  """
+  attachments("""distinct select on columns""" distinct_on: [smb_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_attachments_order_by!], """filter the rows returned""" where: smb_attachments_bool_exp): [smb_attachments!]!
+  """
+  An aggregate relationship
+  """
+  attachments_aggregate("""distinct select on columns""" distinct_on: [smb_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_attachments_order_by!], """filter the rows returned""" where: smb_attachments_bool_exp): smb_attachments_aggregate!
+  id: bigint!
+  """
+  An object relationship
+  """
+  license: smb_licenses!
+  license_id: bigint!
+}
+
+"""
+aggregated selection of "smb.blocked_attachments"
+"""
+type smb_blocked_attachments_aggregate {
+  aggregate: smb_blocked_attachments_aggregate_fields
+  nodes: [smb_blocked_attachments!]!
+}
+
+"""
+aggregate fields of "smb.blocked_attachments"
+"""
+type smb_blocked_attachments_aggregate_fields {
+  avg: smb_blocked_attachments_avg_fields
+  count(columns: [smb_blocked_attachments_select_column!], distinct: Boolean): Int!
+  max: smb_blocked_attachments_max_fields
+  min: smb_blocked_attachments_min_fields
+  stddev: smb_blocked_attachments_stddev_fields
+  stddev_pop: smb_blocked_attachments_stddev_pop_fields
+  stddev_samp: smb_blocked_attachments_stddev_samp_fields
+  sum: smb_blocked_attachments_sum_fields
+  var_pop: smb_blocked_attachments_var_pop_fields
+  var_samp: smb_blocked_attachments_var_samp_fields
+  variance: smb_blocked_attachments_variance_fields
+}
+
+"""
+aggregate avg on columns
+"""
+type smb_blocked_attachments_avg_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "smb.blocked_attachments". All fields are combined with a logical 'AND'.
+"""
+input smb_blocked_attachments_bool_exp {
+  _and: [smb_blocked_attachments_bool_exp!]
+  _not: smb_blocked_attachments_bool_exp
+  _or: [smb_blocked_attachments_bool_exp!]
+  attachments: smb_attachments_bool_exp
+  attachments_aggregate: smb_attachments_aggregate_bool_exp
+  id: bigint_comparison_exp
+  license: smb_licenses_bool_exp
+  license_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "smb.blocked_attachments"
+"""
+enum smb_blocked_attachments_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  blocked_attachments_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_inc_input {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+input type for inserting data into table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_insert_input {
+  attachments: smb_attachments_arr_rel_insert_input
+  id: bigint
+  license: smb_licenses_obj_rel_insert_input
+  license_id: bigint
+}
+
+"""
+aggregate max on columns
+"""
+type smb_blocked_attachments_max_fields {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+aggregate min on columns
+"""
+type smb_blocked_attachments_min_fields {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+response of any mutation on the table "smb.blocked_attachments"
+"""
+type smb_blocked_attachments_mutation_response {
+  """
+  number of rows affected by the mutation
+  """
+  affected_rows: Int!
+  """
+  data from the rows affected by the mutation
+  """
+  returning: [smb_blocked_attachments!]!
+}
+
+"""
+on_conflict condition type for table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_on_conflict {
+  constraint: smb_blocked_attachments_constraint!
+  update_columns: [smb_blocked_attachments_update_column!]! = []
+  where: smb_blocked_attachments_bool_exp
+}
+
+"""
+Ordering options when selecting data from "smb.blocked_attachments".
+"""
+input smb_blocked_attachments_order_by {
+  attachments_aggregate: smb_attachments_aggregate_order_by
+  id: order_by
+  license: smb_licenses_order_by
+  license_id: order_by
+}
+
+"""
+primary key columns input for table: smb.blocked_attachments
+"""
+input smb_blocked_attachments_pk_columns_input {
+  id: bigint!
+}
+
+"""
+select columns of table "smb.blocked_attachments"
+"""
+enum smb_blocked_attachments_select_column {
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  license_id
+}
+
+"""
+input type for updating data in table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_set_input {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+aggregate stddev on columns
+"""
+type smb_blocked_attachments_stddev_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate stddev_pop on columns
+"""
+type smb_blocked_attachments_stddev_pop_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate stddev_samp on columns
+"""
+type smb_blocked_attachments_stddev_samp_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+Streaming cursor of the table "smb_blocked_attachments"
+"""
+input smb_blocked_attachments_stream_cursor_input {
+  """
+  Stream column input with initial value
+  """
+  initial_value: smb_blocked_attachments_stream_cursor_value_input!
+  """
+  cursor ordering
+  """
+  ordering: cursor_ordering
+}
+
+"""
+Initial value of the column from where the streaming should start
+"""
+input smb_blocked_attachments_stream_cursor_value_input {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+aggregate sum on columns
+"""
+type smb_blocked_attachments_sum_fields {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+update columns of table "smb.blocked_attachments"
+"""
+enum smb_blocked_attachments_update_column {
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  license_id
+}
+
+input smb_blocked_attachments_updates {
+  """
+  increments the numeric columns with given value of the filtered values
+  """
+  _inc: smb_blocked_attachments_inc_input
+  """
+  sets the columns of the filtered rows to the given values
+  """
+  _set: smb_blocked_attachments_set_input
+  where: smb_blocked_attachments_bool_exp!
+}
+
+"""
+aggregate var_pop on columns
+"""
+type smb_blocked_attachments_var_pop_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate var_samp on columns
+"""
+type smb_blocked_attachments_var_samp_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate variance on columns
+"""
+type smb_blocked_attachments_variance_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+Enum type definition of Museum buildings
+"""
+type smb_buildings {
+  key: String!
+  """
+  A computed field, executes function "smb.build_search_value_b"
+  """
+  searchValue: String
+  """
+  Display title used for all languages
+  """
+  title: String!
+}
+
+"""
+aggregated selection of "smb.buildings"
+"""
+type smb_buildings_aggregate {
+  aggregate: smb_buildings_aggregate_fields
+  nodes: [smb_buildings!]!
+}
+
+"""
+aggregate fields of "smb.buildings"
+"""
+type smb_buildings_aggregate_fields {
+  count(columns: [smb_buildings_select_column!], distinct: Boolean): Int!
+  max: smb_buildings_max_fields
+  min: smb_buildings_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "smb.buildings". All fields are combined with a logical 'AND'.
+"""
+input smb_buildings_bool_exp {
+  _and: [smb_buildings_bool_exp!]
+  _not: smb_buildings_bool_exp
+  _or: [smb_buildings_bool_exp!]
+  key: String_comparison_exp
+  searchValue: String_comparison_exp
+  title: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "smb.buildings"
+"""
+enum smb_buildings_constraint {
+  """
+  unique or primary key constraint on columns "key"
+  """
+  buildings_pkey
+}
+
+"""
+input type for inserting data into table "smb.buildings"
+"""
+input smb_buildings_insert_input {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+aggregate max on columns
+"""
+type smb_buildings_max_fields {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+aggregate min on columns
+"""
+type smb_buildings_min_fields {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+response of any mutation on the table "smb.buildings"
+"""
+type smb_buildings_mutation_response {
+  """
+  number of rows affected by the mutation
+  """
+  affected_rows: Int!
+  """
+  data from the rows affected by the mutation
+  """
+  returning: [smb_buildings!]!
+}
+
+"""
+on_conflict condition type for table "smb.buildings"
+"""
+input smb_buildings_on_conflict {
+  constraint: smb_buildings_constraint!
+  update_columns: [smb_buildings_update_column!]! = []
+  where: smb_buildings_bool_exp
+}
+
+"""
+Ordering options when selecting data from "smb.buildings".
+"""
+input smb_buildings_order_by {
+  key: order_by
+  searchValue: order_by
+  title: order_by
+}
+
+"""
+primary key columns input for table: smb.buildings
+"""
+input smb_buildings_pk_columns_input {
+  key: String!
+}
+
+"""
+select columns of table "smb.buildings"
+"""
+enum smb_buildings_select_column {
+  """
+  column name
+  """
+  key
+  """
+  column name
+  """
+  title
+}
+
+"""
+input type for updating data in table "smb.buildings"
+"""
+input smb_buildings_set_input {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+Streaming cursor of the table "smb_buildings"
+"""
+input smb_buildings_stream_cursor_input {
+  """
+  Stream column input with initial value
+  """
+  initial_value: smb_buildings_stream_cursor_value_input!
+  """
+  cursor ordering
+  """
+  ordering: cursor_ordering
+}
+
+"""
+Initial value of the column from where the streaming should start
+"""
+input smb_buildings_stream_cursor_value_input {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+update columns of table "smb.buildings"
+"""
+enum smb_buildings_update_column {
+  """
+  column name
+  """
+  key
+  """
+  column name
+  """
+  title
+}
+
+input smb_buildings_updates {
+  """
+  sets the columns of the filtered rows to the given values
+  """
+  _set: smb_buildings_set_input
+  where: smb_buildings_bool_exp!
+}
+
+"""
+List definition of all MDS collection
 """
 type smb_collections {
-  comment: String!
   key: String!
+  """
+  A computed field, executes function "smb.build_search_value_c"
+  """
+  searchValue: String
+  """
+  Common display title used for all languages
+  """
+  title: String!
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String!
 }
 
 """
@@ -6618,8 +5104,10 @@ input smb_collections_bool_exp {
   _and: [smb_collections_bool_exp!]
   _not: smb_collections_bool_exp
   _or: [smb_collections_bool_exp!]
-  comment: String_comparison_exp
   key: String_comparison_exp
+  searchValue: String_comparison_exp
+  title: String_comparison_exp
+  type: String_comparison_exp
 }
 
 """
@@ -6636,24 +5124,45 @@ enum smb_collections_constraint {
 input type for inserting data into table "smb.collections"
 """
 input smb_collections_insert_input {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
 aggregate max on columns
 """
 type smb_collections_max_fields {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
 aggregate min on columns
 """
 type smb_collections_min_fields {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
@@ -6683,8 +5192,10 @@ input smb_collections_on_conflict {
 Ordering options when selecting data from "smb.collections".
 """
 input smb_collections_order_by {
-  comment: order_by
   key: order_by
+  searchValue: order_by
+  title: order_by
+  type: order_by
 }
 
 """
@@ -6701,19 +5212,30 @@ enum smb_collections_select_column {
   """
   column name
   """
-  comment
+  key
   """
   column name
   """
-  key
+  title
+  """
+  column name
+  """
+  type
 }
 
 """
 input type for updating data in table "smb.collections"
 """
 input smb_collections_set_input {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
@@ -6734,8 +5256,15 @@ input smb_collections_stream_cursor_input {
 Initial value of the column from where the streaming should start
 """
 input smb_collections_stream_cursor_value_input {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
@@ -6745,11 +5274,15 @@ enum smb_collections_update_column {
   """
   column name
   """
-  comment
+  key
   """
   column name
   """
-  key
+  title
+  """
+  column name
+  """
+  type
 }
 
 input smb_collections_updates {
@@ -6758,6 +5291,621 @@ input smb_collections_updates {
   """
   _set: smb_collections_set_input
   where: smb_collections_bool_exp!
+}
+
+"""
+cultural references collected from repeatable group items
+"""
+type smb_cultural_references {
+  culture_item_id: bigint!
+  """
+  An object relationship
+  """
+  denomination_voc: smb_thesaurus
+  denomination_voc_id: bigint
+  id: bigint!
+  """
+  An object relationship
+  """
+  language: smb_language!
+  language_id: bigint!
+  """
+  An object relationship
+  """
+  name_voc: smb_thesaurus
+  name_voc_id: bigint
+  object_id: bigint!
+  sequence: Int!
+  """
+  An object relationship
+  """
+  type_voc: smb_thesaurus
+  type_voc_id: bigint
+}
+
+"""
+aggregated selection of "smb.cultural_references"
+"""
+type smb_cultural_references_aggregate {
+  aggregate: smb_cultural_references_aggregate_fields
+  nodes: [smb_cultural_references!]!
+}
+
+input smb_cultural_references_aggregate_bool_exp {
+  count: smb_cultural_references_aggregate_bool_exp_count
+}
+
+input smb_cultural_references_aggregate_bool_exp_count {
+  arguments: [smb_cultural_references_select_column!]
+  distinct: Boolean
+  filter: smb_cultural_references_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "smb.cultural_references"
+"""
+type smb_cultural_references_aggregate_fields {
+  avg: smb_cultural_references_avg_fields
+  count(columns: [smb_cultural_references_select_column!], distinct: Boolean): Int!
+  max: smb_cultural_references_max_fields
+  min: smb_cultural_references_min_fields
+  stddev: smb_cultural_references_stddev_fields
+  stddev_pop: smb_cultural_references_stddev_pop_fields
+  stddev_samp: smb_cultural_references_stddev_samp_fields
+  sum: smb_cultural_references_sum_fields
+  var_pop: smb_cultural_references_var_pop_fields
+  var_samp: smb_cultural_references_var_samp_fields
+  variance: smb_cultural_references_variance_fields
+}
+
+"""
+order by aggregate values of table "smb.cultural_references"
+"""
+input smb_cultural_references_aggregate_order_by {
+  avg: smb_cultural_references_avg_order_by
+  count: order_by
+  max: smb_cultural_references_max_order_by
+  min: smb_cultural_references_min_order_by
+  stddev: smb_cultural_references_stddev_order_by
+  stddev_pop: smb_cultural_references_stddev_pop_order_by
+  stddev_samp: smb_cultural_references_stddev_samp_order_by
+  sum: smb_cultural_references_sum_order_by
+  var_pop: smb_cultural_references_var_pop_order_by
+  var_samp: smb_cultural_references_var_samp_order_by
+  variance: smb_cultural_references_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "smb.cultural_references"
+"""
+input smb_cultural_references_arr_rel_insert_input {
+  data: [smb_cultural_references_insert_input!]!
+  """
+  upsert condition
+  """
+  on_conflict: smb_cultural_references_on_conflict
+}
+
+"""
+aggregate avg on columns
+"""
+type smb_cultural_references_avg_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by avg() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_avg_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "smb.cultural_references". All fields are combined with a logical 'AND'.
+"""
+input smb_cultural_references_bool_exp {
+  _and: [smb_cultural_references_bool_exp!]
+  _not: smb_cultural_references_bool_exp
+  _or: [smb_cultural_references_bool_exp!]
+  culture_item_id: bigint_comparison_exp
+  denomination_voc: smb_thesaurus_bool_exp
+  denomination_voc_id: bigint_comparison_exp
+  id: bigint_comparison_exp
+  language: smb_language_bool_exp
+  language_id: bigint_comparison_exp
+  name_voc: smb_thesaurus_bool_exp
+  name_voc_id: bigint_comparison_exp
+  object_id: bigint_comparison_exp
+  sequence: Int_comparison_exp
+  type_voc: smb_thesaurus_bool_exp
+  type_voc_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "smb.cultural_references"
+"""
+enum smb_cultural_references_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  cultural_references_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "smb.cultural_references"
+"""
+input smb_cultural_references_inc_input {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+input type for inserting data into table "smb.cultural_references"
+"""
+input smb_cultural_references_insert_input {
+  culture_item_id: bigint
+  denomination_voc: smb_thesaurus_obj_rel_insert_input
+  denomination_voc_id: bigint
+  id: bigint
+  language: smb_language_obj_rel_insert_input
+  language_id: bigint
+  name_voc: smb_thesaurus_obj_rel_insert_input
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc: smb_thesaurus_obj_rel_insert_input
+  type_voc_id: bigint
+}
+
+"""
+aggregate max on columns
+"""
+type smb_cultural_references_max_fields {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+order by max() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_max_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate min on columns
+"""
+type smb_cultural_references_min_fields {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+order by min() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_min_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+response of any mutation on the table "smb.cultural_references"
+"""
+type smb_cultural_references_mutation_response {
+  """
+  number of rows affected by the mutation
+  """
+  affected_rows: Int!
+  """
+  data from the rows affected by the mutation
+  """
+  returning: [smb_cultural_references!]!
+}
+
+"""
+on_conflict condition type for table "smb.cultural_references"
+"""
+input smb_cultural_references_on_conflict {
+  constraint: smb_cultural_references_constraint!
+  update_columns: [smb_cultural_references_update_column!]! = []
+  where: smb_cultural_references_bool_exp
+}
+
+"""
+Ordering options when selecting data from "smb.cultural_references".
+"""
+input smb_cultural_references_order_by {
+  culture_item_id: order_by
+  denomination_voc: smb_thesaurus_order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language: smb_language_order_by
+  language_id: order_by
+  name_voc: smb_thesaurus_order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc: smb_thesaurus_order_by
+  type_voc_id: order_by
+}
+
+"""
+primary key columns input for table: smb.cultural_references
+"""
+input smb_cultural_references_pk_columns_input {
+  id: bigint!
+}
+
+"""
+select columns of table "smb.cultural_references"
+"""
+enum smb_cultural_references_select_column {
+  """
+  column name
+  """
+  culture_item_id
+  """
+  column name
+  """
+  denomination_voc_id
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  language_id
+  """
+  column name
+  """
+  name_voc_id
+  """
+  column name
+  """
+  object_id
+  """
+  column name
+  """
+  sequence
+  """
+  column name
+  """
+  type_voc_id
+}
+
+"""
+input type for updating data in table "smb.cultural_references"
+"""
+input smb_cultural_references_set_input {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+aggregate stddev on columns
+"""
+type smb_cultural_references_stddev_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by stddev() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_stddev_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate stddev_pop on columns
+"""
+type smb_cultural_references_stddev_pop_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_stddev_pop_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate stddev_samp on columns
+"""
+type smb_cultural_references_stddev_samp_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_stddev_samp_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+Streaming cursor of the table "smb_cultural_references"
+"""
+input smb_cultural_references_stream_cursor_input {
+  """
+  Stream column input with initial value
+  """
+  initial_value: smb_cultural_references_stream_cursor_value_input!
+  """
+  cursor ordering
+  """
+  ordering: cursor_ordering
+}
+
+"""
+Initial value of the column from where the streaming should start
+"""
+input smb_cultural_references_stream_cursor_value_input {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+aggregate sum on columns
+"""
+type smb_cultural_references_sum_fields {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+order by sum() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_sum_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+update columns of table "smb.cultural_references"
+"""
+enum smb_cultural_references_update_column {
+  """
+  column name
+  """
+  culture_item_id
+  """
+  column name
+  """
+  denomination_voc_id
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  language_id
+  """
+  column name
+  """
+  name_voc_id
+  """
+  column name
+  """
+  object_id
+  """
+  column name
+  """
+  sequence
+  """
+  column name
+  """
+  type_voc_id
+}
+
+input smb_cultural_references_updates {
+  """
+  increments the numeric columns with given value of the filtered values
+  """
+  _inc: smb_cultural_references_inc_input
+  """
+  sets the columns of the filtered rows to the given values
+  """
+  _set: smb_cultural_references_set_input
+  where: smb_cultural_references_bool_exp!
+}
+
+"""
+aggregate var_pop on columns
+"""
+type smb_cultural_references_var_pop_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by var_pop() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_var_pop_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate var_samp on columns
+"""
+type smb_cultural_references_var_samp_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by var_samp() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_var_samp_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate variance on columns
+"""
+type smb_cultural_references_variance_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by variance() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_variance_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
 }
 
 """
@@ -7613,11 +6761,6 @@ type smb_geographical_references {
   """
   place_voc: smb_thesaurus
   place_voc_id: bigint
-  """
-  An object relationship
-  """
-  role_voc: smb_thesaurus
-  role_voc_id: bigint
   sequence: Int!
   """
   An object relationship
@@ -7700,7 +6843,6 @@ type smb_geographical_references_avg_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -7715,7 +6857,6 @@ input smb_geographical_references_avg_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -7737,8 +6878,6 @@ input smb_geographical_references_bool_exp {
   object_id: bigint_comparison_exp
   place_voc: smb_thesaurus_bool_exp
   place_voc_id: bigint_comparison_exp
-  role_voc: smb_thesaurus_bool_exp
-  role_voc_id: bigint_comparison_exp
   sequence: Int_comparison_exp
   type_voc: smb_thesaurus_bool_exp
   type_voc_id: bigint_comparison_exp
@@ -7764,7 +6903,6 @@ input smb_geographical_references_inc_input {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -7783,8 +6921,6 @@ input smb_geographical_references_insert_input {
   object_id: bigint
   place_voc: smb_thesaurus_obj_rel_insert_input
   place_voc_id: bigint
-  role_voc: smb_thesaurus_obj_rel_insert_input
-  role_voc_id: bigint
   sequence: Int
   type_voc: smb_thesaurus_obj_rel_insert_input
   type_voc_id: bigint
@@ -7801,7 +6937,6 @@ type smb_geographical_references_max_fields {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -7817,7 +6952,6 @@ input smb_geographical_references_max_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -7833,7 +6967,6 @@ type smb_geographical_references_min_fields {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -7849,7 +6982,6 @@ input smb_geographical_references_min_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -7891,8 +7023,6 @@ input smb_geographical_references_order_by {
   object_id: order_by
   place_voc: smb_thesaurus_order_by
   place_voc_id: order_by
-  role_voc: smb_thesaurus_order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc: smb_thesaurus_order_by
   type_voc_id: order_by
@@ -7940,10 +7070,6 @@ enum smb_geographical_references_select_column {
   """
   column name
   """
-  role_voc_id
-  """
-  column name
-  """
   sequence
   """
   column name
@@ -7962,7 +7088,6 @@ input smb_geographical_references_set_input {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -7977,7 +7102,6 @@ type smb_geographical_references_stddev_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -7992,7 +7116,6 @@ input smb_geographical_references_stddev_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8007,7 +7130,6 @@ type smb_geographical_references_stddev_pop_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8022,7 +7144,6 @@ input smb_geographical_references_stddev_pop_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8037,7 +7158,6 @@ type smb_geographical_references_stddev_samp_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8052,7 +7172,6 @@ input smb_geographical_references_stddev_samp_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8082,7 +7201,6 @@ input smb_geographical_references_stream_cursor_value_input {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -8097,7 +7215,6 @@ type smb_geographical_references_sum_fields {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -8112,7 +7229,6 @@ input smb_geographical_references_sum_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8152,10 +7268,6 @@ enum smb_geographical_references_update_column {
   """
   column name
   """
-  role_voc_id
-  """
-  column name
-  """
   sequence
   """
   column name
@@ -8185,7 +7297,6 @@ type smb_geographical_references_var_pop_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8200,7 +7311,6 @@ input smb_geographical_references_var_pop_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8215,7 +7325,6 @@ type smb_geographical_references_var_samp_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8230,7 +7339,6 @@ input smb_geographical_references_var_samp_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8245,7 +7353,6 @@ type smb_geographical_references_variance_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8260,7 +7367,6 @@ input smb_geographical_references_variance_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -10583,6 +9689,14 @@ type smb_objects {
   collectionKey: String
   compilation: String
   created_at: timestamptz!
+  """
+  An array relationship
+  """
+  cultural_references("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
+  """
+  An aggregate relationship
+  """
+  cultural_references_aggregate("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): smb_cultural_references_aggregate!
   exhibition_space: String
   """
   An array relationship
@@ -10617,6 +9731,11 @@ type smb_objects {
   An aggregate relationship
   """
   involved_parties_aggregate("""distinct select on columns""" distinct_on: [smb_persons_objects_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_persons_objects_order_by!], """filter the rows returned""" where: smb_persons_objects_bool_exp): smb_persons_objects_aggregate!
+  """
+  An object relationship
+  """
+  location: smb_thesaurus
+  location_voc_id: bigint
   """
   An array relationship
   """
@@ -10658,6 +9777,7 @@ aggregate avg on columns
 """
 type smb_objects_avg_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10674,6 +9794,8 @@ input smb_objects_bool_exp {
   collectionKey: String_comparison_exp
   compilation: String_comparison_exp
   created_at: timestamptz_comparison_exp
+  cultural_references: smb_cultural_references_bool_exp
+  cultural_references_aggregate: smb_cultural_references_aggregate_bool_exp
   exhibition_space: String_comparison_exp
   exhibitions: smb_exhibitions_objects_bool_exp
   exhibitions_aggregate: smb_exhibitions_objects_aggregate_bool_exp
@@ -10684,6 +9806,8 @@ input smb_objects_bool_exp {
   id: bigint_comparison_exp
   involved_parties: smb_persons_objects_bool_exp
   involved_parties_aggregate: smb_persons_objects_aggregate_bool_exp
+  location: smb_thesaurus_bool_exp
+  location_voc_id: bigint_comparison_exp
   materials_and_techniques: smb_material_references_bool_exp
   materials_and_techniques_aggregate: smb_material_references_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
@@ -10704,6 +9828,7 @@ input type for incrementing numeric columns in table "smb.objects"
 """
 input smb_objects_inc_input {
   id: bigint
+  location_voc_id: bigint
 }
 
 """
@@ -10713,12 +9838,15 @@ input smb_objects_insert_input {
   attachments: smb_attachments_arr_rel_insert_input
   attributes: smb_attribute_translations_arr_rel_insert_input
   created_at: timestamptz
+  cultural_references: smb_cultural_references_arr_rel_insert_input
   exhibition_space: String
   exhibitions: smb_exhibitions_objects_arr_rel_insert_input
   geographical_references: smb_geographical_references_arr_rel_insert_input
   highlights: smb_highlights_arr_rel_insert_input
   id: bigint
   involved_parties: smb_persons_objects_arr_rel_insert_input
+  location: smb_thesaurus_obj_rel_insert_input
+  location_voc_id: bigint
   materials_and_techniques: smb_material_references_arr_rel_insert_input
   updated_at: timestamptz
 }
@@ -10730,6 +9858,7 @@ type smb_objects_max_fields {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10740,6 +9869,7 @@ type smb_objects_min_fields {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10786,12 +9916,15 @@ input smb_objects_order_by {
   collectionKey: order_by
   compilation: order_by
   created_at: order_by
+  cultural_references_aggregate: smb_cultural_references_aggregate_order_by
   exhibition_space: order_by
   exhibitions_aggregate: smb_exhibitions_objects_aggregate_order_by
   geographical_references_aggregate: smb_geographical_references_aggregate_order_by
   highlights_aggregate: smb_highlights_aggregate_order_by
   id: order_by
   involved_parties_aggregate: smb_persons_objects_aggregate_order_by
+  location: smb_thesaurus_order_by
+  location_voc_id: order_by
   materials_and_techniques_aggregate: smb_material_references_aggregate_order_by
   updated_at: order_by
 }
@@ -10822,6 +9955,10 @@ enum smb_objects_select_column {
   """
   column name
   """
+  location_voc_id
+  """
+  column name
+  """
   updated_at
 }
 
@@ -10832,6 +9969,7 @@ input smb_objects_set_input {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10840,6 +9978,7 @@ aggregate stddev on columns
 """
 type smb_objects_stddev_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10847,6 +9986,7 @@ aggregate stddev_pop on columns
 """
 type smb_objects_stddev_pop_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10854,6 +9994,7 @@ aggregate stddev_samp on columns
 """
 type smb_objects_stddev_samp_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10877,6 +10018,7 @@ input smb_objects_stream_cursor_value_input {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10885,6 +10027,7 @@ aggregate sum on columns
 """
 type smb_objects_sum_fields {
   id: bigint
+  location_voc_id: bigint
 }
 
 """
@@ -10903,6 +10046,10 @@ enum smb_objects_update_column {
   column name
   """
   id
+  """
+  column name
+  """
+  location_voc_id
   """
   column name
   """
@@ -10926,6 +10073,7 @@ aggregate var_pop on columns
 """
 type smb_objects_var_pop_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10933,6 +10081,7 @@ aggregate var_samp on columns
 """
 type smb_objects_var_samp_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10940,12 +10089,14 @@ aggregate variance on columns
 """
 type smb_objects_variance_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
 Org-units fetched from MDS, used to group SMB objects
 """
 type smb_org_unit {
+  collectionKey: String
   """
   An array relationship
   """
@@ -10955,7 +10106,16 @@ type smb_org_unit {
   """
   highlights_aggregate("""distinct select on columns""" distinct_on: [smb_highlights_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_highlights_order_by!], """filter the rows returned""" where: smb_highlights_bool_exp): smb_highlights_aggregate!
   id: bigint!
+  is_compilation: Boolean
   name: String!
+  """
+  A computed field, executes function "smb.build_search_value_o"
+  """
+  searchValue: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -10997,10 +10157,14 @@ input smb_org_unit_bool_exp {
   _and: [smb_org_unit_bool_exp!]
   _not: smb_org_unit_bool_exp
   _or: [smb_org_unit_bool_exp!]
+  collectionKey: String_comparison_exp
   highlights: smb_highlights_bool_exp
   highlights_aggregate: smb_highlights_aggregate_bool_exp
   id: bigint_comparison_exp
+  is_compilation: Boolean_comparison_exp
   name: String_comparison_exp
+  searchValue: String_comparison_exp
+  title: String_comparison_exp
 }
 
 """
@@ -11030,7 +10194,12 @@ input type for inserting data into table "smb.org_unit"
 input smb_org_unit_insert_input {
   highlights: smb_highlights_arr_rel_insert_input
   id: bigint
+  is_compilation: Boolean
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11039,6 +10208,10 @@ aggregate max on columns
 type smb_org_unit_max_fields {
   id: bigint
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11047,6 +10220,10 @@ aggregate min on columns
 type smb_org_unit_min_fields {
   id: bigint
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11087,9 +10264,13 @@ input smb_org_unit_on_conflict {
 Ordering options when selecting data from "smb.org_unit".
 """
 input smb_org_unit_order_by {
+  collectionKey: order_by
   highlights_aggregate: smb_highlights_aggregate_order_by
   id: order_by
+  is_compilation: order_by
   name: order_by
+  searchValue: order_by
+  title: order_by
 }
 
 """
@@ -11110,7 +10291,15 @@ enum smb_org_unit_select_column {
   """
   column name
   """
+  is_compilation
+  """
+  column name
+  """
   name
+  """
+  column name
+  """
+  title
 }
 
 """
@@ -11118,7 +10307,12 @@ input type for updating data in table "smb.org_unit"
 """
 input smb_org_unit_set_input {
   id: bigint
+  is_compilation: Boolean
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11161,7 +10355,12 @@ Initial value of the column from where the streaming should start
 """
 input smb_org_unit_stream_cursor_value_input {
   id: bigint
+  is_compilation: Boolean
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11182,7 +10381,15 @@ enum smb_org_unit_update_column {
   """
   column name
   """
+  is_compilation
+  """
+  column name
+  """
   name
+  """
+  column name
+  """
+  title
 }
 
 input smb_org_unit_updates {
@@ -11390,6 +10597,11 @@ input smb_persons_obj_rel_insert_input {
 involved parties; persons who are stakeholders on objects
 """
 type smb_persons_objects {
+  """
+  An object relationship
+  """
+  attribution_voc: smb_thesaurus
+  attribution_voc_id: bigint
   created_at: timestamptz!
   id: bigint!
   """
@@ -11479,6 +10691,7 @@ input smb_persons_objects_arr_rel_insert_input {
 aggregate avg on columns
 """
 type smb_persons_objects_avg_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11490,6 +10703,7 @@ type smb_persons_objects_avg_fields {
 order by avg() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_avg_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11504,6 +10718,8 @@ input smb_persons_objects_bool_exp {
   _and: [smb_persons_objects_bool_exp!]
   _not: smb_persons_objects_bool_exp
   _or: [smb_persons_objects_bool_exp!]
+  attribution_voc: smb_thesaurus_bool_exp
+  attribution_voc_id: bigint_comparison_exp
   created_at: timestamptz_comparison_exp
   id: bigint_comparison_exp
   object: smb_objects_bool_exp
@@ -11530,6 +10746,7 @@ enum smb_persons_objects_constraint {
 input type for incrementing numeric columns in table "smb.persons_objects"
 """
 input smb_persons_objects_inc_input {
+  attribution_voc_id: bigint
   id: bigint
   object_id: bigint
   person_id: bigint
@@ -11541,6 +10758,8 @@ input smb_persons_objects_inc_input {
 input type for inserting data into table "smb.persons_objects"
 """
 input smb_persons_objects_insert_input {
+  attribution_voc: smb_thesaurus_obj_rel_insert_input
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object: smb_objects_obj_rel_insert_input
@@ -11557,6 +10776,7 @@ input smb_persons_objects_insert_input {
 aggregate max on columns
 """
 type smb_persons_objects_max_fields {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11570,6 +10790,7 @@ type smb_persons_objects_max_fields {
 order by max() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_max_order_by {
+  attribution_voc_id: order_by
   created_at: order_by
   id: order_by
   object_id: order_by
@@ -11583,6 +10804,7 @@ input smb_persons_objects_max_order_by {
 aggregate min on columns
 """
 type smb_persons_objects_min_fields {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11596,6 +10818,7 @@ type smb_persons_objects_min_fields {
 order by min() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_min_order_by {
+  attribution_voc_id: order_by
   created_at: order_by
   id: order_by
   object_id: order_by
@@ -11632,6 +10855,8 @@ input smb_persons_objects_on_conflict {
 Ordering options when selecting data from "smb.persons_objects".
 """
 input smb_persons_objects_order_by {
+  attribution_voc: smb_thesaurus_order_by
+  attribution_voc_id: order_by
   created_at: order_by
   id: order_by
   object: smb_objects_order_by
@@ -11655,6 +10880,10 @@ input smb_persons_objects_pk_columns_input {
 select columns of table "smb.persons_objects"
 """
 enum smb_persons_objects_select_column {
+  """
+  column name
+  """
+  attribution_voc_id
   """
   column name
   """
@@ -11689,6 +10918,7 @@ enum smb_persons_objects_select_column {
 input type for updating data in table "smb.persons_objects"
 """
 input smb_persons_objects_set_input {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11702,6 +10932,7 @@ input smb_persons_objects_set_input {
 aggregate stddev on columns
 """
 type smb_persons_objects_stddev_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11713,6 +10944,7 @@ type smb_persons_objects_stddev_fields {
 order by stddev() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_stddev_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11724,6 +10956,7 @@ input smb_persons_objects_stddev_order_by {
 aggregate stddev_pop on columns
 """
 type smb_persons_objects_stddev_pop_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11735,6 +10968,7 @@ type smb_persons_objects_stddev_pop_fields {
 order by stddev_pop() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_stddev_pop_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11746,6 +10980,7 @@ input smb_persons_objects_stddev_pop_order_by {
 aggregate stddev_samp on columns
 """
 type smb_persons_objects_stddev_samp_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11757,6 +10992,7 @@ type smb_persons_objects_stddev_samp_fields {
 order by stddev_samp() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_stddev_samp_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11782,6 +11018,7 @@ input smb_persons_objects_stream_cursor_input {
 Initial value of the column from where the streaming should start
 """
 input smb_persons_objects_stream_cursor_value_input {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11795,6 +11032,7 @@ input smb_persons_objects_stream_cursor_value_input {
 aggregate sum on columns
 """
 type smb_persons_objects_sum_fields {
+  attribution_voc_id: bigint
   id: bigint
   object_id: bigint
   person_id: bigint
@@ -11806,6 +11044,7 @@ type smb_persons_objects_sum_fields {
 order by sum() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_sum_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11817,6 +11056,10 @@ input smb_persons_objects_sum_order_by {
 update columns of table "smb.persons_objects"
 """
 enum smb_persons_objects_update_column {
+  """
+  column name
+  """
+  attribution_voc_id
   """
   column name
   """
@@ -11863,6 +11106,7 @@ input smb_persons_objects_updates {
 aggregate var_pop on columns
 """
 type smb_persons_objects_var_pop_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11874,6 +11118,7 @@ type smb_persons_objects_var_pop_fields {
 order by var_pop() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_var_pop_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11885,6 +11130,7 @@ input smb_persons_objects_var_pop_order_by {
 aggregate var_samp on columns
 """
 type smb_persons_objects_var_samp_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11896,6 +11142,7 @@ type smb_persons_objects_var_samp_fields {
 order by var_samp() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_var_samp_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11907,6 +11154,7 @@ input smb_persons_objects_var_samp_order_by {
 aggregate variance on columns
 """
 type smb_persons_objects_variance_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11918,6 +11166,7 @@ type smb_persons_objects_variance_fields {
 order by variance() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_variance_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -14996,114 +14245,6 @@ type smb_user_variance_fields {
   role_id: Float
 }
 
-type strapi_smbMutation {
-  createCategory(data: CategoryInput!, locale: I18NLocaleCode): CategoryEntityResponse
-  createCategoryLocalization(data: CategoryInput, id: ID, locale: I18NLocaleCode): CategoryEntityResponse
-  createIndexLocalization(data: IndexInput, id: ID, locale: I18NLocaleCode): IndexEntityResponse
-  createSiteConfigLocalization(data: SiteConfigInput, id: ID, locale: I18NLocaleCode): SiteConfigEntityResponse
-  createSmbLandingpageLocalization(data: SmbLandingpageInput, id: ID, locale: I18NLocaleCode): SmbLandingpageEntityResponse
-  createSmbResearchpageLocalization(data: SmbResearchpageInput, id: ID, locale: I18NLocaleCode): SmbResearchpageEntityResponse
-  createSmbSiteConfigLocalization(data: SmbSiteConfigInput, id: ID, locale: I18NLocaleCode): SmbSiteConfigEntityResponse
-  createSmbTopicspageLocalization(data: SmbTopicspageInput, id: ID, locale: I18NLocaleCode): SmbTopicspageEntityResponse
-  createStory(data: StoryInput!, locale: I18NLocaleCode): StoryEntityResponse
-  createStoryLocalization(data: StoryInput, id: ID, locale: I18NLocaleCode): StoryEntityResponse
-  createTopic(data: TopicInput!, locale: I18NLocaleCode): TopicEntityResponse
-  createTopicLocalization(data: TopicInput, id: ID, locale: I18NLocaleCode): TopicEntityResponse
-  createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
-  """
-  Create a new role
-  """
-  createUsersPermissionsRole(data: UsersPermissionsRoleInput!): UsersPermissionsCreateRolePayload
-  """
-  Create a new user
-  """
-  createUsersPermissionsUser(data: UsersPermissionsUserInput!): UsersPermissionsUserEntityResponse!
-  deleteCategory(id: ID!, locale: I18NLocaleCode): CategoryEntityResponse
-  deleteIndex(locale: I18NLocaleCode): IndexEntityResponse
-  deleteSiteConfig(locale: I18NLocaleCode): SiteConfigEntityResponse
-  deleteSmbGuidepage: SmbGuidepageEntityResponse
-  deleteSmbLandingpage(locale: I18NLocaleCode): SmbLandingpageEntityResponse
-  deleteSmbResearchpage(locale: I18NLocaleCode): SmbResearchpageEntityResponse
-  deleteSmbSiteConfig(locale: I18NLocaleCode): SmbSiteConfigEntityResponse
-  deleteSmbTopicspage(locale: I18NLocaleCode): SmbTopicspageEntityResponse
-  deleteStory(id: ID!, locale: I18NLocaleCode): StoryEntityResponse
-  deleteTopic(id: ID!, locale: I18NLocaleCode): TopicEntityResponse
-  deleteUploadFile(id: ID!): UploadFileEntityResponse
-  """
-  Delete an existing role
-  """
-  deleteUsersPermissionsRole(id: ID!): UsersPermissionsDeleteRolePayload
-  """
-  Delete an existing user
-  """
-  deleteUsersPermissionsUser(id: ID!): UsersPermissionsUserEntityResponse!
-  """
-  Confirm an email users email address
-  """
-  emailConfirmation(confirmation: String!): UsersPermissionsLoginPayload
-  """
-  Request a reset password token
-  """
-  forgotPassword(email: String!): UsersPermissionsPasswordPayload
-  login(input: UsersPermissionsLoginInput!): UsersPermissionsLoginPayload!
-  multipleUpload(field: String, files: [Upload]!, ref: String, refId: ID): [UploadFileEntityResponse]!
-  """
-  Register a user
-  """
-  register(input: UsersPermissionsRegisterInput!): UsersPermissionsLoginPayload!
-  removeFile(id: ID!): UploadFileEntityResponse
-  """
-  Reset user password. Confirm with a code (resetToken from forgotPassword)
-  """
-  resetPassword(code: String!, password: String!, passwordConfirmation: String!): UsersPermissionsLoginPayload
-  updateCategory(data: CategoryInput!, id: ID!, locale: I18NLocaleCode): CategoryEntityResponse
-  updateFileInfo(id: ID!, info: FileInfoInput): UploadFileEntityResponse!
-  updateIndex(data: IndexInput!, locale: I18NLocaleCode): IndexEntityResponse
-  updateSiteConfig(data: SiteConfigInput!, locale: I18NLocaleCode): SiteConfigEntityResponse
-  updateSmbGuidepage(data: SmbGuidepageInput!): SmbGuidepageEntityResponse
-  updateSmbLandingpage(data: SmbLandingpageInput!, locale: I18NLocaleCode): SmbLandingpageEntityResponse
-  updateSmbResearchpage(data: SmbResearchpageInput!, locale: I18NLocaleCode): SmbResearchpageEntityResponse
-  updateSmbSiteConfig(data: SmbSiteConfigInput!, locale: I18NLocaleCode): SmbSiteConfigEntityResponse
-  updateSmbTopicspage(data: SmbTopicspageInput!, locale: I18NLocaleCode): SmbTopicspageEntityResponse
-  updateStory(data: StoryInput!, id: ID!, locale: I18NLocaleCode): StoryEntityResponse
-  updateTopic(data: TopicInput!, id: ID!, locale: I18NLocaleCode): TopicEntityResponse
-  updateUploadFile(data: UploadFileInput!, id: ID!): UploadFileEntityResponse
-  """
-  Update an existing role
-  """
-  updateUsersPermissionsRole(data: UsersPermissionsRoleInput!, id: ID!): UsersPermissionsUpdateRolePayload
-  """
-  Update an existing user
-  """
-  updateUsersPermissionsUser(data: UsersPermissionsUserInput!, id: ID!): UsersPermissionsUserEntityResponse!
-  upload(field: String, file: Upload!, info: FileInfoInput, ref: String, refId: ID): UploadFileEntityResponse!
-}
-
-type strapi_smbQuery {
-  categories(filters: CategoryFiltersInput, locale: I18NLocaleCode, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): CategoryEntityResponseCollection
-  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
-  i18NLocale(id: ID): I18NLocaleEntityResponse
-  i18NLocales(filters: I18NLocaleFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): I18NLocaleEntityResponseCollection
-  index(locale: I18NLocaleCode, publicationState: PublicationState = LIVE): IndexEntityResponse
-  me: UsersPermissionsMe
-  siteConfig(locale: I18NLocaleCode): SiteConfigEntityResponse
-  smbGuidepage(publicationState: PublicationState = LIVE): SmbGuidepageEntityResponse
-  smbLandingpage(locale: I18NLocaleCode, publicationState: PublicationState = LIVE): SmbLandingpageEntityResponse
-  smbResearchpage(locale: I18NLocaleCode, publicationState: PublicationState = LIVE): SmbResearchpageEntityResponse
-  smbSiteConfig(locale: I18NLocaleCode, publicationState: PublicationState = LIVE): SmbSiteConfigEntityResponse
-  smbTopicspage(locale: I18NLocaleCode, publicationState: PublicationState = LIVE): SmbTopicspageEntityResponse
-  stories(filters: StoryFiltersInput, locale: I18NLocaleCode, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): StoryEntityResponseCollection
-  story(id: ID, locale: I18NLocaleCode): StoryEntityResponse
-  topic(id: ID, locale: I18NLocaleCode): TopicEntityResponse
-  topics(filters: TopicFiltersInput, locale: I18NLocaleCode, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): TopicEntityResponseCollection
-  uploadFile(id: ID): UploadFileEntityResponse
-  uploadFiles(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileEntityResponseCollection
-  usersPermissionsRole(id: ID): UsersPermissionsRoleEntityResponse
-  usersPermissionsRoles(filters: UsersPermissionsRoleFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UsersPermissionsRoleEntityResponseCollection
-  usersPermissionsUser(id: ID): UsersPermissionsUserEntityResponse
-  usersPermissionsUsers(filters: UsersPermissionsUserFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UsersPermissionsUserEntityResponseCollection
-}
-
 type subscription_root {
   """
   fetch data from the table: "smb.assortments"
@@ -15164,7 +14305,7 @@ type subscription_root {
   """
   fetch data from the table: "smb.attachments" using primary key columns
   """
-  smb_attachments_by_pk(id: bigint!): smb_attachments
+  smb_attachments_by_pk(id: bigint!, object_id: bigint!): smb_attachments
   """
   fetch data from the table in a streaming manner: "smb.attachments"
   """
@@ -15218,6 +14359,38 @@ type subscription_root {
   """
   smb_attributes_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_attributes_stream_cursor_input]!, """filter the rows returned""" where: smb_attributes_bool_exp): [smb_attributes!]!
   """
+  fetch data from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): [smb_blocked_attachments!]!
+  """
+  fetch aggregated fields from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments_aggregate("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): smb_blocked_attachments_aggregate!
+  """
+  fetch data from the table: "smb.blocked_attachments" using primary key columns
+  """
+  smb_blocked_attachments_by_pk(id: bigint!): smb_blocked_attachments
+  """
+  fetch data from the table in a streaming manner: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_blocked_attachments_stream_cursor_input]!, """filter the rows returned""" where: smb_blocked_attachments_bool_exp): [smb_blocked_attachments!]!
+  """
+  fetch data from the table: "smb.buildings"
+  """
+  smb_buildings("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): [smb_buildings!]!
+  """
+  fetch aggregated fields from the table: "smb.buildings"
+  """
+  smb_buildings_aggregate("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): smb_buildings_aggregate!
+  """
+  fetch data from the table: "smb.buildings" using primary key columns
+  """
+  smb_buildings_by_pk(key: String!): smb_buildings
+  """
+  fetch data from the table in a streaming manner: "smb.buildings"
+  """
+  smb_buildings_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_buildings_stream_cursor_input]!, """filter the rows returned""" where: smb_buildings_bool_exp): [smb_buildings!]!
+  """
   fetch data from the table: "smb.collections"
   """
   smb_collections("""distinct select on columns""" distinct_on: [smb_collections_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_collections_order_by!], """filter the rows returned""" where: smb_collections_bool_exp): [smb_collections!]!
@@ -15233,6 +14406,22 @@ type subscription_root {
   fetch data from the table in a streaming manner: "smb.collections"
   """
   smb_collections_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_collections_stream_cursor_input]!, """filter the rows returned""" where: smb_collections_bool_exp): [smb_collections!]!
+  """
+  fetch data from the table: "smb.cultural_references"
+  """
+  smb_cultural_references("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
+  """
+  fetch aggregated fields from the table: "smb.cultural_references"
+  """
+  smb_cultural_references_aggregate("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): smb_cultural_references_aggregate!
+  """
+  fetch data from the table: "smb.cultural_references" using primary key columns
+  """
+  smb_cultural_references_by_pk(id: bigint!): smb_cultural_references
+  """
+  fetch data from the table in a streaming manner: "smb.cultural_references"
+  """
+  smb_cultural_references_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_cultural_references_stream_cursor_input]!, """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
   """
   fetch data from the table: "smb.exhibitions"
   """

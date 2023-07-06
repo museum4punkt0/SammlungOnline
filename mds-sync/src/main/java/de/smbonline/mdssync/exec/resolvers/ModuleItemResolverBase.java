@@ -13,7 +13,6 @@ import de.smbonline.mdssync.dto.WrapperDTO;
 import de.smbonline.mdssync.exc.ErrorHandling;
 import de.smbonline.mdssync.exc.MdsApiConnectionException;
 import de.smbonline.mdssync.index.SearchIndexerClient;
-import de.smbonline.mdssync.index.SearchIndexerConfig;
 import de.smbonline.mdssync.jaxb.search.request.Search;
 import de.smbonline.mdssync.jaxb.search.response.Module;
 import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
@@ -41,10 +40,9 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
     private final String moduleName;
     private final SearchRequestHelper requestHelper;
     private final MdsApiConfig mdsConfig;
-    private final MdsApiClient apiClient;
-    private final SearchIndexerConfig indexerConfig;
-    private final SearchIndexerClient searchIndexerClient;
     private final MdsApiClientFactory clientFactory;
+    private final MdsApiClient apiClient;
+    private final SearchIndexerClient indexerClient;
 
     private final ResolverResult result;
     private final DataQueue<WrapperDTO> dataQueue;
@@ -56,7 +54,7 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
     protected ModuleItemResolverBase(
             final String module,
             final MdsApiConfig mdsConfig,
-            final SearchIndexerConfig indexerConfig,
+            final SearchIndexerClient indexerClient,
             final MdsApiClientFactory clientFactory,
             final DataQueue<WrapperDTO> dataQueue) {
         this.moduleName = module;
@@ -64,8 +62,7 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
         this.requestHelper = new SearchRequestHelper(this.mdsConfig, this.moduleName);
         this.clientFactory = clientFactory;
         this.apiClient = clientFactory.getApiClient(this.moduleName);
-        this.indexerConfig = indexerConfig;
-        this.searchIndexerClient = new SearchIndexerClient(this.indexerConfig);
+        this.indexerClient = indexerClient;
         this.dataQueue = dataQueue;
         this.result = new ResolverResult();
 
@@ -107,12 +104,8 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
         return this.mdsConfig;
     }
 
-    protected SearchIndexerConfig getIndexerConfig() {
-        return this.indexerConfig;
-    }
-
     protected SearchIndexerClient getIndexerClient() {
-        return this.searchIndexerClient;
+        return this.indexerClient;
     }
 
     protected MdsApiClientFactory getMdsClientFactory() {
@@ -126,7 +119,7 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
     // internals
 
     protected void logStatistics(final int expected, final ResolverResult actual) {
-        if (!LOGGER.isDebugEnabled()) {
+        if (!LOGGER.isInfoEnabled()) {
             return;
         }
 
@@ -136,9 +129,9 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
         if (expected == 0) {
             LOGGER.debug("Nothing to sync.");
         } else if (expected != successful) {
-            LOGGER.debug("Synced {} {} - failed:{}, skipped:{}.", successful, itemType(successful == 1), failed, skipped);
+            LOGGER.info("Synced {} {} - failed:{}, skipped:{}.", successful, itemType(successful == 1), failed, skipped);
         } else {
-            LOGGER.debug("Synced {} {}.", successful, itemType(successful == 1));
+            LOGGER.info("Synced {} {}.", successful, itemType(successful == 1));
         }
     }
 
@@ -184,7 +177,9 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
             result.successful(obj.getMdsId());
             if (obj instanceof ObjRelation) {
                 LOGGER.info("Linked {} {} to object {}.", obj.getType(), obj.getMdsId(), ((ObjRelation) obj).getObjectId());
-                // TODO? notifyReindexObject(((ObjRelation) obj).getObjectId());
+                // TODO: notifyReindexObject(((ObjRelation) obj).getObjectId());
+                //   This can only be implemented when we have a delayed index queue otherwise we run indexing
+                //   too often any maybe even before the sync is fully done.
             } else {
                 LOGGER.info("{} {} {}.", obj.getType(), obj.getMdsId(), (op == Operation.DELETE ? "deleted" : "updated"));
             }
@@ -221,7 +216,7 @@ public abstract class ModuleItemResolverBase<DTO extends MdsItem> implements Mod
     }
 
     protected void notifyReindexObject(final Long objectId, final @Nullable String... fields) {
-        if (getIndexerConfig().isShouldUpdate()) {
+        if (getIndexerClient().getConfig().isShouldUpdate()) {
             try {
                 LOGGER.debug("Updating search index...");
                 getIndexerClient().notifyUpdated(objectId, fields);

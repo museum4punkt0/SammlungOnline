@@ -8,6 +8,7 @@ import de.smbonline.mdssync.dataprocessor.graphql.queries.DeletePersonMutation
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchInvolvedPartiesByObjectAndPersonIdsQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchInvolvedPartiesByObjectIdQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchInvolvedPartiesByPersonIdQuery
+import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchInvolvedPartiesByRoleIdQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchInvolvedPartyQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchPersonIdsQuery
 import de.smbonline.mdssync.dataprocessor.graphql.queries.FetchPersonQuery
@@ -21,7 +22,6 @@ import de.smbonline.mdssync.dto.Person
 import de.smbonline.mdssync.exc.SyncFailedException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
-import java.math.BigDecimal
 
 @Repository
 class PersonRepository @Autowired constructor(private val graphQlClient: GraphQlClient) {
@@ -48,7 +48,7 @@ class PersonRepository @Autowired constructor(private val graphQlClient: GraphQl
         ensureNoError(result)
 
         result.data?.insert_smb_persons_one ?: throw SyncFailedException("failed to save person ${dto.mdsId}")
-        return (result.data!!.insert_smb_persons_one!!.id as BigDecimal).longValueExact()
+        return (result.data!!.insert_smb_persons_one!!.id as Number).toLong()
     }
 
     /**
@@ -56,26 +56,20 @@ class PersonRepository @Autowired constructor(private val graphQlClient: GraphQl
      * @return whether Person was deleted
      */
     suspend fun deletePerson(mdsId: Long): Boolean {
-        val result = graphQlClient.client.mutate(
-                DeletePersonMutation(mdsId)
-        ).await()
+        val result = graphQlClient.client.mutate(DeletePersonMutation(mdsId)).await()
         ensureNoError(result)
 
         val deleted = result.data?.delete_smb_persons_by_pk?.id
-        return deleted != null && (deleted as BigDecimal).longValueExact() == mdsId
+        return deleted != null && (deleted as Number).toLong() == mdsId
     }
 
     suspend fun getPersonIds(): Array<Long> {
-        val result = graphQlClient.client.query(
-                FetchPersonIdsQuery()
-        ).await()
-        return result.data?.smb_persons?.map { (it.id as BigDecimal).longValueExact() }.orEmpty().toTypedArray()
+        val result = graphQlClient.client.query(FetchPersonIdsQuery()).await()
+        return result.data?.smb_persons?.map { (it.id as Number).toLong() }.orEmpty().toTypedArray()
     }
 
     suspend fun fetchPersonData(id: Long): PersonData? {
-        val result = graphQlClient.client.query(
-                FetchPersonQuery(id)
-        ).await()
+        val result = graphQlClient.client.query(FetchPersonQuery(id)).await()
         return result.data?.smb_persons_by_pk?.fragments?.personData;
     }
 
@@ -85,7 +79,7 @@ class PersonRepository @Autowired constructor(private val graphQlClient: GraphQl
             val dto = Person(mdsId)
             dto.name = name
             savePerson(dto)
-        } else (person.id as BigDecimal).longValueExact()
+        } else (person.id as Number).toLong()
     }
 
 //    suspend fun fetchOrInsertInvolvedParty(objectId: Long, personId: Long, roleId: Long): Long {
@@ -93,59 +87,64 @@ class PersonRepository @Autowired constructor(private val graphQlClient: GraphQl
 //        return if (involvedParty == null) {
 //            insertInvolvedParty(objectId, personId, roleId)
 //        } else {
-//            (involvedParty.id as BigDecimal).longValueExact()
+//            (involvedParty.id as Number).toLong()
 //        }
 //    }
 
     suspend fun fetchPersonLinks(objectId: Long): List<InvolvedPartyData> {
-        val result = graphQlClient.client.query(
-                FetchInvolvedPartiesByObjectIdQuery(objectId)
-        ).await()
+        val result = graphQlClient.client.query(FetchInvolvedPartiesByObjectIdQuery(objectId)).await()
         return result.data?.smb_persons_objects?.map { it.fragments.involvedPartyData }.orEmpty()
     }
 
     suspend fun fetchObjectLinks(personId: Long): List<InvolvedPartyData> {
-        val result = graphQlClient.client.query(
-                FetchInvolvedPartiesByPersonIdQuery(personId)
-        ).await()
+        val result = graphQlClient.client.query(FetchInvolvedPartiesByPersonIdQuery(personId)).await()
         return result.data?.smb_persons_objects?.map { it.fragments.involvedPartyData }.orEmpty()
     }
 
     suspend fun fetchInvolvedParties(objectId: Long, personId: Long): List<InvolvedPartyData> {
-        val result = graphQlClient.client.query(
-                FetchInvolvedPartiesByObjectAndPersonIdsQuery(objectId, personId)
-        ).await()
+        val result = graphQlClient.client.query(FetchInvolvedPartiesByObjectAndPersonIdsQuery(objectId, personId)).await()
+        return result.data?.smb_persons_objects?.map { it.fragments.involvedPartyData }.orEmpty()
+    }
+
+    suspend fun fetchInvolvedParties(roleId: Long): List<InvolvedPartyData> {
+        val result = graphQlClient.client.query(FetchInvolvedPartiesByRoleIdQuery(roleId)).await()
         return result.data?.smb_persons_objects?.map { it.fragments.involvedPartyData }.orEmpty()
     }
 
     suspend fun fetchInvolvedParty(objectId: Long, personId: Long, roleId: Long): InvolvedPartyData? {
-        val result = graphQlClient.client.query(
-                FetchInvolvedPartyQuery(objectId, personId, roleId)
-        ).await()
+        val result = graphQlClient.client.query(FetchInvolvedPartyQuery(objectId, personId, roleId)).await()
         val involvedParty = result.data?.smb_persons_objects?.firstOrNull()
         return involvedParty?.fragments?.involvedPartyData;
     }
 
-    suspend fun updateInvolvedParty(id: Long, sequence: Int): Long {
+    suspend fun updateInvolvedParty(id: Long, attributionId: Long?, sequence: Int): Long {
         val result = graphQlClient.client.mutate(
-                UpdateInvolvedPartyMutation(id, sequence)
-        ).await()
+                UpdateInvolvedPartyMutation(
+                        id,
+                        Input.optional(attributionId),
+                        sequence
+                )).await()
         ensureNoError(result)
 
         val entry = result.data?.update_smb_persons_objects_by_pk
                 ?: throw SyncFailedException("failed to update InvolvedParty $id")
-        return (entry.id as BigDecimal).longValueExact()
+        return (entry.id as Number).toLong()
     }
 
-    suspend fun insertInvolvedParty(objectId: Long, personId: Long, roleId: Long, sequence: Int): Long {
+    suspend fun insertInvolvedParty(objectId: Long, personId: Long, roleId: Long, attributionId: Long?, sequence: Int): Long {
         val result = graphQlClient.client.mutate(
-                InsertInvolvedPartyMutation(objectId, personId, roleId, sequence)
-        ).await()
+                InsertInvolvedPartyMutation(
+                        objectId,
+                        personId,
+                        roleId,
+                        Input.optional(attributionId),
+                        sequence
+                )).await()
         ensureNoError(result)
 
         result.data?.insert_smb_persons_objects_one
                 ?: throw SyncFailedException("failed to insert InvolvedParty{object=$objectId, person=$personId, role=$roleId}")
-        return (result.data!!.insert_smb_persons_objects_one!!.id as BigDecimal).longValueExact()
+        return (result.data!!.insert_smb_persons_objects_one!!.id as Number).toLong()
     }
 
     suspend fun deleteInvolvedParty(id: Long): Boolean {
@@ -153,6 +152,6 @@ class PersonRepository @Autowired constructor(private val graphQlClient: GraphQl
         ensureNoError(result)
 
         val deleted = result.data?.delete_smb_persons_objects_by_pk?.id
-        return deleted != null && (deleted as BigDecimal).longValueExact() == id
+        return deleted != null && (deleted as Number).toLong() == id
     }
 }

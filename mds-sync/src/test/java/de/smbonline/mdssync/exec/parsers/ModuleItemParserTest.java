@@ -10,8 +10,32 @@ import de.smbonline.mdssync.jaxb.search.response.VirtualField;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
+import de.smbonline.mdssync.jaxb.search.response.DataType;
 
 class ModuleItemParserTest {
+
+    @Test
+    void normalizeValues() {
+        String input = " <html><BODY><html><body style=\"foo\">0008.A.01618 <1></body></html></body></htML> ";
+        String output;
+
+        output = ModuleItemParser.normalizedValue(DataType.VARCHAR, input); // only here html is removed
+        assertThat(output).isEqualTo("0008.A.01618 <1>");
+        output = ModuleItemParser.normalizedValue(DataType.CLOB, input);
+        assertThat(output).isEqualTo(input.trim());
+        output = ModuleItemParser.normalizedValue(DataType.DATE, input);
+        assertThat(output).isEqualTo(input.trim());
+        output = ModuleItemParser.normalizedValue(DataType.TIME, input);
+        assertThat(output).isEqualTo(input.trim());
+        output = ModuleItemParser.normalizedValue(DataType.TIMESTAMP, input);
+        assertThat(output).isEqualTo(input.trim());
+        output = ModuleItemParser.normalizedValue(DataType.LONG, input); // here dots are removed
+        assertThat(output).isEqualTo("<html><BODY><html><body style=\"foo\">0008A01618 <1></body></html></body></htML>");
+        output = ModuleItemParser.normalizedValue(DataType.NUMERIC, input);
+        assertThat(output).isEqualTo(input.trim());
+        output = ModuleItemParser.normalizedValue(DataType.BOOLEAN, input);
+        assertThat(output).isEqualTo(input.trim());
+    }
 
     @Test
     void parseVirtualField() {

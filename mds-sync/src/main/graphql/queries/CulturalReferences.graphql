@@ -1,0 +1,62 @@
+# Returns the ids of all CulturalReferences of an Object filtered by Language
+query FetchCulturalReferenceIdsByObjectIdAndLanguage($objectId: bigint!, $lang: String!) {
+    smb_cultural_references(where: {
+        object_id: { _eq: $objectId },
+        language: { lang: { _eq: $lang } }
+    }) {
+        id
+    }
+}
+
+# Fetch CulturalReferences using the Vocabulary entry with given id
+query FetchCulturalReferencesByThesaurusId($vocId: bigint!) {
+    smb_cultural_references(
+        where: { _or:[
+            {name_voc_id: { _eq: $vocId }},
+            {type_voc_id: { _eq: $vocId }},
+            {denomination_voc_id: { _eq: $vocId }},
+        ]},
+        order_by: [{object_id: asc}]
+    ) {
+        id
+        objectId:object_id
+    }
+}
+
+# Save a CulturalReferences
+mutation InsertOrUpdateCulturalReference(
+    $objectId: bigint!,
+    $cultureItemId: bigint!,
+    $languageId: bigint!
+    $sequence: Int!,
+    $nameVoc: bigint,
+    $typeVoc: bigint,
+    $denominationVoc: bigint
+) {
+    insert_smb_cultural_references_one(
+        object: {
+            object_id: $objectId
+            culture_item_id: $cultureItemId
+            language_id: $languageId
+            sequence: $sequence
+            name_voc_id: $nameVoc
+            type_voc_id: $typeVoc
+            denomination_voc_id: $denominationVoc
+        },
+        on_conflict: {
+            constraint: cultural_references_pkey,
+            update_columns: [object_id, culture_item_id, language_id, sequence, name_voc_id, type_voc_id, denomination_voc_id]
+        }
+    ) {
+        id
+    }
+}
+
+# Delete a bunch of CulturalReferences by id
+mutation DeleteCulturalReferences($ids: [bigint!]!) {
+    delete_smb_cultural_references(where: {id: { _in: $ids }}) {
+        returning {
+            id
+        }
+    }
+}

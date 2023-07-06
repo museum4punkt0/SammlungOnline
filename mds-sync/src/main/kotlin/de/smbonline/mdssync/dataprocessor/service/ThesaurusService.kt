@@ -73,12 +73,20 @@ class ThesaurusService(
         return result
     }
 
+    fun getThesaurus(mdsId: Long, type: String): ThesaurusData? {
+        val result: ThesaurusData?
+        runBlocking {
+            result = thesaurusRepository.fetchThesaurusData(mdsId, type)
+        }
+        return result
+    }
+
     private suspend fun saveThesaurus(data: Thesaurus): Long {
         val existing = thesaurusRepository.fetchThesaurusData(data.mdsId, data.type)
         val id = if (existing == null) {
             thesaurusRepository.insertThesaurus(data.mdsId, data.name, data.type, data.instance)
         } else {
-            (existing.id as BigDecimal).longValueExact()
+            (existing.id as Number).toLong()
         }
         if (data is ThesaurusExt) {
             val parentId = if (data.parent != null) saveThesaurus(data.parent!!) else null
@@ -97,16 +105,16 @@ class ThesaurusService(
     private suspend fun deleteThesaurus(thesaurus: Thesaurus): Boolean {
         // return true if entry does not even exist
         val entry = thesaurusRepository.fetchThesaurusData(thesaurus.mdsId, thesaurus.type) ?: return true
-        return thesaurusRepository.deleteThesaurus((entry.id as BigDecimal).longValueExact())
+        return thesaurusRepository.deleteThesaurus((entry.id as Number).toLong())
     }
 
     private suspend fun deleteThesaurusTranslation(translation: ThesaurusTranslation): Boolean {
         // return true if entry does not even exist
         val thesaurus = thesaurusRepository.fetchThesaurusData(translation.thesaurus.mdsId, translation.thesaurus.type)
                 ?: return true
-        val entry = thesaurusRepository.fetchTranslationData((thesaurus.id as BigDecimal).longValueExact(), translation.language)
+        val entry = thesaurusRepository.fetchTranslationData((thesaurus.id as Number).toLong(), translation.language)
                 ?: return true
-        return thesaurusRepository.deleteTranslation((entry.id as BigDecimal).longValueExact())
+        return thesaurusRepository.deleteTranslation((entry.id as Number).toLong())
 
     }
 }

@@ -7,6 +7,7 @@ import de.smbonline.mdssync.dataprocessor.service.AttributeApprovalHelper;
 import de.smbonline.mdssync.dataprocessor.service.IgnorableKeyService;
 import de.smbonline.mdssync.dataprocessor.service.ObjectService;
 import de.smbonline.mdssync.dto.AttributeValue;
+import de.smbonline.mdssync.dto.CulturalReference;
 import de.smbonline.mdssync.dto.GeographicalReference;
 import de.smbonline.mdssync.dto.MaterialReference;
 import de.smbonline.mdssync.dto.MdsItem;
@@ -19,7 +20,7 @@ import de.smbonline.mdssync.exc.ErrorHandling;
 import de.smbonline.mdssync.exc.MdsApiConnectionException;
 import de.smbonline.mdssync.exec.parsers.ModuleItemParser;
 import de.smbonline.mdssync.exec.parsers.ModuleItemParserFactory;
-import de.smbonline.mdssync.index.SearchIndexerConfig;
+import de.smbonline.mdssync.index.SearchIndexerClient;
 import de.smbonline.mdssync.jaxb.search.response.Module;
 import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
 import de.smbonline.mdssync.jaxb.search.response.ModuleReference;
@@ -39,17 +40,22 @@ import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static de.smbonline.mdssync.exec.parsers.ParserUtils.*;
 import static de.smbonline.mdssync.util.Dates.*;
 import static de.smbonline.mdssync.util.Lookup.*;
 import static de.smbonline.mdssync.util.MdsConstants.*;
 import static de.smbonline.mdssync.util.Misc.*;
+
+import de.smbonline.mdssync.jaxb.search.response.VocabularyReference;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -69,7 +75,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
     @Autowired
     public ObjectsResolver(
             final MdsApiConfig apiConfig,
-            final SearchIndexerConfig indexerConfig,
+            final SearchIndexerClient indexerClient,
             final MdsApiClientFactory factory,
             final ObjectService objectService,
             final IgnorableKeyService ignoreService,
@@ -78,7 +84,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
             final ObjectProvider<AttachmentsResolver> attachmentsResolverProvider,
             final ObjectProvider<PersonsResolver> involvedPartiesResolverProvider,
             final ObjectProvider<ExhibitionsResolver> exhibitionsResolverProvider) {
-        super(MODULE_OBJECTS, apiConfig, indexerConfig, factory, dataQueue);
+        super(MODULE_OBJECTS, apiConfig, indexerClient, factory, dataQueue);
         this.objectService = objectService;
         this.ignorableKeyService = ignoreService;
         this.approvalHelper = approvalHelper;
@@ -175,7 +181,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
             // if sync was ok, also update search index if desired
             // index-update on delete not required, we do have a delete trigger on smb.objects table
             // TODO: handle all possible updates also with triggers - but collect changes over multiple tables
-            if (state().hasSucceeded(id) && getIndexerConfig().isShouldUpdate() && !delete) {
+            if (state().hasSucceeded(id) && getIndexerClient().getConfig().isShouldUpdate() && !delete) {
                 try {
                     LOGGER.debug("Updating search index...");
                     getIndexerClient().notifyUpdated(id);
@@ -252,8 +258,14 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
         String exhibitionSpace = calculateExhibitionSpace(moduleItem);
         obj.setExhibitionSpace(exhibitionSpace);
 
+        Thesaurus location = extractExhibitionSpace(moduleItem);
+        obj.setLocationVoc(location);
+
         List<GeographicalReference> geoLocs = extractGeoRefs(moduleItem);
         obj.setGeoLocs(geoLocs);
+
+        List<CulturalReference> culturalRefs = extractCulturalRefs(moduleItem);
+        obj.setCulturalRefs(culturalRefs);
 
         List<MaterialReference> materialRefs = extractMaterials(moduleItem);
         obj.setMaterials(materialRefs);
@@ -312,7 +324,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
             }
             if ("OwnPersonMNRef".equals(moduleRefName)) {
                 // the "moduleItem" is not actually an Object here but an Ownership. However, we are storing the referenced
-                // persons in our DB, so we can offer search support also for these persons
+                // persons in our DB, so -eventually- we can offer search support also for these persons
                 resolveInvolvedParties(moduleItem, false, language);
             }
             // we need to adjust the parsed keys by prepending parent info
@@ -330,8 +342,44 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
         return attributes;
     }
 
+    // TODO replace with extractExhibitionSpace
     private @Nullable String calculateExhibitionSpace(final ModuleItem moduleItem) {
         return new ExhibitionSpaceRule().apply(moduleItem);
+    }
+
+    private @Nullable Thesaurus extractExhibitionSpace(final ModuleItem moduleItem) {
+        // TODO extract LocationRule
+
+        // try with current-location
+        VocabularyReference locationRef = findVocRef(moduleItem.getVocabularyReference(), "ObjCurrentLocationVoc");
+        boolean useNormalLocation = currentLocationIsNormalLocation(locationRef) ||
+                // FIXME ISL hacked-in
+                Objects.requireNonNull(ValueExtractor.extractValue(findSysField(moduleItem.getSystemField(), FIELD_ORG_UNIT))).startsWith("ISL");
+        if (useNormalLocation) {
+            // fallback to normal location
+            locationRef = findVocRef(moduleItem.getVocabularyReference(), "ObjNormalLocationVoc");
+        }
+        if (locationRef != null) {
+            // build thesaurus from voc
+            VocabularyReferenceItem locationRefItem = Objects.requireNonNull(locationRef.getVocabularyReferenceItem());
+            Thesaurus thesaurus = new Thesaurus(Long.parseLong(locationRefItem.getId()), locationRef.getName());
+            thesaurus.setName(nonNullVocName(locationRefItem));
+            thesaurus.setInstance(locationRef.getInstanceName());
+            return thesaurus;
+        }
+        return null;
+    }
+
+    private boolean currentLocationIsNormalLocation(final @Nullable VocabularyReference locationRef) {
+        // no ref - no location
+        VocabularyReferenceItem locationRefItem;
+        if (locationRef == null || (locationRefItem = locationRef.getVocabularyReferenceItem()) == null) {
+            return false;
+        }
+        // special but not very rare case: ObjCurrentLocationVoc points to ObjNormalLocationVoc (aktueller=ständiger Standort)
+        String currentIsNormalRegExp = "^.*(([Aa]ktueller)? *=?|wie \"?) *[Ss]t(ä|ae)ndiger *Standort.*$";
+        String name = nonNullVocName(locationRefItem);
+        return !name.matches(currentIsNormalRegExp);
     }
 
     private List<GeographicalReference> extractGeoRefs(final ModuleItem moduleItem) {
@@ -340,6 +388,17 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
             int sequence = ValueExtractor.extractSortInfo(groupItem);
             GeographicalReference ref = new GeographicalReference(groupItem.getId(), moduleItem.getId(), sequence);
             ref.setDetails(ValueExtractor.extractValue(findDataField(groupItem.getDataField(), "DetailsTxt")));
+            ref.setThesauri(thesauri);
+            return ref;
+        }).sorted(BY_SEQUENCE).toList();
+    }
+
+
+    private List<CulturalReference> extractCulturalRefs(final ModuleItem moduleItem) {
+        return findGroupItems(moduleItem, "ObjCulturalContextGrp").stream().map(groupItem -> {
+            List<Thesaurus> thesauri = extractThesauri(groupItem);
+            int sequence = ValueExtractor.extractSortInfo(groupItem);
+            CulturalReference ref = new CulturalReference(groupItem.getId(), moduleItem.getId(), sequence);
             ref.setThesauri(thesauri);
             return ref;
         }).sorted(BY_SEQUENCE).toList();
@@ -378,12 +437,12 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
 
     private String[] getIgnorableKeys() {
         // get configured ignorable keys
-        List<String> keys = new ArrayList<>(this.ignorableKeyService.getIgnorableKeys());
+        Set<String> keys = new TreeSet<>(Arrays.asList(this.ignorableKeyService.getIgnorableKeys()));
         // add certain module-references - we are going to resolve them additionally later
         keys.add("ObjLiteratureRef");
         keys.add("ObjRegistrarRef");
         keys.add("ObjOwnership001Ref");
-        // put the keys in our cache
+        // done
         return keys.toArray(String[]::new);
     }
 }

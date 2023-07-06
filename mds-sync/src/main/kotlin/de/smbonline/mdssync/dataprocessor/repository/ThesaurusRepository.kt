@@ -29,17 +29,13 @@ class ThesaurusRepository @Autowired constructor(
         private val languageRepository: LanguageRepository) {
 
     suspend fun fetchAllInstances(): Array<String> {
-        val result = graphQlClient.client.query(
-                FetchThesaurusInstanceNamesQuery()
-        ).await()
+        val result = graphQlClient.client.query(FetchThesaurusInstanceNamesQuery()).await()
         return result.data?.smb_thesaurus?.map { it.instance }.orEmpty().toTypedArray()
     }
 
     suspend fun fetchIdsForInstance(instance: String): Array<Long> {
-        val result = graphQlClient.client.query(
-                FetchThesaurusIdsByInstanceNameQuery(instance)
-        ).await()
-        return result.data?.smb_thesaurus?.map { (it.id as BigDecimal).longValueExact() }.orEmpty().toTypedArray()
+        val result = graphQlClient.client.query(FetchThesaurusIdsByInstanceNameQuery(instance)).await()
+        return result.data?.smb_thesaurus?.map { (it.id as Number).toLong() }.orEmpty().toTypedArray()
     }
 
     // --
@@ -66,14 +62,12 @@ class ThesaurusRepository @Autowired constructor(
         return if (thesaurus == null) {
             insertThesaurus(data.mdsId, data.name, data.type, data.instance)
         } else {
-            (thesaurus.id as BigDecimal).longValueExact()
+            (thesaurus.id as Number).toLong()
         }
     }
 
     suspend fun fetchThesaurusData(id: Long): ThesaurusData? {
-        val result = graphQlClient.client.query(
-                FetchThesaurusQuery(id)
-        ).await()
+        val result = graphQlClient.client.query(FetchThesaurusQuery(id)).await()
         return result.data?.smb_thesaurus_by_pk?.fragments?.thesaurusData
     }
 
@@ -85,7 +79,7 @@ class ThesaurusRepository @Autowired constructor(
 
         result.data?.insert_smb_thesaurus_one
                 ?: throw SyncFailedException("failed to insert thesaurus entry $type{id=$mdsId, name=$name}")
-        return (result.data!!.insert_smb_thesaurus_one!!.id as BigDecimal).longValueExact()
+        return (result.data!!.insert_smb_thesaurus_one!!.id as Number).toLong()
     }
 
     suspend fun updateThesaurus(id: Long, parentId: Long?, name: String): Long {
@@ -96,17 +90,15 @@ class ThesaurusRepository @Autowired constructor(
 
         val entry = result.data?.update_smb_thesaurus_by_pk
                 ?: throw SyncFailedException("failed to update thesaurus entry $id")
-        return (entry.id as BigDecimal).longValueExact()
+        return (entry.id as Number).toLong()
     }
 
     suspend fun deleteThesaurus(id: Long): Boolean {
-        val result = graphQlClient.client.mutate(
-                DeleteThesaurusMutation(id)
-        ).await()
+        val result = graphQlClient.client.mutate(DeleteThesaurusMutation(id)).await()
         ensureNoError(result)
 
         val deleted = result.data?.delete_smb_thesaurus_by_pk
-        return deleted != null && (deleted.id as BigDecimal).longValueExact() == id
+        return deleted != null && (deleted.id as Number).toLong() == id
     }
 
     // --- translations ---
@@ -125,7 +117,7 @@ class ThesaurusRepository @Autowired constructor(
             val languageId = languageRepository.fetchOrInsertLanguage(lang)
             return insertTranslation(thesaurusId, languageId, value)
         }
-        val id = (existing.id as BigDecimal).longValueExact()
+        val id = (existing.id as Number).toLong()
         if (existing.value != value) {
             updateTranslation(id, value)
         }
@@ -140,27 +132,23 @@ class ThesaurusRepository @Autowired constructor(
 
         result.data?.insert_smb_thesaurus_translations_one
                 ?: throw SyncFailedException("failed to insert thesaurus translation for $thesaurusId")
-        return (result.data!!.insert_smb_thesaurus_translations_one!!.id as BigDecimal).longValueExact()
+        return (result.data!!.insert_smb_thesaurus_translations_one!!.id as Number).toLong()
     }
 
     private suspend fun updateTranslation(id: Long, value: String): Long {
-        val result = graphQlClient.client.mutate(
-                UpdateThesaurusTranslationMutation(id, value)
-        ).await()
+        val result = graphQlClient.client.mutate(UpdateThesaurusTranslationMutation(id, value)).await()
         ensureNoError(result)
 
         val entry = result.data?.update_smb_thesaurus_translations_by_pk
                 ?: throw SyncFailedException("failed to update thesaurus translation $id")
-        return (entry.id as BigDecimal).longValueExact()
+        return (entry.id as Number).toLong()
     }
 
     suspend fun deleteTranslation(id: Long): Boolean {
-        val result = graphQlClient.client.mutate(
-                DeleteThesaurusTranslationMutation(id)
-        ).await()
+        val result = graphQlClient.client.mutate(DeleteThesaurusTranslationMutation(id)).await()
         ensureNoError(result)
 
         val deleted = result.data?.delete_smb_thesaurus_translations_by_pk
-        return deleted != null && (deleted.id as BigDecimal).longValueExact() == id
+        return deleted != null && (deleted.id as Number).toLong() == id
     }
 }

@@ -34,17 +34,20 @@ mutation InsertExhibit($objectId:bigint!, $exhibitionId:bigint!) {
 
 # Insert new Exhibition if not exists
 mutation InsertOrUpdateExhibition($exhibitionId:bigint!, $title:String,, $description:String, $location:String, $startDate:String, $endDate:String) {
-    insert_smb_exhibitions_one(object: {
-        id: $exhibitionId,
-        title: $title,
-        description: $description,
-        location: $location,
-        start_date: $startDate,
-        end_date: $endDate
-    }, on_conflict: {
-        constraint: exhibitions_pkey,
-        update_columns: [title, description, location, start_date, end_date]
-    }) {
+    insert_smb_exhibitions_one(
+        object: {
+            id: $exhibitionId,
+            title: $title,
+            description: $description,
+            location: $location,
+            start_date: $startDate,
+            end_date: $endDate
+        },
+        on_conflict: {
+            constraint: exhibitions_pkey,
+            update_columns: [title, description, location, start_date, end_date]
+        }
+    ) {
         id
     }
 }

@@ -15,7 +15,7 @@ import de.smbonline.mdssync.exc.ErrorHandling;
 import de.smbonline.mdssync.exc.MdsApiConnectionException;
 import de.smbonline.mdssync.exec.parsers.ModuleItemParser;
 import de.smbonline.mdssync.exec.parsers.ModuleItemParserFactory;
-import de.smbonline.mdssync.index.SearchIndexerConfig;
+import de.smbonline.mdssync.index.SearchIndexerClient;
 import de.smbonline.mdssync.jaxb.search.response.Module;
 import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
 import de.smbonline.mdssync.jaxb.search.response.ModuleReference;
@@ -53,10 +53,10 @@ public class PersonsResolver extends ModuleItemResolverBase<ParsedMdsItem> {
     public PersonsResolver(
             final MdsApiConfig mdsConfig,
             final MdsApiClientFactory clientFactory,
-            final SearchIndexerConfig indexerConfig,
+            final SearchIndexerClient indexerClient,
             final PersonService personService,
             final DataQueue<WrapperDTO> dataQueue) {
-        super(MODULE_PERSON, mdsConfig, indexerConfig, clientFactory, dataQueue);
+        super(MODULE_PERSON, mdsConfig, indexerClient, clientFactory, dataQueue);
         this.personService = personService;
     }
 
@@ -85,7 +85,7 @@ public class PersonsResolver extends ModuleItemResolverBase<ParsedMdsItem> {
                     ObjPerson involvedParty = resolveInvolvedParty(dto, ref);
                     process(newWrapper(involvedParty, Operation.UPSERT, result));
                     if (result.hasSucceeded(personItem.getId())) {
-                        // TODO should be done in SyncRunner instead
+                        // TODO should be done in SyncRunner instead - add to ctx
                         notifyReindexObject(ref.getModuleItemId(), "involvedParties");
                     }
                 }
@@ -98,6 +98,7 @@ public class PersonsResolver extends ModuleItemResolverBase<ParsedMdsItem> {
                     .stream()
                     .map(party -> ((Number) party.getObjectId()).longValue())
                     .distinct()
+                    // TODO should be done in SyncRunner instead - add to ctx
                     .forEach(objectId -> notifyReindexObject(objectId, "involvedParties"));
         }
 
@@ -194,36 +195,40 @@ public class PersonsResolver extends ModuleItemResolverBase<ParsedMdsItem> {
         }
     }
 
-    private Collection<ObjPerson> resolveInvolvedParties(final Person person, final ModuleItem objectItem) {
+    private static Collection<ObjPerson> resolveInvolvedParties(final Person person, final ModuleItem objectItem) {
         ModuleReference personRef = Objects.requireNonNull(
                 findFirst(objectItem.getModuleReference(), ref -> "ObjPerAssociationRef".equals(ref.getName())));
         Collection<ModuleReferenceItem> personRefItems = Objects.requireNonNull(
                 findAll(personRef.getModuleReferenceItem(), ref -> ref.getModuleItemId().equals(person.getMdsId())));
         return personRefItems.stream().map(personRefItem -> {
-            // TODO there can be an AttributionVoc ("Zuordnung unsicher") also that we should store.
-            VocabularyReference vocRef = findVocRef(personRefItem.getVocabularyReference(), VOC_ROLE);
-            if (vocRef == null) {
+            VocabularyReference roleVocRef = findVocRef(personRefItem.getVocabularyReference(), VOC_ROLE);
+            if (roleVocRef == null) {
                 return null;
             }
-            VocabularyReferenceItem vocRefItem = Objects.requireNonNull(vocRef.getVocabularyReferenceItem());
-            Thesaurus role = new Thesaurus(Long.parseLong(vocRefItem.getId()), VOC_ROLE);
-            role.setName(nonNullVocName(vocRefItem));
-            role.setInstance(vocRef.getInstanceName());
-            return new ObjPerson(person, objectItem.getId(), extractSortInfo(personRefItem), role);
+            Thesaurus role = convertToThesaurus(roleVocRef);
+            VocabularyReference attributionVocRef = findVocRef(personRefItem.getVocabularyReference(), "AttributionVoc");
+            Thesaurus attribution = attributionVocRef == null ? null : convertToThesaurus(attributionVocRef);
+            return new ObjPerson(person, objectItem.getId(), extractSortInfo(personRefItem), Pair.of(role, attribution));
         }).filter(Objects::nonNull).toList();
     }
 
-    private ObjPerson resolveInvolvedParty(final Person person, final ModuleReferenceItem objectRefItem) {
-        // TODO there can be an AttributionVoc ("Zuordnung unsicher") also that we should store.
-        VocabularyReference vocRef = Objects.requireNonNull(findVocRef(objectRefItem.getVocabularyReference(), VOC_ROLE));
-        VocabularyReferenceItem vocRefItem = Objects.requireNonNull(vocRef.getVocabularyReferenceItem());
-        Thesaurus role = new Thesaurus(Long.parseLong(vocRefItem.getId()), VOC_ROLE);
-        role.setName(nonNullVocName(vocRefItem));
-        role.setInstance(vocRef.getInstanceName());
-        return new ObjPerson(person, objectRefItem.getModuleItemId(), -1 /*unknown seq*/, role);
+    private static ObjPerson resolveInvolvedParty(final Person person, final ModuleReferenceItem objectRefItem) {
+        VocabularyReference roleVocRef = Objects.requireNonNull(findVocRef(objectRefItem.getVocabularyReference(), VOC_ROLE));
+        Thesaurus role = convertToThesaurus(roleVocRef);
+        VocabularyReference attributionVocRef = findVocRef(objectRefItem.getVocabularyReference(), "AttributionVoc");
+        Thesaurus attribution = attributionVocRef == null ? null : convertToThesaurus(attributionVocRef);
+        return new ObjPerson(person, objectRefItem.getModuleItemId(), -1 /*unknown seq*/, Pair.of(role, attribution));
     }
 
-    private List<InvolvedPartyData> collectObsoleteInvolvedParties(final List<InvolvedPartyData> oldParties, final List<InvolvedPartyData> newParties) {
+    private static Thesaurus convertToThesaurus(final VocabularyReference vocRef) {
+        VocabularyReferenceItem vocRefItem = Objects.requireNonNull(vocRef.getVocabularyReferenceItem());
+        Thesaurus thesaurus = new Thesaurus(Long.parseLong(vocRefItem.getId()), vocRef.getName());
+        thesaurus.setName(nonNullVocName(vocRefItem));
+        thesaurus.setInstance(vocRef.getInstanceName());
+        return thesaurus;
+    }
+
+    private static List<InvolvedPartyData> collectObsoleteInvolvedParties(final List<InvolvedPartyData> oldParties, final List<InvolvedPartyData> newParties) {
         return oldParties.stream().filter(oldParty -> {
             // if party was not updated, it is obsolete
             InvolvedPartyData newParty = findFirst(newParties, party -> oldParty.getId().equals(party.getId()));

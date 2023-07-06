@@ -13,5 +13,5 @@ class ImageProcessingProperties {
     var maxDimensions: Int = 4000
     var defaultImageType: String = "jpg"
     var maxImagesPerObject: Int = 10
-
+    var maxOriginalSize: Int = 150
 }

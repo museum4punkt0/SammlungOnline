@@ -13,10 +13,13 @@ public class MdsApiConfig {
     private String baseUrl = null;
     private String webservicePath = "/ria-ws/application/";
     private String modulePathTemplate = this.webservicePath + "/module/{moduleName}";
-    private int tokenLifetime = 20; // minutes
+    private int tokenLifetime = 10; // minutes
+    private long healthCheckObjectId = 1L;
+
     private final AuthConfig auth = new AuthConfig();
     private boolean sslValidationEnabled = true;
     private boolean approvalFilterEnabled = true;
+    private boolean autoLoadAttachments = false;
 
     public String getBaseUrl() {
         return this.baseUrl;
@@ -42,6 +45,14 @@ public class MdsApiConfig {
         this.modulePathTemplate = Objects.requireNonNull(pathTemplate);
     }
 
+    public void setHealthCheckObjectId(final long id) {
+        this.healthCheckObjectId = id;
+    }
+
+    public long getHealthCheckObjectId() {
+        return this.healthCheckObjectId;
+    }
+
     public AuthConfig getAuth() {
         return this.auth;
     }
@@ -62,6 +73,14 @@ public class MdsApiConfig {
         this.approvalFilterEnabled = enabled;
     }
 
+    public boolean isAutoLoadAttachments() {
+        return this.autoLoadAttachments;
+    }
+
+    public void setAutoLoadAttachments(final boolean load) {
+        this.autoLoadAttachments = load;
+    }
+
     public void setTokenLifetime(final int minutes) {
         this.tokenLifetime = minutes;
     }
@@ -76,6 +95,10 @@ public class MdsApiConfig {
         private String pass;
         private String token;
 
+        /**
+         * Auth user, only null if {@code env.MDS_API_USER} is not set.
+         * @return auth username
+         */
         public @Nullable String getUser() {
             return this.user;
         }
@@ -84,6 +107,10 @@ public class MdsApiConfig {
             this.user = user;
         }
 
+        /**
+         * Auth password, only null if {@code env.MDS_API_PASSWORD} is not set.
+         * @return auth password
+         */
         public @Nullable String getPass() {
             return this.pass;
         }

@@ -8,7 +8,7 @@ import de.smbonline.mdssync.dto.Assortment;
 import de.smbonline.mdssync.dto.Operation;
 import de.smbonline.mdssync.dto.WrapperDTO;
 import de.smbonline.mdssync.exec.parsers.AssortmentsParser;
-import de.smbonline.mdssync.index.SearchIndexerConfig;
+import de.smbonline.mdssync.index.SearchIndexerClient;
 import de.smbonline.mdssync.jaxb.search.response.Module;
 import de.smbonline.mdssync.jaxb.search.response.ModuleItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ public class AssortmentsResolver extends ModuleItemResolverBase<Assortment> {
     public AssortmentsResolver(
             final MdsApiConfig mdsConfig,
             final MdsApiClientFactory clientFactory,
-            final SearchIndexerConfig indexerConfig,
+            final SearchIndexerClient indexerClient,
             final AssortmentService assortmentService,
             final DataQueue<WrapperDTO> dataQueue) {
-        super(MODULE_OBJECT_GROUPS, mdsConfig, indexerConfig, clientFactory, dataQueue);
+        super(MODULE_OBJECT_GROUPS, mdsConfig, indexerClient, clientFactory, dataQueue);
         this.assortmentService = assortmentService;
     }
 

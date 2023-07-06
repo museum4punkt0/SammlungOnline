@@ -1,6 +1,7 @@
 package de.smbonline.mdssync.exec;
 
 import de.smbonline.mdssync.exc.ErrorHandling;
+import de.smbonline.mdssync.rest.Data;
 import kotlin.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,11 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import static de.smbonline.mdssync.rest.JsonAttr.*;
 import static de.smbonline.mdssync.util.MdsConstants.*;
 import static de.smbonline.mdssync.util.Validations.*;
 
@@ -59,8 +62,11 @@ public class SyncController {
         return config;
     }
 
-    public synchronized Object getState() {
-        return this.runner == null ? "not running" : this.runner.getStatusInfo();
+    public synchronized Data getState() {
+        Data state = this.runner == null
+                ? new Data().setAttribute(ATTR_STATUS, "not running")
+                : this.runner.getStatusInfo();
+        return state.setAttribute("permits", this.semaphore.availablePermits());
     }
 
     public SyncResult resolveHighlights() {
@@ -178,13 +184,33 @@ public class SyncController {
             return SyncResult.NOOP;
         }
 
-        try {
-            LOGGER.info("Starting manually requested sync...");
-            PartialSyncRunner sync = newRunnerForModule(moduleName);
-            this.runner = sync;
-            return sync.sync(ids);
-        } finally {
-            releasePermit();
+        if (this.config.shouldRunAsync()) {
+            boolean[] asyncStarted = {false}; // effectively final boolean wrapper
+            try {
+                LOGGER.info("Starting manually requested sync...");
+                PartialSyncRunner sync = newRunnerForModule(moduleName);
+                this.runner = sync;
+                CompletableFuture.supplyAsync(() -> {
+                    asyncStarted[0] = true;
+                    return sync.sync(ids);
+                }).whenComplete((result, exc) -> {
+                    if (asyncStarted[0]) releasePermit();
+                });
+                return SyncResult.ASYNC;
+            } finally {
+                if (!asyncStarted[0]) {
+                    releasePermit();
+                }
+            }
+        } else {
+            try {
+                LOGGER.info("Starting manually requested sync...");
+                PartialSyncRunner sync = newRunnerForModule(moduleName);
+                this.runner = sync;
+                return sync.sync(ids);
+            } finally {
+                releasePermit();
+            }
         }
     }
 
@@ -205,13 +231,18 @@ public class SyncController {
             return SyncResult.NOOP;
         }
 
-        try {
-            LOGGER.info("Starting manually requested sync...");
-            SyncExecuter sync = newExecuter(moduleName);
-            this.runner = sync;
-            return sync.sync(start, to);
-        } finally {
-            releasePermit();
+        if (this.config.shouldRunAsync()) {
+            // TODO, see impl above
+            return null;
+        } else {
+            try {
+                LOGGER.info("Starting manually requested sync...");
+                SyncExecuter sync = newExecuter(moduleName);
+                this.runner = sync;
+                return sync.sync(start, to);
+            } finally {
+                releasePermit();
+            }
         }
     }
 
@@ -251,7 +282,7 @@ public class SyncController {
 
         try {
 
-            SyncResult.Status status = SyncResult.Status.NOOP;
+            SyncResult.Status status = SyncResult.Status.TBD;
             Duration duration = Duration.ZERO;
 
             String[] modules = {MODULE_OBJECTS, MODULE_PERSON, MODULE_EXHIBITIONS, MODULE_MULTIMEDIA};
@@ -296,6 +327,10 @@ public class SyncController {
     protected SyncExecuter newExecuter(final String moduleName) {
         SyncExecuter executer = this.executerProvider.getObject();
         executer.setModuleName(moduleName);
+        if (MODULE_MULTIMEDIA.equals(moduleName)) {
+            // some attachments are *really* large, we better only fetch one at a time
+            executer.getConfig().setPageSize(1);
+        }
         return executer;
     }
 
@@ -387,9 +422,19 @@ public class SyncController {
 
     public static class Config {
 
+        private boolean asyncManualSync = false;
+
         private Pair<Integer, TimeUnit> incrementalTimeout = new Pair<>(60, TimeUnit.SECONDS);
         private Pair<Integer, TimeUnit> highlightTimeout = new Pair<>(60, TimeUnit.SECONDS);
         private Pair<Integer, TimeUnit> deleteTimeout = new Pair<>(5, TimeUnit.MINUTES);
+
+        public boolean shouldRunAsync() {
+            return this.asyncManualSync;
+        }
+
+        public void setRunAsync(final boolean async) {
+            this.asyncManualSync = async;
+        }
 
         public Pair<Integer, TimeUnit> getDeleteTimeout() {
             return this.deleteTimeout;

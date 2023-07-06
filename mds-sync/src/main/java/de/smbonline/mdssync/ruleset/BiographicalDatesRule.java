@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static de.smbonline.mdssync.util.Lookup.*;
+import static de.smbonline.mdssync.util.MdsConstants.*;
 import static de.smbonline.mdssync.util.ValueExtractor.*;
 
 public class BiographicalDatesRule implements TransformationRule<Triple<LocalDate, LocalDate, String>> {
@@ -29,7 +30,7 @@ public class BiographicalDatesRule implements TransformationRule<Triple<LocalDat
     private Triple<LocalDate, LocalDate, String> extractBiographicalDates(final RepeatableGroup dateGroup) {
 
         // check "Lebensdaten" first
-        RepeatableGroupItem life = findGroupItem(dateGroup.getRepeatableGroupItem(), "TypeVoc", "Lebensdaten");
+        RepeatableGroupItem life = findGroupItem(dateGroup.getRepeatableGroupItem(), VOC_TYPE, "Lebensdaten");
         if (life != null) {
             String from = findFirstHit(life.getDataField(), "DateFromDat", "DateFromTxt");
             String to = findFirstHit(life.getDataField(), "DateToDat", "DateToTxt");
@@ -57,14 +58,14 @@ public class BiographicalDatesRule implements TransformationRule<Triple<LocalDat
 
         // fallback to "Geburtsdatum" and "Todesdatum"
         if (lifespan.getLeft() == null) {
-            RepeatableGroupItem birthday = findGroupItem(dateGroup.getRepeatableGroupItem(), "TypeVoc", "Geburtsdatum");
+            RepeatableGroupItem birthday = findGroupItem(dateGroup.getRepeatableGroupItem(), VOC_TYPE, "Geburtsdatum");
             if (birthday != null) {
                 String value = findFirstHit(birthday.getDataField(), "DateFromDat", "DateFromTxt");
                 lifespan.setLeft(Dates.tryParseDate(value));
             }
         }
         if (lifespan.getMiddle() == null) {
-            RepeatableGroupItem death = findGroupItem(dateGroup.getRepeatableGroupItem(), "TypeVoc", "Todesdatum");
+            RepeatableGroupItem death = findGroupItem(dateGroup.getRepeatableGroupItem(), VOC_TYPE, "Todesdatum");
             if (death != null) {
                 String value = findFirstHit(death.getDataField(), "DateFromDat", "DateFromTxt");
                 lifespan.setMiddle(Dates.tryParseDate(value));

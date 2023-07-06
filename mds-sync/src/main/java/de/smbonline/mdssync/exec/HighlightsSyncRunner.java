@@ -131,17 +131,12 @@ public class HighlightsSyncRunner implements SyncRunner {
         LocalDateTime start = LocalDateTime.now();
         updateStatus("running");
 
-        List<String> toBeDeletedOrgUnits = new ArrayList<>(this.highlightService.getAllHighlightOrgUnits());
-        Collections.sort(toBeDeletedOrgUnits);
+        List<String> obsoleteHighlightOrgUnits = new ArrayList<>(this.highlightService.getAllHighlightOrgUnits());
+        Collections.sort(obsoleteHighlightOrgUnits);
 
-        if (!toBeDeletedOrgUnits.isEmpty()) {
-            if (LOGGER.isDebugEnabled()) {
-                String orgUnits = String.join(", ", toBeDeletedOrgUnits);
-                LOGGER.debug("Highlights exist for the following org-units: {}", orgUnits);
-            }
-
-            // collect old highlights, maybe we have to reindex them later if they are no highlights anymore
-            toBeDeletedOrgUnits.forEach(orgUnit -> {
+        // collect old highlights, maybe we have to reindex them later if they are no highlights anymore
+        if (!obsoleteHighlightOrgUnits.isEmpty()) {
+            obsoleteHighlightOrgUnits.forEach(orgUnit -> {
                 List<Long> objIds = this.highlightService.getHighlightObjectIds(orgUnit);
                 this.oldHighlightObjIds.addAll(objIds);
             });
@@ -160,20 +155,20 @@ public class HighlightsSyncRunner implements SyncRunner {
             for (ModuleItem item : module.getModuleItem()) {
                 Highlight highlight = parser.parseModuleItem(item);
                 if (highlight != null) {
-                    toBeDeletedOrgUnits.remove(highlight.getOrgUnitName());
+                    obsoleteHighlightOrgUnits.remove(highlight.getOrgUnitName());
                     WrapperDTO wrapper = newUpsertWrapper(highlight);
                     this.dataQueue.add(wrapper);
                 }
             }
 
-            if (!toBeDeletedOrgUnits.isEmpty()) {
+            if (!obsoleteHighlightOrgUnits.isEmpty()) {
                 if (LOGGER.isDebugEnabled()) {
-                    String orgUnits = String.join(", ", toBeDeletedOrgUnits);
-                    LOGGER.debug("Removing unused highlight org-units: {}", orgUnits);
+                    String orgUnits = String.join(", ", obsoleteHighlightOrgUnits);
+                    LOGGER.debug("Removing highlights for obsolete org-units: {}", orgUnits);
                 }
 
                 // delete what can be deleted
-                toBeDeletedOrgUnits.stream().map(orgUnit -> {
+                obsoleteHighlightOrgUnits.stream().map(orgUnit -> {
                     Highlight highlight = new Highlight();
                     highlight.setOrgUnitName(orgUnit);
                     return newDeleteWrapper(highlight);
@@ -185,7 +180,7 @@ public class HighlightsSyncRunner implements SyncRunner {
             }
 
             LocalDateTime end = LocalDateTime.now();
-            SyncResult.Status status = toBeDeletedOrgUnits.isEmpty() && module.getModuleItem().isEmpty()
+            SyncResult.Status status = obsoleteHighlightOrgUnits.isEmpty() && module.getModuleItem().isEmpty()
                     ? SyncResult.Status.NOOP : SyncResult.Status.SUCCESS;
             result = new SyncResult(status, Duration.between(start, end));
             saveSyncCycleSuccess(result, start);

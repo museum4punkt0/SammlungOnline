@@ -382,15 +382,19 @@ public abstract class ModuleItemParser<T extends MdsItem> {
         return attr;
     }
 
-    private static @Nullable String normalizedValue(final DataType dataType, final @Nullable String value) {
+    public static @Nullable String normalizedValue(final DataType dataType, final @Nullable String value) {
         if (StringUtils.isBlank(value)) {
             return null;
         }
+        String cleanValue = value.trim();
         if (dataType == DataType.LONG) {
             // we often have separators in the value like 9.565 instead of plain 9565
-            return value.replace(".", "");
+            cleanValue = cleanValue.replace(".", "");
+        } else if (dataType == DataType.VARCHAR) {
+            // sometimes html content is copy-pasted in MDS - we want to get rid of this
+            cleanValue = cleanValue.replaceAll("(?i)</?[html|body].*?>", " ").trim();
         }
-        // no conversions known yet
-        return value;
+        // no further conversions known yet
+        return cleanValue;
     }
 }

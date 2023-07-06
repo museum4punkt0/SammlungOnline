@@ -8,6 +8,13 @@ fragment assortmentData on smb_assortments {
     queryType:search_query_type
 }
 
+# data fragment of Collections
+fragment collectionData on smb_collections {
+    key
+    title
+    type
+}
+
 # data fragment of a Highlight
 fragment highlightData on smb_highlights {
     id
@@ -64,6 +71,9 @@ fragment personData on smb_persons {
 fragment orgUnitData on smb_org_unit {
     id
     key:name
+    title
+    compilation:is_compilation
+    collectionKey
 }
 
 # data fragment of an Object
@@ -86,6 +96,7 @@ fragment involvedPartyData on smb_persons_objects {
     objectId:object_id
     personId:person_id
     roleId:role_voc_id
+    attributionId:attribution_voc_id
     sequence
     createdAt:created_at
     updatedAt:updated_at
@@ -100,6 +111,16 @@ fragment attachmentData on smb_attachments {
     credits
     mediaType:media_type
     licenseId:license_id
+    license {
+        key
+    }
+    createdAt:created_at
+    updatedAt:updated_at
+}
+
+# data fragment for BlockedAttachment
+fragment blockedAttachmentData on smb_blocked_attachments {
+    id
     license {
         key
     }
@@ -118,12 +139,7 @@ fragment thesaurusTranslationData on smb_thesaurus_translations {
     id
     value
     thesaurus {
-        id
-        parentId:parent_id
-        mdsId:mds_id
-        name
-        type
-        instance
+        ...thesaurusData
     }
     language {
         code:lang

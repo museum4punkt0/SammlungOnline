@@ -102,6 +102,9 @@ public class SearchRequestHelper {
         search.setOffset((long) 0);
         search.setLimit((long) mdsIds.length);
 
+        // only load attachments when we are explicitly syncing the Multimedia module
+        search.setLoadAttachment(this.apiConfig.isAutoLoadAttachments() && MODULE_MULTIMEDIA.equals(this.module));
+
         return search;
     }
 
@@ -152,6 +155,9 @@ public class SearchRequestHelper {
         // pagination
         search.setOffset((long) offset);
         search.setLimit((long) limit);
+
+        // only load attachments when we are explicitly syncing the Multimedia module
+        search.setLoadAttachment(this.apiConfig.isAutoLoadAttachments() && MODULE_MULTIMEDIA.equals(this.module));
 
         return search;
     }
@@ -225,7 +231,7 @@ public class SearchRequestHelper {
      * @param lastModifiedTo   to range or null
      * @return search filter
      */
-    private BetweenIncl buildModifiedRangeFilter(
+    public static BetweenIncl buildModifiedRangeFilter(
             final @Nullable OffsetDateTime lastModifiedFrom,
             final @Nullable OffsetDateTime lastModifiedTo) {
 
@@ -239,13 +245,21 @@ public class SearchRequestHelper {
         return between;
     }
 
+    public static BetweenIncl buildIdRangeFilter(final Long startId, final Long endId) {
+        BetweenIncl between = REQUEST_FACTORY.createBetweenIncl();
+        between.setFieldPath(FIELD_ID);
+        between.setOperand1(startId.toString());
+        between.setOperand2(endId.toString());
+        return between;
+    }
+
     /**
      * Method to build an search filter for a set of ids.
      *
      * @param mdsIds ids to resolve
      * @return search payload
      */
-    public Or buildIncludeFilter(final Long... mdsIds) {
+    public static Or buildIncludeFilter(final Long... mdsIds) {
         return combine(mdsIds);
     }
 
@@ -255,7 +269,7 @@ public class SearchRequestHelper {
      * @param mdsIds ids to <b>not</b> resolve
      * @return search filter
      */
-    public Not buildExcludeFilter(final Long... mdsIds) {
+    public static Not buildExcludeFilter(final Long... mdsIds) {
         Not not = REQUEST_FACTORY.createNot();
         not.setOr(combine(mdsIds));
         return not;
@@ -267,7 +281,7 @@ public class SearchRequestHelper {
      * @param mdsIds item ids from MDS
      * @return OR expression combining all given ids
      */
-    private Or combine(final Long... mdsIds) {
+    private static Or combine(final Long... mdsIds) {
         return or(Arrays.stream(mdsIds).map(id -> {
             EqualsField equal = REQUEST_FACTORY.createEqualsField();
             equal.setFieldPath(FIELD_ID);
@@ -294,7 +308,7 @@ public class SearchRequestHelper {
         return fields.length == 0 ? REQUEST_FACTORY.createAnd() : and((Object[]) fields);
     }
 
-    private static Sort buildSortBy(final String sorting) {
+    public static Sort buildSortBy(final String sorting) {
         String fieldPath = sorting.charAt(0) == '+' || sorting.charAt(0) == '-' ? sorting.substring(1) : sorting;
         Direction direction = sorting.charAt(0) == '-' ? Direction.DESCENDING : Direction.ASCENDING;
 
@@ -321,7 +335,15 @@ public class SearchRequestHelper {
         return select;
     }
 
-    private static SelectField buildSelectField(final String path) {
+    public static Select buildSelectFields(final String... fields) {
+        Select select = REQUEST_FACTORY.createSelect();
+        Arrays.stream(fields).map(SearchRequestHelper::buildSelectField).forEach(
+                f -> select.getField().add(f)
+        );
+        return select;
+    }
+
+    public static SelectField buildSelectField(final String path) {
         SelectField field = REQUEST_FACTORY.createSelectField();
         field.setFieldPath(path);
         return field;

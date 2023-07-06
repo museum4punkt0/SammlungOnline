@@ -8,31 +8,55 @@ query FetchGeographicalReferenceIdsByObjectIdAndLanguage($objectId: bigint!, $la
     }
 }
 
+# Fetch GeographicalReferences using the Vocabulary entry with given id
+query FetchGeographicalReferencesByThesaurusId($vocId: bigint!) {
+    smb_geographical_references(
+        where: { _or:[
+            {geopol_voc_id: { _eq: $vocId }},
+            {place_voc_id: { _eq: $vocId }},
+            {type_voc_id: { _eq: $vocId }},
+        ]},
+        order_by: [{object_id: asc}]
+    ) {
+        id
+        objectId:object_id
+    }
+}
+
+# Save a GeographicalReferences
 mutation InsertOrUpdateGeographicalReference(
-    $objectId:bigint!, $geoItemId:bigint!, $languageId:bigint!
-    $sequence:Int!,
-    $details:String,
-    $geopolVoc:bigint, $placeVoc:bigint, $roleVoc:bigint, $typeVoc:bigint) {
-    insert_smb_geographical_references_one(object: {
-        object_id: $objectId
-        geo_item_id: $geoItemId
-        language_id: $languageId
-        details: $details
-        sequence: $sequence
-        geopol_voc_id: $geopolVoc
-        place_voc_id: $placeVoc
-        role_voc_id: $roleVoc
-        type_voc_id: $typeVoc
-    }, on_conflict: {
-        constraint: geographical_references_pkey,
-        update_columns: [object_id, geo_item_id, language_id, details, sequence, geopol_voc_id, place_voc_id, role_voc_id, type_voc_id]
-    }) {
+    $objectId: bigint!,
+    $geoItemId: bigint!,
+    $languageId: bigint!
+    $sequence: Int!,
+    $details: String,
+    $geopolVoc: bigint,
+    $placeVoc: bigint,
+    $typeVoc: bigint
+) {
+    insert_smb_geographical_references_one(
+        object: {
+            object_id: $objectId
+            geo_item_id: $geoItemId
+            language_id: $languageId
+            details: $details
+            sequence: $sequence
+            geopol_voc_id: $geopolVoc
+            place_voc_id: $placeVoc
+            type_voc_id: $typeVoc
+        },
+        on_conflict: {
+            constraint: geographical_references_pkey,
+            update_columns: [object_id, geo_item_id, language_id, details, sequence, geopol_voc_id, place_voc_id, type_voc_id]
+        }
+    ) {
         id
     }
 }
 
+# Delete a bunch of GeographicalReferences by id
 mutation DeleteGeographicalReferences($ids: [bigint!]!) {
-    delete_smb_geographical_references(where: {id: {_in: $ids}}) {
+    delete_smb_geographical_references(where: {id: { _in: $ids }}) {
         returning {
             id
         }

@@ -72,7 +72,7 @@ class ImageWebDavRepository @Autowired constructor(val config: ImageProcessingPr
             if (paths.size > 1) {
                 var parent = ""
                 for (path in paths.subList(0, paths.size - 1)) {
-                    val fullPath = "$parent$path/" // need to add a slash in the end of a location
+                    val fullPath = "$parent$path/" // need to add a slash at the end of a location
                     if (!exists(fullPath)) {
                         sardine.createDirectory(toAbsoluteUrl(fullPath))
                     }

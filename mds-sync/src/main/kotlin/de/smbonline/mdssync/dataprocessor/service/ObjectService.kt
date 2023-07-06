@@ -2,6 +2,7 @@ package de.smbonline.mdssync.dataprocessor.service
 
 import de.smbonline.mdssync.dataprocessor.graphql.queries.fragment.ObjectData
 import de.smbonline.mdssync.dataprocessor.repository.AttributeRepository
+import de.smbonline.mdssync.dataprocessor.repository.CulturalReferenceRepository
 import de.smbonline.mdssync.dataprocessor.repository.GeographicalReferenceRepository
 import de.smbonline.mdssync.dataprocessor.repository.MaterialReferenceRepository
 import de.smbonline.mdssync.dataprocessor.repository.ObjectRepository
@@ -21,6 +22,7 @@ class ObjectService @Autowired constructor(
         private val objectRepository: ObjectRepository,
         private val attributeRepository: AttributeRepository,
         private val geographicalReferenceRepository: GeographicalReferenceRepository,
+        private val culturalReferenceRepository: CulturalReferenceRepository,
         private val materialReferenceRepository: MaterialReferenceRepository,
         private val attachmentService: AttachmentService
 ) : DataService<PrincipalObject>, Engine<WrapperDTO>() {
@@ -73,6 +75,11 @@ class ObjectService @Autowired constructor(
             geographicalReferenceRepository.getGeographicalReferenceIds(obj.mdsId, obj.language)
         } else emptyArray()
 
+        // get cultural-references before saving the object
+        val oldCultureRefIds = if (exists) {
+            culturalReferenceRepository.getCulturalReferenceIds(obj.mdsId, obj.language)
+        } else emptyArray()
+
         // get materials before saving the object
         val oldMaterialRefIds = if (exists) {
             materialReferenceRepository.getMaterialReferenceIds(obj.mdsId, obj.language)
@@ -86,6 +93,12 @@ class ObjectService @Autowired constructor(
         // delete the geolocations that are no longer part of the current object
         val obsoleteGeoLocIds = oldGeoRefIds.filter { !newGeoRefIds.contains(it) }
         geographicalReferenceRepository.deleteAll(obsoleteGeoLocIds)
+
+        // save new cultural-references
+        val newCultureRefIds = culturalReferenceRepository.saveCulturalReferences(obj.culturalRefs, obj.language)
+        // delete the cultural-references that are no longer part of the current object
+        val obsoleteCultureLocIds = oldCultureRefIds.filter { !newCultureRefIds.contains(it) }
+        culturalReferenceRepository.deleteAll(obsoleteCultureLocIds)
 
         // save new materials and techniques
         val newMaterialRefIds = materialReferenceRepository.saveMaterialReferences(obj.materials, obj.language)
@@ -109,6 +122,47 @@ class ObjectService @Autowired constructor(
         attachmentService.deleteAll(objectId)
     }
 
+    fun getIdsForCollection(collectionKey: String, prefix: Boolean): Array<Long> {
+        var ids: Array<Long>
+        runBlocking {
+            ids = if (prefix) objectRepository.getCollectionObjectIds(collectionKey)
+            else objectRepository.getOrgUnitObjectIds(collectionKey)
+        }
+        return ids
+    }
+
+    fun getIdsForGeographicalReferencesVoc(vocId: Long): Array<Long> {
+        var ids: Array<Long>
+        runBlocking {
+            ids = geographicalReferenceRepository.getRelatedObjectIds(vocId)
+        }
+        return ids
+    }
+
+    fun getIdsForLocationVoc(vocId: Long): Array<Long> {
+        var ids: Array<Long>
+        runBlocking {
+            ids = objectRepository.getLocatedObjectIds(vocId)
+        }
+        return ids
+    }
+
+    fun getIdsForCulturalReferencesVoc(vocId: Long): Array<Long> {
+        var ids: Array<Long>
+        runBlocking {
+            ids = culturalReferenceRepository.getRelatedObjectIds(vocId)
+        }
+        return ids
+    }
+
+    fun getIdsForMaterialReferencesVoc(vocId: Long): Array<Long> {
+        var ids: Array<Long>
+        runBlocking {
+            ids = materialReferenceRepository.getRelatedObjectIds(vocId)
+        }
+        return ids
+    }
+
     fun getLastUpdated(mdsId: Long): OffsetDateTime? {
         var obj: ObjectData?
         runBlocking {
@@ -123,4 +177,5 @@ class ObjectService @Autowired constructor(
             OffsetDateTime.parse(approxOffsetTimeString).minusMinutes(5)
         } else null
     }
+
 }

@@ -72,6 +72,14 @@ class PersonService(
         return data
     }
 
+    fun getInvolvedParties(roleId: Long): List<InvolvedPartyData> {
+        var data: List<InvolvedPartyData>
+        runBlocking {
+            data = personRepository.fetchInvolvedParties(roleId)
+        }
+        return data
+    }
+
     fun getInvolvedParties(objectId: Long?, personId: Long?): List<InvolvedPartyData> {
         if (objectId == null && personId == null) {
             throw IllegalArgumentException("at least one nun-null argument required")
@@ -93,17 +101,19 @@ class PersonService(
         // find person id - create new person if not yet present
         val personId = personRepository.fetchOrInsertPerson(element.mdsId, element.name)
         // find role id - create new role if not yet present
-        val roleId = thesaurusRepository.fetchOrInsertThesaurus(element.role)
+        val roleId = thesaurusRepository.fetchOrInsertThesaurus(element.role.left)
+        // find attribution id - create new attribution if not yet present
+        val attributionId = if (element.role.right == null) null else thesaurusRepository.fetchOrInsertThesaurus(element.role.right!!)
         // assign object+person+role if not yet present
         val involvedParty = personRepository.fetchInvolvedParty(element.objectId, personId, roleId)
         return if (involvedParty == null) {
-            personRepository.insertInvolvedParty(element.objectId, personId, roleId, element.sequence)
+            personRepository.insertInvolvedParty(element.objectId, personId, roleId, attributionId, element.sequence)
         } else {
             val id = (involvedParty.id as BigDecimal).longValueExact()
             // sequence may be unset if invoked from PersonSync - in this case we keep the old info we
             // obtained from ObjSync already. But still we have to save _something_ so that the update-timestamp changes.
             val seq = if (element.sequence > 0) element.sequence else involvedParty.sequence
-            personRepository.updateInvolvedParty(id, seq)
+            personRepository.updateInvolvedParty(id, attributionId, seq)
         }
     }
 
