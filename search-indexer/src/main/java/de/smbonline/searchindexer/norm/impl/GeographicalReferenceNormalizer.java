@@ -1,12 +1,12 @@
 package de.smbonline.searchindexer.norm.impl;
 
-import de.smbonline.searchindexer.norm.ThesaurusResolvingNormalizer;
 import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.graphql.queries.fragment.GeoData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ThesaurusData;
+import de.smbonline.searchindexer.norm.ThesaurusResolvingNormalizer;
+import de.smbonline.searchindexer.norm.impl.shared.Links;
 import de.smbonline.searchindexer.service.GraphQlService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.lang.Nullable;
 
@@ -16,6 +16,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
+import static de.smbonline.searchindexer.rest.Params.urlEncode;
+import static de.smbonline.searchindexer.util.Misc.wrapQuotes;
+import static org.apache.commons.lang3.StringUtils.*;
+import static de.smbonline.searchindexer.util.Validations.*;
 
 public class GeographicalReferenceNormalizer extends ThesaurusResolvingNormalizer<Data[]> {
 
@@ -56,7 +60,7 @@ public class GeographicalReferenceNormalizer extends ThesaurusResolvingNormalize
             if (geoData.getTypeVocId() != null && isBlacklisted(((Number) geoData.getTypeVocId()).longValue())) {
                 return false;
             }
-            return StringUtils.isNotEmpty(geoData.getDetails()) || geoData.getPlaceVocId() != null;
+            return isNotEmpty(geoData.getDetails()) || geoData.getPlaceVocId() != null;
         }).collect(Collectors.toList());
     }
 
@@ -72,49 +76,101 @@ public class GeographicalReferenceNormalizer extends ThesaurusResolvingNormalize
     }
 
     private Data resolveReference(final GeoData ref, final String language) {
+
+        Long id = ref.getPlaceVocId() == null ? null : requireId(ref.getPlaceVocId());
+        String place = id == null ? null : resolveThesaurusLabel(id, language, false);
+        String placeHierarchical = id == null ? null : resolveThesaurusLabel(id, language, true);
+        String type = resolveThesaurusLabel(ref.getTypeVocId(), language, false);
+        String denomination = resolveThesaurusLabel(ref.getGeopolVocId(), language, true); // geopol ~ denomination
+        String searchLink = Links.internal(buildSearchParams(id, ref.getDetails()));
+
         return new Data()
-                .setNonNullAttribute(ID_ATTRIBUTE, ref.getId())
-                .setNonNullAttribute("placeId", ref.getPlaceVocId())
+                .setNonNullAttribute(ID_ATTRIBUTE, id)
                 .setNonNullAttribute("typeId", ref.getTypeVocId())
-                .setNonNullAttribute("geopolId", ref.getGeopolVocId())
-                .setNonNullAttribute("roleId", ref.getRoleVocId())
-                .setNonNullAttribute("details", StringUtils.trimToNull(ref.getDetails()))
-                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, buildTextValue(ref, language));
+                .setNonNullAttribute("denominationId", ref.getGeopolVocId())
+                .setNonNullAttribute("location", place)
+                .setNonNullAttribute("details", trimToNull(ref.getDetails()))
+                .setNonNullAttribute("search", searchLink)
+                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, buildTextValue(ref, place, placeHierarchical, type, denomination, false))
+                .setNonNullAttribute(MARKUP_VALUE_ATTRIBUTE, buildTextValue(ref, place, placeHierarchical, type, denomination, true));
     }
 
-    private @Nullable String buildTextValue(final GeoData ref, final String language) {
+    private @Nullable String buildTextValue(
+            final GeoData ref,
+            final @Nullable String place,
+            final @Nullable String placeHierarchical,
+            final @Nullable String type,
+            final @Nullable String denomination,
+            final boolean markup) {
 
-        String place = resolveThesaurusLabel(ref.getPlaceVocId(), language);
-        String details = ref.getDetails(); // already translated
-        String type = resolveThesaurusLabel(ref.getTypeVocId(), language);
-        String geopol = resolveThesaurusLabel(ref.getGeopolVocId(), language);
+        String details = ref.getDetails();
 
-        boolean hasPlace = StringUtils.isNotBlank(place);
-        boolean hasDetails = StringUtils.isNotBlank(details);
-        boolean hasType = StringUtils.isNotBlank(type);
-        boolean hasGeopol = StringUtils.isNotBlank(geopol);
+        boolean hasPlace = isNotBlank(place);
+        boolean isPlaceHierarchical = hasPlace && !equalsIgnoreCase(place, placeHierarchical);
+        boolean hasDetails = isNotBlank(details);
+        boolean hasType = isNotBlank(type);
+        boolean hasDenomination = isNotBlank(denomination);
 
         StringBuilder sb = new StringBuilder();
-        if (hasType) {
-            sb.append(type.trim()).append(':');
-        }
-        if (hasPlace) {
-            sb.append(' ').append(place.trim());
+        if (hasPlace || hasDetails) {
+            if (hasType) {
+                String template = markup ? "<span>%s:</span> " : "%s: ";
+                sb.append(template.formatted(type.trim()));
+            }
+            if (hasPlace) {
+                if (markup) {
+                    String searchParam = buildSearchParams(requireId(ref.getPlaceVocId()), null);
+                    sb.append(Links.internalHTML(searchParam, place.trim()));
+                    if (isPlaceHierarchical) {
+                        sb.append(" <span>%s</span>".formatted(substringAfter(placeHierarchical, place).trim()));
+                    }
+                } else {
+                    sb.append(trim(placeHierarchical));
+                }
+                if (hasDetails) {
+                    sb.append(", ");
+                }
+            }
             if (hasDetails) {
-                sb.append(',');
+                details = details.trim();
+                // if place is linked, we don't want to link details
+                boolean link = markup && !hasPlace;
+                if (link) {
+                    String searchParam = buildSearchParams(null, details);
+                    sb.append(Links.internalHTML(searchParam, details));
+                } else {
+                    String template = markup ? "<span>%s</span>" : "%s";
+                    sb.append(template.formatted(details));
+                }
+            }
+            if (hasDenomination) {
+                String template = markup ? " <span>(%s)</span>" : " (%s)";
+                sb.append(template.formatted(denomination.trim()));
             }
         }
-        if (hasDetails) {
-            sb.append(' ').append(details.trim());
+        if (sb.length() == 0) {
+            return null;
         }
-        if (hasGeopol) {
-            sb.append(' ').append('(').append(geopol.trim()).append(')');
-        }
-        return sb.length() == 0 ? null : sb.toString().trim();
+        return markup ? "<div>%s</div>".formatted(sb) : sb.toString().trim();
     }
 
     private boolean isBlacklisted(final Long typeVocId) {
         ThesaurusData entry = fetchThesaurus(typeVocId);
         return entry != null && TYPES_BLACKLIST.contains(entry.getName());
+    }
+
+    /**
+     * Builds search query term, uses id if given else the details.
+     *
+     * @param id      place voc id
+     * @param details place string
+     * @return query param
+     */
+    private String buildSearchParams(final @Nullable Long id, final @Nullable String details) {
+        if (id == null) {
+            return GEOGRAPHICAL_REFERENCES_ATTRIBUTE + ".details:" + wrapQuotes(urlEncode(details));
+        } else {
+            return GEOGRAPHICAL_REFERENCES_ATTRIBUTE + "." + ID_ATTRIBUTE + ":" + id;
+        }
     }
 }

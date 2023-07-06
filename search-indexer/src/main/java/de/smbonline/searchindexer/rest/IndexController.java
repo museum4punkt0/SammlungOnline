@@ -1,5 +1,6 @@
 package de.smbonline.searchindexer.rest;
 
+import de.smbonline.searchindexer.SearchIndexer;
 import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.dto.Projection;
 import de.smbonline.searchindexer.dto.Search;
@@ -43,21 +44,17 @@ import static org.springframework.http.MediaType.*;
 
 @RestController
 @RequestMapping(path = "index")
-public class IndexController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
+public class IndexController extends SearchIndexer {
 
-    private final ElasticSearchService elasticSearch;
     private final GraphQlService graphQl;
-    private final GraphQlDataResolver dataResolver;
 
     @Autowired
     public IndexController(
             final ElasticSearchService elasticSearchService,
             final GraphQlService graphQlService,
             final GraphQlDataResolver dataResolver) {
-        this.elasticSearch = elasticSearchService;
+        super(elasticSearchService, dataResolver);
         this.graphQl = graphQlService;
-        this.dataResolver = dataResolver;
     }
 
     @GetMapping
@@ -147,7 +144,7 @@ public class IndexController {
             if (request.hasAttribute(ATTR_ID)) {
                 Number id = requireNonNull(request.getTypedAttribute(ATTR_ID));
                 LOGGER.info("Received search-index update request for {}", id);
-                if (request.hasAttribute(ATTR_FIELDS) && !"*".equals(request.getTypedAttribute(ATTR_FIELDS))) {
+                if (request.hasAttribute(ATTR_FIELDS) && !"*".equals(request.getAttribute(ATTR_FIELDS))) {
                     String[] fields = requireNonNull(request.<Collection<String>>getTypedAttribute(ATTR_FIELDS)).toArray(String[]::new);
                     response = handlePushId(id.longValue(), lang, force, fields);
                 } else {
@@ -157,7 +154,7 @@ public class IndexController {
                 Collection<?> payloadIds = requireNonNull(request.getTypedAttribute(ATTR_IDS));
                 Long[] ids = collectIdsAsLongArray(payloadIds);
                 LOGGER.info("Received search-index update request for {} ids", ids.length);
-                if (request.hasAttribute(ATTR_FIELDS) && !"*".equals(request.getTypedAttribute(ATTR_FIELDS))) {
+                if (request.hasAttribute(ATTR_FIELDS) && !"*".equals(request.getAttribute(ATTR_FIELDS))) {
                     String[] fields = requireNonNull(request.<Collection<String>>getTypedAttribute(ATTR_FIELDS)).toArray(String[]::new);
                     response = handlePushIds(ids, lang, force, fields);
                 } else {
@@ -172,60 +169,7 @@ public class IndexController {
             }
             response = new Data().setAttribute(ATTR_ERROR, exc.toString());
         }
-        return handleDataResponse(response, Projection.ID);
-    }
-
-    private Data handlePushIds(final Long[] ids, final String lang, final boolean force, @Nullable final String... fields) {
-        Data collectedResponse = new Data();
-        Arrays.stream(ids).forEach(id -> {
-            String idAttr = "" + id;
-            Data partialResponse = handlePushId(id, lang, force, fields);
-            // for partial responses change {"id":"<status>"} to {"status":"<status>"} and then put the adjusted
-            // partial response into the collected response {"id": {<partial>}, ...}
-            String status = partialResponse.getTypedAttribute(idAttr);
-            collectedResponse.setAttribute(idAttr, partialResponse.setAttribute(ATTR_STATUS, status).removeAttribute(idAttr));
-        });
-        return collectedResponse;
-    }
-
-    private Data handlePushId(final Long id, final String lang, final boolean force, @Nullable final String... fields) {
-
-        String idAttr = "" + id;
-        Data result = new Data().setAttribute(idAttr, "NOOP");
-        boolean cleared = false;
-        boolean partial = isVarArgsDefined(fields);
-
-        LOGGER.debug("Updating search-index for {}", id);
-
-        if (force && this.elasticSearch.exists(id, lang)) {
-            // make sure old fields are removed - a push will only upsert but not delete fields
-            if (partial) {
-                Arrays.stream(fields).forEach(field -> this.elasticSearch.deleteField(id, lang, field));
-                result.setAttribute(idAttr, "FIELDS_REMOVED").setAttribute(ATTR_FIELDS, fields);
-                cleared = true;
-            } else {
-                result = this.elasticSearch.delete(id, lang);
-                cleared = "DELETED".equals(result.getTypedAttribute(idAttr));
-            }
-        }
-
-        SearchObject objectData = partial
-                ? this.dataResolver.resolveObjectAttributes(id, lang, fields)
-                : this.dataResolver.resolveObjectById(id, lang);
-        if (objectData == null && !force) {
-            LOGGER.info("Skipped indexing of object {} - object not found.", id);
-            result.setAttribute("message", "Object not found");
-        }
-        if (objectData != null) {
-            result = this.elasticSearch.push(objectData);
-            if (cleared) {
-                // deleted + recreated = updated
-                result.setAttribute(idAttr, "UPDATED");
-            }
-        }
-        LOGGER.info("Search-index updated for {} (Status: {})", id, result.getAttribute(idAttr));
-
-        return result;
+        return handleDataResponse(response);
     }
 
     /**
@@ -250,10 +194,10 @@ public class IndexController {
                 this.elasticSearch.delete(id, lang);
             }
             Data response = this.elasticSearch.push(toSearchObject(fullObjectData, lang));
-            return handleDataResponse(response, Projection.ID);
+            return handleDataResponse(response);
         } catch (Exception exc) {
             Sentry.captureException(exc);
-            return handleDataResponse(new Data().setAttribute(ATTR_ERROR, exc.toString()), Projection.DEFAULT_PROJECTION);
+            return handleDataResponse(new Data().setAttribute(ATTR_ERROR, exc.toString()));
         }
     }
 
@@ -268,10 +212,10 @@ public class IndexController {
         try {
             LOGGER.info("Received search-index delete request for {}", objectId);
             Data response = this.elasticSearch.delete(objectId);
-            return handleDataResponse(response, Projection.ID);
+            return handleDataResponse(response);
         } catch (Exception exc) {
             Sentry.captureException(exc);
-            return handleDataResponse(new Data().setAttribute(ATTR_ERROR, exc.toString()), Projection.DEFAULT_PROJECTION);
+            return handleDataResponse(new Data().setAttribute(ATTR_ERROR, exc.toString()));
         }
     }
 

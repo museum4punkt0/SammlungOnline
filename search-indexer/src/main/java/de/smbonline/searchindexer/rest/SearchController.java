@@ -1,5 +1,6 @@
 package de.smbonline.searchindexer.rest;
 
+import de.smbonline.searchindexer.api.ElasticSearchAPI;
 import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.dto.Format;
 import de.smbonline.searchindexer.dto.Projection;
@@ -49,11 +50,7 @@ public class SearchController {
         if (object == null) {
             return ResponseEntity.notFound().build();
         }
-        Projection proj = Projection.getOrDefault(projection);
-        if (proj == FULL) {
-            // TODO add attachments links
-        }
-        return handleDataResponse(object, proj);
+        return handleDataResponse(object, Projection.getOrDefault(projection));
     }
 
     @GetMapping(path = "{id}/export", produces = APPLICATION_OCTET_STREAM_VALUE)
@@ -65,7 +62,7 @@ public class SearchController {
         SearchObject object = this.service.get(id, lang);
         return object == null
                 ? ResponseEntity.notFound().build()
-                : handleDataResponse(object, Format.getOrDefault(format));
+                : handleFilestreamResponse(object, Format.getOrDefault(format));
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -89,9 +86,6 @@ public class SearchController {
 
     private ResponseEntity<Data> handleSearch(final Search search, final String language, final Projection projection) {
         Data result = this.service.search(search, language);
-        if (projection == FULL) {
-            // TODO add attachments links to all results
-        }
         return handleDataResponse(result, projection);
     }
 
@@ -104,5 +98,40 @@ public class SearchController {
         suggestion.setLimit(limit);
         Data result = this.service.suggest(suggestion, language);
         return handleDataResponse(result, Projection.FLAT);
+    }
+
+    @PostMapping(path = "suggestions", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Data> getSuggestions(
+            final @RequestParam Map<String, String> requestParams,
+            final @RequestBody Data request) {
+        String searchTerm = requestParams.getOrDefault(SEARCHQUERY_PARAMETER, "");
+        int limit = Integer.parseInt(requestParams.getOrDefault(LIMIT_PARAMETER, "15"));
+        String language = requestParams.getOrDefault(LANGUAGE_PARAMETER, DEFAULT_LANGUAGE);
+
+        SearchSuggest suggestion = SearchSuggest.Companion.fromSearchTerm(searchTerm);
+        suggestion.setLimit(limit);
+        suggestion.setAdvancedSearch(Search.Companion.fromPayload(request).getAdvancedSearch());
+        Data result = this.service.suggest(suggestion, language);
+
+        return handleDataResponse(result, Projection.FLAT);
+    }
+
+    @GetMapping(path = "facets", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Data> getFacets(final @RequestParam Map<String, String> requestParams) {
+        String language = requestParams.getOrDefault(LANGUAGE_PARAMETER, DEFAULT_LANGUAGE);
+        Search search = Search.Companion.fromQueryParams(requestParams);
+        Data result = this.service.fetchFacets(search, language);
+        return handleDataResponse(result);
+    }
+
+    @PostMapping(path = "facets", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Data> getFacets(
+            final @RequestParam Map<String, String> requestParams,
+            final @RequestBody Data request) {
+        String language = requestParams.getOrDefault(LANGUAGE_PARAMETER, DEFAULT_LANGUAGE);
+        Search search = Search.Companion.fromQueryParams(requestParams);
+        search = Search.Companion.merge(search, request);
+        Data result = this.service.fetchFacets(search, language);
+        return handleDataResponse(result);
     }
 }

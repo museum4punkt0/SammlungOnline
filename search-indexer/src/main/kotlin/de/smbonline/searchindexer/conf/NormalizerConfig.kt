@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 @ConfigurationProperties(prefix = "normalizers")
 class NormalizerConfig {
-    var involvedPartiesWithExplicitRole: Boolean = false
+
     var locationSeparator:String = "/"
-    var unknownExhibitionSpace:String = "UNKNOWN";
+    var unknownExhibitionSpace:String = "UNKNOWN"
 }

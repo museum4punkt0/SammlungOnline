@@ -7,10 +7,15 @@ fragment assortmentData on smb_assortments {
     objects:assortments_objects {
         id:object_id
     }
+    i18n (where: {
+        language: {lang: {_eq: $lang}}
+    }) {
+        title
+    }
 }
 
 # Return all Assortments
-query FetchAssortments {
+query FetchAssortments($lang: String!) {
     smb_assortments {
         ...assortmentData
     }

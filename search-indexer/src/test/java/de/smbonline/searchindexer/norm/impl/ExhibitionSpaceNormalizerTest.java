@@ -4,14 +4,17 @@ import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
-import static de.smbonline.searchindexer.norm.impl.TestData.*;
-import static org.assertj.core.api.Assertions.*;
+import static de.smbonline.searchindexer.norm.impl.Mockings.graphQlProvider;
+import static de.smbonline.searchindexer.norm.impl.Mockings.mappingSupplierMock;
+import static de.smbonline.searchindexer.norm.impl.TestData.createObject;
+import static de.smbonline.searchindexer.norm.impl.TestData.withExhibitionSpace;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExhibitionSpaceNormalizerTest {
 
     @Test
     public void testAttributeKey() {
-        ExhibitionSpaceNormalizer normalizer = new ExhibitionSpaceNormalizer("-");
+        ExhibitionSpaceNormalizer normalizer = new ExhibitionSpaceNormalizer(graphQlProvider(mappingSupplierMock()), "-");
         assertThat(normalizer.getAttributeKey()).isEqualTo("exhibitionSpace");
     }
 
@@ -157,9 +160,10 @@ public class ExhibitionSpaceNormalizerTest {
 
     private void assertMapping(final /* given */ ObjectData source, final String expected) {
         // when
-        ExhibitionSpaceNormalizer normalizer = new ExhibitionSpaceNormalizer("->");
+        ExhibitionSpaceNormalizer normalizer = new ExhibitionSpaceNormalizer(graphQlProvider(mappingSupplierMock()), "->");
         String value = normalizer.resolveAttributeValue(source, "de");
         // then
         assertThat(value).isEqualTo(expected);
     }
+
 }

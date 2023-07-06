@@ -1,5 +1,6 @@
 logging.level:
   de.smbonline: INFO
+  de.smbonline.searchindexer.api.ElasticSearchAPI: TRACE
   org.apache.catalina: WARN
   org.elasticsearch.client: ERROR # ignore security warnings
   org.springframework: WARN
@@ -19,6 +20,7 @@ elastic:
   object-index: ${ELASTICSEARCH_INDEXNAME:objects}
   suggestions-sort: counter
   partial-match-suggestions: false
+  markup-allowed: ${ELASTICSEARCH_MARKUP_ALLOWED:true}
 spring:
   elasticsearch:
     rest:
@@ -28,6 +30,14 @@ normalizers:
   involved-parties-with-explicit-role: false
   location-separator: ->
   unknown-exhibition-space: UNKNOWN
+
+placeholders:
+  search-base-url: ${SELF_SEARCH_URL:http://smb-search-indexer:${server.port}/search}
+  lookup-base-url: ${SELF_LOOKUP_URL:http://smb-search-indexer:${server.port}/lookup}
+  iconclass-normdata-base-url: https://iconclass.org
+  permalink-base-url: https://id.smb.museum/object
+  image-provider-base-url: ${IMGP_BASEURL:http://smb-image-provider:80/images}
+  image-default-size: ${IMGP_DEFAULT_SIZE:480}
 
 management:
   endpoint:

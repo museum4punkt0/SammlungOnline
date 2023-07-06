@@ -1,10 +1,11 @@
 package de.smbonline.searchindexer.norm.impl;
 
-import de.smbonline.searchindexer.norm.ThesaurusResolvingNormalizer;
 import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.graphql.queries.fragment.MaterialData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ThesaurusData;
+import de.smbonline.searchindexer.norm.ThesaurusResolvingNormalizer;
+import de.smbonline.searchindexer.norm.impl.shared.Links;
 import de.smbonline.searchindexer.service.GraphQlService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ObjectProvider;
@@ -15,6 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
+import static de.smbonline.searchindexer.rest.Params.urlEncode;
+import static de.smbonline.searchindexer.util.Misc.wrapQuotes;
+import static de.smbonline.searchindexer.util.Validations.requireId;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.substringAfter;
 
 public class MaterialAndTechniqueNormalizer extends ThesaurusResolvingNormalizer<Data[]> {
 
@@ -93,35 +99,93 @@ public class MaterialAndTechniqueNormalizer extends ThesaurusResolvingNormalizer
     }
 
     private Data resolveReference(final MaterialData material, final String language) {
+
+        Long id = material.getSpecificTypeVocId() == null ? null : requireId(material.getSpecificTypeVocId());
+        String details = StringUtils.trimToNull(material.getDetails());
+        String type = resolveThesaurusLabel(material.getTypeVocId(), language, false);
+        String specificType = resolveThesaurusLabel(id, language, false);
+        String specificTypeHierarchical = resolveThesaurusLabel(id, language, true);
+        String searchLink = Links.internal(buildSearchParams(details, id));
+
+        // details override specific-type-voc
         return new Data()
-                .setNonNullAttribute(ID_ATTRIBUTE, material.getId())
-                .setNonNullAttribute("specificTypeId", material.getSpecificTypeVocId())
+                .setNonNullAttribute(ID_ATTRIBUTE, id)
                 .setNonNullAttribute("typeId", material.getTypeVocId())
-                .setNonNullAttribute("details", StringUtils.trimToNull(material.getDetails()))
-                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, buildTextValue(material, language));
+                .setNonNullAttribute("name", details == null ? specificType : details)
+                .setNonNullAttribute("search", searchLink)
+                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, buildTextValue(material, details, type, specificType, specificTypeHierarchical, false))
+                .setNonNullAttribute(MARKUP_VALUE_ATTRIBUTE, buildTextValue(material, details, type, specificType, specificTypeHierarchical, true));
     }
 
-    private @Nullable String buildTextValue(final MaterialData material, final String language) {
-        if (StringUtils.isNotBlank(material.getDetails())) {
-            return material.getDetails().trim();
-        }
-        if (material.getSpecificTypeVocId() == null) {
-            return null;
-        }
+    /**
+     * Build the actual text that is shown for this attribute.
+     *
+     * @param material     the base object
+     * @param details      extracted details from base object
+     * @param type         extracted type-voc-label from base object
+     * @param specificType extracted specific-type-voc-label from base object
+     * @param markup       true for HTML, false for plain text
+     * @return text value
+     */
+    private @Nullable String buildTextValue(
+            final MaterialData material,
+            final @Nullable String details,
+            final @Nullable String type,
+            final @Nullable String specificType,
+            final @Nullable String specificTypeHierarchical,
+            final boolean markup) {
 
-        String typeLabel = resolveThesaurusLabel(material.getTypeVocId(), language);
-        String specificTypeLabel = resolveThesaurusLabel(material.getSpecificTypeVocId(), language);
-
-        boolean hasType = StringUtils.isNotBlank(typeLabel);
-        boolean hasSpecificType = StringUtils.isNotBlank(specificTypeLabel);
+        boolean hasDetails = StringUtils.isNotBlank(details);
+        boolean hasType = StringUtils.isNotBlank(type);
+        boolean hasSpecificType = StringUtils.isNotBlank(specificType);
+        boolean isSpecificTypeHierarchical = hasSpecificType && !equalsIgnoreCase(specificType, specificTypeHierarchical);
 
         StringBuilder sb = new StringBuilder();
-        if (hasSpecificType) {
-            if (hasType) {
-                sb.append(typeLabel).append(": ");
+
+        // option A: details
+        if (hasDetails) {
+            if (markup) {
+                String searchParam = buildSearchParams(details, null);
+                sb.append(Links.internalHTML(searchParam, details));
+            } else {
+                sb.append(details);
             }
-            sb.append(specificTypeLabel);
         }
-        return sb.length() == 0 ? null : sb.toString();
+        // option B: voc
+        else if (hasSpecificType) {
+            if (hasType) {
+                String template = markup ? "<span>%s:</span> " : "%s: ";
+                sb.append(template.formatted(type));
+            }
+            if (markup) {
+                String searchParam = buildSearchParams(null, requireId(material.getSpecificTypeVocId()));
+                sb.append(Links.internalHTML(searchParam, specificType));
+                if (isSpecificTypeHierarchical) {
+                    sb.append(" <span>%s</span>".formatted(substringAfter(specificTypeHierarchical, specificType).trim()));
+                }
+            } else {
+                sb.append(specificType);
+            }
+        }
+
+        if (sb.length() == 0) {
+            return null;
+        }
+        return markup ? "<div>%s</div>".formatted(sb) : sb.toString().trim();
+    }
+
+    /**
+     * Builds search query term, uses details if given else the id.
+     *
+     * @param details material string
+     * @param id      material voc id
+     * @return query param
+     */
+    private String buildSearchParams(final @Nullable String details, final @Nullable Long id) {
+        if (id == null) {
+            return MATERIAL_AND_TECHNIQUE_ATTRIBUTE + ".name:" + wrapQuotes(urlEncode(details));
+        } else {
+            return MATERIAL_AND_TECHNIQUE_ATTRIBUTE + "." + ID_ATTRIBUTE + ":" + id;
+        }
     }
 }

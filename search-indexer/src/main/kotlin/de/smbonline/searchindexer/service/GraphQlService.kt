@@ -1,34 +1,97 @@
 package de.smbonline.searchindexer.service
 
+import com.google.common.cache.Cache
+import com.google.common.cache.CacheBuilder
 import de.smbonline.searchindexer.api.GraphQlAPI
 import de.smbonline.searchindexer.graphql.queries.fragment.*
+import de.smbonline.searchindexer.norm.impl.mappings.MappingSupplier
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.concurrent.TimeUnit
 
 @Service
-class GraphQlService @Autowired constructor(private val graphQlAPI: GraphQlAPI) {
+class GraphQlService @Autowired constructor(private val graphQlAPI: GraphQlAPI) : MappingSupplier {
 
-    fun fetchApprovedCollectionKeys(attrKey: String): Array<String> {
-        var result: Array<String>
-        runBlocking {
-            val approval = graphQlAPI.fetchAttributeApproval(attrKey)
-            result = if (approval?.collectionKeys != null) {
-                approval.collectionKeys.substring(1, approval.collectionKeys.length - 1)
-                        .split(',')
-                        .map { it.trim() }
-                        .toTypedArray()
-            } else emptyArray()
-        }
-        return result
+    private val assortmentsCache: Cache<String, List<AssortmentData>> = CacheBuilder.newBuilder()
+            .expireAfterAccess(15, TimeUnit.MINUTES)
+            .expireAfterWrite(60, TimeUnit.MINUTES).build()
+    private val buildingsCache: Cache<String, List<BuildingData>> = CacheBuilder.newBuilder()
+            .expireAfterAccess(30, TimeUnit.MINUTES)
+            .expireAfterWrite(60, TimeUnit.MINUTES).build()
+    private val collectionsCache: Cache<String, List<CollectionData>> = CacheBuilder.newBuilder()
+            .expireAfterAccess(30, TimeUnit.MINUTES)
+            .expireAfterWrite(60, TimeUnit.MINUTES).build()
+    private val compilationsCache: Cache<String, List<CompilationData>> = CacheBuilder.newBuilder()
+            .expireAfterAccess(30, TimeUnit.MINUTES)
+            .expireAfterWrite(60, TimeUnit.MINUTES).build()
+    private val approvalsCache: Cache<String, Array<String>> = CacheBuilder.newBuilder()
+            .expireAfterAccess(1, TimeUnit.MINUTES)
+            .expireAfterWrite(2, TimeUnit.MINUTES).build()
+
+    private val caches = mapOf(
+            Pair("assortments", assortmentsCache),
+            Pair("buildings", buildingsCache),
+            Pair("collections", collectionsCache),
+            Pair("compilations", compilationsCache),
+            Pair("approvals", approvalsCache)
+    )
+
+    fun evictCaches() {
+        caches.keys.forEach { evictCache(it) }
     }
 
-    fun fetchAssortments(): List<AssortmentData> {
-        var result: List<AssortmentData>
-        runBlocking {
-            result = graphQlAPI.fetchAssortments()
+    fun evictCache(which: String) {
+        caches[which]?.let {
+            it.invalidateAll()
+            it.cleanUp()
         }
-        return result
+    }
+
+    fun fetchApprovedCollectionKeys(attrKey: String): Array<String> {
+        return approvalsCache.get(attrKey) {
+            runBlocking {
+                val approval = graphQlAPI.fetchAttributeApproval(attrKey)
+                return@runBlocking if (approval?.collectionKeys != null) {
+                    approval.collectionKeys.substring(1, approval.collectionKeys.length - 1)
+                            .split(',')
+                            .map { it.trim() }
+                            .toTypedArray()
+                } else emptyArray()
+            }
+        }
+    }
+
+    override fun fetchAssortments(lang: String): List<AssortmentData> {
+        return assortmentsCache.get(lang) {
+            runBlocking {
+                return@runBlocking graphQlAPI.fetchAssortments(lang)
+            }
+        }
+    }
+
+    override fun fetchBuildings(): List<BuildingData> {
+        return buildingsCache.get("all") {
+            runBlocking {
+                return@runBlocking graphQlAPI.fetchBuildings()
+            }
+        }
+    }
+
+    override fun fetchCompilations(): List<CompilationData> {
+        return compilationsCache.get("all") {
+            runBlocking {
+                return@runBlocking graphQlAPI.fetchCompilations()
+            }
+        }
+    }
+
+    override fun fetchCollections(): List<CollectionData> {
+        return collectionsCache.get("all") {
+            runBlocking {
+                return@runBlocking graphQlAPI.fetchCollections()
+            }
+        }
     }
 
     fun fetchThesaurus(id: Long): ThesaurusData? {

@@ -24,7 +24,7 @@ public class CsvTransformerTest {
     private final String assortments = "assortments";
     private final String collection = "collection";
 
-    private final String expectedHeader = "acquisition,assortments,collection,collectionKey,compilation,creditLine,dateRange,dating,dimensionsAndWeight,exhibitions,exhibitionSpace,findSpot,geographicalReferences,attachments,iconclasses,iconography,id,identNumber,inscriptions,involvedParties,exhibit,highlight,keywords,literature,location,longDescription,materialAndTechnique,provenance,provenanceEvaluation,signatures,technicalTerm,titles,";
+    private final String expectedHeader = "acquisition,assortments,collection,collectionKey,compilation,creditLine,culturalReferences,dateRange,dating,description,dimensionsAndWeight,exhibitions,exhibitionSpace,findSpot,geographicalReferences,attachments,iconclasses,iconography,id,identNumber,inscriptions,involvedParties,exhibit,highlight,keywords,literature,location,longDescription,materialAndTechnique,provenance,provenanceEvaluation,signatures,technicalTerm,titles,";
 
     private CsvTransformer testObject;
 
@@ -57,7 +57,7 @@ public class CsvTransformerTest {
         String expectedResultLine = acquisitionValue1 + separator
                 + assortmentsValue1 + separator
                 + collectionValue1 + separator
-                + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
+                + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
         //when
         File result = testObject.transform(data);
         //then
@@ -83,7 +83,7 @@ public class CsvTransformerTest {
         String expectedResultLine = acquisitionValue1 + separator
                 + assortmentsValue1 + separator
                 + collectionValue1 + separator
-                + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
+                + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
         //when
         File result = testObject.transform(data);
         //then
@@ -111,7 +111,7 @@ public class CsvTransformerTest {
             String line2 = reader.readLine();
 
             assertThat(line1).contains("\"acquisition text with newline");
-            assertThat(line2).contains(" some more text\",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
+            assertThat(line2).contains(" some more text\",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,");
         }
     }
 

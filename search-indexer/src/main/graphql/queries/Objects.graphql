@@ -6,6 +6,12 @@ fragment objectData on smb_objects {
     collectionKey
     compilation
     exhibitionSpace:exhibition_space
+    culturalReferences:cultural_references(
+        order_by: [{sequence: asc}],
+        where: {sequence: {_gte: 0}, language: {lang: {_eq: $lang}}}
+    ) {
+        ...cultureData
+    }
     geographicalReferences:geographical_references(
         order_by: [{sequence: asc}],
         where: {sequence: {_gte: 0}, language: {lang: {_eq: $lang}}}
@@ -18,13 +24,23 @@ fragment objectData on smb_objects {
     ) {
         ...materialData
     }
-    attributes (where: {language: {lang: {_eq: $lang} } }){
+    locationVocId:location_voc_id
+    attributes (
+        order_by: [{fq_key: asc}],
+        where: {
+            language: {lang: {_eq: $lang} },
+#            visible: {_eq: true}
+        }
+    ){
         key:attribute_key
         value
         fqKey:fq_key
     }
     attachments {
-        name:attachment
+        id
+        path:attachment
+        primary
+        mediaType:media_type
     }
     highlights {
         orgUnitId:org_unit_id
@@ -38,7 +54,7 @@ query FetchObject($id: bigint!) {
     }
 }
 
-# Return an Object by id
+# Return full Object with Attributes and referenced entities by id
 query FetchObjectWithAttributes($id: bigint!, $lang: String!) {
     smb_objects_by_pk(id: $id) {
         ...objectData

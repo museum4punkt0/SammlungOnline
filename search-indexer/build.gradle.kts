@@ -13,7 +13,7 @@ plugins {
 
 description = "Service to update elastic search index with objects and attributes."
 group = "de.smb-online"
-version = "2.0.0"
+version = "2.5.55"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -40,8 +40,9 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     // core utils and helper libraries
     implementation("org.apache.commons:commons-lang3:3.12.0")
+    implementation("com.google.guava:guava:31.1-jre")
     implementation("org.apache.commons:commons-text:1.10.0")
-    implementation("io.sentry:sentry-spring-boot-starter:6.9.0")
+    implementation("io.sentry:sentry-spring-boot-starter:6.16.0")
     // kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -56,8 +57,8 @@ dependencies {
     implementation("org.elasticsearch.client:elasticsearch-rest-client")
     implementation("org.elasticsearch.client:elasticsearch-rest-high-level-client")
     // test
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("io.mockk:mockk:1.13.4")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(group = "org.junit.jupiter", module = "junit-jupiter")

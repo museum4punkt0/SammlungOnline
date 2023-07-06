@@ -1,8 +1,7 @@
 package de.smbonline.searchindexer.norm.impl;
 
 import de.smbonline.searchindexer.dto.Data;
-import de.smbonline.searchindexer.graphql.queries.fragment.GeoData;
-import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
+import de.smbonline.searchindexer.graphql.queries.fragment.*;
 import de.smbonline.searchindexer.norm.NormalizerBase;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -14,9 +13,11 @@ import org.springframework.lang.Nullable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static de.smbonline.searchindexer.norm.impl.Mockings.*;
 
 public final class TestData {
 
@@ -31,10 +32,10 @@ public final class TestData {
 
     private static ObjectData create965869() {
         ObjectData object = createObject(
-                Triple.of("__created", "[965869].__created", "01.01.1970 00:00"),
+                Triple.of("__created", "[965869].__created", "2021-01-01T09:00:00"),
                 Triple.of("__createdUser", "[965869].__createdUser", "(MT)"),
                 Triple.of("__id", "[965869].__id", "965869"),
-                Triple.of("__lastModified", "[965869].__lastModified", "08.02.2021 14:39"),
+                Triple.of("__lastModified", "[965869].__lastModified", "2023-04-24T22:00:00"),
                 Triple.of("__lastModifiedUser", "[965869].__lastModifiedUser", "smbHR"),
                 Triple.of("__orgUnit", "[965869].__orgUnit", "NGAlteNationalgalerie"),
                 Triple.of("__uuid", "[965869].__uuid", "965869"),
@@ -474,11 +475,13 @@ public final class TestData {
 
     public static ObjectData createRichObject() {
         ObjectData object = createObject(
-                Triple.of("__created", "[1513247].__created", "14.05.2010 00:00"),
+                Triple.of("__created", "[1513247].__created", "2021-01-01T09:00:00"),
                 Triple.of("__createdUser", "[1513247].__createdUser", "ÄM_AM"),
                 Triple.of("__id", "[1513247].__id", "1513247"),
-                Triple.of("__lastModified", "[1513247].__lastModified", "10.11.2020 16:00"),
+                Triple.of("__lastModified", "[1513247].__lastModified", "2023-04-24T22:00:00"),
                 Triple.of("__lastModifiedUser", "[1513247].__lastModifiedUser", "Zetcom_migration"),
+                Triple.of("__orgUnit", "[1513247].__orgUnit", "AMPPapyrussammlung"),
+                Triple.of("__uuid", "[1513247].__uuid", "1513247"),
                 Triple.of("ObjAcquisitionDateGrp.DateTxt", "[1513247].ObjAcquisitionDateGrp.repeatableGroupItem[38023810].DateTxt", "[Unbekannt]"),
                 Triple.of("ObjAcquisitionDateGrp.PreviewENVrt", "[1513247].ObjAcquisitionDateGrp.repeatableGroupItem[38023810].PreviewENVrt", "[Unbekannt]"),
                 Triple.of("ObjAcquisitionDateGrp.PreviewVrt", "[1513247].ObjAcquisitionDateGrp.repeatableGroupItem[38023810].PreviewVrt", "[Unbekannt]"),
@@ -494,6 +497,10 @@ public final class TestData {
                 Triple.of("ObjAcquisitionReferenceNrTxt", "[1513247].ObjAcquisitionReferenceNrTxt", "keine"),
                 Triple.of("ObjCategoryVoc", "[1513247].ObjCategoryVoc[30349].vocabularyReferenceItem[3206609]", "Allgemein - ÄMP"),
                 Triple.of("ObjCreditLineVoc", "[1513247].ObjCreditLineVoc[61642].vocabularyReferenceItem[4371208]", "Schenkung James Simon, 1920"),
+                Triple.of("ObjCulturalContextGrp.DenominationVoc", "[1513247].ObjCulturalContextGrp.repeatableGroupItem[439834095].DenominationVoc[754851].vocabularyReferenceItem[4534556]", "Ethnie"),
+                Triple.of("ObjCulturalContextGrp.NameVoc", "[1513247].ObjCulturalContextGrp.repeatableGroupItem[439834095].NameVoc[754851].vocabularyReferenceItem[4534556]", "Bajrim"),
+                Triple.of("ObjCulturalContextGrp.SortLnu", "[1513247].ObjCulturalContextGrp.repeatableGroupItem[439834095].SortLnu", "12"),
+                Triple.of("ObjCulturalContextGrp.TypeVoc", "[1513247].ObjCulturalContextGrp.repeatableGroupItem[439834095].TypeVoc[754822].vocabularyReferenceItem[4535786]", "Herkunft"),
                 Triple.of("ObjCurrentLocationGrp.LocationVoc", "[1513247].ObjCurrentLocationGrp.repeatableGroupItem[47316598].LocationVoc[30283].vocabularyReferenceItem[3941412]", "Papyrus"),
                 Triple.of("ObjCurrentLocationGrp.ModifiedByTxt", "[1513247].ObjCurrentLocationGrp.repeatableGroupItem[47316598].ModifiedByTxt", "ZET_DÜ"),
                 Triple.of("ObjCurrentLocationGrp.ModifiedDateDat", "[1513247].ObjCurrentLocationGrp.repeatableGroupItem[47316598].ModifiedDateDat", "10.10.2017"),
@@ -823,9 +830,7 @@ public final class TestData {
                 Triple.of("ObjTextOnlineGrp.TextClb", "[1513247].ObjTextOnlineGrp.repeatableGroupItem[44034421].TextClb", "Eingabe des Heroides, Sohn eines Katökenreiters, an den Dioketen Protarchos wegen Verdrängung aus dem Erbe seines verstorbenen Vaters durch eine Frau. Er bittet den Dioketen, ihm die Ernte zu sichern, die Frau zu verhaften, zu bestrafen und zu Schadensersatz zu zwingen und ihm zu helfen, wieder in sein Erbe zu kommen. In seinem darüber geschrieben Erlaß weist der Dioiket den Strategen Seleukos an, die Angaben zu prüfen und ggfs. die Frau vom Besitz des Heroides zu entfernen. Bearbeitungs- und Vorladungsvermerk vom 16. März 50 v. Chr. Nach BerlPap: http://berlpap.smb.museum/03868/"),
                 Triple.of("ObjTextOnlineGrp.TextHTMLClb", "[1513247].ObjTextOnlineGrp.repeatableGroupItem[44034421].TextHTMLClb", "<div>Eingabe des Heroides, Sohn eines Katökenreiters, an den Dioketen Protarchos wegen Verdrängung aus dem Erbe seines verstorbenen Vaters durch eine Frau. Er bittet den Dioketen, ihm die Ernte zu sichern, die Frau zu verhaften, zu bestrafen und zu Schadensersatz zu zwingen und ihm zu helfen, wieder in sein Erbe zu kommen.<br></div><div>In seinem darüber geschrieben Erlaß weist der Dioiket den Strategen Seleukos an, die Angaben zu prüfen und ggfs. die Frau vom Besitz des Heroides zu entfernen.<br></div><div>Bearbeitungs- und Vorladungsvermerk vom 16. März 50 v. Chr.<br></div><div><br></div><div>Nach BerlPap: http://berlpap.smb.museum/03868/</div>"),
                 Triple.of("ObjTextOnlineGrp.TypeVoc", "[1513247].ObjTextOnlineGrp.repeatableGroupItem[44034421].TypeVoc[66645].vocabularyReferenceItem[2899477]", "Online Beschreibung"),
-                Triple.of("ObjUuidVrt", "[1513247].ObjUuidVrt", "1513247"),
-                Triple.of("__orgUnit", "[1513247].__orgUnit", "AMPPapyrussammlung"),
-                Triple.of("__uuid", "[1513247].__uuid", "1513247")
+                Triple.of("ObjUuidVrt", "[1513247].ObjUuidVrt", "1513247")
         );
         object.getAttachments().add(createAttachment("image_001.jpg"));
         object.getAttachments().add(createAttachment("image_002.jpg"));
@@ -835,7 +840,7 @@ public final class TestData {
     }
 
     public static ObjectData.Attachment createAttachment(final String filename) {
-        return new ObjectData.Attachment("__attachment", filename);
+        return new ObjectData.Attachment("__attachment", 1L, filename, false, "IMAGE");
     }
 
     public static ObjectData.Highlight createHighlight(final Long orgUnitId) {
@@ -862,14 +867,18 @@ public final class TestData {
     }
 
     public static ObjectData createObject(final Long id, final List<ObjectData.Attribute> attributes) {
+        Optional<ObjectData.Attribute> orgUnit = attributes.stream().filter(a -> "__orgUnit".equals(a.getKey())).findFirst();
+        Optional<ObjectData.Attribute> created = attributes.stream().filter(a -> "__created".equals(a.getKey())).findFirst();
+        Optional<ObjectData.Attribute> updated = attributes.stream().filter(a -> "__lastModified".equals(a.getKey())).findFirst();
         return new ObjectData(
                 "__obj",
                 id,
-                LocalDateTime.now().minusDays(7),
-                LocalDateTime.now(),
+                created.isPresent() ? LocalDateTime.parse(created.get().getValue()) : LocalDateTime.now().minusYears(3),
+                updated.isPresent() ? LocalDateTime.parse(updated.get().getValue()) : LocalDateTime.now(),
+                orgUnit.isPresent() ? collectionKey(orgUnit.get().getValue()) : "ORG",
+                orgUnit.isPresent() ? orgUnit.get().getValue() : "ORG_Compilation",
                 null,
-                null,
-                null,
+                culturalReferences(attributes),
                 geographicalReferences(attributes),
                 materialReferences(attributes),
                 attributes,
@@ -878,25 +887,84 @@ public final class TestData {
     }
 
     public static List<ObjectData.GeographicalReference> geographicalReferences(final List<ObjectData.Attribute> attributes) {
-        Data[] groupItems = NormalizerBase.findGroupItems(attributes, "ObjGeograficGrp", items -> items.values().toArray(Data[]::new));
+        Data[] groupItems = NormalizerBase.findGroupItems(attributes, "ObjGeograficGrp",
+                items -> NormalizerBase.sortByAttribute(items.values().toArray(Data[]::new), "SortLnu"));
         return Arrays.stream(groupItems).map(item ->
                 new ObjectData.GeographicalReference("__georef",
                         new ObjectData.GeographicalReference.Fragments(new GeoData(
                                 "__georef",
                                 item.getAttribute("id"),
-                                item.getTypedAttribute(""),
-                                extractVocId(item, "PlaceILSVoc", "PlaceEgyptVoc", "PlaceAntiqueVoc", "PlaceVoc"),
-                                extractVocId(item, "RoleVoc"),
-                                extractVocId(item, "TypeVoc"),
                                 item.getTypedAttribute("DetailsTxt"),
-                                (item.<Number>getTypedAttribute("SortLnu")).intValue()
+                                extractVocId(item, "GeopolVoc"),
+                                extractVocId(item, "PlaceILSVoc", "PlaceEgyptVoc", "PlaceAntiqueVoc", "PlaceVoc"),
+                                extractVocId(item, "TypeVoc"),
+                                item.hasAttribute("SortLnu") ? Integer.parseInt(item.getTypedAttribute("SortLnu")) : 0
+                        )))
+        ).collect(Collectors.toList());
+    }
+
+    public static List<ObjectData.CulturalReference> culturalReferences(final List<ObjectData.Attribute> attributes) {
+        Data[] groupItems = NormalizerBase.findGroupItems(attributes, "ObjCulturalContextGrp",
+                items -> NormalizerBase.sortByAttribute(items.values().toArray(Data[]::new), "SortLnu"));
+        return Arrays.stream(groupItems).map(item ->
+                new ObjectData.CulturalReference("__culturalref",
+                        new ObjectData.CulturalReference.Fragments(new CultureData(
+                                "__culturalref",
+                                item.getAttribute("id"),
+                                extractVocId(item, "NameVoc"),
+                                extractVocId(item, "TypeVoc"),
+                                extractVocId(item, "DenominationVoc"),
+                                item.hasAttribute("SortLnu") ? Integer.parseInt(item.getTypedAttribute("SortLnu")) : 0
                         )))
         ).collect(Collectors.toList());
     }
 
     public static List<ObjectData.MaterialReference> materialReferences(final List<ObjectData.Attribute> attributes) {
-        // TODO
-        return Collections.emptyList();
+        Data[] groupItems = NormalizerBase.findGroupItems(attributes, "ObjMaterialTechniqueGrp",
+                items -> NormalizerBase.sortByAttribute(items.values().toArray(Data[]::new), "SortLnu"));
+        return Arrays.stream(groupItems).map(item ->
+                new ObjectData.MaterialReference("__culturalref",
+                        new ObjectData.MaterialReference.Fragments(new MaterialData(
+                                "__matref",
+                                item.getAttribute("id"),
+                                item.getTypedAttribute("ExportClb"),
+                                extractVocId(item, "MaterialVoc", "MatTechVoc", "PhotographyVoc", "PresentationVoc", "TechniqueVoc"),
+                                extractVocId(item, "TypeVoc"),
+                                item.hasAttribute("SortLnu") ? Integer.parseInt(item.getTypedAttribute("SortLnu")) : 0
+                        )))
+        ).collect(Collectors.toList());
+    }
+
+    public static List<BuildingData> buildings() {
+        return buildingMapping().entrySet().stream()
+                .map(entry -> new BuildingData(
+                        "__building",
+                        entry.getKey(),
+                        entry.getValue()
+                )).toList();
+    }
+
+    public static List<CollectionData> collections() {
+        return collectionMapping().entrySet().stream()
+                .map(entry -> new CollectionData(
+                        "__collection",
+                        entry.getKey(),
+                        entry.getValue()
+                )).toList();
+    }
+
+    public static List<CompilationData> compilations() {
+        return compilationMapping().entrySet().stream()
+                .map(entry -> new CompilationData(
+                        "__compilation",
+                        entry.getKey(),
+                        entry.getValue(),
+                        collectionKey(entry.getKey())
+                )).toList();
+    }
+
+    private static String collectionKey(final String orgUnit) {
+        return collectionMapping().keySet().stream().filter(orgUnit::startsWith).findFirst().orElse("ORG");
     }
 
     private static Long extractVocId(final Data item, final String candidate, @Nullable String... alternatives) {
@@ -922,6 +990,7 @@ public final class TestData {
                 obj.getCollectionKey(),
                 obj.getCompilation(),
                 space,
+                obj.getCulturalReferences(),
                 obj.getGeographicalReferences(),
                 obj.getMaterialReferences(),
                 obj.getAttributes(),

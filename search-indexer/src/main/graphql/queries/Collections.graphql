@@ -1,0 +1,50 @@
+# Definition of an OrgUnit (collection/compilation)
+fragment orgUnitData on smb_org_unit {
+    id
+    key:name
+    title
+    compilation:is_compilation
+    collectionKey
+    searchValue
+}
+
+# Definition of a Collection
+fragment collectionData on smb_collections {
+    key
+    title
+    type
+    searchValue
+}
+
+# Definition of a Compilation
+fragment compilationData on smb_org_unit {
+    key:name
+    title
+    collectionKey
+    searchValue
+}
+
+
+# Return all OrgUnits
+query FetchOrgUnits {
+    smb_org_unit (order_by: [{name: asc}]){
+        ...orgUnitData
+    }
+}
+
+# Return all Collections
+query FetchCollections {
+    smb_collections (order_by: [{key: asc}]){
+        ...collectionData
+    }
+}
+
+# Return all OrgUnits that are marked as compilations
+query FetchCompilations {
+    smb_org_unit(
+        where: {is_compilation: {_eq: true}}
+        order_by: [{name: asc}]
+    ) {
+        ...compilationData
+    }
+}

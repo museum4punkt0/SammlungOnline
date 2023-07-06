@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import static de.smbonline.searchindexer.norm.impl.Mockings.*;
 import static de.smbonline.searchindexer.norm.impl.TestData.*;
@@ -27,12 +28,12 @@ public class GeographicalReferenceNormalizerTest {
         // given
         ObjectData obj = createObject(
                 Triple.of("ObjGeograficGrp.DetailsTxt", "[123].ObjGeograficGrp.repeatableGroupItem[1].DetailsTxt", "details"),
-                Triple.of("ObjGeograficGrp.TypeVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].TypeVoc[1].vocabularyReferenceItem[100000001].id", "100000001"),
-                Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].TypeVoc[1].vocabularyReferenceItem[100000001]", "type"),
-                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[3].vocabularyReferenceItem[100000002].id", "100000002"),
-                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[3].vocabularyReferenceItem[100000002]", "place"),
-                Triple.of("ObjGeograficGrp.GeopolVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].GeopolVoc[5].vocabularyReferenceItem[100000003].id", "100000003"),
-                Triple.of("ObjGeograficGrp.GeopolVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].GeopolVoc[5].vocabularyReferenceItem[100000003]", "geopol")
+                Triple.of("ObjGeograficGrp.TypeVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].TypeVoc[1].vocabularyReferenceItem[9991].id", "9991"),
+                Triple.of("ObjGeograficGrp.TypeVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].TypeVoc[1].vocabularyReferenceItem[9991]", "type"),
+                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[3].vocabularyReferenceItem[9992].id", "9992"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[3].vocabularyReferenceItem[9992]", "place"),
+                Triple.of("ObjGeograficGrp.GeopolVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].GeopolVoc[5].vocabularyReferenceItem[9993].id", "9993"),
+                Triple.of("ObjGeograficGrp.GeopolVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].GeopolVoc[5].vocabularyReferenceItem[9993]", "geopol")
         );
         // when
         GeographicalReferenceNormalizer normalizer = new GeographicalReferenceNormalizer(graphQlProvider(mockService()));
@@ -44,23 +45,23 @@ public class GeographicalReferenceNormalizerTest {
     }
 
     @Test
-    public void testSpecificPlaceVovPreferredOverCommonPlaceVoc() {
+    public void testSpecificPlaceVocPreferredOverCommonPlaceVoc() {
         // given
         ObjectData obj = createObject(
-                Triple.of("ObjGeograficGrp.PlaceILSVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceILSVoc[1].vocabularyReferenceItem[100000004]", "ISL"),
-                Triple.of("ObjGeograficGrp.PlaceILSVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceILSVoc[1].vocabularyReferenceItem[100000004].id", "100000004"),
-                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[1].vocabularyReferenceItem[100000005]", "PlaceVoc"),
-                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[1].vocabularyReferenceItem[100000005].id", "100000005"),
-                Triple.of("ObjGeograficGrp.PlaceEgyptVoc", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceEgyptVoc[2].vocabularyReferenceItem[100000006]", "ÄMP"),
-                Triple.of("ObjGeograficGrp.PlaceEgyptVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceEgyptVoc[2].vocabularyReferenceItem[100000006].id", "100000006"),
-                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceVoc[2].vocabularyReferenceItem[100000007]", "PlaceVoc"),
-                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceVoc[2].vocabularyReferenceItem[100000007].id", "100000007"),
-                Triple.of("ObjGeograficGrp.PlaceAntiqueVoc", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceAntiqueVoc[3].vocabularyReferenceItem[100000008]", "ANT"),
-                Triple.of("ObjGeograficGrp.PlaceAntiqueVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceAntiqueVoc[3].vocabularyReferenceItem[100000008].id", "100000008"),
-                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceVoc[3].vocabularyReferenceItem[100000009]", "PlaceVoc"),
-                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceVoc[3].vocabularyReferenceItem[100000009].id", "100000009"),
-                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[4].PlaceVoc[4].vocabularyReferenceItem[100000010]", "Default"),
-                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[4].PlaceVoc[4].vocabularyReferenceItem[100000010].id", "100000010")
+                Triple.of("ObjGeograficGrp.PlaceILSVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceILSVoc[04].vocabularyReferenceItem[100000004]", "ISL"),
+                Triple.of("ObjGeograficGrp.PlaceILSVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceILSVoc[04].vocabularyReferenceItem[100000004].id", "100000004"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[05].vocabularyReferenceItem[100000005]", "PlaceVoc"),
+                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[1].PlaceVoc[05].vocabularyReferenceItem[100000005].id", "100000005"),
+                Triple.of("ObjGeograficGrp.PlaceEgyptVoc", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceEgyptVoc[06].vocabularyReferenceItem[100000006]", "ÄMP"),
+                Triple.of("ObjGeograficGrp.PlaceEgyptVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceEgyptVoc[06].vocabularyReferenceItem[100000006].id", "100000006"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceVoc[07].vocabularyReferenceItem[100000007]", "PlaceVoc"),
+                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[2].PlaceVoc[07].vocabularyReferenceItem[100000007].id", "100000007"),
+                Triple.of("ObjGeograficGrp.PlaceAntiqueVoc", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceAntiqueVoc[08].vocabularyReferenceItem[100000008]", "ANT"),
+                Triple.of("ObjGeograficGrp.PlaceAntiqueVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceAntiqueVoc[08].vocabularyReferenceItem[100000008].id", "100000008"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceVoc[09].vocabularyReferenceItem[100000009]", "PlaceVoc"),
+                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[3].PlaceVoc[09].vocabularyReferenceItem[100000009].id", "100000009"),
+                Triple.of("ObjGeograficGrp.PlaceVoc", "[123].ObjGeograficGrp.repeatableGroupItem[4].PlaceVoc[10].vocabularyReferenceItem[100000010]", "Default"),
+                Triple.of("ObjGeograficGrp.PlaceVoc.id", "[123].ObjGeograficGrp.repeatableGroupItem[4].PlaceVoc[10].vocabularyReferenceItem[100000010].id", "100000010")
         );
         // when
         GeographicalReferenceNormalizer normalizer = new GeographicalReferenceNormalizer(graphQlProvider(mockService()));
@@ -138,8 +139,33 @@ public class GeographicalReferenceNormalizerTest {
         GraphQlService service = Mockito.mock(GraphQlService.class);
         Mockito.doAnswer((invocation) -> {
             long id = invocation.getArgument(0);
-            return new ThesaurusData("__thesaurus", id, id + "", null, "");
+            return new ThesaurusData("__thesaurus", id, THESAURUS_DB.get(id), null, "");
         }).when(service).fetchThesaurus(Mockito.anyLong());
         return service;
     }
+
+    private static final Map<Long, String> THESAURUS_DB = Map.ofEntries(
+            Map.entry(9991L, "type"),
+            Map.entry(9992L, "place"),
+            Map.entry(9993L, "geopol"),
+            Map.entry(100000004L, "ISL"),
+            Map.entry(100000005L, "PlaceVoc"),
+            Map.entry(100000006L, "ÄMP"),
+            Map.entry(100000007L, "PlaceVoc"),
+            Map.entry(100000008L, "ANT"),
+            Map.entry(100000009L, "PlaceVoc"),
+            Map.entry(100000010L, "Default"),
+            Map.entry(100000011L, "Berlin"),
+            Map.entry(100000012L, "Wohnsitz"),
+            Map.entry(100000013L, "nebenan"),
+            Map.entry(100000014L, "Region"),
+            Map.entry(100000015L, "Mexico"),
+            Map.entry(100000016L, "egal"),
+            Map.entry(100000017L, "egal"),
+            Map.entry(100000018L, "Land"),
+            Map.entry(100000019L, "China"),
+            Map.entry(100000020L, "Stadt"),
+            Map.entry(100000021L, "London"),
+            Map.entry(100000022L, "Stadt")
+    );
 }

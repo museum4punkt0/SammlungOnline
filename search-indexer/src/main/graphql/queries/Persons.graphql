@@ -5,9 +5,8 @@ fragment personData on smb_persons {
     dateOfBirth:date_of_birth
     dateOfDeath:date_of_death
     dateRange:date_range
-    normdata1
-    normdata2
-    normdata3
+    linkGND:normdata1
+    linkULAN:normdata2
 }
 
 # Definition of InvolvedParty data struct
@@ -18,6 +17,11 @@ fragment involvedPartyData on smb_persons_objects {
         dateRange:date_range
     }
     role:role_voc {
+        id
+        name
+        type
+    }
+    attribution:attribution_voc {
         id
         name
         type

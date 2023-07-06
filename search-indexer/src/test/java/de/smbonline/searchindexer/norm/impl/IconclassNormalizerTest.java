@@ -1,9 +1,12 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static de.smbonline.searchindexer.norm.impl.TestData.*;
 import static org.assertj.core.api.Assertions.*;
@@ -36,11 +39,14 @@ public class IconclassNormalizerTest {
         );
         // when
         IconclassNormalizer normalizer = new IconclassNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj, "de");
+        Data[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNotNull();
         assertThat(values.length).isEqualTo(4);
-        assertThat(values).containsExactly("[11800] 1", "[4711] 2", "3", "4");
+        assertThat(Arrays.stream(values)
+                .map(v -> v.<String>getTypedAttribute("formatted"))
+                .toArray()
+        ).containsExactly("[11800] 1", "[4711] 2", "3", "4");
     }
 
     @Test
@@ -54,7 +60,7 @@ public class IconclassNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         IconclassNormalizer normalizer = new IconclassNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj, "de");
+        Data[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNull();
     }

@@ -1,8 +1,6 @@
 package de.smbonline.searchindexer.service
 
-import de.smbonline.searchindexer.conf.ALL_RELEVANT_ATTRIBUTES
-import de.smbonline.searchindexer.conf.FORMATTED_VALUE_ATTRIBUTE
-import de.smbonline.searchindexer.conf.ID_ATTRIBUTE
+import de.smbonline.searchindexer.conf.*
 import de.smbonline.searchindexer.dto.Data
 import de.smbonline.searchindexer.dto.SearchObject
 import de.smbonline.searchindexer.graphql.queries.fragment.ExhibitionData
@@ -12,9 +10,7 @@ import de.smbonline.searchindexer.norm.Normalizer
 import de.smbonline.searchindexer.norm.NormalizerRegistry
 import de.smbonline.searchindexer.norm.impl.shared.Resolvings
 import de.smbonline.searchindexer.util.Dates
-import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.NotImplementedException
-import org.apache.commons.lang3.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,7 +30,7 @@ class GraphQlDataResolver @Autowired constructor(
         val thesaurus = service.fetchThesaurus(id) ?: return null
         return Data()
                 .setNonNullAttribute(ID_ATTRIBUTE, id)
-                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, Resolvings.resolveThesaurusLabel(service, id, language)?.trim())
+                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, Resolvings.resolveThesaurusLabel(service, id, language, true)?.trim())
                 .setNonNullAttribute("type", thesaurus.type)
                 .setNonNullAttribute("name", thesaurus.name)
                 .setNonNullAttribute("parentId", thesaurus.parentId)
@@ -49,13 +45,12 @@ class GraphQlDataResolver @Autowired constructor(
                 .setNonNullAttribute("dateOfBirth", formatDate(person.dateOfBirth, language))
                 .setNonNullAttribute("dateOfDeath", formatDate(person.dateOfDeath, language))
     }
-
+/*
     fun resolveGeographicalReference(id: Long, language: String): Data? {
         val geoRef = service.fetchGeographicalReference(id) ?: return null
         val type = geoRef.typeVocId?.let { resolveThesaurus((it as BigDecimal).longValueExact(), language) }
         val place = geoRef.placeVocId?.let { resolveThesaurus((it as BigDecimal).longValueExact(), language) }
         val geopol = geoRef.geopolVocId?.let { resolveThesaurus((it as BigDecimal).longValueExact(), language) }
-        val role = geoRef.roleVocId?.let { resolveThesaurus((it as BigDecimal).longValueExact(), language) }
         return Data()
                 .setNonNullAttribute(ID_ATTRIBUTE, geoRef.id)
                 .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, formatGeoReference(type, place, geoRef.details, geopol))
@@ -63,7 +58,6 @@ class GraphQlDataResolver @Autowired constructor(
                 .setNonNullAttribute("type", type)
                 .setNonNullAttribute("geopol", geopol)
                 .setNonNullAttribute("place", place)
-                .setNonNullAttribute("role", role)
     }
 
     fun resolveMaterial(id: Long, language: String): Data? {
@@ -77,7 +71,7 @@ class GraphQlDataResolver @Autowired constructor(
                 .setNonNullAttribute("type", type)
                 .setNonNullAttribute("specificType", specificType)
     }
-
+*/
     fun resolveExhibition(id: Long, language: String): Data? {
         val exhibition = service.fetchExhibition(id) ?: return null
         return Data()
@@ -111,8 +105,13 @@ class GraphQlDataResolver @Autowired constructor(
         val obj = SearchObject((data.id as Number).toLong(), language)
         // set some info
         obj.setAttribute("@$ID_ATTRIBUTE", data.id.toString())
-        obj.setAttribute("@initialImport", data.createdAt)
-        obj.setAttribute("@lastSynced", data.updatedAt)
+        obj.setAttribute("@initialImport", data.createdAt.toString())
+        obj.setAttribute("@lastSynced", data.updatedAt.toString())
+        if (fields.contains(DATE_RANGE_ATTRIBUTE)) {
+            // in addition to date_range we need a scalar field we can sort on
+            val fuzzyDate = data.attributes.firstOrNull { it.key == "ObjDateGrp.DatestampFromFuzzySearchLnu" }?.value?.toLong()
+            obj.setNonNullAttribute(_ORIGINDATE, fuzzyDate)
+        }
         // loop over the attribute definitions
         for (attrKey in fields) {
             val normalizer = registry.getNormalizer(attrKey) ?: throw NotImplementedException(

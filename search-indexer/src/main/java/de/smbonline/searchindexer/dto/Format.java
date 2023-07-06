@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public enum Format {
 
+    // TBD LIDO?
     JSON,
     CSV,
     EXCEL;

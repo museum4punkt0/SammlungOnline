@@ -6,37 +6,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static de.smbonline.searchindexer.conf.ConstKt.*;
-import static de.smbonline.searchindexer.util.Dates.*;
+import static de.smbonline.searchindexer.util.Dates.formatDate;
+import static de.smbonline.searchindexer.util.Dates.tryParseDate;
+import static de.smbonline.searchindexer.util.Validations.requireId;
 
 // TODO exhibition-date indexing must be re-checked as days pass by
-public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<String> {
+// TODO use exhibitions from graphql instead of parsing exhibition items
+
+public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<Data> {
 
     public ExhibitionsNormalizer() {
         super(EXHIBITIONS_ATTRIBUTE, "ObjRegistrarRef", ExhibitionsNormalizer::sort);
-    }
-
-    private static @Nullable Data findExhibitionRef(final Data registrar) {
-        List<Data> exhibitions = registrar.getNestedTypedAttribute("RegExhibitionRef." + NESTED_ITEMS_ATTRIBUTE_NAME);
-        if (exhibitions == null || exhibitions.isEmpty()) {
-            return null;
-        }
-        // M:1 relation - there is max. 1 exhibition item so get(0) is safe
-        return exhibitions.get(0);
-    }
-
-    private static Data[] sort(final Map<String, Data> registrarItems) {
-        return registrarItems.values().stream().sorted((a, b) -> {
-            String sortA = extractSortingInfo(findExhibitionRef(a));
-            String sortB = extractSortingInfo(findExhibitionRef(b));
-            return Comparator.<String>nullsLast(Comparator.naturalOrder()).compare(sortA, sortB);
-        }).toArray(Data[]::new);
     }
 
     @Override
@@ -62,47 +45,78 @@ public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<String> 
     }
 
     @Override
-    protected String[] pickValues(final Data[] registrarItems) {
+    protected Data[] pickValues(final Data[] registrarItems) {
         return Arrays.stream(registrarItems)
                 .map(ExhibitionsNormalizer::findExhibitionRef)
-                .map(ExhibitionsNormalizer::extractExhibitionInfo)
-                .toArray(String[]::new);
+                .filter(Objects::nonNull)
+                .map(ExhibitionsNormalizer::convertToDTO)
+                .toArray(Data[]::new);
     }
 
-    private static String extractExhibitionInfo(final Data exhibitionItem) {
+    private static Data convertToDTO(final Data exhibitionItem) {
+
+        Long id = requireId(exhibitionItem.getAttribute(ITEM_ID));
         String title = extractExhibitionTitle(exhibitionItem);
         String location = exhibitionItem.getTypedAttribute("ExhVenueDetailsTxt");
-        String beginDate = exhibitionItem.getTypedAttribute("ExhBeginDateDat");
-        String endDate = exhibitionItem.getTypedAttribute("ExhEndDateDat");
+        // TODO honor language
+        String dateRange = buildDateRange(exhibitionItem.getTypedAttribute("ExhBeginDateDat"), exhibitionItem.getTypedAttribute("ExhEndDateDat"), "de");
 
-        boolean hasTitle = StringUtils.isNotBlank(title);
-        boolean hasLocation = StringUtils.isNotBlank(location);
+        return new Data()
+                .setNonNullAttribute(ID_ATTRIBUTE, id)
+                .setNonNullAttribute("title", title)
+                .setNonNullAttribute(FORMATTED_VALUE_ATTRIBUTE, buildTextValue(id, title, location, dateRange, false))
+                .setNonNullAttribute(MARKUP_VALUE_ATTRIBUTE, buildTextValue(id, title, location, dateRange, true));
+    }
+
+    private static @Nullable String buildDateRange(final @Nullable String beginDate, final @Nullable String endDate, final String language) {
         boolean hasBeginDate = StringUtils.isNotBlank(beginDate);
         boolean hasEndDate = StringUtils.isNotBlank(endDate);
 
         StringBuilder sb = new StringBuilder();
-        if (hasTitle) {
-            sb.append(title.trim());
-            if (hasLocation || hasBeginDate || hasEndDate) {
-                sb.append(", ");
-            }
-        }
-        if (hasLocation) {
-            sb.append(location.trim());
-            if (hasBeginDate || hasEndDate) {
-                sb.append(", ");
-            }
-        }
         if (hasBeginDate) {
-            sb.append(formatDate(beginDate, "de")); // TODO honor language
+            sb.append(formatDate(beginDate, language));
             if (hasEndDate) {
                 sb.append("-");
             }
         }
         if (hasEndDate) {
-            sb.append(formatDate(endDate, "de")); // TODO honor language
+            sb.append(formatDate(endDate, language));
         }
         return sb.toString();
+    }
+
+    private static @Nullable String buildTextValue(
+            final Long id,
+            final @Nullable String title,
+            final @Nullable String location,
+            final @Nullable String dateRange,
+            final boolean markup) {
+
+        boolean hasTitle = StringUtils.isNotBlank(title);
+        boolean hasLocation = StringUtils.isNotBlank(location);
+        boolean hasDates = StringUtils.isNotBlank(dateRange);
+
+        StringBuilder sb = new StringBuilder();
+        if (hasTitle) {
+            sb.append(title.trim());
+            if (hasLocation || hasDates) {
+                sb.append(", ");
+            }
+        }
+        if (hasLocation) {
+            sb.append(location.trim());
+            if (hasDates) {
+                sb.append(", ");
+            }
+        }
+        if (hasDates) {
+            sb.append(dateRange.trim());
+        }
+
+        if (sb.length() == 0) {
+            return null;
+        }
+        return markup ? "<div>%s</div>".formatted(sb) : sb.toString().trim();
     }
 
     private static @Nullable String extractExhibitionTitle(final Data exhibitionItem) {
@@ -127,5 +141,22 @@ public class ExhibitionsNormalizer extends MultipleHitsSortedNormalizer<String> 
             return tryParseDate(date);
         }
         return null;
+    }
+
+    private static Data[] sort(final Map<String, Data> registrarItems) {
+        return registrarItems.values().stream().sorted((a, b) -> {
+            String sortA = extractSortingInfo(findExhibitionRef(a));
+            String sortB = extractSortingInfo(findExhibitionRef(b));
+            return Comparator.<String>nullsLast(Comparator.naturalOrder()).compare(sortA, sortB);
+        }).toArray(Data[]::new);
+    }
+
+    private static @Nullable Data findExhibitionRef(final Data registrar) {
+        List<Data> exhibitions = registrar.getNestedTypedAttribute("RegExhibitionRef." + NESTED_ITEMS_ATTRIBUTE_NAME);
+        if (exhibitions == null || exhibitions.isEmpty()) {
+            return null;
+        }
+        // M:1 relation - there is max. 1 exhibition item so get(0) is safe
+        return exhibitions.get(0);
     }
 }

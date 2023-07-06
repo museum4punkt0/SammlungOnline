@@ -1,5 +1,9 @@
 package de.smbonline.searchindexer.rest;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public final class Params {
 
     /**
@@ -50,6 +54,14 @@ public final class Params {
      * http parameter for response format
      */
     public static final String FORMAT_PARAMETER = "format";
+
+    public static String urlEncode(final String decoded) {
+        return URLEncoder.encode(decoded, StandardCharsets.UTF_8);
+    }
+
+    public static String urlDecode(final String encoded) {
+        return URLDecoder.decode(encoded, StandardCharsets.UTF_8);
+    }
 
     private Params() {
         // no instances

@@ -1,5 +1,6 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -27,12 +28,12 @@ public class KeywordsNormalizerTest {
         );
         // when
         KeywordNormalizer normalizer = new KeywordNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj, "de");
+        Data[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNotNull();
         assertThat(values.length).isEqualTo(2);
-        assertThat(values[0]).isEqualTo("Meer");
-        assertThat(values[1]).isEqualTo("Wasser");
+        assertThat(values[0].<String>getTypedAttribute("formatted")).isEqualTo("Meer");
+        assertThat(values[1].<String>getTypedAttribute("formatted")).isEqualTo("Wasser");
     }
 
     @Test
@@ -44,7 +45,7 @@ public class KeywordsNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         KeywordNormalizer normalizer = new KeywordNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj, "de");
+        Data[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNull();
     }

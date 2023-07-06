@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static de.smbonline.searchindexer.norm.impl.Mockings.*;
 import static de.smbonline.searchindexer.norm.impl.TestData.*;
-import static de.smbonline.searchindexer.norm.impl.mappings.Mappings.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CompilationNormalizerTest {
 
     @Test
     public void testAttributeKey() {
-        CompilationNormalizer normalizer = new CompilationNormalizer();
+        CompilationNormalizer normalizer = new CompilationNormalizer(graphQlProvider(mappingSupplierMock()));
         assertThat(normalizer.getAttributeKey()).isEqualTo("compilation");
     }
 
@@ -23,7 +23,7 @@ public class CompilationNormalizerTest {
         // given
         ObjectData obj = createObject(123L, Pair.of("__orgUnit", "KBArchitekturzeichnung"));
         // when
-        CompilationNormalizer normalizer = new CompilationNormalizer();
+        CompilationNormalizer normalizer = new CompilationNormalizer(graphQlProvider(mappingSupplierMock()));
         String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Sammlung Architektur");
@@ -31,7 +31,7 @@ public class CompilationNormalizerTest {
 
     @Test
     public void testMappings() {
-        CompilationNormalizer normalizer = new CompilationNormalizer();
+        CompilationNormalizer normalizer = new CompilationNormalizer(graphQlProvider(mappingSupplierMock()));
 
         // check if all mappings are implemented
         for (Map.Entry<String, String> entry : compilationMapping().entrySet()) {
@@ -49,7 +49,7 @@ public class CompilationNormalizerTest {
         // given
         ObjectData obj = createObject(123L, Pair.of("__orgUnit", "fününününü"));
         // when
-        CompilationNormalizer normalizer = new CompilationNormalizer();
+        CompilationNormalizer normalizer = new CompilationNormalizer(graphQlProvider(mappingSupplierMock()));
         String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
@@ -60,7 +60,7 @@ public class CompilationNormalizerTest {
         // given
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"), Pair.of("key", "val"));
         // when
-        CompilationNormalizer normalizer = new CompilationNormalizer();
+        CompilationNormalizer normalizer = new CompilationNormalizer(graphQlProvider(mappingSupplierMock()));
         String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();

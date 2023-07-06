@@ -1,12 +1,14 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.graphql.queries.fragment.BuildingData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import de.smbonline.searchindexer.norm.Normalizer;
+import de.smbonline.searchindexer.norm.impl.mappings.MappingSupplier;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.lang.Nullable;
 
-import static de.smbonline.searchindexer.conf.ConstKt.*;
-import static de.smbonline.searchindexer.norm.impl.mappings.Mappings.*;
+import static de.smbonline.searchindexer.conf.ConstKt.LOCATION_ATTRIBUTE;
 
 public class LocationNormalizer implements Normalizer<String> {
 
@@ -16,8 +18,10 @@ public class LocationNormalizer implements Normalizer<String> {
     }
 
     private final String separator;
+    private final ObjectProvider<? extends MappingSupplier> mappings;
 
-    public LocationNormalizer(final String separator) {
+    public LocationNormalizer(final ObjectProvider<? extends MappingSupplier> supplier, final String separator) {
+        this.mappings = supplier;
         this.separator = separator;
     }
 
@@ -44,7 +48,7 @@ public class LocationNormalizer implements Normalizer<String> {
             // only if we don't have a building, the sector maybe used instead ("Friedrichswerdersche Kirche" is the case here)
             buildingCandidate = StringUtils.defaultIfEmpty(parts[2].trim(), null);
         }
-        // TODO use language
-        return buildingMapping().getOrDefault(buildingCandidate, buildingCandidate);
+        BuildingData building = this.mappings.getObject().fetchBuilding(buildingCandidate);
+        return building == null ? buildingCandidate : building.getTitle();
     }
 }

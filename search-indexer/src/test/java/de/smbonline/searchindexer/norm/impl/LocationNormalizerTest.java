@@ -7,14 +7,14 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static de.smbonline.searchindexer.norm.impl.TestData.*;
-import static de.smbonline.searchindexer.norm.impl.mappings.Mappings.*;
+import static de.smbonline.searchindexer.norm.impl.Mockings.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class LocationNormalizerTest {
 
     @Test
     public void testAttributeKey() {
-        LocationNormalizer normalizer = new LocationNormalizer("->");
+        LocationNormalizer normalizer = new LocationNormalizer(graphQlProvider(mappingSupplierMock()), "->");
         assertThat(normalizer.getAttributeKey()).isEqualTo("location");
     }
 
@@ -23,7 +23,7 @@ public class LocationNormalizerTest {
         // given
         ObjectData obj = withExhibitionSpace(createObject(123L), "AMP -> NMU -> -> Ebene 2 -> Raum 206");
         // when
-        LocationNormalizer normalizer = new LocationNormalizer("->");
+        LocationNormalizer normalizer = new LocationNormalizer(graphQlProvider(mappingSupplierMock()), "->");
         String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Neues Museum");
@@ -34,7 +34,7 @@ public class LocationNormalizerTest {
         // given
         ObjectData obj = withExhibitionSpace(createObject(123L), "PART1 # Gebäude # PART3 # PART4 # PART5");
         // when
-        LocationNormalizer normalizer = new LocationNormalizer("#");
+        LocationNormalizer normalizer = new LocationNormalizer(graphQlProvider(mappingSupplierMock()),"#");
         String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isEqualTo("Gebäude");
@@ -42,7 +42,7 @@ public class LocationNormalizerTest {
 
     @Test
     public void testMappings() {
-        LocationNormalizer normalizer = new LocationNormalizer("-!-");
+        LocationNormalizer normalizer = new LocationNormalizer(graphQlProvider(mappingSupplierMock()), "-!-");
 
         // check if all building mappings are implemented
         Map<String, String> buildings = buildingMapping();
@@ -61,7 +61,7 @@ public class LocationNormalizerTest {
         // given
         ObjectData obj = createObject(123L, Pair.of("blubb", "bla"), Pair.of("key", "val"));
         // when
-        LocationNormalizer normalizer = new LocationNormalizer("->");
+        LocationNormalizer normalizer = new LocationNormalizer(graphQlProvider(mappingSupplierMock()), "->");
         String value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();

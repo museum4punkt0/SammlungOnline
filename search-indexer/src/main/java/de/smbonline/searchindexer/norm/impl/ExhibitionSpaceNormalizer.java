@@ -1,15 +1,21 @@
 package de.smbonline.searchindexer.norm.impl;
 
-import de.smbonline.searchindexer.norm.Normalizer;
+import de.smbonline.searchindexer.graphql.queries.fragment.BuildingData;
+import de.smbonline.searchindexer.graphql.queries.fragment.CollectionData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
+import de.smbonline.searchindexer.norm.Normalizer;
+import de.smbonline.searchindexer.norm.impl.mappings.MappingSupplier;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -34,8 +40,10 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
     private static final Pattern ROOM_LEVEL_PATTERN = Pattern.compile("^[A-Z]+[ _\\-](?:[A-Za-z]+_)?(?:(?<level>\\d+)\\.)?(?<room>\\d+)$");
 
     private final String separator;
+    private final ObjectProvider<? extends MappingSupplier> graphQl;
 
-    public ExhibitionSpaceNormalizer(final String separator) {
+    public ExhibitionSpaceNormalizer(final ObjectProvider<? extends MappingSupplier> graphQl, final String separator) {
+        this.graphQl = graphQl;
         this.separator = separator;
     }
 
@@ -57,6 +65,7 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
 
     @Override
     public @Nullable String resolveAttributeValue(final ObjectData source, final String language) {
+        // TODO replace with hierarchical source.location
         String exhibitionSpace = source.getExhibitionSpace();
         if (!StringUtils.contains(exhibitionSpace, this.separator)) {
             return null;
@@ -75,6 +84,13 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         String level = parts.length > 3 ? StringUtils.defaultIfEmpty(parts[3].trim(), null) : null;
         String room = parts.length > 4 ? StringUtils.defaultIfEmpty(parts[4].trim(), null) : null;
         String appendix = parts.length > 5 ? StringUtils.defaultIfEmpty(parts[5].trim(), null) : null;
+
+        // FIXME hacked-in for prod
+        if("EM".equals(collectionKey) && "HUF".equals(buildingKey) && StringUtils.startsWith(room, "E")) {
+            if (!roomMapping().containsKey(room)) {
+                return null;
+            }
+        }
 
         LOGGER.debug("Extracted building:'{}', sector:'{}', level:'{}', room:'{}', appendix:'{}' from '{}'", buildingKey, sector, level, room, appendix, sourceValue);
 
@@ -97,7 +113,7 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
                 .collect(Collectors.joining(", "));
     }
 
-    private static String normalizeBuilding(final @Nullable String buildingKey) {
+    private String normalizeBuilding(final @Nullable String buildingKey) {
         if (buildingKey == null) {
             return StringUtils.EMPTY;
         }
@@ -108,7 +124,7 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         return buildingMapping().getOrDefault(buildingKey, buildingKey);
     }
 
-    private static String normalizeSector(final @Nullable String collectionKey, final @Nullable String sector) {
+    private String normalizeSector(final @Nullable String collectionKey, final @Nullable String sector) {
         if (sector == null) {
             return StringUtils.EMPTY;
         }
@@ -126,7 +142,7 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         return sectorMapping().getOrDefault(sector, sector);
     }
 
-    private static String normalizeLevel(final String collectionKey, final String buildingKey, final @Nullable String level, final @Nullable String room) {
+    private String normalizeLevel(final String collectionKey, final String buildingKey, final @Nullable String level, final @Nullable String room) {
 
         // check our two default cases first
         if (levelMapping().containsKey(level)) {
@@ -154,7 +170,7 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         return StringUtils.EMPTY;
     }
 
-    private static String normalizeLevel(final String buildingKey, final String level) {
+    private String normalizeLevel(final String buildingKey, final String level) {
 
         // remove potential building key, e.g. "AM Hauptgeschoss" -> "Hauptgeschoss"
         String result = level.startsWith(buildingKey)
@@ -199,7 +215,7 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         return StringUtils.EMPTY;
     }
 
-    private static @Nullable String tryGuessLevelFromCollectionInBuilding(final String buildingKey, final String collectionKey) {
+    private @Nullable String tryGuessLevelFromCollectionInBuilding(final String buildingKey, final String collectionKey) {
         // special case, we don't have level info for MEK - everything is located on ground floor
         if ("MEK".equals(buildingKey)) {
             return levelMapping().getOrDefault("EG", "Erdgeschoss");
@@ -219,18 +235,18 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         if ("PMU".equals(buildingKey)) {
             // special cases for ANT and VAM: these are located on first floor in PMU
             if ("ANT".equals(collectionKey) || "VAM".equals(collectionKey)) {
-                return "Ebene 1, " + collectionMapping().get(collectionKey);
+                return "Ebene 1, " + toCollectionTitle(collectionKey);
             }
             // special case for ISL: it's located on second floor in PMU
             if ("ISL".equals(collectionKey)) {
-                return "Ebene 2, " + collectionMapping().get(collectionKey);
+                return "Ebene 2, " + toCollectionTitle(collectionKey);
             }
         }
         // no clue
         return null;
     }
 
-    private static @Nullable String tryGuessLevelFromRoomInBuilding(final String buildingKey, final String room) {
+    private @Nullable String tryGuessLevelFromRoomInBuilding(final String buildingKey, final String room) {
         // special case: room "O1.189.01.K1" in HUF should be displayed as 2.OG
         if ("HUF".equals(buildingKey) && "O1.189.01.K1".equals(room)) {
             return "2. " + levelMapping().getOrDefault("OG", "Obergeschoss");
@@ -242,20 +258,15 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
             }
             String romanRoomNumber = room.split(" ")[1];
             switch (romanRoomNumber) {
-                case "I":
-                case "II":
-                case "III":
-                case "VIII":
+                case "I", "II", "III", "VIII" -> {
                     return levelMapping().getOrDefault("EG", "Erdgeschoss");
-                case "IV":
-                case "V":
-                case "VI":
-                case "VII":
+                }
+                case "IV", "V", "VI", "VII" -> {
                     return levelMapping().getOrDefault("OG", "Obergeschoss");
-                case "IX":
-                case "X":
-                case "XI":
+                }
+                case "IX", "X", "XI" -> {
                     return levelMapping().getOrDefault("UG", "Untergeschoss");
+                }
             }
         }
         // regular case: extract level from room
@@ -273,7 +284,7 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         return null;
     }
 
-    private static String normalizeRoom(final @Nullable String buildingKey, @Nullable String level, final @Nullable String room) {
+    private String normalizeRoom(final @Nullable String buildingKey, @Nullable String level, final @Nullable String room) {
         if (room == null) {
             return StringUtils.EMPTY;
         } else if (roomMapping().containsKey(room)) {
@@ -359,22 +370,30 @@ public class ExhibitionSpaceNormalizer implements Normalizer<String> {
         return -1;
     }
 
-    private static String toBuildingKey(final String building) {
-        return buildingMapping().entrySet()
-                .stream()
-                .filter(e -> building.equals(e.getValue()))
-                .map(Map.Entry::getKey)
-                .min(Comparator.comparing(String::length)) // shortest key is the best fit, e.g. prefer "PMU" over "PMU vor GuE"
-                .orElse(building);
+    private Map<String, String> buildingMapping() {
+        return this.graphQl.getObject().buildingMapping();
     }
 
-    private static String toCollectionKey(final String collection) {
-        return collectionMapping().entrySet()
-                .stream()
-                .filter(e -> collection.equals(e.getValue()))
-                .map(Map.Entry::getKey)
-                .sorted() // natural order, e.g. prefer "MSB" over "SBM"
+    private String toBuildingKey(final String keyOrLabel) {
+        BuildingData building = this.graphQl.getObject().fetchBuilding(keyOrLabel);
+        return building == null ? keyOrLabel : building.getKey();
+    }
+
+    private String toCollectionKey(final String keyOrTitle) {
+        return getCollectionAttribute(keyOrTitle, CollectionData::getKey);
+    }
+
+    private String toCollectionTitle(final String keyOrTitle) {
+        return getCollectionAttribute(keyOrTitle, CollectionData::getTitle);
+    }
+
+    private String getCollectionAttribute(final String keyOrTitle, final Function<CollectionData, String> extractor) {
+        List<CollectionData> collections = this.graphQl.getObject().fetchCollections();
+        return collections.stream()
+                .sorted(Comparator.comparing(CollectionData::getKey)) // natural order, e.g. prefer "MSB" over "SBM"
+                .filter(c -> keyOrTitle.equals(c.getKey()) || keyOrTitle.equals(c.getTitle()))
                 .findFirst()
-                .orElse(collection);
+                .map(extractor)
+                .orElse(keyOrTitle);
     }
 }

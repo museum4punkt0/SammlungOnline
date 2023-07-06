@@ -1,5 +1,6 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Test;
@@ -37,11 +38,12 @@ public class ExhibitionsNormalizerTest {
         );
         // when
         ExhibitionsNormalizer normalizer = new ExhibitionsNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj, "de");
+        Data[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(1);
-        assertThat(value[0]).isEqualTo("Super Ausstellung, Bei Ötzgür im Hof, 1.1.2012-31.12.2012");
+        assertThat(value[0].hasAttribute("formatted")).isTrue();
+        assertThat(value[0].<String>getTypedAttribute("formatted")).isEqualTo("Super Ausstellung, Bei Ötzgür im Hof, 1.1.2012-31.12.2012");
     }
 
     @Test
@@ -135,12 +137,14 @@ public class ExhibitionsNormalizerTest {
         );
         // when
         ExhibitionsNormalizer normalizer = new ExhibitionsNormalizer();
-        String[] value = normalizer.resolveAttributeValue(obj, "de");
+        Data[] value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNotNull();
         assertThat(value).hasSize(2);
-        assertThat(value[0]).isEqualTo("3-Jahres-Ausstellung, Lobeckstr. 36, 14.3.1988-14.3.1991");
-        assertThat(value[1]).isEqualTo("Super Ausstellung, Bei Ötzgür im Hof, 1.1.2012-31.12.2012");
+        assertThat(value[0].hasAttribute("formatted")).isTrue();
+        assertThat(value[0].<String>getTypedAttribute("formatted")).isEqualTo("3-Jahres-Ausstellung, Lobeckstr. 36, 14.3.1988-14.3.1991");
+        assertThat(value[1].hasAttribute("formatted")).isTrue();
+        assertThat(value[1].<String>getTypedAttribute("formatted")).isEqualTo("Super Ausstellung, Bei Ötzgür im Hof, 1.1.2012-31.12.2012");
         // ignore future: "Zweite Ausstellung, Zu Hause, 15.10.2372-18.10.2372"
         // ignore missing dates: "Dritte Ausstellung ohne Info", "Vierte Ausstellung ohne Datum, Hauptstr. 5, 3. Etage"
     }

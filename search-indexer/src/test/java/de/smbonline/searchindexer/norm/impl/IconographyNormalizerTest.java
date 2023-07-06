@@ -1,9 +1,12 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static de.smbonline.searchindexer.norm.impl.TestData.*;
 import static org.assertj.core.api.Assertions.*;
@@ -37,17 +40,17 @@ public class IconographyNormalizerTest {
         );
         // when
         IconographyNormalizer normalizer = new IconographyNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj, "de");
+        Data[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNotNull();
         assertThat(values.length).isEqualTo(4);
-        assertThat(values).containsExactly("1", "2", "3", "4");
+        assertThat(Arrays.stream(values).map(d -> d.getTypedAttribute("formatted"))).containsExactly("1", "2", "3", "4");
     }
 
     @Test
     public void testSpecificVocOverridesDefaultVoc() {
         ObjectData obj;
-        String[] values;
+        Data[] values;
         IconographyNormalizer normalizer = new IconographyNormalizer();
 
         // Project
@@ -58,7 +61,8 @@ public class IconographyNormalizerTest {
                 Triple.of("ObjIconographyGrp.KeywordVoc", "[123].ObjIconographyGrp.repeatableGroupItem[1].KeywordVoc", "default")
         );
         values = normalizer.resolveAttributeValue(obj, "de");
-        assertThat(values).containsExactly("project");
+        assertThat(values).isNotNull();
+        assertThat(Arrays.stream(values).map(d -> d.getTypedAttribute("formatted"))).containsExactly("project");
 
         // ANT
         obj = createObject(
@@ -67,7 +71,8 @@ public class IconographyNormalizerTest {
                 Triple.of("ObjIconographyGrp.KeywordVoc", "[123].ObjIconographyGrp.repeatableGroupItem[1].KeywordVoc", "default")
         );
         values = normalizer.resolveAttributeValue(obj, "de");
-        assertThat(values).containsExactly("ant");
+        assertThat(values).isNotNull();
+        assertThat(Arrays.stream(values).map(d -> d.getTypedAttribute("formatted"))).containsExactly("ant");
 
         // EM
         obj = createObject(
@@ -75,7 +80,8 @@ public class IconographyNormalizerTest {
                 Triple.of("ObjIconographyGrp.KeywordVoc", "[123].ObjIconographyGrp.repeatableGroupItem[1].KeywordVoc", "default")
         );
         values = normalizer.resolveAttributeValue(obj, "de");
-        assertThat(values).containsExactly("em");
+        assertThat(values).isNotNull();
+        assertThat(Arrays.stream(values).map(d -> d.getTypedAttribute("formatted"))).containsExactly("em");
 
         // default
         obj = createObject(
@@ -85,7 +91,8 @@ public class IconographyNormalizerTest {
                 Triple.of("ObjIconographyGrp.KeywordVoc", "[123].ObjIconographyGrp.repeatableGroupItem[1].KeywordVoc", "default")
         );
         values = normalizer.resolveAttributeValue(obj, "de");
-        assertThat(values).containsExactly("default");
+        assertThat(values).isNotNull();
+        assertThat(Arrays.stream(values).map(d -> d.getTypedAttribute("formatted"))).containsExactly("default");
     }
 
     @Test
@@ -98,7 +105,7 @@ public class IconographyNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         IconographyNormalizer normalizer = new IconographyNormalizer();
-        String[] values = normalizer.resolveAttributeValue(obj, "de");
+        Data[] values = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(values).isNull();
     }

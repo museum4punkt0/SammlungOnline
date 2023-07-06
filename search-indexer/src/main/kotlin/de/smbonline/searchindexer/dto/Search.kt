@@ -1,22 +1,40 @@
 package de.smbonline.searchindexer.dto
 
+import de.smbonline.searchindexer.conf.ASSETS_ATTRIBUTE
 import de.smbonline.searchindexer.conf.DATE_RANGE_ATTRIBUTE
+import de.smbonline.searchindexer.conf.HAS_ATTACHMENTS_ATTRIBUTE
+import de.smbonline.searchindexer.conf.ID_ATTRIBUTE
 import de.smbonline.searchindexer.dto.JsonAttr.*
 import de.smbonline.searchindexer.rest.Params.*
+import de.smbonline.searchindexer.util.Misc.*
 import org.apache.commons.lang3.StringUtils
-import java.util.Calendar
-import java.util.Date
-import java.util.GregorianCalendar
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
 class Search : Cloneable {
 
+    /** main search term, default "*" */
     var searchTerm: String = "*"
+
+    /** additional filters, default null */
     var advancedSearch: Array<FieldSearch>? = null
+
+    /** key=field, value=asc, default empty */
     var sort: Array<Pair<String, Boolean>> = emptyArray()
+
+    /** start index, default=0 */
     var offset: Int = 0
+
+    /** amount of results, default=20 */
     var limit: Int = 20
+
+    public override fun clone(): Search {
+        val clone = super.clone() as Search
+        clone.advancedSearch = clone.advancedSearch?.clone()
+        clone.sort = clone.sort.clone()
+        return clone
+    }
 
     @Suppress("UNCHECKED_CAST")
     companion object {
@@ -41,7 +59,7 @@ class Search : Cloneable {
                 val limit = params.getValue(LIMIT_PARAMETER)
                 // developer feature: allow exclamation mark to suppress limitation
                 if (limit.endsWith('!')) {
-                    search.limit = limit.substring(0, limit.length-1).toInt()
+                    search.limit = limit.substring(0, limit.length - 1).toInt()
                 } else {
                     search.limit = min(limit.toInt(), MAX_LIMIT)
                 }
@@ -54,7 +72,7 @@ class Search : Cloneable {
         }
 
         fun merge(defaults: Search, overrides: Data): Search {
-            val search = defaults.clone() as Search
+            val search = defaults.clone()
             if (overrides.hasAttribute(ATTR_SEARCHQUERY)) {
                 search.searchTerm = cleanupSearchTerm(overrides.getTypedAttribute(ATTR_SEARCHQUERY)!!)
                 if (search.searchTerm.contains("$DATE_RANGE_ATTRIBUTE:")) {
@@ -62,7 +80,13 @@ class Search : Cloneable {
                 }
             }
             if (overrides.hasAttribute(ATTR_ADVANCED_SEARCHQUERY)) {
-                val advanced: Collection<Data> = overrides.getTypedAttribute(ATTR_ADVANCED_SEARCHQUERY)!!
+                val advanced: MutableCollection<Data> = overrides.getTypedAttribute(ATTR_ADVANCED_SEARCHQUERY)!!
+                // FIXME workaround for placeholder images - fetch blocked_attachments from Hasura
+                advanced.find { it.getAttribute(ATTR_FIELD) == HAS_ATTACHMENTS_ATTRIBUTE }?.let {
+                    if (it.getAttribute(ATTR_SEARCHQUERY) == "true") {
+                        it.setAttribute(ATTR_SEARCHQUERY, "true AND NOT ($ASSETS_ATTRIBUTE.$ID_ATTRIBUTE:(5802648 OR 6545994 OR 6548841))")
+                    }
+                }
                 search.advancedSearch = if (advanced.isNotEmpty()) {
                     advanced.filter {
                         StringUtils.isNoneBlank(it.getTypedAttribute(ATTR_FIELD), it.getTypedAttribute(ATTR_SEARCHQUERY))
@@ -72,7 +96,7 @@ class Search : Cloneable {
                         searchTerm = if (field == DATE_RANGE_ATTRIBUTE) {
                             adjustDateRangeSearchValue(searchTerm)
                         } else {
-                            "($searchTerm)" // we need brackets here to avoid wrong search results
+                            wrapBrackets(searchTerm)
                         }
                         val operator = if (it.hasAttribute(ATTR_OPERATOR)) {
                             FieldSearch.Operator.valueOf(it.getTypedAttribute<String>(ATTR_OPERATOR)!!.uppercase())
@@ -110,18 +134,18 @@ class Search : Cloneable {
             var from = range.substringBefore("TO").trim()
             var to = range.substringAfter("TO").trim()
             if (from != "*") {
-                from = (startDate(from).time / 1000).toString()
+                from = (startDate(from).time / 1000).toString() // seconds
             }
             if (to != "*") {
-                to = (endDate(to).time / 1000).toString()
+                to = (endDate(to).time / 1000).toString() // seconds
             }
             return "[$from TO $to]"
         }
 
         private fun startDate(str: String): Date {
             val cal = GregorianCalendar()
-            cal.set(Calendar.YEAR, 200000) // far, far back in time
             cal.set(Calendar.ERA, GregorianCalendar.BC)
+            cal.set(Calendar.YEAR, 200000) // far, far back in time
             cal.set(Calendar.MONTH, Calendar.JANUARY)
             cal.set(Calendar.DAY_OF_MONTH, 1)
             cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -143,18 +167,19 @@ class Search : Cloneable {
             return setDateFields(cal, str)
         }
 
-        private fun setDateFields(cal: Calendar, date: String): Date {
+        private fun setDateFields(cal: GregorianCalendar, date: String): Date {
             val isBC = date.startsWith("-")
             val source = if (isBC) date.substring(1) else date
             val parts = source.split('-').map { it.trim() }.filter { it.isNotEmpty() }
 
             // year
             if (parts.isNotEmpty()) {
-                cal.set(Calendar.YEAR, parts[0].toInt())
                 cal.set(Calendar.ERA, if (isBC) GregorianCalendar.BC else GregorianCalendar.AD)
+                cal.set(Calendar.YEAR, parts[0].toInt())
             }
             // month
             if (parts.size > 1) {
+                // -1 because Calendar expects [0..11] and not [1..12]
                 cal.set(Calendar.MONTH, parts[1].toInt() - 1)
             }
             // day
@@ -187,7 +212,6 @@ class Search : Cloneable {
         fun cleanupSearchTerm(searchTerm: String, trim: Boolean = true): String {
             var cleaned = searchTerm
                     .replace("\\\"", "<ESCAPED_QUOTE>")
-                    .replace(Regex("[()/]"), " ") // first remove these, it will break our logic
                     .replace(Regex("\\s+"), " ")
             if (trim) cleaned = cleaned.trim()
             cleaned = balanced("<ESCAPED_QUOTE>", cleaned)

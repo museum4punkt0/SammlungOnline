@@ -4,7 +4,6 @@ fragment geoData on smb_geographical_references {
     details
     geopolVocId:geopol_voc_id
     placeVocId:place_voc_id
-    roleVocId:role_voc_id
     typeVocId:type_voc_id
     sequence
 }

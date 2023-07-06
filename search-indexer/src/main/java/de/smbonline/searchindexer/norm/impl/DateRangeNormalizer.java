@@ -85,6 +85,7 @@ public class DateRangeNormalizer extends NormalizerBase<DateRange> {
                 "ObjDateGrp.DateFromTxt",
                 "ObjDateGrp.DateToTxt",
                 "ObjDateGrp.DateTxt",
+                "ObjDateGrp.DatestampToFuzzySearchLnu", // for _ORIGINDATE
                 "ObjDateGrp.SortLnu",
         };
     }

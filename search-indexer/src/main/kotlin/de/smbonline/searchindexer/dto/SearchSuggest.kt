@@ -1,9 +1,16 @@
 package de.smbonline.searchindexer.dto
 
-data class SearchSuggest(val searchTerm: String) {
+class SearchSuggest(val searchTerm: String) : Cloneable {
 
     var field: String? = null
-    var limit: Int = 15
+    var limit: Int = 30
+    var advancedSearch: Array<FieldSearch>? = null
+
+    public override fun clone(): SearchSuggest {
+        val clone = super.clone() as SearchSuggest
+        clone.advancedSearch = clone.advancedSearch?.clone()
+        return clone
+    }
 
     companion object {
 

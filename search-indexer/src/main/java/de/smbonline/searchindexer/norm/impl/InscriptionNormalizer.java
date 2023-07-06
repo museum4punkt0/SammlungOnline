@@ -2,24 +2,15 @@ package de.smbonline.searchindexer.norm.impl;
 
 import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.norm.MultipleHitsSortedNormalizer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 
-import static de.smbonline.searchindexer.conf.ConstKt.*;
-import static de.smbonline.searchindexer.norm.ValueExtractor.*;
+import static de.smbonline.searchindexer.conf.ConstKt.INSCRIPTION_ATTRIBUTE;
+import static de.smbonline.searchindexer.conf.ConstKt.SORTING_FIELDNAME;
+import static de.smbonline.searchindexer.norm.ValueExtractor.extractVoc;
 
 public class InscriptionNormalizer extends MultipleHitsSortedNormalizer<String> {
-
-    private static final String[] TYPE_VOC_WHITELIST = {
-            "Text (Plakat)",
-            "Signatur (Künstler)",
-            "Vermerk (Drucker)",
-            "Vermerk (Inventarnummer)",
-            "Vermerk (Künstler)",
-            "Vermerk (Nummerierung)"
-    };
 
     public InscriptionNormalizer() {
         super(INSCRIPTION_ATTRIBUTE, "ObjLabelObjectGrp");
@@ -28,6 +19,7 @@ public class InscriptionNormalizer extends MultipleHitsSortedNormalizer<String> 
     @Override
     public String[] getRelevantAttributeKeys() {
         return new String[]{
+                "ObjLabelObjectGrp.CategoryVoc",
                 "ObjLabelObjectGrp.LabelClb",
                 "ObjLabelObjectGrp.LanguageVoc",
                 "ObjLabelObjectGrp.MethodTxt",
@@ -35,6 +27,7 @@ public class InscriptionNormalizer extends MultipleHitsSortedNormalizer<String> 
                 "ObjLabelObjectGrp.PositionTxt",
                 "ObjLabelObjectGrp.SortLnu",
                 "ObjLabelObjectGrp.TranslationClb",
+                "ObjLabelObjectGrp.TransliterationClb",
                 "ObjLabelObjectGrp.TypeVoc",
         };
     }
@@ -42,11 +35,7 @@ public class InscriptionNormalizer extends MultipleHitsSortedNormalizer<String> 
     @Override
     protected Data[] applyFilter(final Data[] items) {
         return Arrays.stream(primaryItems(items).orElse(items))
-                .filter(item -> hasAttributeValue(item, "LabelClb"))
-                .filter(item -> {
-                    String typeVoc = extractVoc(item, "TypeVoc");
-                    return ArrayUtils.contains(TYPE_VOC_WHITELIST, typeVoc);
-                })
+                .filter(item -> hasAttributeValue(item, SORTING_FIELDNAME))
                 .toArray(Data[]::new);
     }
 
@@ -57,46 +46,63 @@ public class InscriptionNormalizer extends MultipleHitsSortedNormalizer<String> 
 
     private static String extractInscription(final Data item) {
 
-        // TypeVoc: PositionTxt OrientationTxt; MethodTxt: LabelClb (LanguageVoc) [TranslationClb]
+        // TypeVoc (CategoryVoc): PositionTxt OrientationTxt; MethodTxt: TransliterationClb; LabelClb (LanguageVoc) [TranslationClb]
 
         String typeVoc = extractVoc(item, "TypeVoc");
+        String categoryVoc = extractVoc(item, "CategoryVoc");
         String position = item.getTypedAttribute("PositionTxt");
         String orientation = item.getTypedAttribute("OrientationTxt");
         String method = item.getTypedAttribute("MethodTxt");
-        String label = item.getTypedAttribute("LabelClb"); // always non-empty because of applyFilter
-        String translation = item.getTypedAttribute("TranslationClb");
+        String transliteration = item.getTypedAttribute("TransliterationClb");
+        String label = item.getTypedAttribute("LabelClb");
         String lang = extractVoc(item, "LanguageVoc");
+        String translation = item.getTypedAttribute("TranslationClb");
 
         boolean hasTypeVoc = StringUtils.isNotBlank(typeVoc);
+        boolean hasCategoryVoc = StringUtils.isNotBlank(categoryVoc);
         boolean hasPosition = StringUtils.isNotBlank(position);
         boolean hasOrientation = StringUtils.isNotBlank(orientation);
         boolean hasMethod = StringUtils.isNotBlank(method);
-        boolean hasTranslation = StringUtils.isNotBlank(translation);
+        boolean hasTransliteration = StringUtils.isNotBlank(transliteration);
+        boolean hasLabel = StringUtils.isNotBlank(label);
         boolean hasLanguage = StringUtils.isNotBlank(lang);
+        boolean hasTranslation = StringUtils.isNotBlank(translation);
 
         StringBuilder sb = new StringBuilder();
         if (hasTypeVoc) {
-            sb.append(typeVoc.trim()).append(": ");
+            sb.append(typeVoc.trim());
+            if (hasCategoryVoc) {
+                sb.append(" (").append(categoryVoc.trim()).append(")");
+            }
+            sb.append(':');
         }
         if (hasPosition) {
-            sb.append(position.trim()).append(hasOrientation ? " " : "; ");
+            sb.append(' ').append(position.trim());
+            if (!hasOrientation) {
+                sb.append(';');
+            }
         }
         if (hasOrientation) {
-            sb.append(orientation.trim()).append("; ");
+            sb.append(' ').append(orientation.trim()).append(';');
         }
         if (hasMethod) {
-            sb.append(method.trim()).append(": ");
+            sb.append(' ').append(method.trim());
+            if (hasTransliteration || hasLabel) {
+                sb.append(':');
+            }
         }
-        sb.append(label);
-        if (hasTranslation) {
-            sb.append(" [").append(translation.trim());
+        if (hasTransliteration) {
+            sb.append(' ').append(transliteration.trim()).append(';');
+        }
+        if (hasLabel) {
+            sb.append(' ').append(label.trim());
             if (hasLanguage) {
                 sb.append(" (").append(lang.trim()).append(')');
             }
-            sb.append(']');
-        } else if (hasLanguage) {
-            sb.append(" (").append(lang.trim()).append(')');
         }
-        return sb.toString();
+        if (hasTranslation) {
+            sb.append(" [").append(translation.trim()).append(']');
+        }
+        return StringUtils.strip(sb.toString(), " :;");
     }
 }

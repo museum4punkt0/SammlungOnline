@@ -12,7 +12,7 @@ class NormalizerConfigTest {
     fun textOneNormalizerForEachRelevantAttribute() {
         val cfg = NormalizerConfig()
         val provider = mockk<ObjectProvider<GraphQlService>>()
-        val reg = NormalizerConfigurer(cfg).initConverterRegistry(provider);
+        val reg = NormalizerConfigurer().initConverterRegistry(cfg, provider)
         for (attr in ALL_RELEVANT_ATTRIBUTES) {
             Assertions.assertThat(reg.getNormalizer(attr)).isNotNull
         }

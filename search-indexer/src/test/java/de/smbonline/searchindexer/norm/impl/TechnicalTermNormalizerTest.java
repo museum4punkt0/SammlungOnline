@@ -1,5 +1,6 @@
 package de.smbonline.searchindexer.norm.impl;
 
+import de.smbonline.searchindexer.dto.Data;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,10 @@ public class TechnicalTermNormalizerTest {
         ObjectData obj = createObject(123L, Pair.of("ObjTechnicalTermClb", "Gelber Schnee"));
         // when
         TechnicalTermNormalizer normalizer = new TechnicalTermNormalizer();
-        String value = normalizer.resolveAttributeValue(obj, "de");
+        Data value = normalizer.resolveAttributeValue(obj, "de");
         // then
-        assertThat(value).isEqualTo("Gelber Schnee");
+        assertThat(value).isNotNull();
+        assertThat(value.<String>getTypedAttribute("formatted")).isEqualTo("Gelber Schnee");
     }
 
     @Test
@@ -35,7 +37,7 @@ public class TechnicalTermNormalizerTest {
                 Pair.of("blubb", "bla"));
         // when
         TechnicalTermNormalizer normalizer = new TechnicalTermNormalizer();
-        String value = normalizer.resolveAttributeValue(obj, "de");
+        Data value = normalizer.resolveAttributeValue(obj, "de");
         // then
         assertThat(value).isNull();
     }

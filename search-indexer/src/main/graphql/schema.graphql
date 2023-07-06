@@ -83,6 +83,23 @@ input String_comparison_exp {
   _similar: String
 }
 
+scalar _int8
+
+"""
+Boolean expression to compare columns of type "_int8". All fields are combined with logical 'AND'.
+"""
+input _int8_comparison_exp {
+  _eq: _int8
+  _gt: _int8
+  _gte: _int8
+  _in: [_int8!]
+  _is_null: Boolean
+  _lt: _int8
+  _lte: _int8
+  _neq: _int8
+  _nin: [_int8!]
+}
+
 scalar bigint
 
 """
@@ -113,2163 +130,6 @@ enum cursor_ordering {
   """
   DESC
 }
-
-"""
-A string used to identify an i18n locale
-"""
-scalar hbf_I18NLocaleCode
-
-enum hbf_PublicationState {
-  LIVE
-  PREVIEW
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar hbf_Upload
-
-input isl_BooleanFilterInput {
-  and: [Boolean]
-  between: [Boolean]
-  contains: Boolean
-  containsi: Boolean
-  endsWith: Boolean
-  eq: Boolean
-  gt: Boolean
-  gte: Boolean
-  in: [Boolean]
-  lt: Boolean
-  lte: Boolean
-  ne: Boolean
-  not: isl_BooleanFilterInput
-  notContains: Boolean
-  notContainsi: Boolean
-  notIn: [Boolean]
-  notNull: Boolean
-  or: [Boolean]
-  startsWith: Boolean
-}
-
-type isl_Category {
-  createdAt: isl_DateTime
-  hero: isl_ComponentGlobalRichtextModule
-  isVisibleInListView: Boolean
-  locale: String
-  localizations(filters: isl_CategoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_CategoryRelationResponseCollection
-  publishedAt: isl_DateTime
-  slug: String
-  stories(filters: isl_StoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_StoryRelationResponseCollection
-  subtitle: String
-  teaser_image: isl_UploadFileEntityResponse
-  title: String
-  updatedAt: isl_DateTime
-  versionNumber: Int
-  versions(filters: isl_CategoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_CategoryRelationResponseCollection
-  vuid: String
-}
-
-type isl_CategoryEntity {
-  attributes: isl_Category
-  id: ID
-}
-
-type isl_CategoryEntityResponse {
-  data: isl_CategoryEntity
-}
-
-type isl_CategoryEntityResponseCollection {
-  data: [isl_CategoryEntity!]!
-  meta: isl_ResponseCollectionMeta!
-}
-
-input isl_CategoryFiltersInput {
-  and: [isl_CategoryFiltersInput]
-  createdAt: isl_DateTimeFilterInput
-  hero: isl_ComponentGlobalRichtextModuleFiltersInput
-  id: isl_IDFilterInput
-  isVisibleInListView: isl_BooleanFilterInput
-  locale: isl_StringFilterInput
-  localizations: isl_CategoryFiltersInput
-  not: isl_CategoryFiltersInput
-  or: [isl_CategoryFiltersInput]
-  publishedAt: isl_DateTimeFilterInput
-  sitemap_exclude: isl_BooleanFilterInput
-  slug: isl_StringFilterInput
-  stories: isl_StoryFiltersInput
-  subtitle: isl_StringFilterInput
-  title: isl_StringFilterInput
-  updatedAt: isl_DateTimeFilterInput
-  versionNumber: isl_IntFilterInput
-  versions: isl_CategoryFiltersInput
-  vuid: isl_StringFilterInput
-}
-
-input isl_CategoryInput {
-  hero: isl_ComponentGlobalRichtextModuleInput
-  isVisibleInListView: Boolean
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-  slug: String
-  stories: [ID]
-  subtitle: String
-  teaser_image: ID
-  title: String
-  versionNumber: Int
-  versions: [ID]
-  vuid: String
-}
-
-type isl_CategoryRelationResponseCollection {
-  data: [isl_CategoryEntity!]!
-}
-
-type isl_ComponentComponentsBannerCard {
-  headline: String!
-  id: ID!
-  subHeadline: String
-  text: String
-}
-
-type isl_ComponentComponentsBreadcrumbsLink {
-  collapseText: String
-  expandText: String
-  href: String
-  id: ID!
-  title: String
-}
-
-input isl_ComponentComponentsBreadcrumbsLinkInput {
-  collapseText: String
-  expandText: String
-  href: String
-  id: ID
-  title: String
-}
-
-type isl_ComponentComponentsButtonComponent {
-  closedState: String
-  id: ID!
-  openState: String
-}
-
-type isl_ComponentComponentsCardLinkComponent {
-  firstLinkHref: String
-  firstLinkTitle: String
-  headline: String
-  id: ID!
-  secondLinkHref: String
-  secondLinkTitle: String
-  thirdLinkHref: String
-  thirdLinkTitle: String
-}
-
-input isl_ComponentComponentsCardLinkComponentFiltersInput {
-  and: [isl_ComponentComponentsCardLinkComponentFiltersInput]
-  firstLinkHref: isl_StringFilterInput
-  firstLinkTitle: isl_StringFilterInput
-  headline: isl_StringFilterInput
-  not: isl_ComponentComponentsCardLinkComponentFiltersInput
-  or: [isl_ComponentComponentsCardLinkComponentFiltersInput]
-  secondLinkHref: isl_StringFilterInput
-  secondLinkTitle: isl_StringFilterInput
-  thirdLinkHref: isl_StringFilterInput
-  thirdLinkTitle: isl_StringFilterInput
-}
-
-type isl_ComponentComponentsContentCardComponent {
-  backgroundColor: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDCOLOR
-  backgroundStyle: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDSTYLE
-  borderColor: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERCOLOR
-  borderWidth: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERWIDTH
-  cardWidth: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CARDWIDTH
-  contentAlignment: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CONTENTALIGNMENT
-  headline: String
-  headlineAlignment: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEALIGNMENT
-  headlineColor: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINECOLOR
-  headlineDecoration: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEDECORATION
-  headlineFontSize: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEFONTSIZE
-  headlineOrientation: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEORIENTATION
-  headlineStyle: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINESTYLE
-  headlineWeight: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEWEIGHT
-  id: ID!
-  image: isl_UploadFileEntityResponse
-  imagePosition: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_IMAGEPOSITION
-  link: isl_ComponentComponentsLinkComponent
-  linkColor: isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_LINKCOLOR
-}
-
-input isl_ComponentComponentsContentCardComponentFiltersInput {
-  and: [isl_ComponentComponentsContentCardComponentFiltersInput]
-  backgroundColor: isl_StringFilterInput
-  backgroundStyle: isl_StringFilterInput
-  borderColor: isl_StringFilterInput
-  borderWidth: isl_StringFilterInput
-  cardWidth: isl_StringFilterInput
-  contentAlignment: isl_StringFilterInput
-  headline: isl_StringFilterInput
-  headlineAlignment: isl_StringFilterInput
-  headlineColor: isl_StringFilterInput
-  headlineDecoration: isl_StringFilterInput
-  headlineFontSize: isl_StringFilterInput
-  headlineOrientation: isl_StringFilterInput
-  headlineStyle: isl_StringFilterInput
-  headlineWeight: isl_StringFilterInput
-  imagePosition: isl_StringFilterInput
-  link: isl_ComponentComponentsLinkComponentFiltersInput
-  linkColor: isl_StringFilterInput
-  not: isl_ComponentComponentsContentCardComponentFiltersInput
-  or: [isl_ComponentComponentsContentCardComponentFiltersInput]
-}
-
-type isl_ComponentComponentsCookie {
-  button: String
-  headline: String
-  id: ID!
-  overlayText: String
-  showCookie: Boolean
-  text: String
-}
-
-input isl_ComponentComponentsCookieInput {
-  button: String
-  headline: String
-  id: ID
-  overlayText: String
-  showCookie: Boolean
-  text: String
-}
-
-type isl_ComponentComponentsEasyDbItems {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-  headline: String
-  id: ID!
-  layout: isl_ENUM_COMPONENTCOMPONENTSEASYDBITEMS_LAYOUT
-  text: String
-  textColumns: isl_ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTCOLUMNS
-  textPosition: isl_ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTPOSITION
-}
-
-type isl_ComponentComponentsEasyDbRef {
-  id: ID!
-  objectFit: isl_ENUM_COMPONENTCOMPONENTSEASYDBREF_OBJECTFIT
-  ref: String!
-}
-
-input isl_ComponentComponentsEasyDbRefFiltersInput {
-  and: [isl_ComponentComponentsEasyDbRefFiltersInput]
-  not: isl_ComponentComponentsEasyDbRefFiltersInput
-  objectFit: isl_StringFilterInput
-  or: [isl_ComponentComponentsEasyDbRefFiltersInput]
-  ref: isl_StringFilterInput
-}
-
-type isl_ComponentComponentsHeadlineComponent {
-  headline: String
-  id: ID!
-  level: Int!
-}
-
-type isl_ComponentComponentsImageCard {
-  asset: isl_UploadFileEntityResponse!
-  header: String
-  id: ID!
-  slug: String
-  subHeader: String
-}
-
-type isl_ComponentComponentsImageMapCard {
-  headline: String
-  id: ID!
-  image: isl_UploadFileEntityResponse
-  text: String
-  xCoordinates: isl_Long!
-  yCoordinates: isl_Long!
-}
-
-input isl_ComponentComponentsImageMapCardFiltersInput {
-  and: [isl_ComponentComponentsImageMapCardFiltersInput]
-  headline: isl_StringFilterInput
-  not: isl_ComponentComponentsImageMapCardFiltersInput
-  or: [isl_ComponentComponentsImageMapCardFiltersInput]
-  text: isl_StringFilterInput
-  xCoordinates: isl_LongFilterInput
-  yCoordinates: isl_LongFilterInput
-}
-
-type isl_ComponentComponentsImageScrollCard {
-  headline: String!
-  id: ID!
-  subHeadline: String
-}
-
-type isl_ComponentComponentsLegalPages {
-  block(filters: isl_ComponentComponentsSmbLegalPagesBlockFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsSmbLegalPagesBlock]
-  footerLink: String
-  header: String
-  id: ID!
-  matomo: Boolean
-  slug: String
-}
-
-type isl_ComponentComponentsLinkComponent {
-  category: isl_CategoryEntityResponse
-  href: String
-  id: ID!
-  story: isl_StoryEntityResponse
-  title: String
-  topic: isl_TopicEntityResponse
-}
-
-input isl_ComponentComponentsLinkComponentFiltersInput {
-  and: [isl_ComponentComponentsLinkComponentFiltersInput]
-  category: isl_CategoryFiltersInput
-  href: isl_StringFilterInput
-  not: isl_ComponentComponentsLinkComponentFiltersInput
-  or: [isl_ComponentComponentsLinkComponentFiltersInput]
-  story: isl_StoryFiltersInput
-  title: isl_StringFilterInput
-  topic: isl_TopicFiltersInput
-}
-
-type isl_ComponentComponentsMediaComponent {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection!
-  headline: String
-  id: ID!
-  layout: isl_ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_LAYOUT
-  text: String
-  textColumns: isl_ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTCOLUMNS
-  textPosition: isl_ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTPOSITION
-  thumbnail: isl_UploadFileEntityResponse
-  youtubeVideoUrl: String
-}
-
-type isl_ComponentComponentsModelInfoPoints {
-  asset: isl_UploadFileEntityResponse!
-  headline: String
-  id: ID!
-  slug: isl_ENUM_COMPONENTCOMPONENTSMODELINFOPOINTS_SLUG
-  text: String
-}
-
-input isl_ComponentComponentsModelInfoPointsFiltersInput {
-  and: [isl_ComponentComponentsModelInfoPointsFiltersInput]
-  headline: isl_StringFilterInput
-  not: isl_ComponentComponentsModelInfoPointsFiltersInput
-  or: [isl_ComponentComponentsModelInfoPointsFiltersInput]
-  slug: isl_StringFilterInput
-  text: isl_StringFilterInput
-}
-
-type isl_ComponentComponentsNavigationLinkComponent {
-  href: String
-  id: ID!
-  slug: isl_ENUM_COMPONENTCOMPONENTSNAVIGATIONLINKCOMPONENT_SLUG
-  subTitle: String
-  title: String
-}
-
-input isl_ComponentComponentsNavigationLinkComponentFiltersInput {
-  and: [isl_ComponentComponentsNavigationLinkComponentFiltersInput]
-  href: isl_StringFilterInput
-  not: isl_ComponentComponentsNavigationLinkComponentFiltersInput
-  or: [isl_ComponentComponentsNavigationLinkComponentFiltersInput]
-  slug: isl_StringFilterInput
-  subTitle: isl_StringFilterInput
-  title: isl_StringFilterInput
-}
-
-input isl_ComponentComponentsNavigationLinkComponentInput {
-  href: String
-  id: ID
-  slug: isl_ENUM_COMPONENTCOMPONENTSNAVIGATIONLINKCOMPONENT_SLUG
-  subTitle: String
-  title: String
-}
-
-type isl_ComponentComponentsRichTextComponent {
-  headline: String
-  id: ID!
-  layout: isl_ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_LAYOUT
-  level: Int
-  text: String
-  textColumns: isl_ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_TEXTCOLUMNS
-}
-
-input isl_ComponentComponentsRichTextComponentFiltersInput {
-  and: [isl_ComponentComponentsRichTextComponentFiltersInput]
-  headline: isl_StringFilterInput
-  layout: isl_StringFilterInput
-  level: isl_IntFilterInput
-  not: isl_ComponentComponentsRichTextComponentFiltersInput
-  or: [isl_ComponentComponentsRichTextComponentFiltersInput]
-  text: isl_StringFilterInput
-  textColumns: isl_StringFilterInput
-}
-
-input isl_ComponentComponentsRichTextComponentInput {
-  headline: String
-  id: ID
-  layout: isl_ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_LAYOUT
-  level: Int
-  text: String
-  textColumns: isl_ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_TEXTCOLUMNS
-}
-
-type isl_ComponentComponentsSimpleLink {
-  href: String
-  id: ID!
-  title: String
-}
-
-input isl_ComponentComponentsSimpleLinkFiltersInput {
-  and: [isl_ComponentComponentsSimpleLinkFiltersInput]
-  href: isl_StringFilterInput
-  not: isl_ComponentComponentsSimpleLinkFiltersInput
-  or: [isl_ComponentComponentsSimpleLinkFiltersInput]
-  title: isl_StringFilterInput
-}
-
-input isl_ComponentComponentsSimpleLinkInput {
-  href: String
-  id: ID
-  title: String
-}
-
-type isl_ComponentComponentsSlug {
-  id: ID!
-  slug: String
-}
-
-type isl_ComponentComponentsSmbCollectionsBlock {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-  cardCtaText: String
-  headline: String
-  id: ID!
-  text: String
-  type: isl_ENUM_COMPONENTCOMPONENTSSMBCOLLECTIONSBLOCK_TYPE!
-}
-
-type isl_ComponentComponentsSmbDownloadModule {
-  buttonText: String
-  header: String
-  id: ID!
-  text: String
-}
-
-input isl_ComponentComponentsSmbDownloadModuleInput {
-  buttonText: String
-  header: String
-  id: ID
-  text: String
-}
-
-type isl_ComponentComponentsSmbHeaderMenuItems {
-  headline: String
-  href: String
-  id: ID!
-  subHeadline: String
-  type: isl_ENUM_COMPONENTCOMPONENTSSMBHEADERMENUITEMS_TYPE!
-}
-
-input isl_ComponentComponentsSmbHeaderMenuItemsFiltersInput {
-  and: [isl_ComponentComponentsSmbHeaderMenuItemsFiltersInput]
-  headline: isl_StringFilterInput
-  href: isl_StringFilterInput
-  not: isl_ComponentComponentsSmbHeaderMenuItemsFiltersInput
-  or: [isl_ComponentComponentsSmbHeaderMenuItemsFiltersInput]
-  subHeadline: isl_StringFilterInput
-  type: isl_StringFilterInput
-}
-
-input isl_ComponentComponentsSmbHeaderMenuItemsInput {
-  headline: String
-  href: String
-  id: ID
-  subHeadline: String
-  type: isl_ENUM_COMPONENTCOMPONENTSSMBHEADERMENUITEMS_TYPE
-}
-
-type isl_ComponentComponentsSmbHighlightsBlock {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-  headline: String
-  id: ID!
-  text: String
-  type: isl_ENUM_COMPONENTCOMPONENTSSMBHIGHLIGHTSBLOCK_TYPE!
-}
-
-type isl_ComponentComponentsSmbLegalPagesBlock {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-  id: ID!
-  text: String
-  videoAssets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-}
-
-input isl_ComponentComponentsSmbLegalPagesBlockFiltersInput {
-  and: [isl_ComponentComponentsSmbLegalPagesBlockFiltersInput]
-  not: isl_ComponentComponentsSmbLegalPagesBlockFiltersInput
-  or: [isl_ComponentComponentsSmbLegalPagesBlockFiltersInput]
-  text: isl_StringFilterInput
-}
-
-type isl_ComponentComponentsSmbResearchModal {
-  downloadSection: isl_ComponentComponentsSmbDownloadModule
-  id: ID!
-  webSection: isl_ComponentComponentsSmbWebModule
-}
-
-input isl_ComponentComponentsSmbResearchModalInput {
-  downloadSection: isl_ComponentComponentsSmbDownloadModuleInput
-  id: ID
-  webSection: isl_ComponentComponentsSmbWebModuleInput
-}
-
-type isl_ComponentComponentsSmbSearchButtonBlock {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-  headline: String!
-  id: ID!
-  searchButtonGroupHeadline1: String
-  searchButtonGroupHeadline2: String
-  searchButtonGroupHeadline3: String
-  text: String
-}
-
-type isl_ComponentComponentsSmbSection {
-  CollectionsBlock: isl_ComponentComponentsSmbCollectionsBlock
-  HighlightsBlock: isl_ComponentComponentsSmbHighlightsBlock
-  SearchButtonBlock: isl_ComponentComponentsSmbSearchButtonBlock
-  TextBlock: isl_ComponentComponentsSmbTextCard
-  Type: isl_ENUM_COMPONENTCOMPONENTSSMBSECTION_TYPE
-  VideoBlock: isl_ComponentComponentsSmbVideoBlock
-  id: ID!
-}
-
-type isl_ComponentComponentsSmbTextCard {
-  headline: String!
-  id: ID!
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-  text: String!
-}
-
-input isl_ComponentComponentsSmbTextCardInput {
-  headline: String
-  id: ID
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-  text: String
-}
-
-type isl_ComponentComponentsSmbVideoBlock {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection!
-  headline: String
-  id: ID!
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-}
-
-input isl_ComponentComponentsSmbVideoBlockInput {
-  assets: [ID]
-  headline: String
-  id: ID
-  linkText: String
-  linkUrl: String
-  subHeadline: String
-}
-
-type isl_ComponentComponentsSmbWebModule {
-  buttonLink: String
-  buttonText: String
-  header: String
-  id: ID!
-  text: String
-}
-
-input isl_ComponentComponentsSmbWebModuleInput {
-  buttonLink: String
-  buttonText: String
-  header: String
-  id: ID
-  text: String
-}
-
-type isl_ComponentComponentsStoryComponent {
-  alignment: isl_ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_ALIGNMENT
-  asset: isl_UploadFileEntityResponse
-  border: Boolean
-  cardText: String!
-  headline: String
-  href: String
-  id: ID!
-  story: isl_StoryEntityResponse
-  title: String
-  weight: isl_ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_WEIGHT
-  youtubeVideoUrl: String
-}
-
-input isl_ComponentComponentsStoryComponentFiltersInput {
-  alignment: isl_StringFilterInput
-  and: [isl_ComponentComponentsStoryComponentFiltersInput]
-  border: isl_BooleanFilterInput
-  cardText: isl_StringFilterInput
-  headline: isl_StringFilterInput
-  href: isl_StringFilterInput
-  not: isl_ComponentComponentsStoryComponentFiltersInput
-  or: [isl_ComponentComponentsStoryComponentFiltersInput]
-  story: isl_StoryFiltersInput
-  title: isl_StringFilterInput
-  weight: isl_StringFilterInput
-  youtubeVideoUrl: isl_StringFilterInput
-}
-
-type isl_ComponentComponentsTagComponent {
-  href: String
-  id: ID!
-  story: isl_StoryEntityResponse
-  tag: String
-  weight: isl_ENUM_COMPONENTCOMPONENTSTAGCOMPONENT_WEIGHT
-}
-
-input isl_ComponentComponentsTagComponentFiltersInput {
-  and: [isl_ComponentComponentsTagComponentFiltersInput]
-  href: isl_StringFilterInput
-  not: isl_ComponentComponentsTagComponentFiltersInput
-  or: [isl_ComponentComponentsTagComponentFiltersInput]
-  story: isl_StoryFiltersInput
-  tag: isl_StringFilterInput
-  weight: isl_StringFilterInput
-}
-
-input isl_ComponentComponentsTagComponentInput {
-  href: String
-  id: ID
-  story: ID
-  tag: String
-  weight: isl_ENUM_COMPONENTCOMPONENTSTAGCOMPONENT_WEIGHT
-}
-
-type isl_ComponentComponentsTextComponent {
-  id: ID!
-  text: String
-}
-
-type isl_ComponentConfigHeroSwiperItem {
-  caption: String
-  href: String
-  id: ID!
-  image: isl_UploadFileEntityResponse!
-  mobileImage: isl_UploadFileEntityResponse
-  tabletImage: isl_UploadFileEntityResponse
-  title: String!
-}
-
-input isl_ComponentConfigHeroSwiperItemFiltersInput {
-  and: [isl_ComponentConfigHeroSwiperItemFiltersInput]
-  caption: isl_StringFilterInput
-  href: isl_StringFilterInput
-  not: isl_ComponentConfigHeroSwiperItemFiltersInput
-  or: [isl_ComponentConfigHeroSwiperItemFiltersInput]
-  title: isl_StringFilterInput
-}
-
-input isl_ComponentConfigHeroSwiperItemInput {
-  caption: String
-  href: String
-  id: ID
-  image: ID
-  mobileImage: ID
-  tabletImage: ID
-  title: String
-}
-
-type isl_ComponentConfigIndexConfig {
-  id: ID!
-  teaser_iamge: isl_UploadFileEntityResponse
-  teaser_text: String
-  title: String
-}
-
-input isl_ComponentConfigIndexConfigInput {
-  id: ID
-  teaser_iamge: ID
-  teaser_text: String
-  title: String
-}
-
-type isl_ComponentConfigPageConfig {
-  author: String
-  id: ID!
-  teaser_image: isl_UploadFileEntityResponse!
-  teaser_text: String!
-  year: String
-}
-
-input isl_ComponentConfigPageConfigFiltersInput {
-  and: [isl_ComponentConfigPageConfigFiltersInput]
-  author: isl_StringFilterInput
-  not: isl_ComponentConfigPageConfigFiltersInput
-  or: [isl_ComponentConfigPageConfigFiltersInput]
-  teaser_text: isl_StringFilterInput
-  year: isl_StringFilterInput
-}
-
-input isl_ComponentConfigPageConfigInput {
-  author: String
-  id: ID
-  teaser_image: ID
-  teaser_text: String
-  year: String
-}
-
-type isl_ComponentConfigTheme {
-  id: ID!
-  themes: isl_ENUM_COMPONENTCONFIGTHEME_THEMES
-}
-
-input isl_ComponentConfigThemeFiltersInput {
-  and: [isl_ComponentConfigThemeFiltersInput]
-  not: isl_ComponentConfigThemeFiltersInput
-  or: [isl_ComponentConfigThemeFiltersInput]
-  themes: isl_StringFilterInput
-}
-
-input isl_ComponentConfigThemeInput {
-  id: ID
-  themes: isl_ENUM_COMPONENTCONFIGTHEME_THEMES
-}
-
-type isl_ComponentGlobal3DModel {
-  header: String
-  id: ID!
-  infoPoints(filters: isl_ComponentComponentsModelInfoPointsFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsModelInfoPoints]
-  modelFile: isl_UploadFileEntityResponse!
-  modelPointSvg: isl_UploadFileEntityResponse!
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalCardImageModule {
-  headline: isl_ComponentComponentsHeadlineComponent
-  id: ID!
-  layout: isl_ENUM_COMPONENTGLOBALCARDIMAGEMODULE_LAYOUT
-  position: isl_ENUM_COMPONENTGLOBALCARDIMAGEMODULE_POSITION
-  showInMenu: Boolean
-  stories(filters: isl_ComponentComponentsStoryComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsStoryComponent]
-  textAlignment: isl_ENUM_COMPONENTGLOBALCARDIMAGEMODULE_TEXTALIGNMENT
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalColorSeparatorModule {
-  id: ID!
-  theme: isl_ComponentConfigTheme!
-}
-
-input isl_ComponentGlobalColorSeparatorModuleFiltersInput {
-  and: [isl_ComponentGlobalColorSeparatorModuleFiltersInput]
-  not: isl_ComponentGlobalColorSeparatorModuleFiltersInput
-  or: [isl_ComponentGlobalColorSeparatorModuleFiltersInput]
-  theme: isl_ComponentConfigThemeFiltersInput
-}
-
-input isl_ComponentGlobalColorSeparatorModuleInput {
-  id: ID
-  theme: isl_ComponentConfigThemeInput
-}
-
-type isl_ComponentGlobalContentModule {
-  contentCards(filters: isl_ComponentComponentsContentCardComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsContentCardComponent]
-  id: ID!
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalEasyDbImageModule {
-  easyDBRef(filters: isl_ComponentComponentsEasyDbRefFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsEasyDbRef]!
-  headline: isl_ComponentComponentsHeadlineComponent
-  id: ID!
-  mediaItems: isl_ComponentComponentsEasyDbItems
-  showInMenu: Boolean
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalFilterModule {
-  categories(filters: isl_CategoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_CategoryRelationResponseCollection
-  header: String
-  id: ID!
-  text: String
-}
-
-type isl_ComponentGlobalHeroModule {
-  heroAsset: isl_UploadFileEntityResponse
-  heroBackgroundTheme: isl_ENUM_COMPONENTGLOBALHEROMODULE_HEROBACKGROUNDTHEME
-  heroText: isl_ComponentComponentsTextComponent
-  id: ID!
-}
-
-type isl_ComponentGlobalImageBannerModule {
-  backgroundAsset: isl_UploadFileEntityResponse!
-  card: isl_ComponentComponentsBannerCard
-  id: ID!
-  position: isl_ENUM_COMPONENTGLOBALIMAGEBANNERMODULE_POSITION
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalImageMapModule {
-  cards(filters: isl_ComponentComponentsImageMapCardFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsImageMapCard]
-  id: ID!
-  moduleAsset: isl_UploadFileEntityResponse!
-  moduleHeadline: String
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalImagePlayerModule {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-  buttonText: String
-  id: ID!
-}
-
-type isl_ComponentGlobalImageScrollModule {
-  asset: isl_UploadFileEntityResponse!
-  card: isl_ComponentComponentsImageScrollCard!
-  id: ID!
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalLinkedStoriesModule {
-  header: String
-  id: ID!
-  storiesLinks(filters: isl_StoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_StoryRelationResponseCollection
-}
-
-type isl_ComponentGlobalLinksModule {
-  cardLinks(filters: isl_ComponentComponentsCardLinkComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsCardLinkComponent]
-  id: ID!
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalMediaModule {
-  gridAlignment: isl_ENUM_COMPONENTGLOBALMEDIAMODULE_GRIDALIGNMENT
-  headline: isl_ComponentComponentsHeadlineComponent
-  id: ID!
-  link: isl_ComponentComponentsLinkComponent
-  mediaItems: isl_ComponentComponentsMediaComponent
-  showInMenu: Boolean
-  subHeadline: String
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalRichtextModule {
-  id: ID!
-  richText: isl_ComponentComponentsRichTextComponent
-  showInMenu: Boolean
-  theme: isl_ComponentConfigTheme
-}
-
-input isl_ComponentGlobalRichtextModuleFiltersInput {
-  and: [isl_ComponentGlobalRichtextModuleFiltersInput]
-  not: isl_ComponentGlobalRichtextModuleFiltersInput
-  or: [isl_ComponentGlobalRichtextModuleFiltersInput]
-  richText: isl_ComponentComponentsRichTextComponentFiltersInput
-  showInMenu: isl_BooleanFilterInput
-  theme: isl_ComponentConfigThemeFiltersInput
-}
-
-input isl_ComponentGlobalRichtextModuleInput {
-  id: ID
-  richText: isl_ComponentComponentsRichTextComponentInput
-  showInMenu: Boolean
-  theme: isl_ComponentConfigThemeInput
-}
-
-type isl_ComponentGlobalRouteNavigationModule {
-  backwardsLink: isl_ComponentComponentsLinkComponent
-  forwardLink: isl_ComponentComponentsLinkComponent
-  icon: Boolean
-  id: ID!
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalSammlungOnlineAdapter {
-  headline: isl_ComponentComponentsHeadlineComponent
-  id: ID!
-  mediaItems: isl_ComponentComponentsEasyDbItems
-  ref(filters: isl_ComponentComponentsEasyDbRefFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsEasyDbRef]!
-  showInMenu: Boolean
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalSeparatorModule {
-  id: ID!
-  separatorHeadline: String
-  showInMenu: Boolean
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalStoriesContainerModule {
-  active: Boolean
-  id: ID!
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalTagCarouselModule {
-  href: String
-  id: ID!
-  story: isl_StoryEntityResponse
-  tag: String
-  theme: isl_ComponentConfigTheme
-  weight: isl_ENUM_COMPONENTGLOBALTAGCAROUSELMODULE_WEIGHT
-}
-
-type isl_ComponentGlobalTagCloudModule {
-  id: ID!
-  primaryTags(filters: isl_ComponentComponentsTagComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsTagComponent]
-  quaternaryTags(filters: isl_ComponentComponentsTagComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsTagComponent]
-  secondaryTags(filters: isl_ComponentComponentsTagComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsTagComponent]
-  tagsSeparator: Boolean
-  tertiaryTags(filters: isl_ComponentComponentsTagComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsTagComponent]
-  theme: isl_ComponentConfigTheme!
-}
-
-input isl_ComponentGlobalTagCloudModuleFiltersInput {
-  and: [isl_ComponentGlobalTagCloudModuleFiltersInput]
-  not: isl_ComponentGlobalTagCloudModuleFiltersInput
-  or: [isl_ComponentGlobalTagCloudModuleFiltersInput]
-  primaryTags: isl_ComponentComponentsTagComponentFiltersInput
-  quaternaryTags: isl_ComponentComponentsTagComponentFiltersInput
-  secondaryTags: isl_ComponentComponentsTagComponentFiltersInput
-  tagsSeparator: isl_BooleanFilterInput
-  tertiaryTags: isl_ComponentComponentsTagComponentFiltersInput
-  theme: isl_ComponentConfigThemeFiltersInput
-}
-
-input isl_ComponentGlobalTagCloudModuleInput {
-  id: ID
-  primaryTags: [isl_ComponentComponentsTagComponentInput]
-  quaternaryTags: [isl_ComponentComponentsTagComponentInput]
-  secondaryTags: [isl_ComponentComponentsTagComponentInput]
-  tagsSeparator: Boolean
-  tertiaryTags: [isl_ComponentComponentsTagComponentInput]
-  theme: isl_ComponentConfigThemeInput
-}
-
-type isl_ComponentGlobalTextCardModule {
-  buttonLink: isl_ComponentComponentsSimpleLink
-  cardHeadline: String
-  id: ID!
-  separatorHeadline: String
-  text: String
-  theme: isl_ComponentConfigTheme!
-}
-
-input isl_ComponentGlobalTextCardModuleFiltersInput {
-  and: [isl_ComponentGlobalTextCardModuleFiltersInput]
-  buttonLink: isl_ComponentComponentsSimpleLinkFiltersInput
-  cardHeadline: isl_StringFilterInput
-  not: isl_ComponentGlobalTextCardModuleFiltersInput
-  or: [isl_ComponentGlobalTextCardModuleFiltersInput]
-  separatorHeadline: isl_StringFilterInput
-  text: isl_StringFilterInput
-  theme: isl_ComponentConfigThemeFiltersInput
-}
-
-input isl_ComponentGlobalTextCardModuleInput {
-  buttonLink: isl_ComponentComponentsSimpleLinkInput
-  cardHeadline: String
-  id: ID
-  separatorHeadline: String
-  text: String
-  theme: isl_ComponentConfigThemeInput
-}
-
-type isl_ComponentGlobalTextDrawerModule {
-  assets(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileRelationResponseCollection
-  button: isl_ComponentComponentsButtonComponent
-  drawerHeadline: String
-  drawerSubHeadline: String
-  id: ID!
-  showInMenu: Boolean
-  text: String
-  theme: isl_ComponentConfigTheme
-}
-
-type isl_ComponentGlobalVideoModule {
-  id: ID!
-  placeholderImage: isl_UploadFileEntityResponse!
-  video: isl_UploadFileEntityResponse!
-}
-
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar isl_DateTime
-
-input isl_DateTimeFilterInput {
-  and: [isl_DateTime]
-  between: [isl_DateTime]
-  contains: isl_DateTime
-  containsi: isl_DateTime
-  endsWith: isl_DateTime
-  eq: isl_DateTime
-  gt: isl_DateTime
-  gte: isl_DateTime
-  in: [isl_DateTime]
-  lt: isl_DateTime
-  lte: isl_DateTime
-  ne: isl_DateTime
-  not: isl_DateTimeFilterInput
-  notContains: isl_DateTime
-  notContainsi: isl_DateTime
-  notIn: [isl_DateTime]
-  notNull: Boolean
-  or: [isl_DateTime]
-  startsWith: isl_DateTime
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDCOLOR {
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BACKGROUNDSTYLE {
-  transparent
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERCOLOR {
-  gradient
-  primary
-  secondary
-  tertiary
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_BORDERWIDTH {
-  large
-  medium
-  small
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CARDWIDTH {
-  full
-  half
-  oneThird
-  twoThirds
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_CONTENTALIGNMENT {
-  center
-  right
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEALIGNMENT {
-  center
-  right
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINECOLOR {
-  gradient
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEDECORATION {
-  underline
-  uppercase
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEFONTSIZE {
-  extraLarge
-  large
-  medium
-  small
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEORIENTATION {
-  vertical
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINESTYLE {
-  italic
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_HEADLINEWEIGHT {
-  bold
-  light
-  medium
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_IMAGEPOSITION {
-  bottom
-  left
-  right
-  top
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSCONTENTCARDCOMPONENT_LINKCOLOR {
-  gradient
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSEASYDBITEMS_LAYOUT {
-  column
-  row
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTCOLUMNS {
-  col1
-  col2
-  col3
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSEASYDBITEMS_TEXTPOSITION {
-  above
-  below
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSEASYDBREF_OBJECTFIT {
-  contain
-  cover
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_LAYOUT {
-  column
-  row
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTCOLUMNS {
-  col1
-  col2
-  col3
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSMEDIACOMPONENT_TEXTPOSITION {
-  above
-  below
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSMODELINFOPOINTS_SLUG {
-  SpriteA1
-  SpriteA2
-  SpriteA3
-  SpriteA4
-  SpriteB1
-  SpriteB2
-  SpriteB3
-  SpriteB4
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSNAVIGATIONLINKCOMPONENT_SLUG {
-  primary
-  quaternary
-  quinary
-  secondary
-  tertiary
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_LAYOUT {
-  col
-  row
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSRICHTEXTCOMPONENT_TEXTCOLUMNS {
-  col1
-  col2
-  col3
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSSMBCOLLECTIONSBLOCK_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TOPIC
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSSMBHEADERMENUITEMS_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TOPIC
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSSMBHIGHLIGHTSBLOCK_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TOPIC
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSSMBSECTION_TYPE {
-  GUIDE
-  INTRO
-  RESEARCH
-  TEXT
-  TOPIC
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_ALIGNMENT {
-  left
-  right
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSSTORYCOMPONENT_WEIGHT {
-  size1
-  size2
-  size3
-}
-
-enum isl_ENUM_COMPONENTCOMPONENTSTAGCOMPONENT_WEIGHT {
-  default
-  large
-  medium
-}
-
-enum isl_ENUM_COMPONENTCONFIGTHEME_THEMES {
-  primary
-  quaternary
-  secondary
-  tertiary
-}
-
-enum isl_ENUM_COMPONENTGLOBALCARDIMAGEMODULE_LAYOUT {
-  float
-  parallel
-  translate
-}
-
-enum isl_ENUM_COMPONENTGLOBALCARDIMAGEMODULE_POSITION {
-  down
-  up
-}
-
-enum isl_ENUM_COMPONENTGLOBALCARDIMAGEMODULE_TEXTALIGNMENT {
-  center
-}
-
-enum isl_ENUM_COMPONENTGLOBALHEROMODULE_HEROBACKGROUNDTHEME {
-  primary
-  quaternary
-  quinary
-  secondary
-  tertiary
-}
-
-enum isl_ENUM_COMPONENTGLOBALIMAGEBANNERMODULE_POSITION {
-  center
-  end
-  start
-}
-
-enum isl_ENUM_COMPONENTGLOBALMEDIAMODULE_GRIDALIGNMENT {
-  default
-  left
-  right
-}
-
-enum isl_ENUM_COMPONENTGLOBALTAGCAROUSELMODULE_WEIGHT {
-  size1
-  size2
-  size3
-}
-
-type isl_Error {
-  code: String!
-  message: String
-}
-
-input isl_FileInfoInput {
-  alternativeText: String
-  caption: String
-  name: String
-}
-
-input isl_FloatFilterInput {
-  and: [Float]
-  between: [Float]
-  contains: Float
-  containsi: Float
-  endsWith: Float
-  eq: Float
-  gt: Float
-  gte: Float
-  in: [Float]
-  lt: Float
-  lte: Float
-  ne: Float
-  not: isl_FloatFilterInput
-  notContains: Float
-  notContainsi: Float
-  notIn: [Float]
-  notNull: Boolean
-  or: [Float]
-  startsWith: Float
-}
-
-union isl_GenericMorph = isl_Category | isl_ComponentComponentsBannerCard | isl_ComponentComponentsBreadcrumbsLink | isl_ComponentComponentsButtonComponent | isl_ComponentComponentsCardLinkComponent | isl_ComponentComponentsContentCardComponent | isl_ComponentComponentsCookie | isl_ComponentComponentsEasyDbItems | isl_ComponentComponentsEasyDbRef | isl_ComponentComponentsHeadlineComponent | isl_ComponentComponentsImageCard | isl_ComponentComponentsImageMapCard | isl_ComponentComponentsImageScrollCard | isl_ComponentComponentsLegalPages | isl_ComponentComponentsLinkComponent | isl_ComponentComponentsMediaComponent | isl_ComponentComponentsModelInfoPoints | isl_ComponentComponentsNavigationLinkComponent | isl_ComponentComponentsRichTextComponent | isl_ComponentComponentsSimpleLink | isl_ComponentComponentsSlug | isl_ComponentComponentsSmbCollectionsBlock | isl_ComponentComponentsSmbDownloadModule | isl_ComponentComponentsSmbHeaderMenuItems | isl_ComponentComponentsSmbHighlightsBlock | isl_ComponentComponentsSmbLegalPagesBlock | isl_ComponentComponentsSmbResearchModal | isl_ComponentComponentsSmbSearchButtonBlock | isl_ComponentComponentsSmbSection | isl_ComponentComponentsSmbTextCard | isl_ComponentComponentsSmbVideoBlock | isl_ComponentComponentsSmbWebModule | isl_ComponentComponentsStoryComponent | isl_ComponentComponentsTagComponent | isl_ComponentComponentsTextComponent | isl_ComponentConfigHeroSwiperItem | isl_ComponentConfigIndexConfig | isl_ComponentConfigPageConfig | isl_ComponentConfigTheme | isl_ComponentGlobal3DModel | isl_ComponentGlobalCardImageModule | isl_ComponentGlobalColorSeparatorModule | isl_ComponentGlobalContentModule | isl_ComponentGlobalEasyDbImageModule | isl_ComponentGlobalFilterModule | isl_ComponentGlobalHeroModule | isl_ComponentGlobalImageBannerModule | isl_ComponentGlobalImageMapModule | isl_ComponentGlobalImagePlayerModule | isl_ComponentGlobalImageScrollModule | isl_ComponentGlobalLinkedStoriesModule | isl_ComponentGlobalLinksModule | isl_ComponentGlobalMediaModule | isl_ComponentGlobalRichtextModule | isl_ComponentGlobalRouteNavigationModule | isl_ComponentGlobalSammlungOnlineAdapter | isl_ComponentGlobalSeparatorModule | isl_ComponentGlobalStoriesContainerModule | isl_ComponentGlobalTagCarouselModule | isl_ComponentGlobalTagCloudModule | isl_ComponentGlobalTextCardModule | isl_ComponentGlobalTextDrawerModule | isl_ComponentGlobalVideoModule | isl_I18NLocale | isl_Index | isl_SiteConfig | isl_SmbGuidepage | isl_SmbLandingpage | isl_SmbResearchpage | isl_SmbSiteConfig | isl_SmbTopicspage | isl_Story | isl_Topic | isl_UploadFile | isl_UsersPermissionsPermission | isl_UsersPermissionsRole | isl_UsersPermissionsUser
-
-type isl_I18NLocale {
-  code: String
-  createdAt: isl_DateTime
-  name: String
-  updatedAt: isl_DateTime
-}
-
-"""
-A string used to identify an i18n locale
-"""
-scalar isl_I18NLocaleCode
-
-type isl_I18NLocaleEntity {
-  attributes: isl_I18NLocale
-  id: ID
-}
-
-type isl_I18NLocaleEntityResponse {
-  data: isl_I18NLocaleEntity
-}
-
-type isl_I18NLocaleEntityResponseCollection {
-  data: [isl_I18NLocaleEntity!]!
-  meta: isl_ResponseCollectionMeta!
-}
-
-input isl_I18NLocaleFiltersInput {
-  and: [isl_I18NLocaleFiltersInput]
-  code: isl_StringFilterInput
-  createdAt: isl_DateTimeFilterInput
-  id: isl_IDFilterInput
-  name: isl_StringFilterInput
-  not: isl_I18NLocaleFiltersInput
-  or: [isl_I18NLocaleFiltersInput]
-  updatedAt: isl_DateTimeFilterInput
-}
-
-input isl_IDFilterInput {
-  and: [ID]
-  between: [ID]
-  contains: ID
-  containsi: ID
-  endsWith: ID
-  eq: ID
-  gt: ID
-  gte: ID
-  in: [ID]
-  lt: ID
-  lte: ID
-  ne: ID
-  not: isl_IDFilterInput
-  notContains: ID
-  notContainsi: ID
-  notIn: [ID]
-  notNull: Boolean
-  or: [ID]
-  startsWith: ID
-}
-
-type isl_Index {
-  config: isl_ComponentConfigIndexConfig
-  createdAt: isl_DateTime
-  locale: String
-  localizations(publicationState: isl_PublicationState = LIVE): isl_IndexRelationResponseCollection
-  modules: [isl_IndexModulesDynamicZone]
-  publishedAt: isl_DateTime
-  updatedAt: isl_DateTime
-}
-
-type isl_IndexEntity {
-  attributes: isl_Index
-  id: ID
-}
-
-type isl_IndexEntityResponse {
-  data: isl_IndexEntity
-}
-
-input isl_IndexInput {
-  config: isl_ComponentConfigIndexConfigInput
-  modules: [isl_IndexModulesDynamicZoneInput!]
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-}
-
-union isl_IndexModulesDynamicZone = isl_ComponentGlobal3DModel | isl_ComponentGlobalCardImageModule | isl_ComponentGlobalColorSeparatorModule | isl_ComponentGlobalContentModule | isl_ComponentGlobalFilterModule | isl_ComponentGlobalHeroModule | isl_ComponentGlobalImageBannerModule | isl_ComponentGlobalImageScrollModule | isl_ComponentGlobalLinkedStoriesModule | isl_ComponentGlobalLinksModule | isl_ComponentGlobalMediaModule | isl_ComponentGlobalRichtextModule | isl_ComponentGlobalRouteNavigationModule | isl_ComponentGlobalSeparatorModule | isl_ComponentGlobalStoriesContainerModule | isl_ComponentGlobalTagCarouselModule | isl_ComponentGlobalTagCloudModule | isl_ComponentGlobalTextCardModule | isl_ComponentGlobalTextDrawerModule | isl_ComponentGlobalVideoModule | isl_Error
-
-scalar isl_IndexModulesDynamicZoneInput
-
-type isl_IndexRelationResponseCollection {
-  data: [isl_IndexEntity!]!
-}
-
-input isl_IntFilterInput {
-  and: [Int]
-  between: [Int]
-  contains: Int
-  containsi: Int
-  endsWith: Int
-  eq: Int
-  gt: Int
-  gte: Int
-  in: [Int]
-  lt: Int
-  lte: Int
-  ne: Int
-  not: isl_IntFilterInput
-  notContains: Int
-  notContainsi: Int
-  notIn: [Int]
-  notNull: Boolean
-  or: [Int]
-  startsWith: Int
-}
-
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar isl_JSON
-
-input isl_JSONFilterInput {
-  and: [isl_JSON]
-  between: [isl_JSON]
-  contains: isl_JSON
-  containsi: isl_JSON
-  endsWith: isl_JSON
-  eq: isl_JSON
-  gt: isl_JSON
-  gte: isl_JSON
-  in: [isl_JSON]
-  lt: isl_JSON
-  lte: isl_JSON
-  ne: isl_JSON
-  not: isl_JSONFilterInput
-  notContains: isl_JSON
-  notContainsi: isl_JSON
-  notIn: [isl_JSON]
-  notNull: Boolean
-  or: [isl_JSON]
-  startsWith: isl_JSON
-}
-
-"""
-The `Long` scalar type represents 52-bit integers
-"""
-scalar isl_Long
-
-input isl_LongFilterInput {
-  and: [isl_Long]
-  between: [isl_Long]
-  contains: isl_Long
-  containsi: isl_Long
-  endsWith: isl_Long
-  eq: isl_Long
-  gt: isl_Long
-  gte: isl_Long
-  in: [isl_Long]
-  lt: isl_Long
-  lte: isl_Long
-  ne: isl_Long
-  not: isl_LongFilterInput
-  notContains: isl_Long
-  notContainsi: isl_Long
-  notIn: [isl_Long]
-  notNull: Boolean
-  or: [isl_Long]
-  startsWith: isl_Long
-}
-
-type isl_Pagination {
-  page: Int!
-  pageCount: Int!
-  pageSize: Int!
-  total: Int!
-}
-
-input isl_PaginationArg {
-  limit: Int
-  page: Int
-  pageSize: Int
-  start: Int
-}
-
-enum isl_PublicationState {
-  LIVE
-  PREVIEW
-}
-
-type isl_ResponseCollectionMeta {
-  pagination: isl_Pagination!
-}
-
-type isl_SiteConfig {
-  breadcrumbsLink: isl_ComponentComponentsBreadcrumbsLink
-  cookies: isl_ComponentComponentsCookie
-  copyright: String
-  createdAt: isl_DateTime
-  footerPrimaryLinkItems(filters: isl_ComponentComponentsNavigationLinkComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsNavigationLinkComponent]
-  footerSecondaryLinkItems(filters: isl_ComponentComponentsNavigationLinkComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsNavigationLinkComponent]
-  footerTertiaryLinkItems(filters: isl_ComponentComponentsNavigationLinkComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsNavigationLinkComponent]
-  headerMenuItems(filters: isl_ComponentComponentsNavigationLinkComponentFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsNavigationLinkComponent]
-  headerTitle: String!
-  languageSwitcher: Boolean!
-  locale: String
-  localizations: isl_SiteConfigRelationResponseCollection
-  updatedAt: isl_DateTime
-}
-
-type isl_SiteConfigEntity {
-  attributes: isl_SiteConfig
-  id: ID
-}
-
-type isl_SiteConfigEntityResponse {
-  data: isl_SiteConfigEntity
-}
-
-input isl_SiteConfigInput {
-  breadcrumbsLink: isl_ComponentComponentsBreadcrumbsLinkInput
-  cookies: isl_ComponentComponentsCookieInput
-  copyright: String
-  footerPrimaryLinkItems: [isl_ComponentComponentsNavigationLinkComponentInput]
-  footerSecondaryLinkItems: [isl_ComponentComponentsNavigationLinkComponentInput]
-  footerTertiaryLinkItems: [isl_ComponentComponentsNavigationLinkComponentInput]
-  headerMenuItems: [isl_ComponentComponentsNavigationLinkComponentInput]
-  headerTitle: String
-  languageSwitcher: Boolean
-  sitemap_exclude: Boolean
-}
-
-type isl_SiteConfigRelationResponseCollection {
-  data: [isl_SiteConfigEntity!]!
-}
-
-type isl_SmbGuidepage {
-  createdAt: isl_DateTime
-  fallbackHeader: String
-  fallbackText: String
-  publishedAt: isl_DateTime
-  updatedAt: isl_DateTime
-}
-
-type isl_SmbGuidepageEntity {
-  attributes: isl_SmbGuidepage
-  id: ID
-}
-
-type isl_SmbGuidepageEntityResponse {
-  data: isl_SmbGuidepageEntity
-}
-
-input isl_SmbGuidepageInput {
-  fallbackHeader: String
-  fallbackText: String
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-}
-
-type isl_SmbLandingpage {
-  createdAt: isl_DateTime
-  heroSwiperItems(filters: isl_ComponentConfigHeroSwiperItemFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentConfigHeroSwiperItem]
-  locale: String
-  localizations(publicationState: isl_PublicationState = LIVE): isl_SmbLandingpageRelationResponseCollection
-  module: [isl_SmbLandingpageModuleDynamicZone]
-  publishedAt: isl_DateTime
-  updatedAt: isl_DateTime
-}
-
-type isl_SmbLandingpageEntity {
-  attributes: isl_SmbLandingpage
-  id: ID
-}
-
-type isl_SmbLandingpageEntityResponse {
-  data: isl_SmbLandingpageEntity
-}
-
-input isl_SmbLandingpageInput {
-  heroSwiperItems: [isl_ComponentConfigHeroSwiperItemInput]
-  module: [isl_SmbLandingpageModuleDynamicZoneInput!]
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-}
-
-union isl_SmbLandingpageModuleDynamicZone = isl_ComponentComponentsSmbSection | isl_Error
-
-scalar isl_SmbLandingpageModuleDynamicZoneInput
-
-type isl_SmbLandingpageRelationResponseCollection {
-  data: [isl_SmbLandingpageEntity!]!
-}
-
-type isl_SmbResearchpage {
-  createdAt: isl_DateTime
-  header: String
-  locale: String
-  localizations(publicationState: isl_PublicationState = LIVE): isl_SmbResearchpageRelationResponseCollection
-  modalDialog: isl_ComponentComponentsSmbResearchModal
-  publishedAt: isl_DateTime
-  updatedAt: isl_DateTime
-}
-
-type isl_SmbResearchpageEntity {
-  attributes: isl_SmbResearchpage
-  id: ID
-}
-
-type isl_SmbResearchpageEntityResponse {
-  data: isl_SmbResearchpageEntity
-}
-
-input isl_SmbResearchpageInput {
-  header: String
-  modalDialog: isl_ComponentComponentsSmbResearchModalInput
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-}
-
-type isl_SmbResearchpageRelationResponseCollection {
-  data: [isl_SmbResearchpageEntity!]!
-}
-
-type isl_SmbSiteConfig {
-  contactTextBlock: isl_ComponentComponentsSmbTextCard
-  contactVideoBlock: isl_ComponentComponentsSmbVideoBlock
-  copyright: String
-  createdAt: isl_DateTime
-  headerMenuItems(filters: isl_ComponentComponentsSmbHeaderMenuItemsFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): [isl_ComponentComponentsSmbHeaderMenuItems]
-  legalPages: [isl_SmbSiteConfigLegalPagesDynamicZone]
-  locale: String
-  localizations(publicationState: isl_PublicationState = LIVE): isl_SmbSiteConfigRelationResponseCollection
-  publishedAt: isl_DateTime
-  updatedAt: isl_DateTime
-}
-
-type isl_SmbSiteConfigEntity {
-  attributes: isl_SmbSiteConfig
-  id: ID
-}
-
-type isl_SmbSiteConfigEntityResponse {
-  data: isl_SmbSiteConfigEntity
-}
-
-input isl_SmbSiteConfigInput {
-  contactTextBlock: isl_ComponentComponentsSmbTextCardInput
-  contactVideoBlock: isl_ComponentComponentsSmbVideoBlockInput
-  copyright: String
-  headerMenuItems: [isl_ComponentComponentsSmbHeaderMenuItemsInput]
-  legalPages: [isl_SmbSiteConfigLegalPagesDynamicZoneInput!]
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-}
-
-union isl_SmbSiteConfigLegalPagesDynamicZone = isl_ComponentComponentsLegalPages | isl_Error
-
-scalar isl_SmbSiteConfigLegalPagesDynamicZoneInput
-
-type isl_SmbSiteConfigRelationResponseCollection {
-  data: [isl_SmbSiteConfigEntity!]!
-}
-
-type isl_SmbTopicspage {
-  createdAt: isl_DateTime
-  heroFallbackAsset: isl_UploadFileEntityResponse!
-  heroFallbackHeader: String!
-  heroFallbackText: String!
-  locale: String
-  localizations(publicationState: isl_PublicationState = LIVE): isl_SmbTopicspageRelationResponseCollection
-  publishedAt: isl_DateTime
-  updatedAt: isl_DateTime
-}
-
-type isl_SmbTopicspageEntity {
-  attributes: isl_SmbTopicspage
-  id: ID
-}
-
-type isl_SmbTopicspageEntityResponse {
-  data: isl_SmbTopicspageEntity
-}
-
-input isl_SmbTopicspageInput {
-  heroFallbackAsset: ID
-  heroFallbackHeader: String
-  heroFallbackText: String
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-}
-
-type isl_SmbTopicspageRelationResponseCollection {
-  data: [isl_SmbTopicspageEntity!]!
-}
-
-type isl_Story {
-  category: isl_CategoryEntityResponse
-  config: isl_ComponentConfigPageConfig
-  createdAt: isl_DateTime
-  displayInHero: Boolean
-  isVisibleInListView: Boolean
-  locale: String
-  localizations(filters: isl_StoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_StoryRelationResponseCollection
-  modules: [isl_StoryModulesDynamicZone]
-  publishedAt: isl_DateTime
-  slug: String!
-  title: String
-  topic: isl_TopicEntityResponse
-  updatedAt: isl_DateTime
-  versionNumber: Int
-  versions(filters: isl_StoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_StoryRelationResponseCollection
-  vuid: String
-}
-
-type isl_StoryEntity {
-  attributes: isl_Story
-  id: ID
-}
-
-type isl_StoryEntityResponse {
-  data: isl_StoryEntity
-}
-
-type isl_StoryEntityResponseCollection {
-  data: [isl_StoryEntity!]!
-  meta: isl_ResponseCollectionMeta!
-}
-
-input isl_StoryFiltersInput {
-  and: [isl_StoryFiltersInput]
-  category: isl_CategoryFiltersInput
-  config: isl_ComponentConfigPageConfigFiltersInput
-  createdAt: isl_DateTimeFilterInput
-  displayInHero: isl_BooleanFilterInput
-  id: isl_IDFilterInput
-  isVisibleInListView: isl_BooleanFilterInput
-  locale: isl_StringFilterInput
-  localizations: isl_StoryFiltersInput
-  not: isl_StoryFiltersInput
-  or: [isl_StoryFiltersInput]
-  publishedAt: isl_DateTimeFilterInput
-  sitemap_exclude: isl_BooleanFilterInput
-  slug: isl_StringFilterInput
-  title: isl_StringFilterInput
-  topic: isl_TopicFiltersInput
-  updatedAt: isl_DateTimeFilterInput
-  versionNumber: isl_IntFilterInput
-  versions: isl_StoryFiltersInput
-  vuid: isl_StringFilterInput
-}
-
-input isl_StoryInput {
-  category: ID
-  config: isl_ComponentConfigPageConfigInput
-  displayInHero: Boolean
-  isVisibleInListView: Boolean
-  modules: [isl_StoryModulesDynamicZoneInput!]
-  publishedAt: isl_DateTime
-  sitemap_exclude: Boolean
-  slug: String
-  title: String
-  topic: ID
-  versionNumber: Int
-  versions: [ID]
-  vuid: String
-}
-
-union isl_StoryModulesDynamicZone = isl_ComponentGlobal3DModel | isl_ComponentGlobalCardImageModule | isl_ComponentGlobalColorSeparatorModule | isl_ComponentGlobalContentModule | isl_ComponentGlobalEasyDbImageModule | isl_ComponentGlobalFilterModule | isl_ComponentGlobalImageBannerModule | isl_ComponentGlobalImageMapModule | isl_ComponentGlobalImagePlayerModule | isl_ComponentGlobalImageScrollModule | isl_ComponentGlobalLinkedStoriesModule | isl_ComponentGlobalLinksModule | isl_ComponentGlobalMediaModule | isl_ComponentGlobalRichtextModule | isl_ComponentGlobalRouteNavigationModule | isl_ComponentGlobalSammlungOnlineAdapter | isl_ComponentGlobalSeparatorModule | isl_ComponentGlobalTagCarouselModule | isl_ComponentGlobalTagCloudModule | isl_ComponentGlobalTextCardModule | isl_ComponentGlobalTextDrawerModule | isl_ComponentGlobalVideoModule | isl_Error
-
-scalar isl_StoryModulesDynamicZoneInput
-
-type isl_StoryRelationResponseCollection {
-  data: [isl_StoryEntity!]!
-}
-
-input isl_StringFilterInput {
-  and: [String]
-  between: [String]
-  contains: String
-  containsi: String
-  endsWith: String
-  eq: String
-  gt: String
-  gte: String
-  in: [String]
-  lt: String
-  lte: String
-  ne: String
-  not: isl_StringFilterInput
-  notContains: String
-  notContainsi: String
-  notIn: [String]
-  notNull: Boolean
-  or: [String]
-  startsWith: String
-}
-
-type isl_Topic {
-  createdAt: isl_DateTime
-  isVisibleInListView: Boolean
-  locale: String
-  localizations(filters: isl_TopicFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_TopicRelationResponseCollection
-  publishedAt: isl_DateTime
-  seperator_01: isl_ComponentGlobalColorSeparatorModule
-  seperator_02: isl_ComponentGlobalColorSeparatorModule
-  slug: String
-  stories(filters: isl_StoryFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_StoryRelationResponseCollection
-  tagCloud: isl_ComponentGlobalTagCloudModule
-  text: String
-  textCard: isl_ComponentGlobalTextCardModule
-  title: String
-  updatedAt: isl_DateTime
-  versionNumber: Int
-  versions(filters: isl_TopicFiltersInput, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_TopicRelationResponseCollection
-  vuid: String
-}
-
-type isl_TopicEntity {
-  attributes: isl_Topic
-  id: ID
-}
-
-type isl_TopicEntityResponse {
-  data: isl_TopicEntity
-}
-
-type isl_TopicEntityResponseCollection {
-  data: [isl_TopicEntity!]!
-  meta: isl_ResponseCollectionMeta!
-}
-
-input isl_TopicFiltersInput {
-  and: [isl_TopicFiltersInput]
-  createdAt: isl_DateTimeFilterInput
-  id: isl_IDFilterInput
-  isVisibleInListView: isl_BooleanFilterInput
-  locale: isl_StringFilterInput
-  localizations: isl_TopicFiltersInput
-  not: isl_TopicFiltersInput
-  or: [isl_TopicFiltersInput]
-  publishedAt: isl_DateTimeFilterInput
-  seperator_01: isl_ComponentGlobalColorSeparatorModuleFiltersInput
-  seperator_02: isl_ComponentGlobalColorSeparatorModuleFiltersInput
-  sitemap_exclude: isl_BooleanFilterInput
-  slug: isl_StringFilterInput
-  stories: isl_StoryFiltersInput
-  tagCloud: isl_ComponentGlobalTagCloudModuleFiltersInput
-  text: isl_StringFilterInput
-  textCard: isl_ComponentGlobalTextCardModuleFiltersInput
-  title: isl_StringFilterInput
-  updatedAt: isl_DateTimeFilterInput
-  versionNumber: isl_IntFilterInput
-  versions: isl_TopicFiltersInput
-  vuid: isl_StringFilterInput
-}
-
-input isl_TopicInput {
-  isVisibleInListView: Boolean
-  publishedAt: isl_DateTime
-  seperator_01: isl_ComponentGlobalColorSeparatorModuleInput
-  seperator_02: isl_ComponentGlobalColorSeparatorModuleInput
-  sitemap_exclude: Boolean
-  slug: String
-  stories: [ID]
-  tagCloud: isl_ComponentGlobalTagCloudModuleInput
-  text: String
-  textCard: isl_ComponentGlobalTextCardModuleInput
-  title: String
-  versionNumber: Int
-  versions: [ID]
-  vuid: String
-}
-
-type isl_TopicRelationResponseCollection {
-  data: [isl_TopicEntity!]!
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar isl_Upload
-
-type isl_UploadFile {
-  alternativeText: String
-  caption: String
-  createdAt: isl_DateTime
-  ext: String
-  formats: isl_JSON
-  hash: String!
-  height: Int
-  mime: String!
-  name: String!
-  previewUrl: String
-  provider: String!
-  provider_metadata: isl_JSON
-  related: [isl_GenericMorph]
-  size: Float!
-  updatedAt: isl_DateTime
-  url: String!
-  width: Int
-}
-
-type isl_UploadFileEntity {
-  attributes: isl_UploadFile
-  id: ID
-}
-
-type isl_UploadFileEntityResponse {
-  data: isl_UploadFileEntity
-}
-
-type isl_UploadFileEntityResponseCollection {
-  data: [isl_UploadFileEntity!]!
-  meta: isl_ResponseCollectionMeta!
-}
-
-input isl_UploadFileFiltersInput {
-  alternativeText: isl_StringFilterInput
-  and: [isl_UploadFileFiltersInput]
-  caption: isl_StringFilterInput
-  createdAt: isl_DateTimeFilterInput
-  ext: isl_StringFilterInput
-  formats: isl_JSONFilterInput
-  hash: isl_StringFilterInput
-  height: isl_IntFilterInput
-  id: isl_IDFilterInput
-  mime: isl_StringFilterInput
-  name: isl_StringFilterInput
-  not: isl_UploadFileFiltersInput
-  or: [isl_UploadFileFiltersInput]
-  previewUrl: isl_StringFilterInput
-  provider: isl_StringFilterInput
-  provider_metadata: isl_JSONFilterInput
-  sitemap_exclude: isl_BooleanFilterInput
-  size: isl_FloatFilterInput
-  updatedAt: isl_DateTimeFilterInput
-  url: isl_StringFilterInput
-  width: isl_IntFilterInput
-}
-
-input isl_UploadFileInput {
-  alternativeText: String
-  caption: String
-  ext: String
-  formats: isl_JSON
-  hash: String
-  height: Int
-  mime: String
-  name: String
-  previewUrl: String
-  provider: String
-  provider_metadata: isl_JSON
-  sitemap_exclude: Boolean
-  size: Float
-  url: String
-  width: Int
-}
-
-type isl_UploadFileRelationResponseCollection {
-  data: [isl_UploadFileEntity!]!
-}
-
-type isl_UsersPermissionsCreateRolePayload {
-  ok: Boolean!
-}
-
-type isl_UsersPermissionsDeleteRolePayload {
-  ok: Boolean!
-}
-
-input isl_UsersPermissionsLoginInput {
-  identifier: String!
-  password: String!
-  provider: String! = "local"
-}
-
-type isl_UsersPermissionsLoginPayload {
-  jwt: String
-  user: isl_UsersPermissionsMe!
-}
-
-type isl_UsersPermissionsMe {
-  blocked: Boolean
-  confirmed: Boolean
-  email: String
-  id: ID!
-  role: isl_UsersPermissionsMeRole
-  username: String!
-}
-
-type isl_UsersPermissionsMeRole {
-  description: String
-  id: ID!
-  name: String!
-  type: String
-}
-
-type isl_UsersPermissionsPasswordPayload {
-  ok: Boolean!
-}
-
-type isl_UsersPermissionsPermission {
-  action: String!
-  createdAt: isl_DateTime
-  role: isl_UsersPermissionsRoleEntityResponse
-  updatedAt: isl_DateTime
-}
-
-type isl_UsersPermissionsPermissionEntity {
-  attributes: isl_UsersPermissionsPermission
-  id: ID
-}
-
-input isl_UsersPermissionsPermissionFiltersInput {
-  action: isl_StringFilterInput
-  and: [isl_UsersPermissionsPermissionFiltersInput]
-  createdAt: isl_DateTimeFilterInput
-  id: isl_IDFilterInput
-  not: isl_UsersPermissionsPermissionFiltersInput
-  or: [isl_UsersPermissionsPermissionFiltersInput]
-  role: isl_UsersPermissionsRoleFiltersInput
-  updatedAt: isl_DateTimeFilterInput
-}
-
-type isl_UsersPermissionsPermissionRelationResponseCollection {
-  data: [isl_UsersPermissionsPermissionEntity!]!
-}
-
-input isl_UsersPermissionsRegisterInput {
-  email: String!
-  password: String!
-  username: String!
-}
-
-type isl_UsersPermissionsRole {
-  createdAt: isl_DateTime
-  description: String
-  name: String!
-  permissions(filters: isl_UsersPermissionsPermissionFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsPermissionRelationResponseCollection
-  type: String
-  updatedAt: isl_DateTime
-  users(filters: isl_UsersPermissionsUserFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsUserRelationResponseCollection
-}
-
-type isl_UsersPermissionsRoleEntity {
-  attributes: isl_UsersPermissionsRole
-  id: ID
-}
-
-type isl_UsersPermissionsRoleEntityResponse {
-  data: isl_UsersPermissionsRoleEntity
-}
-
-type isl_UsersPermissionsRoleEntityResponseCollection {
-  data: [isl_UsersPermissionsRoleEntity!]!
-  meta: isl_ResponseCollectionMeta!
-}
-
-input isl_UsersPermissionsRoleFiltersInput {
-  and: [isl_UsersPermissionsRoleFiltersInput]
-  createdAt: isl_DateTimeFilterInput
-  description: isl_StringFilterInput
-  id: isl_IDFilterInput
-  name: isl_StringFilterInput
-  not: isl_UsersPermissionsRoleFiltersInput
-  or: [isl_UsersPermissionsRoleFiltersInput]
-  permissions: isl_UsersPermissionsPermissionFiltersInput
-  type: isl_StringFilterInput
-  updatedAt: isl_DateTimeFilterInput
-  users: isl_UsersPermissionsUserFiltersInput
-}
-
-input isl_UsersPermissionsRoleInput {
-  description: String
-  name: String
-  permissions: [ID]
-  type: String
-  users: [ID]
-}
-
-type isl_UsersPermissionsUpdateRolePayload {
-  ok: Boolean!
-}
-
-type isl_UsersPermissionsUser {
-  blocked: Boolean
-  confirmed: Boolean
-  createdAt: isl_DateTime
-  email: String!
-  provider: String
-  role: isl_UsersPermissionsRoleEntityResponse
-  updatedAt: isl_DateTime
-  username: String!
-}
-
-type isl_UsersPermissionsUserEntity {
-  attributes: isl_UsersPermissionsUser
-  id: ID
-}
-
-type isl_UsersPermissionsUserEntityResponse {
-  data: isl_UsersPermissionsUserEntity
-}
-
-type isl_UsersPermissionsUserEntityResponseCollection {
-  data: [isl_UsersPermissionsUserEntity!]!
-  meta: isl_ResponseCollectionMeta!
-}
-
-input isl_UsersPermissionsUserFiltersInput {
-  and: [isl_UsersPermissionsUserFiltersInput]
-  blocked: isl_BooleanFilterInput
-  confirmationToken: isl_StringFilterInput
-  confirmed: isl_BooleanFilterInput
-  createdAt: isl_DateTimeFilterInput
-  email: isl_StringFilterInput
-  id: isl_IDFilterInput
-  not: isl_UsersPermissionsUserFiltersInput
-  or: [isl_UsersPermissionsUserFiltersInput]
-  password: isl_StringFilterInput
-  provider: isl_StringFilterInput
-  resetPasswordToken: isl_StringFilterInput
-  role: isl_UsersPermissionsRoleFiltersInput
-  sitemap_exclude: isl_BooleanFilterInput
-  updatedAt: isl_DateTimeFilterInput
-  username: isl_StringFilterInput
-}
-
-input isl_UsersPermissionsUserInput {
-  blocked: Boolean
-  confirmationToken: String
-  confirmed: Boolean
-  email: String
-  password: String
-  provider: String
-  resetPasswordToken: String
-  role: ID
-  sitemap_exclude: Boolean
-  username: String
-}
-
-type isl_UsersPermissionsUserRelationResponseCollection {
-  data: [isl_UsersPermissionsUserEntity!]!
-}
-
-"""
-A string used to identify an i18n locale
-"""
-scalar kgm_I18NLocaleCode
-
-enum kgm_PublicationState {
-  LIVE
-  PREVIEW
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar kgm_Upload
 
 """
 mutation root
@@ -2306,7 +166,7 @@ type mutation_root {
   """
   delete single row from the table: "smb.attachments"
   """
-  delete_smb_attachments_by_pk(id: bigint!): smb_attachments
+  delete_smb_attachments_by_pk(id: bigint!, object_id: bigint!): smb_attachments
   """
   delete data from the table: "smb.attribute_approval"
   """
@@ -2332,6 +192,22 @@ type mutation_root {
   """
   delete_smb_attributes_by_pk(key: String!): smb_attributes
   """
+  delete data from the table: "smb.blocked_attachments"
+  """
+  delete_smb_blocked_attachments("""filter the rows which have to be deleted""" where: smb_blocked_attachments_bool_exp!): smb_blocked_attachments_mutation_response
+  """
+  delete single row from the table: "smb.blocked_attachments"
+  """
+  delete_smb_blocked_attachments_by_pk(id: bigint!): smb_blocked_attachments
+  """
+  delete data from the table: "smb.buildings"
+  """
+  delete_smb_buildings("""filter the rows which have to be deleted""" where: smb_buildings_bool_exp!): smb_buildings_mutation_response
+  """
+  delete single row from the table: "smb.buildings"
+  """
+  delete_smb_buildings_by_pk(key: String!): smb_buildings
+  """
   delete data from the table: "smb.collections"
   """
   delete_smb_collections("""filter the rows which have to be deleted""" where: smb_collections_bool_exp!): smb_collections_mutation_response
@@ -2339,6 +215,14 @@ type mutation_root {
   delete single row from the table: "smb.collections"
   """
   delete_smb_collections_by_pk(key: String!): smb_collections
+  """
+  delete data from the table: "smb.cultural_references"
+  """
+  delete_smb_cultural_references("""filter the rows which have to be deleted""" where: smb_cultural_references_bool_exp!): smb_cultural_references_mutation_response
+  """
+  delete single row from the table: "smb.cultural_references"
+  """
+  delete_smb_cultural_references_by_pk(id: bigint!): smb_cultural_references
   """
   delete data from the table: "smb.exhibitions"
   """
@@ -2564,6 +448,22 @@ type mutation_root {
   """
   insert_smb_attributes_one("""the row to be inserted""" object: smb_attributes_insert_input!, """upsert condition""" on_conflict: smb_attributes_on_conflict): smb_attributes
   """
+  insert data into the table: "smb.blocked_attachments"
+  """
+  insert_smb_blocked_attachments("""the rows to be inserted""" objects: [smb_blocked_attachments_insert_input!]!, """upsert condition""" on_conflict: smb_blocked_attachments_on_conflict): smb_blocked_attachments_mutation_response
+  """
+  insert a single row into the table: "smb.blocked_attachments"
+  """
+  insert_smb_blocked_attachments_one("""the row to be inserted""" object: smb_blocked_attachments_insert_input!, """upsert condition""" on_conflict: smb_blocked_attachments_on_conflict): smb_blocked_attachments
+  """
+  insert data into the table: "smb.buildings"
+  """
+  insert_smb_buildings("""the rows to be inserted""" objects: [smb_buildings_insert_input!]!, """upsert condition""" on_conflict: smb_buildings_on_conflict): smb_buildings_mutation_response
+  """
+  insert a single row into the table: "smb.buildings"
+  """
+  insert_smb_buildings_one("""the row to be inserted""" object: smb_buildings_insert_input!, """upsert condition""" on_conflict: smb_buildings_on_conflict): smb_buildings
+  """
   insert data into the table: "smb.collections"
   """
   insert_smb_collections("""the rows to be inserted""" objects: [smb_collections_insert_input!]!, """upsert condition""" on_conflict: smb_collections_on_conflict): smb_collections_mutation_response
@@ -2571,6 +471,14 @@ type mutation_root {
   insert a single row into the table: "smb.collections"
   """
   insert_smb_collections_one("""the row to be inserted""" object: smb_collections_insert_input!, """upsert condition""" on_conflict: smb_collections_on_conflict): smb_collections
+  """
+  insert data into the table: "smb.cultural_references"
+  """
+  insert_smb_cultural_references("""the rows to be inserted""" objects: [smb_cultural_references_insert_input!]!, """upsert condition""" on_conflict: smb_cultural_references_on_conflict): smb_cultural_references_mutation_response
+  """
+  insert a single row into the table: "smb.cultural_references"
+  """
+  insert_smb_cultural_references_one("""the row to be inserted""" object: smb_cultural_references_insert_input!, """upsert condition""" on_conflict: smb_cultural_references_on_conflict): smb_cultural_references
   """
   insert data into the table: "smb.exhibitions"
   """
@@ -2739,10 +647,6 @@ type mutation_root {
   insert a single row into the table: "smb.user_role"
   """
   insert_smb_user_role_one("""the row to be inserted""" object: smb_user_role_insert_input!, """upsert condition""" on_conflict: smb_user_role_on_conflict): smb_user_role
-  strapi_hbf: strapi_hbfMutation
-  strapi_isl: strapi_islMutation
-  strapi_kgm: strapi_kgmMutation
-  strapi_smb: strapi_smbMutation
   """
   update data of the table: "smb.assortments"
   """
@@ -2828,6 +732,30 @@ type mutation_root {
   """
   update_smb_attributes_many("""updates to execute, in order""" updates: [smb_attributes_updates!]!): [smb_attributes_mutation_response]
   """
+  update data of the table: "smb.blocked_attachments"
+  """
+  update_smb_blocked_attachments("""increments the numeric columns with given value of the filtered values""" _inc: smb_blocked_attachments_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_blocked_attachments_set_input, """filter the rows which have to be updated""" where: smb_blocked_attachments_bool_exp!): smb_blocked_attachments_mutation_response
+  """
+  update single row of the table: "smb.blocked_attachments"
+  """
+  update_smb_blocked_attachments_by_pk("""increments the numeric columns with given value of the filtered values""" _inc: smb_blocked_attachments_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_blocked_attachments_set_input, pk_columns: smb_blocked_attachments_pk_columns_input!): smb_blocked_attachments
+  """
+  update multiples rows of table: "smb.blocked_attachments"
+  """
+  update_smb_blocked_attachments_many("""updates to execute, in order""" updates: [smb_blocked_attachments_updates!]!): [smb_blocked_attachments_mutation_response]
+  """
+  update data of the table: "smb.buildings"
+  """
+  update_smb_buildings("""sets the columns of the filtered rows to the given values""" _set: smb_buildings_set_input, """filter the rows which have to be updated""" where: smb_buildings_bool_exp!): smb_buildings_mutation_response
+  """
+  update single row of the table: "smb.buildings"
+  """
+  update_smb_buildings_by_pk("""sets the columns of the filtered rows to the given values""" _set: smb_buildings_set_input, pk_columns: smb_buildings_pk_columns_input!): smb_buildings
+  """
+  update multiples rows of table: "smb.buildings"
+  """
+  update_smb_buildings_many("""updates to execute, in order""" updates: [smb_buildings_updates!]!): [smb_buildings_mutation_response]
+  """
   update data of the table: "smb.collections"
   """
   update_smb_collections("""sets the columns of the filtered rows to the given values""" _set: smb_collections_set_input, """filter the rows which have to be updated""" where: smb_collections_bool_exp!): smb_collections_mutation_response
@@ -2839,6 +767,18 @@ type mutation_root {
   update multiples rows of table: "smb.collections"
   """
   update_smb_collections_many("""updates to execute, in order""" updates: [smb_collections_updates!]!): [smb_collections_mutation_response]
+  """
+  update data of the table: "smb.cultural_references"
+  """
+  update_smb_cultural_references("""increments the numeric columns with given value of the filtered values""" _inc: smb_cultural_references_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_cultural_references_set_input, """filter the rows which have to be updated""" where: smb_cultural_references_bool_exp!): smb_cultural_references_mutation_response
+  """
+  update single row of the table: "smb.cultural_references"
+  """
+  update_smb_cultural_references_by_pk("""increments the numeric columns with given value of the filtered values""" _inc: smb_cultural_references_inc_input, """sets the columns of the filtered rows to the given values""" _set: smb_cultural_references_set_input, pk_columns: smb_cultural_references_pk_columns_input!): smb_cultural_references
+  """
+  update multiples rows of table: "smb.cultural_references"
+  """
+  update_smb_cultural_references_many("""updates to execute, in order""" updates: [smb_cultural_references_updates!]!): [smb_cultural_references_mutation_response]
   """
   update data of the table: "smb.exhibitions"
   """
@@ -3171,7 +1111,7 @@ type query_root {
   """
   fetch data from the table: "smb.attachments" using primary key columns
   """
-  smb_attachments_by_pk(id: bigint!): smb_attachments
+  smb_attachments_by_pk(id: bigint!, object_id: bigint!): smb_attachments
   """
   fetch data from the table: "smb.attribute_approval"
   """
@@ -3209,6 +1149,30 @@ type query_root {
   """
   smb_attributes_by_pk(key: String!): smb_attributes
   """
+  fetch data from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): [smb_blocked_attachments!]!
+  """
+  fetch aggregated fields from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments_aggregate("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): smb_blocked_attachments_aggregate!
+  """
+  fetch data from the table: "smb.blocked_attachments" using primary key columns
+  """
+  smb_blocked_attachments_by_pk(id: bigint!): smb_blocked_attachments
+  """
+  fetch data from the table: "smb.buildings"
+  """
+  smb_buildings("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): [smb_buildings!]!
+  """
+  fetch aggregated fields from the table: "smb.buildings"
+  """
+  smb_buildings_aggregate("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): smb_buildings_aggregate!
+  """
+  fetch data from the table: "smb.buildings" using primary key columns
+  """
+  smb_buildings_by_pk(key: String!): smb_buildings
+  """
   fetch data from the table: "smb.collections"
   """
   smb_collections("""distinct select on columns""" distinct_on: [smb_collections_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_collections_order_by!], """filter the rows returned""" where: smb_collections_bool_exp): [smb_collections!]!
@@ -3220,6 +1184,18 @@ type query_root {
   fetch data from the table: "smb.collections" using primary key columns
   """
   smb_collections_by_pk(key: String!): smb_collections
+  """
+  fetch data from the table: "smb.cultural_references"
+  """
+  smb_cultural_references("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
+  """
+  fetch aggregated fields from the table: "smb.cultural_references"
+  """
+  smb_cultural_references_aggregate("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): smb_cultural_references_aggregate!
+  """
+  fetch data from the table: "smb.cultural_references" using primary key columns
+  """
+  smb_cultural_references_by_pk(id: bigint!): smb_cultural_references
   """
   fetch data from the table: "smb.exhibitions"
   """
@@ -3472,26 +1448,7 @@ type query_root {
   fetch data from the table: "smb.user_role" using primary key columns
   """
   smb_user_role_by_pk(id: bigint!): smb_user_role
-  strapi_hbf: strapi_hbfQuery
-  strapi_isl: strapi_islQuery
-  strapi_kgm: strapi_kgmQuery
-  strapi_smb: strapi_smbQuery
 }
-
-"""
-A string used to identify an i18n locale
-"""
-scalar smb_I18NLocaleCode
-
-enum smb_PublicationState {
-  LIVE
-  PREVIEW
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar smb_Upload
 
 """
 search-collections
@@ -3516,6 +1473,10 @@ type smb_assortments {
   id: bigint!
   key: String!
   preview_image: String
+  """
+  A computed field, executes function "smb.build_search_value_a"
+  """
+  searchValue: String
   search_query: String
   search_query_type: String!
 }
@@ -3566,6 +1527,7 @@ input smb_assortments_bool_exp {
   id: bigint_comparison_exp
   key: String_comparison_exp
   preview_image: String_comparison_exp
+  searchValue: String_comparison_exp
   search_query: String_comparison_exp
   search_query_type: String_comparison_exp
 }
@@ -4106,6 +2068,7 @@ input smb_assortments_order_by {
   id: order_by
   key: order_by
   preview_image: order_by
+  searchValue: order_by
   search_query: order_by
   search_query_type: order_by
 }
@@ -4771,6 +2734,10 @@ type smb_attachments {
   license: smb_licenses
   license_id: bigint
   media_type: String
+  """
+  A computed field, executes function "smb.get_attachment_filename"
+  """
+  name: String
   object_id: bigint!
   primary: Boolean
   updated_at: timestamptz!
@@ -4888,6 +2855,7 @@ input smb_attachments_bool_exp {
   license: smb_licenses_bool_exp
   license_id: bigint_comparison_exp
   media_type: String_comparison_exp
+  name: String_comparison_exp
   object_id: bigint_comparison_exp
   primary: Boolean_comparison_exp
   updated_at: timestamptz_comparison_exp
@@ -4898,11 +2866,7 @@ unique or primary key constraints on table "smb.attachments"
 """
 enum smb_attachments_constraint {
   """
-  unique or primary key constraint on columns "attachment"
-  """
-  attachments_attachment_key
-  """
-  unique or primary key constraint on columns "id"
+  unique or primary key constraint on columns "id", "object_id"
   """
   attachments_pkey
 }
@@ -5022,6 +2986,7 @@ input smb_attachments_order_by {
   license: smb_licenses_order_by
   license_id: order_by
   media_type: order_by
+  name: order_by
   object_id: order_by
   primary: order_by
   updated_at: order_by
@@ -5032,6 +2997,7 @@ primary key columns input for table: smb.attachments
 """
 input smb_attachments_pk_columns_input {
   id: bigint!
+  object_id: bigint!
 }
 
 """
@@ -5321,7 +3287,7 @@ input smb_attachments_variance_order_by {
 }
 
 """
-Publishing approvals for attributes fetched from MDS
+Publishing approvals for attributes fetched from MDS; each value from smb.collections is represented as column
 """
 type smb_attribute_approval {
   aku: Boolean
@@ -6621,11 +4587,497 @@ input smb_attributes_updates {
 }
 
 """
-Enum type definition of MDS collection keys
+Info about blocked attachments; the linked license overrides what is returned by MDS
+"""
+type smb_blocked_attachments {
+  """
+  An array relationship
+  """
+  attachments("""distinct select on columns""" distinct_on: [smb_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_attachments_order_by!], """filter the rows returned""" where: smb_attachments_bool_exp): [smb_attachments!]!
+  """
+  An aggregate relationship
+  """
+  attachments_aggregate("""distinct select on columns""" distinct_on: [smb_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_attachments_order_by!], """filter the rows returned""" where: smb_attachments_bool_exp): smb_attachments_aggregate!
+  id: bigint!
+  """
+  An object relationship
+  """
+  license: smb_licenses!
+  license_id: bigint!
+}
+
+"""
+aggregated selection of "smb.blocked_attachments"
+"""
+type smb_blocked_attachments_aggregate {
+  aggregate: smb_blocked_attachments_aggregate_fields
+  nodes: [smb_blocked_attachments!]!
+}
+
+"""
+aggregate fields of "smb.blocked_attachments"
+"""
+type smb_blocked_attachments_aggregate_fields {
+  avg: smb_blocked_attachments_avg_fields
+  count(columns: [smb_blocked_attachments_select_column!], distinct: Boolean): Int!
+  max: smb_blocked_attachments_max_fields
+  min: smb_blocked_attachments_min_fields
+  stddev: smb_blocked_attachments_stddev_fields
+  stddev_pop: smb_blocked_attachments_stddev_pop_fields
+  stddev_samp: smb_blocked_attachments_stddev_samp_fields
+  sum: smb_blocked_attachments_sum_fields
+  var_pop: smb_blocked_attachments_var_pop_fields
+  var_samp: smb_blocked_attachments_var_samp_fields
+  variance: smb_blocked_attachments_variance_fields
+}
+
+"""
+aggregate avg on columns
+"""
+type smb_blocked_attachments_avg_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "smb.blocked_attachments". All fields are combined with a logical 'AND'.
+"""
+input smb_blocked_attachments_bool_exp {
+  _and: [smb_blocked_attachments_bool_exp!]
+  _not: smb_blocked_attachments_bool_exp
+  _or: [smb_blocked_attachments_bool_exp!]
+  attachments: smb_attachments_bool_exp
+  attachments_aggregate: smb_attachments_aggregate_bool_exp
+  id: bigint_comparison_exp
+  license: smb_licenses_bool_exp
+  license_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "smb.blocked_attachments"
+"""
+enum smb_blocked_attachments_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  blocked_attachments_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_inc_input {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+input type for inserting data into table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_insert_input {
+  attachments: smb_attachments_arr_rel_insert_input
+  id: bigint
+  license: smb_licenses_obj_rel_insert_input
+  license_id: bigint
+}
+
+"""
+aggregate max on columns
+"""
+type smb_blocked_attachments_max_fields {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+aggregate min on columns
+"""
+type smb_blocked_attachments_min_fields {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+response of any mutation on the table "smb.blocked_attachments"
+"""
+type smb_blocked_attachments_mutation_response {
+  """
+  number of rows affected by the mutation
+  """
+  affected_rows: Int!
+  """
+  data from the rows affected by the mutation
+  """
+  returning: [smb_blocked_attachments!]!
+}
+
+"""
+on_conflict condition type for table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_on_conflict {
+  constraint: smb_blocked_attachments_constraint!
+  update_columns: [smb_blocked_attachments_update_column!]! = []
+  where: smb_blocked_attachments_bool_exp
+}
+
+"""
+Ordering options when selecting data from "smb.blocked_attachments".
+"""
+input smb_blocked_attachments_order_by {
+  attachments_aggregate: smb_attachments_aggregate_order_by
+  id: order_by
+  license: smb_licenses_order_by
+  license_id: order_by
+}
+
+"""
+primary key columns input for table: smb.blocked_attachments
+"""
+input smb_blocked_attachments_pk_columns_input {
+  id: bigint!
+}
+
+"""
+select columns of table "smb.blocked_attachments"
+"""
+enum smb_blocked_attachments_select_column {
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  license_id
+}
+
+"""
+input type for updating data in table "smb.blocked_attachments"
+"""
+input smb_blocked_attachments_set_input {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+aggregate stddev on columns
+"""
+type smb_blocked_attachments_stddev_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate stddev_pop on columns
+"""
+type smb_blocked_attachments_stddev_pop_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate stddev_samp on columns
+"""
+type smb_blocked_attachments_stddev_samp_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+Streaming cursor of the table "smb_blocked_attachments"
+"""
+input smb_blocked_attachments_stream_cursor_input {
+  """
+  Stream column input with initial value
+  """
+  initial_value: smb_blocked_attachments_stream_cursor_value_input!
+  """
+  cursor ordering
+  """
+  ordering: cursor_ordering
+}
+
+"""
+Initial value of the column from where the streaming should start
+"""
+input smb_blocked_attachments_stream_cursor_value_input {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+aggregate sum on columns
+"""
+type smb_blocked_attachments_sum_fields {
+  id: bigint
+  license_id: bigint
+}
+
+"""
+update columns of table "smb.blocked_attachments"
+"""
+enum smb_blocked_attachments_update_column {
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  license_id
+}
+
+input smb_blocked_attachments_updates {
+  """
+  increments the numeric columns with given value of the filtered values
+  """
+  _inc: smb_blocked_attachments_inc_input
+  """
+  sets the columns of the filtered rows to the given values
+  """
+  _set: smb_blocked_attachments_set_input
+  where: smb_blocked_attachments_bool_exp!
+}
+
+"""
+aggregate var_pop on columns
+"""
+type smb_blocked_attachments_var_pop_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate var_samp on columns
+"""
+type smb_blocked_attachments_var_samp_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+aggregate variance on columns
+"""
+type smb_blocked_attachments_variance_fields {
+  id: Float
+  license_id: Float
+}
+
+"""
+Enum type definition of Museum buildings
+"""
+type smb_buildings {
+  key: String!
+  """
+  A computed field, executes function "smb.build_search_value_b"
+  """
+  searchValue: String
+  """
+  Display title used for all languages
+  """
+  title: String!
+}
+
+"""
+aggregated selection of "smb.buildings"
+"""
+type smb_buildings_aggregate {
+  aggregate: smb_buildings_aggregate_fields
+  nodes: [smb_buildings!]!
+}
+
+"""
+aggregate fields of "smb.buildings"
+"""
+type smb_buildings_aggregate_fields {
+  count(columns: [smb_buildings_select_column!], distinct: Boolean): Int!
+  max: smb_buildings_max_fields
+  min: smb_buildings_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "smb.buildings". All fields are combined with a logical 'AND'.
+"""
+input smb_buildings_bool_exp {
+  _and: [smb_buildings_bool_exp!]
+  _not: smb_buildings_bool_exp
+  _or: [smb_buildings_bool_exp!]
+  key: String_comparison_exp
+  searchValue: String_comparison_exp
+  title: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "smb.buildings"
+"""
+enum smb_buildings_constraint {
+  """
+  unique or primary key constraint on columns "key"
+  """
+  buildings_pkey
+}
+
+"""
+input type for inserting data into table "smb.buildings"
+"""
+input smb_buildings_insert_input {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+aggregate max on columns
+"""
+type smb_buildings_max_fields {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+aggregate min on columns
+"""
+type smb_buildings_min_fields {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+response of any mutation on the table "smb.buildings"
+"""
+type smb_buildings_mutation_response {
+  """
+  number of rows affected by the mutation
+  """
+  affected_rows: Int!
+  """
+  data from the rows affected by the mutation
+  """
+  returning: [smb_buildings!]!
+}
+
+"""
+on_conflict condition type for table "smb.buildings"
+"""
+input smb_buildings_on_conflict {
+  constraint: smb_buildings_constraint!
+  update_columns: [smb_buildings_update_column!]! = []
+  where: smb_buildings_bool_exp
+}
+
+"""
+Ordering options when selecting data from "smb.buildings".
+"""
+input smb_buildings_order_by {
+  key: order_by
+  searchValue: order_by
+  title: order_by
+}
+
+"""
+primary key columns input for table: smb.buildings
+"""
+input smb_buildings_pk_columns_input {
+  key: String!
+}
+
+"""
+select columns of table "smb.buildings"
+"""
+enum smb_buildings_select_column {
+  """
+  column name
+  """
+  key
+  """
+  column name
+  """
+  title
+}
+
+"""
+input type for updating data in table "smb.buildings"
+"""
+input smb_buildings_set_input {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+Streaming cursor of the table "smb_buildings"
+"""
+input smb_buildings_stream_cursor_input {
+  """
+  Stream column input with initial value
+  """
+  initial_value: smb_buildings_stream_cursor_value_input!
+  """
+  cursor ordering
+  """
+  ordering: cursor_ordering
+}
+
+"""
+Initial value of the column from where the streaming should start
+"""
+input smb_buildings_stream_cursor_value_input {
+  key: String
+  """
+  Display title used for all languages
+  """
+  title: String
+}
+
+"""
+update columns of table "smb.buildings"
+"""
+enum smb_buildings_update_column {
+  """
+  column name
+  """
+  key
+  """
+  column name
+  """
+  title
+}
+
+input smb_buildings_updates {
+  """
+  sets the columns of the filtered rows to the given values
+  """
+  _set: smb_buildings_set_input
+  where: smb_buildings_bool_exp!
+}
+
+"""
+List definition of all MDS collection
 """
 type smb_collections {
-  comment: String!
   key: String!
+  """
+  A computed field, executes function "smb.build_search_value_c"
+  """
+  searchValue: String
+  """
+  Common display title used for all languages
+  """
+  title: String!
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String!
 }
 
 """
@@ -6652,8 +5104,10 @@ input smb_collections_bool_exp {
   _and: [smb_collections_bool_exp!]
   _not: smb_collections_bool_exp
   _or: [smb_collections_bool_exp!]
-  comment: String_comparison_exp
   key: String_comparison_exp
+  searchValue: String_comparison_exp
+  title: String_comparison_exp
+  type: String_comparison_exp
 }
 
 """
@@ -6670,24 +5124,45 @@ enum smb_collections_constraint {
 input type for inserting data into table "smb.collections"
 """
 input smb_collections_insert_input {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
 aggregate max on columns
 """
 type smb_collections_max_fields {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
 aggregate min on columns
 """
 type smb_collections_min_fields {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
@@ -6717,8 +5192,10 @@ input smb_collections_on_conflict {
 Ordering options when selecting data from "smb.collections".
 """
 input smb_collections_order_by {
-  comment: order_by
   key: order_by
+  searchValue: order_by
+  title: order_by
+  type: order_by
 }
 
 """
@@ -6735,19 +5212,30 @@ enum smb_collections_select_column {
   """
   column name
   """
-  comment
+  key
   """
   column name
   """
-  key
+  title
+  """
+  column name
+  """
+  type
 }
 
 """
 input type for updating data in table "smb.collections"
 """
 input smb_collections_set_input {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
@@ -6768,8 +5256,15 @@ input smb_collections_stream_cursor_input {
 Initial value of the column from where the streaming should start
 """
 input smb_collections_stream_cursor_value_input {
-  comment: String
   key: String
+  """
+  Common display title used for all languages
+  """
+  title: String
+  """
+  One of (SMB_COLLECTION, NATIONAL_INSTITUTE, SMB_INSTITUTE)
+  """
+  type: String
 }
 
 """
@@ -6779,11 +5274,15 @@ enum smb_collections_update_column {
   """
   column name
   """
-  comment
+  key
   """
   column name
   """
-  key
+  title
+  """
+  column name
+  """
+  type
 }
 
 input smb_collections_updates {
@@ -6792,6 +5291,621 @@ input smb_collections_updates {
   """
   _set: smb_collections_set_input
   where: smb_collections_bool_exp!
+}
+
+"""
+cultural references collected from repeatable group items
+"""
+type smb_cultural_references {
+  culture_item_id: bigint!
+  """
+  An object relationship
+  """
+  denomination_voc: smb_thesaurus
+  denomination_voc_id: bigint
+  id: bigint!
+  """
+  An object relationship
+  """
+  language: smb_language!
+  language_id: bigint!
+  """
+  An object relationship
+  """
+  name_voc: smb_thesaurus
+  name_voc_id: bigint
+  object_id: bigint!
+  sequence: Int!
+  """
+  An object relationship
+  """
+  type_voc: smb_thesaurus
+  type_voc_id: bigint
+}
+
+"""
+aggregated selection of "smb.cultural_references"
+"""
+type smb_cultural_references_aggregate {
+  aggregate: smb_cultural_references_aggregate_fields
+  nodes: [smb_cultural_references!]!
+}
+
+input smb_cultural_references_aggregate_bool_exp {
+  count: smb_cultural_references_aggregate_bool_exp_count
+}
+
+input smb_cultural_references_aggregate_bool_exp_count {
+  arguments: [smb_cultural_references_select_column!]
+  distinct: Boolean
+  filter: smb_cultural_references_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "smb.cultural_references"
+"""
+type smb_cultural_references_aggregate_fields {
+  avg: smb_cultural_references_avg_fields
+  count(columns: [smb_cultural_references_select_column!], distinct: Boolean): Int!
+  max: smb_cultural_references_max_fields
+  min: smb_cultural_references_min_fields
+  stddev: smb_cultural_references_stddev_fields
+  stddev_pop: smb_cultural_references_stddev_pop_fields
+  stddev_samp: smb_cultural_references_stddev_samp_fields
+  sum: smb_cultural_references_sum_fields
+  var_pop: smb_cultural_references_var_pop_fields
+  var_samp: smb_cultural_references_var_samp_fields
+  variance: smb_cultural_references_variance_fields
+}
+
+"""
+order by aggregate values of table "smb.cultural_references"
+"""
+input smb_cultural_references_aggregate_order_by {
+  avg: smb_cultural_references_avg_order_by
+  count: order_by
+  max: smb_cultural_references_max_order_by
+  min: smb_cultural_references_min_order_by
+  stddev: smb_cultural_references_stddev_order_by
+  stddev_pop: smb_cultural_references_stddev_pop_order_by
+  stddev_samp: smb_cultural_references_stddev_samp_order_by
+  sum: smb_cultural_references_sum_order_by
+  var_pop: smb_cultural_references_var_pop_order_by
+  var_samp: smb_cultural_references_var_samp_order_by
+  variance: smb_cultural_references_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "smb.cultural_references"
+"""
+input smb_cultural_references_arr_rel_insert_input {
+  data: [smb_cultural_references_insert_input!]!
+  """
+  upsert condition
+  """
+  on_conflict: smb_cultural_references_on_conflict
+}
+
+"""
+aggregate avg on columns
+"""
+type smb_cultural_references_avg_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by avg() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_avg_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "smb.cultural_references". All fields are combined with a logical 'AND'.
+"""
+input smb_cultural_references_bool_exp {
+  _and: [smb_cultural_references_bool_exp!]
+  _not: smb_cultural_references_bool_exp
+  _or: [smb_cultural_references_bool_exp!]
+  culture_item_id: bigint_comparison_exp
+  denomination_voc: smb_thesaurus_bool_exp
+  denomination_voc_id: bigint_comparison_exp
+  id: bigint_comparison_exp
+  language: smb_language_bool_exp
+  language_id: bigint_comparison_exp
+  name_voc: smb_thesaurus_bool_exp
+  name_voc_id: bigint_comparison_exp
+  object_id: bigint_comparison_exp
+  sequence: Int_comparison_exp
+  type_voc: smb_thesaurus_bool_exp
+  type_voc_id: bigint_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "smb.cultural_references"
+"""
+enum smb_cultural_references_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  cultural_references_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "smb.cultural_references"
+"""
+input smb_cultural_references_inc_input {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+input type for inserting data into table "smb.cultural_references"
+"""
+input smb_cultural_references_insert_input {
+  culture_item_id: bigint
+  denomination_voc: smb_thesaurus_obj_rel_insert_input
+  denomination_voc_id: bigint
+  id: bigint
+  language: smb_language_obj_rel_insert_input
+  language_id: bigint
+  name_voc: smb_thesaurus_obj_rel_insert_input
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc: smb_thesaurus_obj_rel_insert_input
+  type_voc_id: bigint
+}
+
+"""
+aggregate max on columns
+"""
+type smb_cultural_references_max_fields {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+order by max() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_max_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate min on columns
+"""
+type smb_cultural_references_min_fields {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+order by min() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_min_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+response of any mutation on the table "smb.cultural_references"
+"""
+type smb_cultural_references_mutation_response {
+  """
+  number of rows affected by the mutation
+  """
+  affected_rows: Int!
+  """
+  data from the rows affected by the mutation
+  """
+  returning: [smb_cultural_references!]!
+}
+
+"""
+on_conflict condition type for table "smb.cultural_references"
+"""
+input smb_cultural_references_on_conflict {
+  constraint: smb_cultural_references_constraint!
+  update_columns: [smb_cultural_references_update_column!]! = []
+  where: smb_cultural_references_bool_exp
+}
+
+"""
+Ordering options when selecting data from "smb.cultural_references".
+"""
+input smb_cultural_references_order_by {
+  culture_item_id: order_by
+  denomination_voc: smb_thesaurus_order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language: smb_language_order_by
+  language_id: order_by
+  name_voc: smb_thesaurus_order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc: smb_thesaurus_order_by
+  type_voc_id: order_by
+}
+
+"""
+primary key columns input for table: smb.cultural_references
+"""
+input smb_cultural_references_pk_columns_input {
+  id: bigint!
+}
+
+"""
+select columns of table "smb.cultural_references"
+"""
+enum smb_cultural_references_select_column {
+  """
+  column name
+  """
+  culture_item_id
+  """
+  column name
+  """
+  denomination_voc_id
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  language_id
+  """
+  column name
+  """
+  name_voc_id
+  """
+  column name
+  """
+  object_id
+  """
+  column name
+  """
+  sequence
+  """
+  column name
+  """
+  type_voc_id
+}
+
+"""
+input type for updating data in table "smb.cultural_references"
+"""
+input smb_cultural_references_set_input {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+aggregate stddev on columns
+"""
+type smb_cultural_references_stddev_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by stddev() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_stddev_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate stddev_pop on columns
+"""
+type smb_cultural_references_stddev_pop_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_stddev_pop_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate stddev_samp on columns
+"""
+type smb_cultural_references_stddev_samp_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_stddev_samp_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+Streaming cursor of the table "smb_cultural_references"
+"""
+input smb_cultural_references_stream_cursor_input {
+  """
+  Stream column input with initial value
+  """
+  initial_value: smb_cultural_references_stream_cursor_value_input!
+  """
+  cursor ordering
+  """
+  ordering: cursor_ordering
+}
+
+"""
+Initial value of the column from where the streaming should start
+"""
+input smb_cultural_references_stream_cursor_value_input {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+aggregate sum on columns
+"""
+type smb_cultural_references_sum_fields {
+  culture_item_id: bigint
+  denomination_voc_id: bigint
+  id: bigint
+  language_id: bigint
+  name_voc_id: bigint
+  object_id: bigint
+  sequence: Int
+  type_voc_id: bigint
+}
+
+"""
+order by sum() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_sum_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+update columns of table "smb.cultural_references"
+"""
+enum smb_cultural_references_update_column {
+  """
+  column name
+  """
+  culture_item_id
+  """
+  column name
+  """
+  denomination_voc_id
+  """
+  column name
+  """
+  id
+  """
+  column name
+  """
+  language_id
+  """
+  column name
+  """
+  name_voc_id
+  """
+  column name
+  """
+  object_id
+  """
+  column name
+  """
+  sequence
+  """
+  column name
+  """
+  type_voc_id
+}
+
+input smb_cultural_references_updates {
+  """
+  increments the numeric columns with given value of the filtered values
+  """
+  _inc: smb_cultural_references_inc_input
+  """
+  sets the columns of the filtered rows to the given values
+  """
+  _set: smb_cultural_references_set_input
+  where: smb_cultural_references_bool_exp!
+}
+
+"""
+aggregate var_pop on columns
+"""
+type smb_cultural_references_var_pop_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by var_pop() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_var_pop_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate var_samp on columns
+"""
+type smb_cultural_references_var_samp_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by var_samp() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_var_samp_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
+}
+
+"""
+aggregate variance on columns
+"""
+type smb_cultural_references_variance_fields {
+  culture_item_id: Float
+  denomination_voc_id: Float
+  id: Float
+  language_id: Float
+  name_voc_id: Float
+  object_id: Float
+  sequence: Float
+  type_voc_id: Float
+}
+
+"""
+order by variance() on columns of table "smb.cultural_references"
+"""
+input smb_cultural_references_variance_order_by {
+  culture_item_id: order_by
+  denomination_voc_id: order_by
+  id: order_by
+  language_id: order_by
+  name_voc_id: order_by
+  object_id: order_by
+  sequence: order_by
+  type_voc_id: order_by
 }
 
 """
@@ -7647,11 +6761,6 @@ type smb_geographical_references {
   """
   place_voc: smb_thesaurus
   place_voc_id: bigint
-  """
-  An object relationship
-  """
-  role_voc: smb_thesaurus
-  role_voc_id: bigint
   sequence: Int!
   """
   An object relationship
@@ -7734,7 +6843,6 @@ type smb_geographical_references_avg_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -7749,7 +6857,6 @@ input smb_geographical_references_avg_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -7771,8 +6878,6 @@ input smb_geographical_references_bool_exp {
   object_id: bigint_comparison_exp
   place_voc: smb_thesaurus_bool_exp
   place_voc_id: bigint_comparison_exp
-  role_voc: smb_thesaurus_bool_exp
-  role_voc_id: bigint_comparison_exp
   sequence: Int_comparison_exp
   type_voc: smb_thesaurus_bool_exp
   type_voc_id: bigint_comparison_exp
@@ -7798,7 +6903,6 @@ input smb_geographical_references_inc_input {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -7817,8 +6921,6 @@ input smb_geographical_references_insert_input {
   object_id: bigint
   place_voc: smb_thesaurus_obj_rel_insert_input
   place_voc_id: bigint
-  role_voc: smb_thesaurus_obj_rel_insert_input
-  role_voc_id: bigint
   sequence: Int
   type_voc: smb_thesaurus_obj_rel_insert_input
   type_voc_id: bigint
@@ -7835,7 +6937,6 @@ type smb_geographical_references_max_fields {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -7851,7 +6952,6 @@ input smb_geographical_references_max_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -7867,7 +6967,6 @@ type smb_geographical_references_min_fields {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -7883,7 +6982,6 @@ input smb_geographical_references_min_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -7925,8 +7023,6 @@ input smb_geographical_references_order_by {
   object_id: order_by
   place_voc: smb_thesaurus_order_by
   place_voc_id: order_by
-  role_voc: smb_thesaurus_order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc: smb_thesaurus_order_by
   type_voc_id: order_by
@@ -7974,10 +7070,6 @@ enum smb_geographical_references_select_column {
   """
   column name
   """
-  role_voc_id
-  """
-  column name
-  """
   sequence
   """
   column name
@@ -7996,7 +7088,6 @@ input smb_geographical_references_set_input {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -8011,7 +7102,6 @@ type smb_geographical_references_stddev_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8026,7 +7116,6 @@ input smb_geographical_references_stddev_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8041,7 +7130,6 @@ type smb_geographical_references_stddev_pop_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8056,7 +7144,6 @@ input smb_geographical_references_stddev_pop_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8071,7 +7158,6 @@ type smb_geographical_references_stddev_samp_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8086,7 +7172,6 @@ input smb_geographical_references_stddev_samp_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8116,7 +7201,6 @@ input smb_geographical_references_stream_cursor_value_input {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -8131,7 +7215,6 @@ type smb_geographical_references_sum_fields {
   language_id: bigint
   object_id: bigint
   place_voc_id: bigint
-  role_voc_id: bigint
   sequence: Int
   type_voc_id: bigint
 }
@@ -8146,7 +7229,6 @@ input smb_geographical_references_sum_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8186,10 +7268,6 @@ enum smb_geographical_references_update_column {
   """
   column name
   """
-  role_voc_id
-  """
-  column name
-  """
   sequence
   """
   column name
@@ -8219,7 +7297,6 @@ type smb_geographical_references_var_pop_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8234,7 +7311,6 @@ input smb_geographical_references_var_pop_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8249,7 +7325,6 @@ type smb_geographical_references_var_samp_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8264,7 +7339,6 @@ input smb_geographical_references_var_samp_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8279,7 +7353,6 @@ type smb_geographical_references_variance_fields {
   language_id: Float
   object_id: Float
   place_voc_id: Float
-  role_voc_id: Float
   sequence: Float
   type_voc_id: Float
 }
@@ -8294,7 +7367,6 @@ input smb_geographical_references_variance_order_by {
   language_id: order_by
   object_id: order_by
   place_voc_id: order_by
-  role_voc_id: order_by
   sequence: order_by
   type_voc_id: order_by
 }
@@ -8783,7 +7855,7 @@ enum smb_ignoreable_keys_constraint {
   """
   unique or primary key constraint on columns "key"
   """
-  ignoreable_keys_key_key
+  ignoreable_keys_key_ukey
   """
   unique or primary key constraint on columns "id"
   """
@@ -8984,6 +8056,7 @@ Multilanguage support
 type smb_language {
   id: bigint!
   lang: String!
+  sync_enabled: Boolean
 }
 
 """
@@ -9027,6 +8100,7 @@ input smb_language_bool_exp {
   _or: [smb_language_bool_exp!]
   id: bigint_comparison_exp
   lang: String_comparison_exp
+  sync_enabled: Boolean_comparison_exp
 }
 
 """
@@ -9036,7 +8110,7 @@ enum smb_language_constraint {
   """
   unique or primary key constraint on columns "lang"
   """
-  language_lang_key
+  language_lang_ukey
   """
   unique or primary key constraint on columns "id"
   """
@@ -9056,6 +8130,7 @@ input type for inserting data into table "smb.language"
 input smb_language_insert_input {
   id: bigint
   lang: String
+  sync_enabled: Boolean
 }
 
 """
@@ -9114,6 +8189,7 @@ Ordering options when selecting data from "smb.language".
 input smb_language_order_by {
   id: order_by
   lang: order_by
+  sync_enabled: order_by
 }
 
 """
@@ -9135,6 +8211,10 @@ enum smb_language_select_column {
   column name
   """
   lang
+  """
+  column name
+  """
+  sync_enabled
 }
 
 """
@@ -9143,6 +8223,7 @@ input type for updating data in table "smb.language"
 input smb_language_set_input {
   id: bigint
   lang: String
+  sync_enabled: Boolean
 }
 
 """
@@ -9186,6 +8267,7 @@ Initial value of the column from where the streaming should start
 input smb_language_stream_cursor_value_input {
   id: bigint
   lang: String
+  sync_enabled: Boolean
 }
 
 """
@@ -9207,6 +8289,10 @@ enum smb_language_update_column {
   column name
   """
   lang
+  """
+  column name
+  """
+  sync_enabled
 }
 
 input smb_language_updates {
@@ -9243,7 +8329,7 @@ type smb_language_variance_fields {
 }
 
 """
-Unused - Supposed to store license deeds for image downloads
+License deeds for attachments
 """
 type smb_licenses {
   """
@@ -9312,7 +8398,7 @@ enum smb_licenses_constraint {
   """
   unique or primary key constraint on columns "key"
   """
-  licenses_key_key
+  licenses_key_ukey
   """
   unique or primary key constraint on columns "id"
   """
@@ -9484,7 +8570,7 @@ type smb_licenses_sum_fields {
 }
 
 """
-Unused - Supposed to store license deed translations
+columns and relationships of "smb.licenses_translation"
 """
 type smb_licenses_translation {
   content: String!
@@ -10603,6 +9689,14 @@ type smb_objects {
   collectionKey: String
   compilation: String
   created_at: timestamptz!
+  """
+  An array relationship
+  """
+  cultural_references("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
+  """
+  An aggregate relationship
+  """
+  cultural_references_aggregate("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): smb_cultural_references_aggregate!
   exhibition_space: String
   """
   An array relationship
@@ -10637,6 +9731,11 @@ type smb_objects {
   An aggregate relationship
   """
   involved_parties_aggregate("""distinct select on columns""" distinct_on: [smb_persons_objects_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_persons_objects_order_by!], """filter the rows returned""" where: smb_persons_objects_bool_exp): smb_persons_objects_aggregate!
+  """
+  An object relationship
+  """
+  location: smb_thesaurus
+  location_voc_id: bigint
   """
   An array relationship
   """
@@ -10678,6 +9777,7 @@ aggregate avg on columns
 """
 type smb_objects_avg_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10694,6 +9794,8 @@ input smb_objects_bool_exp {
   collectionKey: String_comparison_exp
   compilation: String_comparison_exp
   created_at: timestamptz_comparison_exp
+  cultural_references: smb_cultural_references_bool_exp
+  cultural_references_aggregate: smb_cultural_references_aggregate_bool_exp
   exhibition_space: String_comparison_exp
   exhibitions: smb_exhibitions_objects_bool_exp
   exhibitions_aggregate: smb_exhibitions_objects_aggregate_bool_exp
@@ -10704,6 +9806,8 @@ input smb_objects_bool_exp {
   id: bigint_comparison_exp
   involved_parties: smb_persons_objects_bool_exp
   involved_parties_aggregate: smb_persons_objects_aggregate_bool_exp
+  location: smb_thesaurus_bool_exp
+  location_voc_id: bigint_comparison_exp
   materials_and_techniques: smb_material_references_bool_exp
   materials_and_techniques_aggregate: smb_material_references_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
@@ -10724,6 +9828,7 @@ input type for incrementing numeric columns in table "smb.objects"
 """
 input smb_objects_inc_input {
   id: bigint
+  location_voc_id: bigint
 }
 
 """
@@ -10733,12 +9838,15 @@ input smb_objects_insert_input {
   attachments: smb_attachments_arr_rel_insert_input
   attributes: smb_attribute_translations_arr_rel_insert_input
   created_at: timestamptz
+  cultural_references: smb_cultural_references_arr_rel_insert_input
   exhibition_space: String
   exhibitions: smb_exhibitions_objects_arr_rel_insert_input
   geographical_references: smb_geographical_references_arr_rel_insert_input
   highlights: smb_highlights_arr_rel_insert_input
   id: bigint
   involved_parties: smb_persons_objects_arr_rel_insert_input
+  location: smb_thesaurus_obj_rel_insert_input
+  location_voc_id: bigint
   materials_and_techniques: smb_material_references_arr_rel_insert_input
   updated_at: timestamptz
 }
@@ -10750,6 +9858,7 @@ type smb_objects_max_fields {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10760,6 +9869,7 @@ type smb_objects_min_fields {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10806,12 +9916,15 @@ input smb_objects_order_by {
   collectionKey: order_by
   compilation: order_by
   created_at: order_by
+  cultural_references_aggregate: smb_cultural_references_aggregate_order_by
   exhibition_space: order_by
   exhibitions_aggregate: smb_exhibitions_objects_aggregate_order_by
   geographical_references_aggregate: smb_geographical_references_aggregate_order_by
   highlights_aggregate: smb_highlights_aggregate_order_by
   id: order_by
   involved_parties_aggregate: smb_persons_objects_aggregate_order_by
+  location: smb_thesaurus_order_by
+  location_voc_id: order_by
   materials_and_techniques_aggregate: smb_material_references_aggregate_order_by
   updated_at: order_by
 }
@@ -10842,6 +9955,10 @@ enum smb_objects_select_column {
   """
   column name
   """
+  location_voc_id
+  """
+  column name
+  """
   updated_at
 }
 
@@ -10852,6 +9969,7 @@ input smb_objects_set_input {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10860,6 +9978,7 @@ aggregate stddev on columns
 """
 type smb_objects_stddev_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10867,6 +9986,7 @@ aggregate stddev_pop on columns
 """
 type smb_objects_stddev_pop_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10874,6 +9994,7 @@ aggregate stddev_samp on columns
 """
 type smb_objects_stddev_samp_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10897,6 +10018,7 @@ input smb_objects_stream_cursor_value_input {
   created_at: timestamptz
   exhibition_space: String
   id: bigint
+  location_voc_id: bigint
   updated_at: timestamptz
 }
 
@@ -10905,6 +10027,7 @@ aggregate sum on columns
 """
 type smb_objects_sum_fields {
   id: bigint
+  location_voc_id: bigint
 }
 
 """
@@ -10923,6 +10046,10 @@ enum smb_objects_update_column {
   column name
   """
   id
+  """
+  column name
+  """
+  location_voc_id
   """
   column name
   """
@@ -10946,6 +10073,7 @@ aggregate var_pop on columns
 """
 type smb_objects_var_pop_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10953,6 +10081,7 @@ aggregate var_samp on columns
 """
 type smb_objects_var_samp_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
@@ -10960,12 +10089,14 @@ aggregate variance on columns
 """
 type smb_objects_variance_fields {
   id: Float
+  location_voc_id: Float
 }
 
 """
 Org-units fetched from MDS, used to group SMB objects
 """
 type smb_org_unit {
+  collectionKey: String
   """
   An array relationship
   """
@@ -10975,7 +10106,16 @@ type smb_org_unit {
   """
   highlights_aggregate("""distinct select on columns""" distinct_on: [smb_highlights_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_highlights_order_by!], """filter the rows returned""" where: smb_highlights_bool_exp): smb_highlights_aggregate!
   id: bigint!
+  is_compilation: Boolean
   name: String!
+  """
+  A computed field, executes function "smb.build_search_value_o"
+  """
+  searchValue: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11017,10 +10157,14 @@ input smb_org_unit_bool_exp {
   _and: [smb_org_unit_bool_exp!]
   _not: smb_org_unit_bool_exp
   _or: [smb_org_unit_bool_exp!]
+  collectionKey: String_comparison_exp
   highlights: smb_highlights_bool_exp
   highlights_aggregate: smb_highlights_aggregate_bool_exp
   id: bigint_comparison_exp
+  is_compilation: Boolean_comparison_exp
   name: String_comparison_exp
+  searchValue: String_comparison_exp
+  title: String_comparison_exp
 }
 
 """
@@ -11030,7 +10174,7 @@ enum smb_org_unit_constraint {
   """
   unique or primary key constraint on columns "name"
   """
-  org_unit_name_key
+  org_unit_name_ukey
   """
   unique or primary key constraint on columns "id"
   """
@@ -11050,7 +10194,12 @@ input type for inserting data into table "smb.org_unit"
 input smb_org_unit_insert_input {
   highlights: smb_highlights_arr_rel_insert_input
   id: bigint
+  is_compilation: Boolean
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11059,6 +10208,10 @@ aggregate max on columns
 type smb_org_unit_max_fields {
   id: bigint
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11067,6 +10220,10 @@ aggregate min on columns
 type smb_org_unit_min_fields {
   id: bigint
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11107,9 +10264,13 @@ input smb_org_unit_on_conflict {
 Ordering options when selecting data from "smb.org_unit".
 """
 input smb_org_unit_order_by {
+  collectionKey: order_by
   highlights_aggregate: smb_highlights_aggregate_order_by
   id: order_by
+  is_compilation: order_by
   name: order_by
+  searchValue: order_by
+  title: order_by
 }
 
 """
@@ -11130,7 +10291,15 @@ enum smb_org_unit_select_column {
   """
   column name
   """
+  is_compilation
+  """
+  column name
+  """
   name
+  """
+  column name
+  """
+  title
 }
 
 """
@@ -11138,7 +10307,12 @@ input type for updating data in table "smb.org_unit"
 """
 input smb_org_unit_set_input {
   id: bigint
+  is_compilation: Boolean
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11181,7 +10355,12 @@ Initial value of the column from where the streaming should start
 """
 input smb_org_unit_stream_cursor_value_input {
   id: bigint
+  is_compilation: Boolean
   name: String
+  """
+  Display title used for all languages
+  """
+  title: String
 }
 
 """
@@ -11202,7 +10381,15 @@ enum smb_org_unit_update_column {
   """
   column name
   """
+  is_compilation
+  """
+  column name
+  """
   name
+  """
+  column name
+  """
+  title
 }
 
 input smb_org_unit_updates {
@@ -11410,6 +10597,11 @@ input smb_persons_obj_rel_insert_input {
 involved parties; persons who are stakeholders on objects
 """
 type smb_persons_objects {
+  """
+  An object relationship
+  """
+  attribution_voc: smb_thesaurus
+  attribution_voc_id: bigint
   created_at: timestamptz!
   id: bigint!
   """
@@ -11499,6 +10691,7 @@ input smb_persons_objects_arr_rel_insert_input {
 aggregate avg on columns
 """
 type smb_persons_objects_avg_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11510,6 +10703,7 @@ type smb_persons_objects_avg_fields {
 order by avg() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_avg_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11524,6 +10718,8 @@ input smb_persons_objects_bool_exp {
   _and: [smb_persons_objects_bool_exp!]
   _not: smb_persons_objects_bool_exp
   _or: [smb_persons_objects_bool_exp!]
+  attribution_voc: smb_thesaurus_bool_exp
+  attribution_voc_id: bigint_comparison_exp
   created_at: timestamptz_comparison_exp
   id: bigint_comparison_exp
   object: smb_objects_bool_exp
@@ -11550,6 +10746,7 @@ enum smb_persons_objects_constraint {
 input type for incrementing numeric columns in table "smb.persons_objects"
 """
 input smb_persons_objects_inc_input {
+  attribution_voc_id: bigint
   id: bigint
   object_id: bigint
   person_id: bigint
@@ -11561,6 +10758,8 @@ input smb_persons_objects_inc_input {
 input type for inserting data into table "smb.persons_objects"
 """
 input smb_persons_objects_insert_input {
+  attribution_voc: smb_thesaurus_obj_rel_insert_input
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object: smb_objects_obj_rel_insert_input
@@ -11577,6 +10776,7 @@ input smb_persons_objects_insert_input {
 aggregate max on columns
 """
 type smb_persons_objects_max_fields {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11590,6 +10790,7 @@ type smb_persons_objects_max_fields {
 order by max() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_max_order_by {
+  attribution_voc_id: order_by
   created_at: order_by
   id: order_by
   object_id: order_by
@@ -11603,6 +10804,7 @@ input smb_persons_objects_max_order_by {
 aggregate min on columns
 """
 type smb_persons_objects_min_fields {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11616,6 +10818,7 @@ type smb_persons_objects_min_fields {
 order by min() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_min_order_by {
+  attribution_voc_id: order_by
   created_at: order_by
   id: order_by
   object_id: order_by
@@ -11652,6 +10855,8 @@ input smb_persons_objects_on_conflict {
 Ordering options when selecting data from "smb.persons_objects".
 """
 input smb_persons_objects_order_by {
+  attribution_voc: smb_thesaurus_order_by
+  attribution_voc_id: order_by
   created_at: order_by
   id: order_by
   object: smb_objects_order_by
@@ -11675,6 +10880,10 @@ input smb_persons_objects_pk_columns_input {
 select columns of table "smb.persons_objects"
 """
 enum smb_persons_objects_select_column {
+  """
+  column name
+  """
+  attribution_voc_id
   """
   column name
   """
@@ -11709,6 +10918,7 @@ enum smb_persons_objects_select_column {
 input type for updating data in table "smb.persons_objects"
 """
 input smb_persons_objects_set_input {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11722,6 +10932,7 @@ input smb_persons_objects_set_input {
 aggregate stddev on columns
 """
 type smb_persons_objects_stddev_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11733,6 +10944,7 @@ type smb_persons_objects_stddev_fields {
 order by stddev() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_stddev_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11744,6 +10956,7 @@ input smb_persons_objects_stddev_order_by {
 aggregate stddev_pop on columns
 """
 type smb_persons_objects_stddev_pop_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11755,6 +10968,7 @@ type smb_persons_objects_stddev_pop_fields {
 order by stddev_pop() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_stddev_pop_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11766,6 +10980,7 @@ input smb_persons_objects_stddev_pop_order_by {
 aggregate stddev_samp on columns
 """
 type smb_persons_objects_stddev_samp_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11777,6 +10992,7 @@ type smb_persons_objects_stddev_samp_fields {
 order by stddev_samp() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_stddev_samp_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11802,6 +11018,7 @@ input smb_persons_objects_stream_cursor_input {
 Initial value of the column from where the streaming should start
 """
 input smb_persons_objects_stream_cursor_value_input {
+  attribution_voc_id: bigint
   created_at: timestamptz
   id: bigint
   object_id: bigint
@@ -11815,6 +11032,7 @@ input smb_persons_objects_stream_cursor_value_input {
 aggregate sum on columns
 """
 type smb_persons_objects_sum_fields {
+  attribution_voc_id: bigint
   id: bigint
   object_id: bigint
   person_id: bigint
@@ -11826,6 +11044,7 @@ type smb_persons_objects_sum_fields {
 order by sum() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_sum_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11837,6 +11056,10 @@ input smb_persons_objects_sum_order_by {
 update columns of table "smb.persons_objects"
 """
 enum smb_persons_objects_update_column {
+  """
+  column name
+  """
+  attribution_voc_id
   """
   column name
   """
@@ -11883,6 +11106,7 @@ input smb_persons_objects_updates {
 aggregate var_pop on columns
 """
 type smb_persons_objects_var_pop_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11894,6 +11118,7 @@ type smb_persons_objects_var_pop_fields {
 order by var_pop() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_var_pop_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11905,6 +11130,7 @@ input smb_persons_objects_var_pop_order_by {
 aggregate var_samp on columns
 """
 type smb_persons_objects_var_samp_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11916,6 +11142,7 @@ type smb_persons_objects_var_samp_fields {
 order by var_samp() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_var_samp_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -11927,6 +11154,7 @@ input smb_persons_objects_var_samp_order_by {
 aggregate variance on columns
 """
 type smb_persons_objects_variance_fields {
+  attribution_voc_id: Float
   id: Float
   object_id: Float
   person_id: Float
@@ -11938,6 +11166,7 @@ type smb_persons_objects_variance_fields {
 order by variance() on columns of table "smb.persons_objects"
 """
 input smb_persons_objects_variance_order_by {
+  attribution_voc_id: order_by
   id: order_by
   object_id: order_by
   person_id: order_by
@@ -12282,13 +11511,13 @@ unique or primary key constraints on table "smb.stt_platform_config"
 """
 enum smb_stt_platform_config_constraint {
   """
-  unique or primary key constraint on columns "platform_key"
-  """
-  stt_platform_config_key
-  """
   unique or primary key constraint on columns "id"
   """
   stt_platform_config_pkey
+  """
+  unique or primary key constraint on columns "platform_key"
+  """
+  stt_platform_config_ukey
 }
 
 """
@@ -12791,7 +12020,7 @@ enum smb_sync_cycle_type_constraint {
 
 enum smb_sync_cycle_type_enum {
   """
-  search collections
+  search collections update
   """
   ASSORTMENTS
   """
@@ -12969,16 +12198,15 @@ Enum type definition for sync-cycles
 """
 type smb_sync_cycles {
   debug_information: String!
-  deleted: String
-  failed: String
+  failed_ids: _int8
   id: bigint!
   module: String
-  skipped: String
+  skipped_ids: _int8
+  succeeded_ids: _int8
   """
   An object relationship
   """
   sync_cycle_type: smb_sync_cycle_type!
-  synced: String
   timestamp: timestamptz!
   type: smb_sync_cycle_type_enum!
 }
@@ -13069,13 +12297,12 @@ input smb_sync_cycles_bool_exp {
   _not: smb_sync_cycles_bool_exp
   _or: [smb_sync_cycles_bool_exp!]
   debug_information: String_comparison_exp
-  deleted: String_comparison_exp
-  failed: String_comparison_exp
+  failed_ids: _int8_comparison_exp
   id: bigint_comparison_exp
   module: String_comparison_exp
-  skipped: String_comparison_exp
+  skipped_ids: _int8_comparison_exp
+  succeeded_ids: _int8_comparison_exp
   sync_cycle_type: smb_sync_cycle_type_bool_exp
-  synced: String_comparison_exp
   timestamp: timestamptz_comparison_exp
   type: smb_sync_cycle_type_enum_comparison_exp
 }
@@ -13102,13 +12329,12 @@ input type for inserting data into table "smb.sync_cycles"
 """
 input smb_sync_cycles_insert_input {
   debug_information: String
-  deleted: String
-  failed: String
+  failed_ids: _int8
   id: bigint
   module: String
-  skipped: String
+  skipped_ids: _int8
+  succeeded_ids: _int8
   sync_cycle_type: smb_sync_cycle_type_obj_rel_insert_input
-  synced: String
   timestamp: timestamptz
   type: smb_sync_cycle_type_enum
 }
@@ -13118,12 +12344,8 @@ aggregate max on columns
 """
 type smb_sync_cycles_max_fields {
   debug_information: String
-  deleted: String
-  failed: String
   id: bigint
   module: String
-  skipped: String
-  synced: String
   timestamp: timestamptz
 }
 
@@ -13132,12 +12354,8 @@ order by max() on columns of table "smb.sync_cycles"
 """
 input smb_sync_cycles_max_order_by {
   debug_information: order_by
-  deleted: order_by
-  failed: order_by
   id: order_by
   module: order_by
-  skipped: order_by
-  synced: order_by
   timestamp: order_by
 }
 
@@ -13146,12 +12364,8 @@ aggregate min on columns
 """
 type smb_sync_cycles_min_fields {
   debug_information: String
-  deleted: String
-  failed: String
   id: bigint
   module: String
-  skipped: String
-  synced: String
   timestamp: timestamptz
 }
 
@@ -13160,12 +12374,8 @@ order by min() on columns of table "smb.sync_cycles"
 """
 input smb_sync_cycles_min_order_by {
   debug_information: order_by
-  deleted: order_by
-  failed: order_by
   id: order_by
   module: order_by
-  skipped: order_by
-  synced: order_by
   timestamp: order_by
 }
 
@@ -13197,13 +12407,12 @@ Ordering options when selecting data from "smb.sync_cycles".
 """
 input smb_sync_cycles_order_by {
   debug_information: order_by
-  deleted: order_by
-  failed: order_by
+  failed_ids: order_by
   id: order_by
   module: order_by
-  skipped: order_by
+  skipped_ids: order_by
+  succeeded_ids: order_by
   sync_cycle_type: smb_sync_cycle_type_order_by
-  synced: order_by
   timestamp: order_by
   type: order_by
 }
@@ -13226,11 +12435,7 @@ enum smb_sync_cycles_select_column {
   """
   column name
   """
-  deleted
-  """
-  column name
-  """
-  failed
+  failed_ids
   """
   column name
   """
@@ -13242,11 +12447,11 @@ enum smb_sync_cycles_select_column {
   """
   column name
   """
-  skipped
+  skipped_ids
   """
   column name
   """
-  synced
+  succeeded_ids
   """
   column name
   """
@@ -13262,12 +12467,11 @@ input type for updating data in table "smb.sync_cycles"
 """
 input smb_sync_cycles_set_input {
   debug_information: String
-  deleted: String
-  failed: String
+  failed_ids: _int8
   id: bigint
   module: String
-  skipped: String
-  synced: String
+  skipped_ids: _int8
+  succeeded_ids: _int8
   timestamp: timestamptz
   type: smb_sync_cycle_type_enum
 }
@@ -13333,12 +12537,11 @@ Initial value of the column from where the streaming should start
 """
 input smb_sync_cycles_stream_cursor_value_input {
   debug_information: String
-  deleted: String
-  failed: String
+  failed_ids: _int8
   id: bigint
   module: String
-  skipped: String
-  synced: String
+  skipped_ids: _int8
+  succeeded_ids: _int8
   timestamp: timestamptz
   type: smb_sync_cycle_type_enum
 }
@@ -13368,11 +12571,7 @@ enum smb_sync_cycles_update_column {
   """
   column name
   """
-  deleted
-  """
-  column name
-  """
-  failed
+  failed_ids
   """
   column name
   """
@@ -13384,11 +12583,11 @@ enum smb_sync_cycles_update_column {
   """
   column name
   """
-  skipped
+  skipped_ids
   """
   column name
   """
-  synced
+  succeeded_ids
   """
   column name
   """
@@ -13591,13 +12790,13 @@ unique or primary key constraints on table "smb.thesaurus"
 """
 enum smb_thesaurus_constraint {
   """
-  unique or primary key constraint on columns "type", "mds_id"
-  """
-  thesaurus_key
-  """
   unique or primary key constraint on columns "id"
   """
   thesaurus_pkey
+  """
+  unique or primary key constraint on columns "type", "mds_id"
+  """
+  thesaurus_ukey
 }
 
 """
@@ -14543,7 +13742,7 @@ enum smb_user_constraint {
   """
   unique or primary key constraint on columns "email"
   """
-  user_email_key
+  user_email_ukey
   """
   unique or primary key constraint on columns "id"
   """
@@ -14695,7 +13894,7 @@ enum smb_user_role_constraint {
   """
   unique or primary key constraint on columns "role"
   """
-  user_role_role_key
+  user_role_role_ukey
 }
 
 """
@@ -15046,438 +14245,6 @@ type smb_user_variance_fields {
   role_id: Float
 }
 
-type strapi_hbfMutation {
-  createCategory(data: isl_CategoryInput!, locale: hbf_I18NLocaleCode): isl_CategoryEntityResponse
-  createCategoryLocalization(data: isl_CategoryInput, id: ID, locale: hbf_I18NLocaleCode): isl_CategoryEntityResponse
-  createIndexLocalization(data: isl_IndexInput, id: ID, locale: hbf_I18NLocaleCode): isl_IndexEntityResponse
-  createSiteConfigLocalization(data: isl_SiteConfigInput, id: ID, locale: hbf_I18NLocaleCode): isl_SiteConfigEntityResponse
-  createSmbLandingpageLocalization(data: isl_SmbLandingpageInput, id: ID, locale: hbf_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  createSmbResearchpageLocalization(data: isl_SmbResearchpageInput, id: ID, locale: hbf_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  createSmbSiteConfigLocalization(data: isl_SmbSiteConfigInput, id: ID, locale: hbf_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  createSmbTopicspageLocalization(data: isl_SmbTopicspageInput, id: ID, locale: hbf_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  createStory(data: isl_StoryInput!, locale: hbf_I18NLocaleCode): isl_StoryEntityResponse
-  createStoryLocalization(data: isl_StoryInput, id: ID, locale: hbf_I18NLocaleCode): isl_StoryEntityResponse
-  createTopic(data: isl_TopicInput!, locale: hbf_I18NLocaleCode): isl_TopicEntityResponse
-  createTopicLocalization(data: isl_TopicInput, id: ID, locale: hbf_I18NLocaleCode): isl_TopicEntityResponse
-  createUploadFile(data: isl_UploadFileInput!): isl_UploadFileEntityResponse
-  """
-  Create a new role
-  """
-  createUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!): isl_UsersPermissionsCreateRolePayload
-  """
-  Create a new user
-  """
-  createUsersPermissionsUser(data: isl_UsersPermissionsUserInput!): isl_UsersPermissionsUserEntityResponse!
-  deleteCategory(id: ID!, locale: hbf_I18NLocaleCode): isl_CategoryEntityResponse
-  deleteIndex(locale: hbf_I18NLocaleCode): isl_IndexEntityResponse
-  deleteSiteConfig(locale: hbf_I18NLocaleCode): isl_SiteConfigEntityResponse
-  deleteSmbGuidepage: isl_SmbGuidepageEntityResponse
-  deleteSmbLandingpage(locale: hbf_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  deleteSmbResearchpage(locale: hbf_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  deleteSmbSiteConfig(locale: hbf_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  deleteSmbTopicspage(locale: hbf_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  deleteStory(id: ID!, locale: hbf_I18NLocaleCode): isl_StoryEntityResponse
-  deleteTopic(id: ID!, locale: hbf_I18NLocaleCode): isl_TopicEntityResponse
-  deleteUploadFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Delete an existing role
-  """
-  deleteUsersPermissionsRole(id: ID!): isl_UsersPermissionsDeleteRolePayload
-  """
-  Delete an existing user
-  """
-  deleteUsersPermissionsUser(id: ID!): isl_UsersPermissionsUserEntityResponse!
-  """
-  Confirm an email users email address
-  """
-  emailConfirmation(confirmation: String!): isl_UsersPermissionsLoginPayload
-  """
-  Request a reset password token
-  """
-  forgotPassword(email: String!): isl_UsersPermissionsPasswordPayload
-  login(input: isl_UsersPermissionsLoginInput!): isl_UsersPermissionsLoginPayload!
-  multipleUpload(field: String, files: [hbf_Upload]!, ref: String, refId: ID): [isl_UploadFileEntityResponse]!
-  """
-  Register a user
-  """
-  register(input: isl_UsersPermissionsRegisterInput!): isl_UsersPermissionsLoginPayload!
-  removeFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Reset user password. Confirm with a code (resetToken from forgotPassword)
-  """
-  resetPassword(code: String!, password: String!, passwordConfirmation: String!): isl_UsersPermissionsLoginPayload
-  updateCategory(data: isl_CategoryInput!, id: ID!, locale: hbf_I18NLocaleCode): isl_CategoryEntityResponse
-  updateFileInfo(id: ID!, info: isl_FileInfoInput): isl_UploadFileEntityResponse!
-  updateIndex(data: isl_IndexInput!, locale: hbf_I18NLocaleCode): isl_IndexEntityResponse
-  updateSiteConfig(data: isl_SiteConfigInput!, locale: hbf_I18NLocaleCode): isl_SiteConfigEntityResponse
-  updateSmbGuidepage(data: isl_SmbGuidepageInput!): isl_SmbGuidepageEntityResponse
-  updateSmbLandingpage(data: isl_SmbLandingpageInput!, locale: hbf_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  updateSmbResearchpage(data: isl_SmbResearchpageInput!, locale: hbf_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  updateSmbSiteConfig(data: isl_SmbSiteConfigInput!, locale: hbf_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  updateSmbTopicspage(data: isl_SmbTopicspageInput!, locale: hbf_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  updateStory(data: isl_StoryInput!, id: ID!, locale: hbf_I18NLocaleCode): isl_StoryEntityResponse
-  updateTopic(data: isl_TopicInput!, id: ID!, locale: hbf_I18NLocaleCode): isl_TopicEntityResponse
-  updateUploadFile(data: isl_UploadFileInput!, id: ID!): isl_UploadFileEntityResponse
-  """
-  Update an existing role
-  """
-  updateUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!, id: ID!): isl_UsersPermissionsUpdateRolePayload
-  """
-  Update an existing user
-  """
-  updateUsersPermissionsUser(data: isl_UsersPermissionsUserInput!, id: ID!): isl_UsersPermissionsUserEntityResponse!
-  upload(field: String, file: hbf_Upload!, info: isl_FileInfoInput, ref: String, refId: ID): isl_UploadFileEntityResponse!
-}
-
-type strapi_hbfQuery {
-  categories(filters: isl_CategoryFiltersInput, locale: hbf_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: hbf_PublicationState = LIVE, sort: [String] = []): isl_CategoryEntityResponseCollection
-  category(id: ID, locale: hbf_I18NLocaleCode): isl_CategoryEntityResponse
-  i18NLocale(id: ID): isl_I18NLocaleEntityResponse
-  i18NLocales(filters: isl_I18NLocaleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_I18NLocaleEntityResponseCollection
-  index(locale: hbf_I18NLocaleCode, publicationState: hbf_PublicationState = LIVE): isl_IndexEntityResponse
-  me: isl_UsersPermissionsMe
-  siteConfig(locale: hbf_I18NLocaleCode): isl_SiteConfigEntityResponse
-  smbGuidepage(publicationState: hbf_PublicationState = LIVE): isl_SmbGuidepageEntityResponse
-  smbLandingpage(locale: hbf_I18NLocaleCode, publicationState: hbf_PublicationState = LIVE): isl_SmbLandingpageEntityResponse
-  smbResearchpage(locale: hbf_I18NLocaleCode, publicationState: hbf_PublicationState = LIVE): isl_SmbResearchpageEntityResponse
-  smbSiteConfig(locale: hbf_I18NLocaleCode, publicationState: hbf_PublicationState = LIVE): isl_SmbSiteConfigEntityResponse
-  smbTopicspage(locale: hbf_I18NLocaleCode, publicationState: hbf_PublicationState = LIVE): isl_SmbTopicspageEntityResponse
-  stories(filters: isl_StoryFiltersInput, locale: hbf_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: hbf_PublicationState = LIVE, sort: [String] = []): isl_StoryEntityResponseCollection
-  story(id: ID, locale: hbf_I18NLocaleCode): isl_StoryEntityResponse
-  topic(id: ID, locale: hbf_I18NLocaleCode): isl_TopicEntityResponse
-  topics(filters: isl_TopicFiltersInput, locale: hbf_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: hbf_PublicationState = LIVE, sort: [String] = []): isl_TopicEntityResponseCollection
-  uploadFile(id: ID): isl_UploadFileEntityResponse
-  uploadFiles(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileEntityResponseCollection
-  usersPermissionsRole(id: ID): isl_UsersPermissionsRoleEntityResponse
-  usersPermissionsRoles(filters: isl_UsersPermissionsRoleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsRoleEntityResponseCollection
-  usersPermissionsUser(id: ID): isl_UsersPermissionsUserEntityResponse
-  usersPermissionsUsers(filters: isl_UsersPermissionsUserFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsUserEntityResponseCollection
-}
-
-type strapi_islMutation {
-  createCategory(data: isl_CategoryInput!, locale: isl_I18NLocaleCode): isl_CategoryEntityResponse
-  createCategoryLocalization(data: isl_CategoryInput, id: ID, locale: isl_I18NLocaleCode): isl_CategoryEntityResponse
-  createIndexLocalization(data: isl_IndexInput, id: ID, locale: isl_I18NLocaleCode): isl_IndexEntityResponse
-  createSiteConfigLocalization(data: isl_SiteConfigInput, id: ID, locale: isl_I18NLocaleCode): isl_SiteConfigEntityResponse
-  createSmbLandingpageLocalization(data: isl_SmbLandingpageInput, id: ID, locale: isl_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  createSmbResearchpageLocalization(data: isl_SmbResearchpageInput, id: ID, locale: isl_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  createSmbSiteConfigLocalization(data: isl_SmbSiteConfigInput, id: ID, locale: isl_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  createSmbTopicspageLocalization(data: isl_SmbTopicspageInput, id: ID, locale: isl_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  createStory(data: isl_StoryInput!, locale: isl_I18NLocaleCode): isl_StoryEntityResponse
-  createStoryLocalization(data: isl_StoryInput, id: ID, locale: isl_I18NLocaleCode): isl_StoryEntityResponse
-  createTopic(data: isl_TopicInput!, locale: isl_I18NLocaleCode): isl_TopicEntityResponse
-  createTopicLocalization(data: isl_TopicInput, id: ID, locale: isl_I18NLocaleCode): isl_TopicEntityResponse
-  createUploadFile(data: isl_UploadFileInput!): isl_UploadFileEntityResponse
-  """
-  Create a new role
-  """
-  createUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!): isl_UsersPermissionsCreateRolePayload
-  """
-  Create a new user
-  """
-  createUsersPermissionsUser(data: isl_UsersPermissionsUserInput!): isl_UsersPermissionsUserEntityResponse!
-  deleteCategory(id: ID!, locale: isl_I18NLocaleCode): isl_CategoryEntityResponse
-  deleteIndex(locale: isl_I18NLocaleCode): isl_IndexEntityResponse
-  deleteSiteConfig(locale: isl_I18NLocaleCode): isl_SiteConfigEntityResponse
-  deleteSmbGuidepage: isl_SmbGuidepageEntityResponse
-  deleteSmbLandingpage(locale: isl_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  deleteSmbResearchpage(locale: isl_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  deleteSmbSiteConfig(locale: isl_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  deleteSmbTopicspage(locale: isl_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  deleteStory(id: ID!, locale: isl_I18NLocaleCode): isl_StoryEntityResponse
-  deleteTopic(id: ID!, locale: isl_I18NLocaleCode): isl_TopicEntityResponse
-  deleteUploadFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Delete an existing role
-  """
-  deleteUsersPermissionsRole(id: ID!): isl_UsersPermissionsDeleteRolePayload
-  """
-  Delete an existing user
-  """
-  deleteUsersPermissionsUser(id: ID!): isl_UsersPermissionsUserEntityResponse!
-  """
-  Confirm an email users email address
-  """
-  emailConfirmation(confirmation: String!): isl_UsersPermissionsLoginPayload
-  """
-  Request a reset password token
-  """
-  forgotPassword(email: String!): isl_UsersPermissionsPasswordPayload
-  login(input: isl_UsersPermissionsLoginInput!): isl_UsersPermissionsLoginPayload!
-  multipleUpload(field: String, files: [isl_Upload]!, ref: String, refId: ID): [isl_UploadFileEntityResponse]!
-  """
-  Register a user
-  """
-  register(input: isl_UsersPermissionsRegisterInput!): isl_UsersPermissionsLoginPayload!
-  removeFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Reset user password. Confirm with a code (resetToken from forgotPassword)
-  """
-  resetPassword(code: String!, password: String!, passwordConfirmation: String!): isl_UsersPermissionsLoginPayload
-  updateCategory(data: isl_CategoryInput!, id: ID!, locale: isl_I18NLocaleCode): isl_CategoryEntityResponse
-  updateFileInfo(id: ID!, info: isl_FileInfoInput): isl_UploadFileEntityResponse!
-  updateIndex(data: isl_IndexInput!, locale: isl_I18NLocaleCode): isl_IndexEntityResponse
-  updateSiteConfig(data: isl_SiteConfigInput!, locale: isl_I18NLocaleCode): isl_SiteConfigEntityResponse
-  updateSmbGuidepage(data: isl_SmbGuidepageInput!): isl_SmbGuidepageEntityResponse
-  updateSmbLandingpage(data: isl_SmbLandingpageInput!, locale: isl_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  updateSmbResearchpage(data: isl_SmbResearchpageInput!, locale: isl_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  updateSmbSiteConfig(data: isl_SmbSiteConfigInput!, locale: isl_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  updateSmbTopicspage(data: isl_SmbTopicspageInput!, locale: isl_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  updateStory(data: isl_StoryInput!, id: ID!, locale: isl_I18NLocaleCode): isl_StoryEntityResponse
-  updateTopic(data: isl_TopicInput!, id: ID!, locale: isl_I18NLocaleCode): isl_TopicEntityResponse
-  updateUploadFile(data: isl_UploadFileInput!, id: ID!): isl_UploadFileEntityResponse
-  """
-  Update an existing role
-  """
-  updateUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!, id: ID!): isl_UsersPermissionsUpdateRolePayload
-  """
-  Update an existing user
-  """
-  updateUsersPermissionsUser(data: isl_UsersPermissionsUserInput!, id: ID!): isl_UsersPermissionsUserEntityResponse!
-  upload(field: String, file: isl_Upload!, info: isl_FileInfoInput, ref: String, refId: ID): isl_UploadFileEntityResponse!
-}
-
-type strapi_islQuery {
-  categories(filters: isl_CategoryFiltersInput, locale: isl_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_CategoryEntityResponseCollection
-  category(id: ID, locale: isl_I18NLocaleCode): isl_CategoryEntityResponse
-  i18NLocale(id: ID): isl_I18NLocaleEntityResponse
-  i18NLocales(filters: isl_I18NLocaleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_I18NLocaleEntityResponseCollection
-  index(locale: isl_I18NLocaleCode, publicationState: isl_PublicationState = LIVE): isl_IndexEntityResponse
-  me: isl_UsersPermissionsMe
-  siteConfig(locale: isl_I18NLocaleCode): isl_SiteConfigEntityResponse
-  smbGuidepage(publicationState: isl_PublicationState = LIVE): isl_SmbGuidepageEntityResponse
-  smbLandingpage(locale: isl_I18NLocaleCode, publicationState: isl_PublicationState = LIVE): isl_SmbLandingpageEntityResponse
-  smbResearchpage(locale: isl_I18NLocaleCode, publicationState: isl_PublicationState = LIVE): isl_SmbResearchpageEntityResponse
-  smbSiteConfig(locale: isl_I18NLocaleCode, publicationState: isl_PublicationState = LIVE): isl_SmbSiteConfigEntityResponse
-  smbTopicspage(locale: isl_I18NLocaleCode, publicationState: isl_PublicationState = LIVE): isl_SmbTopicspageEntityResponse
-  stories(filters: isl_StoryFiltersInput, locale: isl_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_StoryEntityResponseCollection
-  story(id: ID, locale: isl_I18NLocaleCode): isl_StoryEntityResponse
-  topic(id: ID, locale: isl_I18NLocaleCode): isl_TopicEntityResponse
-  topics(filters: isl_TopicFiltersInput, locale: isl_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: isl_PublicationState = LIVE, sort: [String] = []): isl_TopicEntityResponseCollection
-  uploadFile(id: ID): isl_UploadFileEntityResponse
-  uploadFiles(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileEntityResponseCollection
-  usersPermissionsRole(id: ID): isl_UsersPermissionsRoleEntityResponse
-  usersPermissionsRoles(filters: isl_UsersPermissionsRoleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsRoleEntityResponseCollection
-  usersPermissionsUser(id: ID): isl_UsersPermissionsUserEntityResponse
-  usersPermissionsUsers(filters: isl_UsersPermissionsUserFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsUserEntityResponseCollection
-}
-
-type strapi_kgmMutation {
-  createCategory(data: isl_CategoryInput!, locale: kgm_I18NLocaleCode): isl_CategoryEntityResponse
-  createCategoryLocalization(data: isl_CategoryInput, id: ID, locale: kgm_I18NLocaleCode): isl_CategoryEntityResponse
-  createIndexLocalization(data: isl_IndexInput, id: ID, locale: kgm_I18NLocaleCode): isl_IndexEntityResponse
-  createSiteConfigLocalization(data: isl_SiteConfigInput, id: ID, locale: kgm_I18NLocaleCode): isl_SiteConfigEntityResponse
-  createSmbLandingpageLocalization(data: isl_SmbLandingpageInput, id: ID, locale: kgm_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  createSmbResearchpageLocalization(data: isl_SmbResearchpageInput, id: ID, locale: kgm_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  createSmbSiteConfigLocalization(data: isl_SmbSiteConfigInput, id: ID, locale: kgm_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  createSmbTopicspageLocalization(data: isl_SmbTopicspageInput, id: ID, locale: kgm_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  createStory(data: isl_StoryInput!, locale: kgm_I18NLocaleCode): isl_StoryEntityResponse
-  createStoryLocalization(data: isl_StoryInput, id: ID, locale: kgm_I18NLocaleCode): isl_StoryEntityResponse
-  createTopic(data: isl_TopicInput!, locale: kgm_I18NLocaleCode): isl_TopicEntityResponse
-  createTopicLocalization(data: isl_TopicInput, id: ID, locale: kgm_I18NLocaleCode): isl_TopicEntityResponse
-  createUploadFile(data: isl_UploadFileInput!): isl_UploadFileEntityResponse
-  """
-  Create a new role
-  """
-  createUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!): isl_UsersPermissionsCreateRolePayload
-  """
-  Create a new user
-  """
-  createUsersPermissionsUser(data: isl_UsersPermissionsUserInput!): isl_UsersPermissionsUserEntityResponse!
-  deleteCategory(id: ID!, locale: kgm_I18NLocaleCode): isl_CategoryEntityResponse
-  deleteIndex(locale: kgm_I18NLocaleCode): isl_IndexEntityResponse
-  deleteSiteConfig(locale: kgm_I18NLocaleCode): isl_SiteConfigEntityResponse
-  deleteSmbGuidepage: isl_SmbGuidepageEntityResponse
-  deleteSmbLandingpage(locale: kgm_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  deleteSmbResearchpage(locale: kgm_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  deleteSmbSiteConfig(locale: kgm_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  deleteSmbTopicspage(locale: kgm_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  deleteStory(id: ID!, locale: kgm_I18NLocaleCode): isl_StoryEntityResponse
-  deleteTopic(id: ID!, locale: kgm_I18NLocaleCode): isl_TopicEntityResponse
-  deleteUploadFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Delete an existing role
-  """
-  deleteUsersPermissionsRole(id: ID!): isl_UsersPermissionsDeleteRolePayload
-  """
-  Delete an existing user
-  """
-  deleteUsersPermissionsUser(id: ID!): isl_UsersPermissionsUserEntityResponse!
-  """
-  Confirm an email users email address
-  """
-  emailConfirmation(confirmation: String!): isl_UsersPermissionsLoginPayload
-  """
-  Request a reset password token
-  """
-  forgotPassword(email: String!): isl_UsersPermissionsPasswordPayload
-  login(input: isl_UsersPermissionsLoginInput!): isl_UsersPermissionsLoginPayload!
-  multipleUpload(field: String, files: [kgm_Upload]!, ref: String, refId: ID): [isl_UploadFileEntityResponse]!
-  """
-  Register a user
-  """
-  register(input: isl_UsersPermissionsRegisterInput!): isl_UsersPermissionsLoginPayload!
-  removeFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Reset user password. Confirm with a code (resetToken from forgotPassword)
-  """
-  resetPassword(code: String!, password: String!, passwordConfirmation: String!): isl_UsersPermissionsLoginPayload
-  updateCategory(data: isl_CategoryInput!, id: ID!, locale: kgm_I18NLocaleCode): isl_CategoryEntityResponse
-  updateFileInfo(id: ID!, info: isl_FileInfoInput): isl_UploadFileEntityResponse!
-  updateIndex(data: isl_IndexInput!, locale: kgm_I18NLocaleCode): isl_IndexEntityResponse
-  updateSiteConfig(data: isl_SiteConfigInput!, locale: kgm_I18NLocaleCode): isl_SiteConfigEntityResponse
-  updateSmbGuidepage(data: isl_SmbGuidepageInput!): isl_SmbGuidepageEntityResponse
-  updateSmbLandingpage(data: isl_SmbLandingpageInput!, locale: kgm_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  updateSmbResearchpage(data: isl_SmbResearchpageInput!, locale: kgm_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  updateSmbSiteConfig(data: isl_SmbSiteConfigInput!, locale: kgm_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  updateSmbTopicspage(data: isl_SmbTopicspageInput!, locale: kgm_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  updateStory(data: isl_StoryInput!, id: ID!, locale: kgm_I18NLocaleCode): isl_StoryEntityResponse
-  updateTopic(data: isl_TopicInput!, id: ID!, locale: kgm_I18NLocaleCode): isl_TopicEntityResponse
-  updateUploadFile(data: isl_UploadFileInput!, id: ID!): isl_UploadFileEntityResponse
-  """
-  Update an existing role
-  """
-  updateUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!, id: ID!): isl_UsersPermissionsUpdateRolePayload
-  """
-  Update an existing user
-  """
-  updateUsersPermissionsUser(data: isl_UsersPermissionsUserInput!, id: ID!): isl_UsersPermissionsUserEntityResponse!
-  upload(field: String, file: kgm_Upload!, info: isl_FileInfoInput, ref: String, refId: ID): isl_UploadFileEntityResponse!
-}
-
-type strapi_kgmQuery {
-  categories(filters: isl_CategoryFiltersInput, locale: kgm_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: kgm_PublicationState = LIVE, sort: [String] = []): isl_CategoryEntityResponseCollection
-  category(id: ID, locale: kgm_I18NLocaleCode): isl_CategoryEntityResponse
-  i18NLocale(id: ID): isl_I18NLocaleEntityResponse
-  i18NLocales(filters: isl_I18NLocaleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_I18NLocaleEntityResponseCollection
-  index(locale: kgm_I18NLocaleCode, publicationState: kgm_PublicationState = LIVE): isl_IndexEntityResponse
-  me: isl_UsersPermissionsMe
-  siteConfig(locale: kgm_I18NLocaleCode): isl_SiteConfigEntityResponse
-  smbGuidepage(publicationState: kgm_PublicationState = LIVE): isl_SmbGuidepageEntityResponse
-  smbLandingpage(locale: kgm_I18NLocaleCode, publicationState: kgm_PublicationState = LIVE): isl_SmbLandingpageEntityResponse
-  smbResearchpage(locale: kgm_I18NLocaleCode, publicationState: kgm_PublicationState = LIVE): isl_SmbResearchpageEntityResponse
-  smbSiteConfig(locale: kgm_I18NLocaleCode, publicationState: kgm_PublicationState = LIVE): isl_SmbSiteConfigEntityResponse
-  smbTopicspage(locale: kgm_I18NLocaleCode, publicationState: kgm_PublicationState = LIVE): isl_SmbTopicspageEntityResponse
-  stories(filters: isl_StoryFiltersInput, locale: kgm_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: kgm_PublicationState = LIVE, sort: [String] = []): isl_StoryEntityResponseCollection
-  story(id: ID, locale: kgm_I18NLocaleCode): isl_StoryEntityResponse
-  topic(id: ID, locale: kgm_I18NLocaleCode): isl_TopicEntityResponse
-  topics(filters: isl_TopicFiltersInput, locale: kgm_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: kgm_PublicationState = LIVE, sort: [String] = []): isl_TopicEntityResponseCollection
-  uploadFile(id: ID): isl_UploadFileEntityResponse
-  uploadFiles(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileEntityResponseCollection
-  usersPermissionsRole(id: ID): isl_UsersPermissionsRoleEntityResponse
-  usersPermissionsRoles(filters: isl_UsersPermissionsRoleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsRoleEntityResponseCollection
-  usersPermissionsUser(id: ID): isl_UsersPermissionsUserEntityResponse
-  usersPermissionsUsers(filters: isl_UsersPermissionsUserFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsUserEntityResponseCollection
-}
-
-type strapi_smbMutation {
-  createCategory(data: isl_CategoryInput!, locale: smb_I18NLocaleCode): isl_CategoryEntityResponse
-  createCategoryLocalization(data: isl_CategoryInput, id: ID, locale: smb_I18NLocaleCode): isl_CategoryEntityResponse
-  createIndexLocalization(data: isl_IndexInput, id: ID, locale: smb_I18NLocaleCode): isl_IndexEntityResponse
-  createSiteConfigLocalization(data: isl_SiteConfigInput, id: ID, locale: smb_I18NLocaleCode): isl_SiteConfigEntityResponse
-  createSmbLandingpageLocalization(data: isl_SmbLandingpageInput, id: ID, locale: smb_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  createSmbResearchpageLocalization(data: isl_SmbResearchpageInput, id: ID, locale: smb_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  createSmbSiteConfigLocalization(data: isl_SmbSiteConfigInput, id: ID, locale: smb_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  createSmbTopicspageLocalization(data: isl_SmbTopicspageInput, id: ID, locale: smb_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  createStory(data: isl_StoryInput!, locale: smb_I18NLocaleCode): isl_StoryEntityResponse
-  createStoryLocalization(data: isl_StoryInput, id: ID, locale: smb_I18NLocaleCode): isl_StoryEntityResponse
-  createTopic(data: isl_TopicInput!, locale: smb_I18NLocaleCode): isl_TopicEntityResponse
-  createTopicLocalization(data: isl_TopicInput, id: ID, locale: smb_I18NLocaleCode): isl_TopicEntityResponse
-  createUploadFile(data: isl_UploadFileInput!): isl_UploadFileEntityResponse
-  """
-  Create a new role
-  """
-  createUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!): isl_UsersPermissionsCreateRolePayload
-  """
-  Create a new user
-  """
-  createUsersPermissionsUser(data: isl_UsersPermissionsUserInput!): isl_UsersPermissionsUserEntityResponse!
-  deleteCategory(id: ID!, locale: smb_I18NLocaleCode): isl_CategoryEntityResponse
-  deleteIndex(locale: smb_I18NLocaleCode): isl_IndexEntityResponse
-  deleteSiteConfig(locale: smb_I18NLocaleCode): isl_SiteConfigEntityResponse
-  deleteSmbGuidepage: isl_SmbGuidepageEntityResponse
-  deleteSmbLandingpage(locale: smb_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  deleteSmbResearchpage(locale: smb_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  deleteSmbSiteConfig(locale: smb_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  deleteSmbTopicspage(locale: smb_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  deleteStory(id: ID!, locale: smb_I18NLocaleCode): isl_StoryEntityResponse
-  deleteTopic(id: ID!, locale: smb_I18NLocaleCode): isl_TopicEntityResponse
-  deleteUploadFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Delete an existing role
-  """
-  deleteUsersPermissionsRole(id: ID!): isl_UsersPermissionsDeleteRolePayload
-  """
-  Delete an existing user
-  """
-  deleteUsersPermissionsUser(id: ID!): isl_UsersPermissionsUserEntityResponse!
-  """
-  Confirm an email users email address
-  """
-  emailConfirmation(confirmation: String!): isl_UsersPermissionsLoginPayload
-  """
-  Request a reset password token
-  """
-  forgotPassword(email: String!): isl_UsersPermissionsPasswordPayload
-  login(input: isl_UsersPermissionsLoginInput!): isl_UsersPermissionsLoginPayload!
-  multipleUpload(field: String, files: [smb_Upload]!, ref: String, refId: ID): [isl_UploadFileEntityResponse]!
-  """
-  Register a user
-  """
-  register(input: isl_UsersPermissionsRegisterInput!): isl_UsersPermissionsLoginPayload!
-  removeFile(id: ID!): isl_UploadFileEntityResponse
-  """
-  Reset user password. Confirm with a code (resetToken from forgotPassword)
-  """
-  resetPassword(code: String!, password: String!, passwordConfirmation: String!): isl_UsersPermissionsLoginPayload
-  updateCategory(data: isl_CategoryInput!, id: ID!, locale: smb_I18NLocaleCode): isl_CategoryEntityResponse
-  updateFileInfo(id: ID!, info: isl_FileInfoInput): isl_UploadFileEntityResponse!
-  updateIndex(data: isl_IndexInput!, locale: smb_I18NLocaleCode): isl_IndexEntityResponse
-  updateSiteConfig(data: isl_SiteConfigInput!, locale: smb_I18NLocaleCode): isl_SiteConfigEntityResponse
-  updateSmbGuidepage(data: isl_SmbGuidepageInput!): isl_SmbGuidepageEntityResponse
-  updateSmbLandingpage(data: isl_SmbLandingpageInput!, locale: smb_I18NLocaleCode): isl_SmbLandingpageEntityResponse
-  updateSmbResearchpage(data: isl_SmbResearchpageInput!, locale: smb_I18NLocaleCode): isl_SmbResearchpageEntityResponse
-  updateSmbSiteConfig(data: isl_SmbSiteConfigInput!, locale: smb_I18NLocaleCode): isl_SmbSiteConfigEntityResponse
-  updateSmbTopicspage(data: isl_SmbTopicspageInput!, locale: smb_I18NLocaleCode): isl_SmbTopicspageEntityResponse
-  updateStory(data: isl_StoryInput!, id: ID!, locale: smb_I18NLocaleCode): isl_StoryEntityResponse
-  updateTopic(data: isl_TopicInput!, id: ID!, locale: smb_I18NLocaleCode): isl_TopicEntityResponse
-  updateUploadFile(data: isl_UploadFileInput!, id: ID!): isl_UploadFileEntityResponse
-  """
-  Update an existing role
-  """
-  updateUsersPermissionsRole(data: isl_UsersPermissionsRoleInput!, id: ID!): isl_UsersPermissionsUpdateRolePayload
-  """
-  Update an existing user
-  """
-  updateUsersPermissionsUser(data: isl_UsersPermissionsUserInput!, id: ID!): isl_UsersPermissionsUserEntityResponse!
-  upload(field: String, file: smb_Upload!, info: isl_FileInfoInput, ref: String, refId: ID): isl_UploadFileEntityResponse!
-}
-
-type strapi_smbQuery {
-  categories(filters: isl_CategoryFiltersInput, locale: smb_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: smb_PublicationState = LIVE, sort: [String] = []): isl_CategoryEntityResponseCollection
-  category(id: ID, locale: smb_I18NLocaleCode): isl_CategoryEntityResponse
-  i18NLocale(id: ID): isl_I18NLocaleEntityResponse
-  i18NLocales(filters: isl_I18NLocaleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_I18NLocaleEntityResponseCollection
-  index(locale: smb_I18NLocaleCode, publicationState: smb_PublicationState = LIVE): isl_IndexEntityResponse
-  me: isl_UsersPermissionsMe
-  siteConfig(locale: smb_I18NLocaleCode): isl_SiteConfigEntityResponse
-  smbGuidepage(publicationState: smb_PublicationState = LIVE): isl_SmbGuidepageEntityResponse
-  smbLandingpage(locale: smb_I18NLocaleCode, publicationState: smb_PublicationState = LIVE): isl_SmbLandingpageEntityResponse
-  smbResearchpage(locale: smb_I18NLocaleCode, publicationState: smb_PublicationState = LIVE): isl_SmbResearchpageEntityResponse
-  smbSiteConfig(locale: smb_I18NLocaleCode, publicationState: smb_PublicationState = LIVE): isl_SmbSiteConfigEntityResponse
-  smbTopicspage(locale: smb_I18NLocaleCode, publicationState: smb_PublicationState = LIVE): isl_SmbTopicspageEntityResponse
-  stories(filters: isl_StoryFiltersInput, locale: smb_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: smb_PublicationState = LIVE, sort: [String] = []): isl_StoryEntityResponseCollection
-  story(id: ID, locale: smb_I18NLocaleCode): isl_StoryEntityResponse
-  topic(id: ID, locale: smb_I18NLocaleCode): isl_TopicEntityResponse
-  topics(filters: isl_TopicFiltersInput, locale: smb_I18NLocaleCode, pagination: isl_PaginationArg = {}, publicationState: smb_PublicationState = LIVE, sort: [String] = []): isl_TopicEntityResponseCollection
-  uploadFile(id: ID): isl_UploadFileEntityResponse
-  uploadFiles(filters: isl_UploadFileFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UploadFileEntityResponseCollection
-  usersPermissionsRole(id: ID): isl_UsersPermissionsRoleEntityResponse
-  usersPermissionsRoles(filters: isl_UsersPermissionsRoleFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsRoleEntityResponseCollection
-  usersPermissionsUser(id: ID): isl_UsersPermissionsUserEntityResponse
-  usersPermissionsUsers(filters: isl_UsersPermissionsUserFiltersInput, pagination: isl_PaginationArg = {}, sort: [String] = []): isl_UsersPermissionsUserEntityResponseCollection
-}
-
 type subscription_root {
   """
   fetch data from the table: "smb.assortments"
@@ -15538,7 +14305,7 @@ type subscription_root {
   """
   fetch data from the table: "smb.attachments" using primary key columns
   """
-  smb_attachments_by_pk(id: bigint!): smb_attachments
+  smb_attachments_by_pk(id: bigint!, object_id: bigint!): smb_attachments
   """
   fetch data from the table in a streaming manner: "smb.attachments"
   """
@@ -15592,6 +14359,38 @@ type subscription_root {
   """
   smb_attributes_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_attributes_stream_cursor_input]!, """filter the rows returned""" where: smb_attributes_bool_exp): [smb_attributes!]!
   """
+  fetch data from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): [smb_blocked_attachments!]!
+  """
+  fetch aggregated fields from the table: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments_aggregate("""distinct select on columns""" distinct_on: [smb_blocked_attachments_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_blocked_attachments_order_by!], """filter the rows returned""" where: smb_blocked_attachments_bool_exp): smb_blocked_attachments_aggregate!
+  """
+  fetch data from the table: "smb.blocked_attachments" using primary key columns
+  """
+  smb_blocked_attachments_by_pk(id: bigint!): smb_blocked_attachments
+  """
+  fetch data from the table in a streaming manner: "smb.blocked_attachments"
+  """
+  smb_blocked_attachments_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_blocked_attachments_stream_cursor_input]!, """filter the rows returned""" where: smb_blocked_attachments_bool_exp): [smb_blocked_attachments!]!
+  """
+  fetch data from the table: "smb.buildings"
+  """
+  smb_buildings("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): [smb_buildings!]!
+  """
+  fetch aggregated fields from the table: "smb.buildings"
+  """
+  smb_buildings_aggregate("""distinct select on columns""" distinct_on: [smb_buildings_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_buildings_order_by!], """filter the rows returned""" where: smb_buildings_bool_exp): smb_buildings_aggregate!
+  """
+  fetch data from the table: "smb.buildings" using primary key columns
+  """
+  smb_buildings_by_pk(key: String!): smb_buildings
+  """
+  fetch data from the table in a streaming manner: "smb.buildings"
+  """
+  smb_buildings_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_buildings_stream_cursor_input]!, """filter the rows returned""" where: smb_buildings_bool_exp): [smb_buildings!]!
+  """
   fetch data from the table: "smb.collections"
   """
   smb_collections("""distinct select on columns""" distinct_on: [smb_collections_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_collections_order_by!], """filter the rows returned""" where: smb_collections_bool_exp): [smb_collections!]!
@@ -15607,6 +14406,22 @@ type subscription_root {
   fetch data from the table in a streaming manner: "smb.collections"
   """
   smb_collections_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_collections_stream_cursor_input]!, """filter the rows returned""" where: smb_collections_bool_exp): [smb_collections!]!
+  """
+  fetch data from the table: "smb.cultural_references"
+  """
+  smb_cultural_references("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
+  """
+  fetch aggregated fields from the table: "smb.cultural_references"
+  """
+  smb_cultural_references_aggregate("""distinct select on columns""" distinct_on: [smb_cultural_references_select_column!], """limit the number of rows returned""" limit: Int, """skip the first n rows. Use only with order_by""" offset: Int, """sort the rows by one or more columns""" order_by: [smb_cultural_references_order_by!], """filter the rows returned""" where: smb_cultural_references_bool_exp): smb_cultural_references_aggregate!
+  """
+  fetch data from the table: "smb.cultural_references" using primary key columns
+  """
+  smb_cultural_references_by_pk(id: bigint!): smb_cultural_references
+  """
+  fetch data from the table in a streaming manner: "smb.cultural_references"
+  """
+  smb_cultural_references_stream("""maximum number of rows returned in a single batch""" batch_size: Int!, """cursor to stream the results returned by the query""" cursor: [smb_cultural_references_stream_cursor_input]!, """filter the rows returned""" where: smb_cultural_references_bool_exp): [smb_cultural_references!]!
   """
   fetch data from the table: "smb.exhibitions"
   """

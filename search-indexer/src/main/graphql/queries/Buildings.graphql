@@ -1,0 +1,12 @@
+# Definition of a Building
+fragment buildingData on smb_buildings {
+    key
+    title
+}
+
+# Return all Buildings
+query FetchBuildings {
+    smb_buildings (order_by: [{key: asc}]){
+        ...buildingData
+    }
+}

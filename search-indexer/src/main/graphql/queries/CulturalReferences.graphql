@@ -1,0 +1,17 @@
+# Definition of the CulturalReference data struct
+fragment cultureData on smb_cultural_references {
+    id
+    nameVocId:name_voc_id
+    typeVocId:type_voc_id
+    denominationVocId:denomination_voc_id
+    sequence
+}
+
+# ----------------------------------------------------------
+
+# Return a CulturalReference entry by id
+query FetchCulturalReferenceById($id: bigint!) {
+    smb_cultural_references_by_pk(id:$id) {
+        ...cultureData
+    }
+}

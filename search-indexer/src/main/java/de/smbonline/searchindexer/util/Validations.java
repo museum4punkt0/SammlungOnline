@@ -10,6 +10,10 @@ import org.springframework.lang.Nullable;
  */
 public final class Validations {
 
+    public static Long requireId(final Object any) {
+        return any instanceof Number ? ((Number) any).longValue() : Long.parseLong(any.toString());
+    }
+
     /**
      * Checks if a given varargs array has values.
      *

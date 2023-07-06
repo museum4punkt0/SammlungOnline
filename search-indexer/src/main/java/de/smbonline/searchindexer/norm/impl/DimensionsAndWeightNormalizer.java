@@ -26,7 +26,7 @@ public class DimensionsAndWeightNormalizer extends MultipleHitsSortedNormalizer<
     @Override
     protected Data[] applyFilter(final Data[] items) {
         return  Arrays.stream(primaryItems(items).orElse(items))
-                .filter(item -> hasAttributeValue(item, "PreviewVrt"))
+                .filter(item -> hasAttributeValue(item, "PreviewVrt") && hasAttributeValue(item, SORTING_FIELDNAME))
                 .toArray(Data[]::new);
     }
 

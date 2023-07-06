@@ -24,8 +24,8 @@ public class SignatureNormalizerTest {
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextMClb",
                         "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343311]._UserOalTextMClb",
                         "Bez. rechts unten (am Pilastersockel): C.B.F.1850"),
-                Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSTxt",
-                        "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343311]._UserOalTextSTxt",
+                Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSVoc",
+                        "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343311]._UserOalTextSVoc",
                         "Signaturen und Inschriften"),
 
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalSortierungLLnu",
@@ -34,8 +34,8 @@ public class SignatureNormalizerTest {
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextMClb",
                         "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343312]._UserOalTextMClb",
                         "C.Blechen 1825"),
-                Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSTxt",
-                        "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343312]._UserOalTextSTxt",
+                Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSVoc",
+                        "[960558].ObjGeneralCre.compositeItem[#0]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343312]._UserOalTextSVoc",
                         "Signaturen und Inschriften"),
 
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalSortierungLLnu",
@@ -51,8 +51,8 @@ public class SignatureNormalizerTest {
                 Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextMClb",
                         "[960558].ObjGeneralCre.compositeItem[#1]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343314]._UserOalTextMClb",
                         "Beschriftet auf der Rückseite von fremder Hand: Adrian Ludwig Richter"),
-                Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSTxt",
-                        "[960558].ObjGeneralCre.compositeItem[#1]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343314]._UserOalTextSTxt",
+                Triple.of("ObjGeneralCre._UserObjGeneralNGBezeichnungenamObjekGrp._UserOalTextSVoc",
+                        "[960558].ObjGeneralCre.compositeItem[#1]._UserObjGeneralNGBezeichnungenamObjekGrp.repeatableGroupItem[45343314]._UserOalTextSVoc",
                         "Fremde Beschriftungen")
                 );
 

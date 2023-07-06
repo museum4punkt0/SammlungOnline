@@ -30,9 +30,24 @@ class GraphQlAPI @Autowired constructor(private val config: GraphQlConfig) {
     }
 
     @LogExecutionTime
-    suspend fun fetchAssortments(): List<AssortmentData> {
-        val result = client.query(FetchAssortmentsQuery()).await()
+    suspend fun fetchAssortments(lang: String): List<AssortmentData> {
+        val result = client.query(FetchAssortmentsQuery(lang)).await()
         return result.data?.smb_assortments?.map { it.fragments.assortmentData }.orEmpty()
+    }
+
+    suspend fun fetchBuildings(): List<BuildingData> {
+        val result = client.query(FetchBuildingsQuery()).await()
+        return result.data?.smb_buildings?.map { it.fragments.buildingData }.orEmpty()
+    }
+
+    suspend fun fetchCollections(): List<CollectionData> {
+        val result = client.query(FetchCollectionsQuery()).await()
+        return result.data?.smb_collections?.map { it.fragments.collectionData }.orEmpty()
+    }
+
+    suspend fun fetchCompilations(): List<CompilationData> {
+        val result = client.query(FetchCompilationsQuery()).await()
+        return result.data?.smb_org_unit?.map { it.fragments.compilationData }.orEmpty()
     }
 
     suspend fun fetchThesaurus(id: Long): ThesaurusData? {

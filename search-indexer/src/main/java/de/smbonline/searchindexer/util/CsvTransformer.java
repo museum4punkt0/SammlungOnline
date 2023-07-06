@@ -13,7 +13,6 @@ import static de.smbonline.searchindexer.conf.ConstKt.*;
 import de.smbonline.searchindexer.conf.CsvConfig;
 import de.smbonline.searchindexer.dto.Data;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;

@@ -3,7 +3,7 @@ package de.smbonline.searchindexer.norm.impl;
 import de.smbonline.searchindexer.graphql.queries.fragment.AssortmentData;
 import de.smbonline.searchindexer.graphql.queries.fragment.ObjectData;
 import de.smbonline.searchindexer.norm.NormalizerBase;
-import de.smbonline.searchindexer.service.GraphQlService;
+import de.smbonline.searchindexer.norm.impl.mappings.MappingSupplier;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +36,9 @@ public class AssortmentsNormalizer extends NormalizerBase<String[]> {
         }
     }
 
-    private final ObjectProvider<GraphQlService> graphQl;
+    private final ObjectProvider<? extends MappingSupplier> graphQl;
 
-    public AssortmentsNormalizer(final ObjectProvider<GraphQlService> graphQl) {
+    public AssortmentsNormalizer(final ObjectProvider<? extends MappingSupplier> graphQl) {
         super(ASSORTMENTS_ATTRIBUTE);
         this.graphQl = graphQl;
     }
@@ -54,7 +54,7 @@ public class AssortmentsNormalizer extends NormalizerBase<String[]> {
     @Override
     public @Nullable String[] resolveAttributeValue(final ObjectData source, final String language) {
         Set<String> assortmentKeys = new TreeSet<>();
-        for (AssortmentData assortment : fetchAssortments()) {
+        for (AssortmentData assortment : fetchAssortments(language)) {
             if (isLinked(assortment, ((Number) source.getId()).longValue())) {
                 // In case we have a subgroup "1234.5678" we use "1234" as assortment key.
                 // Reason is only the main assortments are available for searching - an API user does not know about subgroups.
@@ -85,7 +85,7 @@ public class AssortmentsNormalizer extends NormalizerBase<String[]> {
         return false;
     }
 
-    private List<AssortmentData> fetchAssortments() {
-        return this.graphQl.getObject().fetchAssortments();
+    private List<AssortmentData> fetchAssortments(final String language) {
+        return this.graphQl.getObject().fetchAssortments(language);
     }
 }

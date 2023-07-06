@@ -6,12 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.lang.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 // initial version copied from LDAP microservice (2020-11-19)
 
@@ -44,6 +39,15 @@ public class Data {
 
     // use dedicated converter in here
     private static final ObjectMapper JSON_HELPER = new ObjectMapper();
+
+    public Data renameAttribute(final String oldName, final String newName) {
+        if (hasAttribute(oldName)) {
+            Object oldValue = getAttribute(oldName);
+            setAttribute(newName, oldValue);
+            removeAttribute(oldName);
+        }
+        return this;
+    }
 
     /**
      * Adds/Sets an attribute with given name and value.
@@ -223,6 +227,25 @@ public class Data {
             throw new IllegalArgumentException("Attribute path must not start with dot - " + attributePath);
         }
         return index;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.attributes.hashCode();
+    }
+
+    /**
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        return new TreeMap<>(this.attributes).equals(new TreeMap<>(((Data) other).attributes));
     }
 
     /**

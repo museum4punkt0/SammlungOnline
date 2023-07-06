@@ -12,6 +12,202 @@ It also provides the search webservice to fetch the indexed objects from Elastic
 
 E.g. `kubectl port-forward service/smb-search-indexer 8085:8085`
 
+## Data Model
+
+The search API is a JSON based API that provides different projections to fetch object data with different level of detail. 
+The desired projection can be added as query parameter to the URL as `?projection=oneOf(flat,full, id)`.
+
+1. id: Objects contain only the `id` attribute - common use is intended to check for existence
+2. flat (default): Objects contain simple attributes (number, string, string[]) with display information - common use is intended for list views
+3. full: Objects contain complex attributes with mainly `.formatted` and `.markup` nested attributes - common us is intended for detail views
+
+### Projection Comparison
+
+### Id Projection Model
+
+```json lines 
+{
+    "id": number
+}
+```
+
+### Flat Projection Model
+
+```json lines
+{
+    "@id": string,
+    "@initialImport": datetime,
+    "@lastSynced": datetime,
+    "acquisition": [string],
+    "archiveContent": string,
+    "assets": [string],
+    "attachments": boolean,
+    "assortments": [string],
+    "collection": string,
+    "collectionKey": string,
+    "compilation": string,
+    "creditLine": string, 
+    "culturalReferences": [string],
+    "dateRange": {
+        "gte": date(epoch_seconds),
+        "lte": date(epoch_seconds)
+    },
+    "dating": [string],
+    "description": string,
+    "dimensionsAndWeight": [string],
+    "exhibit": boolean,
+    "exhibitionSpace": [string],
+    "exhibitions": [string],
+    "findSpot": string,
+    "geographicalReferences": [string],
+    "highlight": boolean,
+    "iconclasses": [string],
+    "iconography": [string],
+    "id": number,
+    "identNumber": string,
+    "inscriptions": [string],
+    "involvedParties": [string],
+    "keywords": [string],
+    "literature": [string],
+    "location": string,
+    "materialAndTechnique": [string],
+    "permalink": string,
+    "provenance": [string],
+    "provenanceEvaluation": string,
+    "signatures": [string],
+    "technicalTerm": string,
+    "title": string,
+    "titles": [string]
+}
+```
+
+### Full Projection Model
+
+```json lines
+{
+    "@id": string,
+    "@initialImport": datetime,
+    "@lastSynced": datetime,
+    "acquisition": [string],
+    "archiveContent": string,
+    "assets": [{
+      "id": number,
+      "filename": string,
+      "linkTemplate": string,
+      "formatted": string
+    }],
+    "attachments": boolean,
+    // candidate for BREAKING CHANGE, may become object[]
+    "assortments": [string],
+    "collection": string,
+    "collectionKey": string,
+    "compilation": string,
+    "creditLine": string,
+    "culturalReferences": [{
+      "id": number,
+      "typeId": number,
+      "denominationId": number,
+      "name": string, 
+      "formatted": string,
+      "markup": string
+    }],
+    "dateRange": {
+      "gte": date(epoch_seconds),
+      "lte": date(epoch_seconds),
+      "formatted": string
+    },
+    "dating": [string],
+    "description": {
+      "formatted": string,
+      "markup": string
+    },
+    "dimensionsAndWeight": [string],
+    "exhibit": boolean,
+    "exhibitionSpace": [string],
+    // *BREAKING CHANGE* changed from string[] to object[]
+    "exhibitions": [{
+      "id": number,
+      "title": string,
+      "formatted": string,
+      "markup": string
+    }],
+    "findSpot": string,
+    "geographicalReferences": [{
+      "id": number,
+      "typeId": number,
+      "denominationId": number,
+      "location": string,
+      "details": string,
+      "formatted": string,
+      "markup": string
+    }],
+    "highlight": boolean,
+    // *BREAKING CHANGE* changed from string[] to object[]
+    "iconclasses": [{
+      "id": number,
+      "key": string,
+      "formatted": string,
+      "markup": string
+    }],
+    // *BREAKING CHANGE* changed from string[] to object[]
+    "iconography": [{
+      "id": number,
+      "formatted": string,
+      "markup": string
+    }],
+    "id": number,
+    "identNumber": string,
+    // candidate for BREAKING CHANGE, may become object[]
+    "inscriptions": [string],
+    "involvedParties": [{
+      "id": number,
+      "name": string,
+      "dateRange": string, 
+      "denominationId": number,
+      "formatted": string,
+      "markup": string
+    }],
+    // *BREAKING CHANGE* changed from string[] to object[]
+    "keywords": [{
+      "id": number,
+      "formatted": string,
+      "markup": string
+    }],
+    // candidate for BREAKING CHANGE, may become object[]
+    "literature": [string],
+    // candidate for BREAKING CHANGE, may become object
+    "location": string,
+    "materialAndTechnique": [{
+      "id": number,
+      "name": string,
+      "typeId": number,
+      "formatted": string,
+      "markup": string
+    }],
+    "permalink": {
+      "formatted": string,
+      "markup": string
+    },
+    "provenance": [string],
+    "provenanceEvaluation": string,
+    // candidate for BREAKING CHANGE, may become object[]
+    "signatures": [string],
+    // *BREAKING CHANGE* changed from string to object
+    "technicalTerm": {
+      "formatted": string,
+      "markup": string
+    },
+    "title": string,
+    // *BREAKING CHANGE* changed from string[] to object[]
+    "titles": [{
+      "formatted": string,
+      "markup": string
+    }]
+}
+```
+
+## API Endpoints
+
 ### Listing of indexed objects for comparison
 
 There is a dedicated inventory endpoint that allows for fetching all indexed objects. This is highly relevant for 
