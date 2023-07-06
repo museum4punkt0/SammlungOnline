@@ -70,9 +70,9 @@
   "search": {
     "sublevel": {
       "title": {
-        "staatlichen-sammlung": "Collections of the Staatliche Museen zu Berlin",
-        "staatlichen-insitute": "Institutes of the Staatliche Museen zu Berlin",
-        "musikforschung": "Collection of the National Institute for Music Research"
+        "musikforschung": "Collection of the Staatliches Institut für Musikforschung",
+        "staatlichenInstitute": "Institutes of the Staatliche Museen zu Berlin",
+        "staatlichenSammlung": "Collections of the Staatliche Museen zu Berlin"
       }
     }
   },
@@ -110,8 +110,8 @@
     }
   },
   "intro": {
-    "title": "Direct entry into the collections of the National Museums in Berlin",
-    "text": "Clicking on them will take you directly to the objects available online from the selected collection and institutes:"
+    "title": "Direct access to the collections of the Staatliche Museen zu Berlin",
+    "text": "Click to go directly to the objects in the collections that are available online:"
   },
   "topics": {
     "carousel": {

@@ -89,9 +89,9 @@
   "search": {
     "sublevel": {
       "title": {
-        "staatlichen-sammlung": "Sammlungen der Staatlichen Museen zu Berlin",
-        "staatlichen-insitute": "Institute der Staatlichen Museen zu Berlin",
-        "musikforschung": "Sammlung des Staatlichen Instituts für Musikforschung"
+        "musikforschung": "Sammlung des Staatlichen Instituts für Musikforschung",
+        "staatlichenInstitute": "Institute der Staatlichen Museen zu Berlin",
+        "staatlichenSammlung": "Sammlungen der Staatlichen Museen zu Berlin"
       }
     }
   },
@@ -109,8 +109,8 @@
     "notFoundText": "Ohne Abbildungen"
   },
   "intro": {
-    "title": "Direkteinstieg in die Sammlungen der Staatlichen Museen zu Berlin",
-    "text": "Beim Anklicken gelangen Sie direkt zu den online verfügbaren Objekten der ausgewählten Sammlung und Institute:"
+    "title": "Direkteinstieg in die Sammlungsbestände",
+    "text": "Beim Anklicken gelangen Sie direkt zu den online verfügbaren Objekten der Sammlung oder des Instituts:"
   },
   "topics": {
     "carousel": {
