@@ -1,5 +1,5 @@
 {
-  "resource_version": 96,
+  "resource_version": 106,
   "metadata": {
     "version": 3,
     "sources": [
@@ -38,6 +38,17 @@
                 }
               }
             ],
+            "computed_fields": [
+              {
+                "name": "searchValue",
+                "definition": {
+                  "function": {
+                    "name": "build_search_value_a",
+                    "schema": "smb"
+                  }
+                }
+              }
+            ],
             "insert_permissions": [
               {
                 "role": "editor",
@@ -60,9 +71,12 @@
                   "columns": [
                     "id",
                     "key",
+                    "preview_image",
                     "search_query",
-                    "search_query_type",
-                    "preview_image"
+                    "search_query_type"
+                  ],
+                  "computed_fields": [
+                    "searchValue"
                   ],
                   "filter": {}
                 }
@@ -73,6 +87,9 @@
                   "columns": [
                     "key",
                     "preview_image"
+                  ],
+                  "computed_fields": [
+                    "searchValue"
                   ],
                   "filter": {
                     "_not": {
@@ -119,6 +136,18 @@
             ],
             "event_triggers": [
               {
+                "name": "re-index-assortment",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 600
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
+              },
+              {
                 "name": "re-sync-assortment",
                 "definition": {
                   "enable_manual": true,
@@ -135,7 +164,7 @@
                 "retry_conf": {
                   "interval_sec": 10,
                   "num_retries": 0,
-                  "timeout_sec": 300
+                  "timeout_sec": 3600
                 },
                 "webhook": "http://smb-mds-sync:8082/admin/trigger/sync"
               }
@@ -193,7 +222,7 @@
             ],
             "event_triggers": [
               {
-                "name": "re-index-assortment",
+                "name": "re-index-assortment-obj",
                 "definition": {
                   "delete": {
                     "columns": "*"
@@ -315,6 +344,17 @@
                 }
               }
             ],
+            "computed_fields": [
+              {
+                "name": "name",
+                "definition": {
+                  "function": {
+                    "name": "get_attachment_filename",
+                    "schema": "smb"
+                  }
+                }
+              }
+            ],
             "select_permissions": [
               {
                 "role": "editor",
@@ -325,7 +365,11 @@
                     "id",
                     "media_type",
                     "object_id",
-                    "primary"
+                    "primary",
+                    "updated_at"
+                  ],
+                  "computed_fields": [
+                    "name"
                   ],
                   "filter": {},
                   "allow_aggregations": true
@@ -337,8 +381,12 @@
                   "columns": [
                     "attachment",
                     "credits",
+                    "id",
                     "media_type",
                     "primary"
+                  ],
+                  "computed_fields": [
+                    "name"
                   ],
                   "filter": {}
                 }
@@ -435,6 +483,11 @@
                         "attribute_key": {
                           "_nlike": "ObjGeograficGrp.%"
                         }
+                      },
+                      {
+                        "value": {
+                          "_nlike": "%Depot%"
+                        }
                       }
                     ]
                   },
@@ -489,10 +542,321 @@
           },
           {
             "table": {
+              "name": "blocked_attachments",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "license",
+                "using": {
+                  "foreign_key_constraint_on": "license_id"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "attachments",
+                "using": {
+                  "manual_configuration": {
+                    "column_mapping": {
+                      "id": "id"
+                    },
+                    "insertion_order": null,
+                    "remote_table": {
+                      "name": "attachments",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "id",
+                    "license_id"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "license_id"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "license_id"
+                  ],
+                  "filter": {},
+                  "check": null
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "buildings",
+              "schema": "smb"
+            },
+            "computed_fields": [
+              {
+                "name": "searchValue",
+                "definition": {
+                  "function": {
+                    "name": "build_search_value_b",
+                    "schema": "smb"
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "key",
+                    "title"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "title"
+                  ],
+                  "computed_fields": [
+                    "searchValue"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "title"
+                  ],
+                  "computed_fields": [
+                    "searchValue"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "title"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "re-index-location",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 600
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
+              }
+            ]
+          },
+          {
+            "table": {
               "name": "collections",
               "schema": "smb"
             },
-            "is_enum": true
+            "computed_fields": [
+              {
+                "name": "searchValue",
+                "definition": {
+                  "function": {
+                    "name": "build_search_value_c",
+                    "schema": "smb"
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "key",
+                    "title",
+                    "type"
+                  ]
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "title",
+                    "type"
+                  ],
+                  "computed_fields": [
+                    "searchValue"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "title",
+                    "type"
+                  ],
+                  "computed_fields": [
+                    "searchValue"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "key",
+                    "title",
+                    "type"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "re-index-collection",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 600
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
+              },
+              {
+                "name": "re-sync-collection",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 3600
+                },
+                "webhook": "http://smb-mds-sync:8082/admin/trigger/sync"
+              }
+            ]
+          },
+          {
+            "table": {
+              "name": "cultural_references",
+              "schema": "smb"
+            },
+            "object_relationships": [
+              {
+                "name": "denomination_voc",
+                "using": {
+                  "foreign_key_constraint_on": "denomination_voc_id"
+                }
+              },
+              {
+                "name": "language",
+                "using": {
+                  "foreign_key_constraint_on": "language_id"
+                }
+              },
+              {
+                "name": "name_voc",
+                "using": {
+                  "foreign_key_constraint_on": "name_voc_id"
+                }
+              },
+              {
+                "name": "type_voc",
+                "using": {
+                  "foreign_key_constraint_on": "type_voc_id"
+                }
+              }
+            ],
+            "select_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "object_id",
+                    "culture_item_id",
+                    "language_id",
+                    "name_voc_id",
+                    "type_voc_id",
+                    "denomination_voc_id",
+                    "sequence"
+                  ],
+                  "filter": {}
+                }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "sequence"
+                  ],
+                  "filter": {}
+                }
+              }
+            ]
           },
           {
             "table": {
@@ -541,6 +905,21 @@
                     "title"
                   ],
                   "filter": {}
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "re-index-exhibition",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 600
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
                 }
               }
             ]
@@ -605,12 +984,6 @@
                 }
               },
               {
-                "name": "role_voc",
-                "using": {
-                  "foreign_key_constraint_on": "role_voc_id"
-                }
-              },
-              {
                 "name": "type_voc",
                 "using": {
                   "foreign_key_constraint_on": "type_voc_id"
@@ -622,16 +995,15 @@
                 "role": "editor",
                 "permission": {
                   "columns": [
+                    "details",
                     "geo_item_id",
                     "geopol_voc_id",
                     "id",
                     "language_id",
                     "object_id",
                     "place_voc_id",
-                    "role_voc_id",
-                    "type_voc_id",
                     "sequence",
-                    "details"
+                    "type_voc_id"
                   ],
                   "filter": {}
                 }
@@ -967,6 +1339,14 @@
               "name": "objects",
               "schema": "smb"
             },
+            "object_relationships": [
+              {
+                "name": "location",
+                "using": {
+                  "foreign_key_constraint_on": "location_voc_id"
+                }
+              }
+            ],
             "array_relationships": [
               {
                 "name": "attachments",
@@ -987,6 +1367,18 @@
                     "column": "object_id",
                     "table": {
                       "name": "attribute_translations",
+                      "schema": "smb"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "cultural_references",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "object_id",
+                    "table": {
+                      "name": "cultural_references",
                       "schema": "smb"
                     }
                   }
@@ -1081,9 +1473,14 @@
                 "permission": {
                   "columns": [
                     "id",
+                    "location_voc_id",
                     "exhibition_space",
                     "created_at",
                     "updated_at"
+                  ],
+                  "computed_fields": [
+                    "collectionKey",
+                    "compilation"
                   ],
                   "filter": {},
                   "allow_aggregations": true
@@ -1096,6 +1493,10 @@
                     "exhibition_space",
                     "id",
                     "updated_at"
+                  ],
+                  "computed_fields": [
+                    "collectionKey",
+                    "compilation"
                   ],
                   "filter": {},
                   "limit": 50,
@@ -1115,7 +1516,7 @@
                 "retry_conf": {
                   "interval_sec": 10,
                   "num_retries": 1,
-                  "timeout_sec": 60
+                  "timeout_sec": 300
                 },
                 "webhook": "http://smb-search-indexer:8085/triggers/delete-event"
               },
@@ -1127,7 +1528,7 @@
                 "retry_conf": {
                   "interval_sec": 10,
                   "num_retries": 0,
-                  "timeout_sec": 60
+                  "timeout_sec": 120
                 },
                 "webhook": "http://smb-search-indexer:8085/triggers/index-event"
               },
@@ -1139,7 +1540,7 @@
                 "retry_conf": {
                   "interval_sec": 10,
                   "num_retries": 0,
-                  "timeout_sec": 120
+                  "timeout_sec": 600
                 },
                 "webhook": "http://smb-mds-sync:8082/admin/trigger/sync"
               }
@@ -1164,17 +1565,121 @@
                 }
               }
             ],
+            "computed_fields": [
+              {
+                "name": "collectionKey",
+                "definition": {
+                  "function": {
+                    "name": "find_collection",
+                    "schema": "smb"
+                  }
+                },
+                "comment": ""
+              },
+              {
+                "name": "searchValue",
+                "definition": {
+                  "function": {
+                    "name": "build_search_value_o",
+                    "schema": "smb"
+                  }
+                }
+              }
+            ],
+            "insert_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "check": {},
+                  "columns": [
+                    "id",
+                    "is_compilation",
+                    "name",
+                    "title"
+                  ]
+                }
+              }
+            ],
             "select_permissions": [
               {
                 "role": "editor",
                 "permission": {
                   "columns": [
                     "id",
-                    "name"
+                    "is_compilation",
+                    "name",
+                    "title"
+                  ],
+                  "computed_fields": [
+                    "collectionKey"
                   ],
                   "filter": {},
                   "allow_aggregations": true
                 }
+              },
+              {
+                "role": "public",
+                "permission": {
+                  "columns": [
+                    "is_compilation",
+                    "name",
+                    "title"
+                  ],
+                  "computed_fields": [
+                    "collectionKey",
+                    "searchValue"
+                  ],
+                  "filter": {}
+                }
+              }
+            ],
+            "update_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "columns": [
+                    "id",
+                    "is_compilation",
+                    "name",
+                    "title"
+                  ],
+                  "filter": {},
+                  "check": {}
+                }
+              }
+            ],
+            "delete_permissions": [
+              {
+                "role": "editor",
+                "permission": {
+                  "filter": {}
+                }
+              }
+            ],
+            "event_triggers": [
+              {
+                "name": "re-index-compilation",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 600
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
+              },
+              {
+                "name": "re-sync-orgunit",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 3600
+                },
+                "webhook": "http://smb-mds-sync:8082/admin/trigger/sync"
               }
             ]
           },
@@ -1225,6 +1730,21 @@
                   "filter": {}
                 }
               }
+            ],
+            "event_triggers": [
+              {
+                "name": "re-index-person",
+                "definition": {
+                  "enable_manual": true
+                },
+                "retry_conf": {
+                  "interval_sec": 10,
+                  "num_retries": 0,
+                  "timeout_sec": 600
+                },
+                "webhook": "http://smb-search-indexer:8085/triggers/index-event"
+                }
+              }
             ]
           },
           {
@@ -1233,6 +1753,12 @@
               "schema": "smb"
             },
             "object_relationships": [
+              {
+                "name": "attribution_voc",
+                "using": {
+                  "foreign_key_constraint_on": "attribution_voc_id"
+                }
+              },
               {
                 "name": "object",
                 "using": {
@@ -1257,6 +1783,7 @@
                 "role": "editor",
                 "permission": {
                   "columns": [
+                    "attribution_voc_id",
                     "created_at",
                     "id",
                     "object_id",
@@ -1417,7 +1944,7 @@
                 "retry_conf": {
                   "interval_sec": 10,
                   "num_retries": 0,
-                  "timeout_sec": 60
+                  "timeout_sec": 3600
                 },
                 "webhook": "http://smb-mds-sync:8082/admin/sync",
                 "request_transform": {
@@ -1429,14 +1956,6 @@
                   "query_params": {},
                   "template_engine": "Kriti",
                   "version": 2
-                },
-                "cleanup_config": {
-                  "batch_size": 10000,
-                  "clean_invocation_logs": false,
-                  "clear_older_than": 168,
-                  "paused": true,
-                  "schedule": "0 0 * * *",
-                  "timeout": 60
                 }
               },
               {
@@ -1447,7 +1966,7 @@
                 "retry_conf": {
                   "interval_sec": 10,
                   "num_retries": 0,
-                  "timeout_sec": 60
+                  "timeout_sec": 3600
                 },
                 "webhook": "http://smb-mds-sync:8082/admin/sync",
                 "request_transform": {
@@ -1459,14 +1978,6 @@
                   "query_params": {},
                   "template_engine": "Kriti",
                   "version": 2
-                },
-                "cleanup_config": {
-                  "batch_size": 10000,
-                  "clean_invocation_logs": false,
-                  "clear_older_than": 168,
-                  "paused": true,
-                  "schedule": "0 0 * * *",
-                  "timeout": 60
                 }
               }
             ]
@@ -1552,21 +2063,39 @@
                           ]
                         },
                         {
-                          "instance": {
-                            "_eq": "ObjPerAssociationRoleVgr"
-                          }
+                          "_and": [
+                            {
+                              "instance": {
+                                "_eq": "ObjPerAssociationRoleVgr"
+                              }
+                            },
+                            {
+                              "name": {
+                                "_in": [
+                                  "Leihgeber",
+                                  "Mäzen",
+                                  "Nachlasser",
+                                  "Person",
+                                  "Veräußerer",
+                                  "Vorbesitzer"
+                                ]
+                              }
+                            }
+                          ]
                         },
                         {
-                          "name": {
-                            "_in": [
-                              "Leihgeber",
-                              "Mäzen",
-                              "Nachlasser",
-                              "Person",
-                              "Veräußerer",
-                              "Vorbesitzer"
-                            ]
-                          }
+                          "_and": [
+                            {
+                              "instance": {
+                                "_eq": "GenLocationVgr"
+                              }
+                            },
+                            {
+                              "name": {
+                                "_ilike": "%Depot%"
+                              }
+                            }
+                          ]
                         }
                       ]
                     }

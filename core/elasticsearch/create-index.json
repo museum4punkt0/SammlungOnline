@@ -1,16 +1,11 @@
-PUT /objects-de
+// Create Index Mapping:    PUT /objects-de              { "settings": {...}, "mappings": {...} }
+// Partial Mapping Update:  PUT /objects-de/_mapping     { "properties": {...} }
+// Partial Settings Update: PUT /objects-de/_settings    { ... }
+
 
 {
     "settings": {
-        "analysis": {
-            "normalizer": {
-                "lowercase_normalizer": {
-                  "type": "custom",
-                  "char_filter": [],
-                  "filter": ["lowercase"]
-                }
-            }
-        }
+		"index.max_result_window": 25000
     },
     "mappings": {
         "properties": {
@@ -19,24 +14,64 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
             "@initialImport": {
-                "type": "date"
+                "type": "date",
+                "index": false
             },
             "@lastSynced": {
                 "type": "date"
             },
+			"@originDate": {
+				"type": "long"
+			}
             "acquisition": {
                 "type": "text",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "archiveContent": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "assets": {
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "id": {
+                        "type": "long"
+                    },
+                    "filename": {
+                        "type": "text",
+                        "index": false
+                    },
+                    "linkTemplate": {
+                        "type": "text",
+                        "index": false
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
             },
@@ -48,8 +83,7 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
@@ -58,8 +92,7 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
@@ -68,8 +101,7 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
@@ -78,8 +110,28 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "culturalReferences": {
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "id": {
+                        "type": "long"
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
             },
@@ -92,8 +144,25 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "description": {
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
             },
@@ -102,31 +171,49 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
             "exhibit": {
                 "type": "boolean"
             },
-            "exhibitions": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
-                    }
-                }
-            },
             "exhibitionSpace": {
                 "type": "text",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "exhibitions": {
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "id": {
+                        "type": "long"
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
+                    },
+                    "title": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
                     }
                 }
             },
@@ -135,62 +222,88 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
             "geographicalReferences": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "long"
-                    },
                     "formatted": {
                         "type": "text",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
-                                "ignore_above": 256,
-                                "normalizer": "lowercase_normalizer"
+                                "ignore_above": 256
                             }
                         }
+                    },
+                    "id": {
+                        "type": "long"
+                    },
+                    "location": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
             },
             "highlight": {
                 "type": "boolean"
             },
-            "id": {
-                "type": "long"
-            },
             "iconclasses": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
             },
             "iconography": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
+            },
+            "id": {
+                "type": "long"
             },
             "identNumber": {
                 "type": "text",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
@@ -199,36 +312,53 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
             "involvedParties": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "long"
-                    },
                     "formatted": {
                         "type": "text",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
-                                "ignore_above": 256,
-                                "normalizer": "lowercase_normalizer"
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "id": {
+                        "type": "long"
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
+                    },
+                    "name": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
                             }
                         }
                     }
                 }
             },
             "keywords": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
+                "type": "object",
+                "properties": {
+                    "formatted": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
+                    },
+                    "id": {
+                        "type": "long"
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
             },
@@ -237,8 +367,7 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
@@ -247,36 +376,32 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
-                    }
-                }
-            },
-            "longDescription": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
             "materialAndTechnique": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "long"
-                    },
-                    "formatted": {
+                     "formatted": {
                         "type": "text",
                         "fields": {
                             "keyword": {
                                 "type": "keyword",
-                                "ignore_above": 256,
-                                "normalizer": "lowercase_normalizer"
+                                "ignore_above": 256
                             }
                         }
+                    },
+                   "id": {
+                        "type": "long"
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
+                    },
+                    "name": {
+                        "type": "keyword",
+                        "ignore_above": 256
                     }
                 }
             },
@@ -285,8 +410,7 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
@@ -295,8 +419,7 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
@@ -305,28 +428,47 @@ PUT /objects-de
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
             "technicalTerm": {
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
+                    }
+                }
+            },
+            "title": {
                 "type": "text",
                 "fields": {
                     "keyword": {
                         "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                        "ignore_above": 256
                     }
                 }
             },
             "titles": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256,
-                        "normalizer": "lowercase_normalizer"
+                "type": "object",
+                "properties": {
+                    "formatted": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "markup": {
+                        "type": "text",
+                        "index": false
                     }
                 }
             }

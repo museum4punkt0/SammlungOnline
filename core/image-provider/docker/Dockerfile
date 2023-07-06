@@ -7,8 +7,7 @@ RUN mkdir -p /data/nginx/cache
 RUN chown nginx:nginx /data/nginx/cache
 
 RUN mkdir -p /usr/share/nginx/html/images/restricted
-RUN chmod 777 /usr/share/nginx/html/images
-RUN chmod 777 /usr/share/nginx/html/images/restricted
+RUN chown -R nginx:nginx /usr/share/nginx/html/images
 
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx.conf /etc/nginx/nginx.conf

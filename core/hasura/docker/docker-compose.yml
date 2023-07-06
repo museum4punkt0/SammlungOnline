@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   smb-hasura:
-    image: reg.xailabs.dev/xailabs/hasura/graphql-engine:v2.16.0
+    image: reg.xailabs.dev/xailabs/hasura/graphql-engine:v2.28.1
     container_name: smb-hasura
     restart: unless-stopped
     environment: 
