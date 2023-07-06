@@ -6,8 +6,10 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { FallbackImage, LazyLoadImage } from '@smb/smb-react-components-library';
 
-import { useDependency } from '../../providers/index';
+import { useDependency } from '../../providers';
 import { useSearchResultCardStyles } from './searchResultCard.jss';
+import { useFetchExhibitAttachments } from '../../hooks';
+import { MISSING_IMAGES_WITH_REASONS } from '../ExhibitPreview/ExhibitPreview';
 
 interface IAttributes {
   title?: string;
@@ -21,7 +23,7 @@ interface ICardAttributesProps {
 
 interface ISearchResultCardProps {
   src: string;
-  size?: number;
+  size?: string | number;
   data: ICardAttributesProps;
   onClick?: () => void;
   id: number;
@@ -30,16 +32,19 @@ interface ISearchResultCardProps {
 export const SearchResultCard: React.FC<ISearchResultCardProps> = props => {
   const { size = '100%', data, src, onClick, id } = props;
   const { t } = useTranslation();
+  const { data: attachments } = useFetchExhibitAttachments(id);
   const classes = useSearchResultCardStyles();
   const { linkBuilder } = useDependency();
+  const attachmentId = attachments[0]?.id;
+  const specialReason = MISSING_IMAGES_WITH_REASONS.includes(attachmentId as number);
+
+  const reasonText = specialReason
+    ? t(`details.attachment.missingImageReasons.${attachmentId}`)
+    : t('image.notFoundText');
+
   const renderFallbackImage = () => {
     return (
-      <FallbackImage
-        label={data.title}
-        text={t('image.notFoundText')}
-        width={size}
-        height={290}
-      />
+      <FallbackImage label={data.title} text={reasonText} width={size} height={290} />
     );
   };
   const clickHandler = (event: React.MouseEvent<HTMLElement>) => {
@@ -61,7 +66,7 @@ export const SearchResultCard: React.FC<ISearchResultCardProps> = props => {
         <div aria-label={`Abbildung von ${data.title}`}>
           <LazyLoadImage
             Fallback={renderFallbackImage()}
-            src={src}
+            src={specialReason ? '#' : src}
             width={size}
             height={290}
           />

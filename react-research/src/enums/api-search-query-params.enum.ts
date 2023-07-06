@@ -3,4 +3,5 @@ export enum EApiSearchQueryParams {
   language = 'lang',
   limit = 'limit',
   offset = 'offset',
+  sort = 'sort',
 }

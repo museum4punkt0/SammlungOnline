@@ -15,8 +15,8 @@ export const useSearchResultCardStyles = makeStyles((theme: Theme) => {
       marginBottom: '2rem',
       padding: '4px',
 
-      [theme.breakpoints.up(375)]: {
-        width: '90%',
+      [theme.breakpoints.down(500)]: {
+        width: '45%',
       },
 
       [theme.breakpoints.up(500)]: {

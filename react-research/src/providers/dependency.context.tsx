@@ -1,16 +1,16 @@
 import { createContext, useContext } from 'react';
 
-import {
-  searchFormTogglesConfig,
-  searchFormFilterAccordionsConfig,
-} from '../utils/configuration/index';
+import { searchFormTogglesConfig } from '../utils/configuration/index';
 import ToursService from '../utils/tours/tours.service';
 import { LinkBuilder } from '../utils/LinkBuilder';
 
 import { searchFilterParsersMap } from '../parsers/index';
 import { searchFilterResolversMap } from '../resolvers/index';
+import {
+  DEFAULT_ADVANCED_SEARCH_INFO,
+  AdvancedSearchFiltersConfig,
+} from '../parsers/advanced-search-info.parser';
 
-import { AppStage } from '../enums/index';
 import {
   SearchService,
   SearchFiltersService,
@@ -40,18 +40,11 @@ export interface IDependencyContext {
 }
 
 const defaultConfiguration = loadConfig(null);
-const defaultSearchFilterData = {
-  name: 'assortments',
-  filtersKey: 'assortments',
-  label: 'searchForm.filters.assortments',
-  sublevel: undefined,
-  stages: [AppStage.LOCAL, AppStage.DEV, AppStage.STAGE, AppStage.PRODUCTION],
-  filters: [{ name: '', value: '' }],
-};
+const defaultSearchFilterData = DEFAULT_ADVANCED_SEARCH_INFO;
 
 export const createDependencies = (
   configuration: IConfiguration,
-  searchFilterData: any,
+  searchFilterData: AdvancedSearchFiltersConfig,
 ): IDependencyContext => {
   const graphqlService = new GraphqlService(configuration.GRAPHQL_ENDPOINT);
   const imageUrlBuilder = new ImageUrlBuilderService(configuration);
@@ -65,14 +58,13 @@ export const createDependencies = (
     stages.includes(configuration.stage),
   );
 
-  const searchFormFilterAccordions =
-    searchFormFilterAccordionsConfig.length && searchFilterData.filters.length
-      ? [...searchFormFilterAccordionsConfig, searchFilterData]
-      : searchFormFilterAccordionsConfig;
+  const searchFormFilterAccordions = searchFilterData;
 
-  const searchFilterGroups = searchFormFilterAccordions.filter(({ stages }) =>
-    stages.includes(configuration.stage),
-  );
+  const searchFilterGroups = searchFormFilterAccordions
+    ? searchFormFilterAccordions.filter(({ stages }) =>
+        stages.includes(configuration.stage),
+      )
+    : [];
 
   return {
     exhibitService,

@@ -5,18 +5,19 @@ import { useTranslation } from 'react-i18next';
 import { ExhibitModel } from '@smb/smb-react-components-library';
 import { Typography } from '@material-ui/core';
 
-import { useDependency } from '../../providers/index';
-import { useSearchQuery, useSearch } from '../../hooks/index';
+import { useDependency } from '../../providers';
+import { useSearchQuery, useSearch } from '../../hooks';
 import {
   ISearchFormData,
   IVirtualSearchAttributeCondition,
   IVirtualSearchFilterGroup,
   IVirtualSearchSwitch,
-} from '../../types/index';
+} from '../../types';
 
 import { SearchResultsModule, SearchForm } from '../index';
 
 import useStyles from './searchContainer.jss';
+import { SortOption } from '../../utils/configuration/sorting-info.config';
 
 export interface ISearchResult {
   items: ExhibitModel[];
@@ -32,6 +33,7 @@ export interface ISearchQueryData {
   searchControls: IVirtualSearchSwitch[];
   conditions: IVirtualSearchAttributeCondition[];
   advancedFilters: IVirtualSearchFilterGroup[];
+  sort: SortOption;
 }
 
 const SearchContainer: React.FC = () => {
@@ -86,6 +88,7 @@ const SearchContainer: React.FC = () => {
       searchControls: formData.searchControls,
       conditions: formData.conditions,
       advancedFilters: formData.advancedFilters,
+      sort: formData.sort,
     });
 
     history.push({
@@ -122,6 +125,7 @@ const SearchContainer: React.FC = () => {
             onChange={offset => {
               setOffset(offset);
             }}
+            onSortChange={(sort: SortOption) => setFormData({ ...formData, sort: sort })}
           />
         </section>
       </div>

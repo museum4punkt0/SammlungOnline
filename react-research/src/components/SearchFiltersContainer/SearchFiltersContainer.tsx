@@ -5,15 +5,14 @@ import { useTranslation } from 'react-i18next';
 import AddIcon from '@material-ui/icons/Add';
 import { Collapse, Grid, Typography, Button } from '@material-ui/core';
 
+import { useShowFilters, useClearFilters, useAllActiveFiltersCount } from '../../hooks';
+import { ISearchFormData } from '../../types';
+import { ESearchOperators } from '../../enums';
 import {
-  useShowFilters,
-  useClearFilters,
-  useFieldConditions,
-  useAllActiveFiltersCount,
-} from '../../hooks/index';
-import { ISearchFormData } from '../../types/index';
-import { ESearchFormFields } from '../../enums/index';
-import { useCreateSearchFormChangeEvent } from '../../providers/index';
+  useCreateSearchFormChangeEvent,
+  useFacetsContext,
+  useFormConditionsController,
+} from '../../providers';
 
 import {
   SearchFilterAccordionList,
@@ -25,14 +24,16 @@ import useStyles from './searchFiltersContainer.jss';
 
 export interface ISearchFiltersContainerProps {
   defaultValues?: ISearchFormData;
+  rerender?: boolean; // only purpose is to be changed at a higher level to trigger rerender
 }
 
 export const SearchFiltersContainer: React.FC<ISearchFiltersContainerProps> = () => {
   const { t } = useTranslation();
-
   const [onFilterToggle, setOnFilterToggle] = useState(false);
   const [showFilters, { toggle: toggleFilters }] = useShowFilters();
+  const { updateFacets } = useFacetsContext();
   const allActiveFiltersCount = useAllActiveFiltersCount();
+  const conditionsControl = useFormConditionsController();
 
   useEffect(() => {
     const shouldShowFiltersCount = allActiveFiltersCount > 0;
@@ -47,12 +48,6 @@ export const SearchFiltersContainer: React.FC<ISearchFiltersContainerProps> = ()
       return toggleFilters(true);
     }
   }, [allActiveFiltersCount]);
-
-  const {
-    conditions: conditionsFields,
-    removeCondition,
-    appendCondition,
-  } = useFieldConditions(ESearchFormFields.conditions);
 
   const createSearchFormChangeEvent = useCreateSearchFormChangeEvent();
 
@@ -69,15 +64,15 @@ export const SearchFiltersContainer: React.FC<ISearchFiltersContainerProps> = ()
   };
 
   const handleRemoveCondition = (index: number) => {
-    removeCondition(index);
+    conditionsControl?.remove(index);
+    updateFacets();
     createSearchFormChangeEvent();
   };
 
   const classes = useStyles();
 
   const getCollapseState = (state: boolean) => {
-    if (state) return true;
-    else return false;
+    return state;
   };
 
   return (
@@ -95,7 +90,7 @@ export const SearchFiltersContainer: React.FC<ISearchFiltersContainerProps> = ()
         <>
           <Grid container spacing={0} data-testid="search-condition-list-wrapper">
             <SearchConditionsList
-              conditionFields={conditionsFields as any}
+              conditionFields={conditionsControl?.fields as any}
               onRemove={handleRemoveCondition}
             />
           </Grid>
@@ -107,7 +102,13 @@ export const SearchFiltersContainer: React.FC<ISearchFiltersContainerProps> = ()
           >
             <Button
               className={classes.addAttributeContainer}
-              onClick={appendCondition}
+              onClick={() =>
+                conditionsControl?.append({
+                  field: '',
+                  value: '',
+                  operator: ESearchOperators.AND,
+                })
+              }
               data-testid={'addCondition-button'}
             >
               <AddIcon className={classes.addIcon} fontSize={'large'} />

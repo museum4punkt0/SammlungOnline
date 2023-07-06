@@ -6,8 +6,8 @@ import {
   SearchAttributeConditionFilterOperators,
 } from '../../utils/configuration/config';
 import { SearchConditionalField } from '../index';
-import { ESearchFormFields } from '../../enums/index';
-import { IVirtualSearchAttributeCondition } from '../../types/index';
+import { ESearchFormFields } from '../../enums';
+import { IVirtualSearchAttributeCondition } from '../../types';
 
 interface ISearchConditionsListProps {
   onRemove: (index: number) => void;
@@ -23,11 +23,10 @@ const SearchConditionsList: React.FC<ISearchConditionsListProps> = props => {
     <>
       {conditionFields.map(({ id }, index) => {
         const baseName = `${ESearchFormFields.conditions}[${index}]`;
+        const values = getValues<string, IVirtualSearchAttributeCondition>(baseName);
 
-        const { value, field, operator } = getValues<
-          string,
-          IVirtualSearchAttributeCondition
-        >(baseName);
+        if (!values) return;
+        const { value, field, operator } = values;
 
         return (
           <SearchConditionalField

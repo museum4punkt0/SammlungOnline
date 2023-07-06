@@ -1,11 +1,10 @@
-import { searchFormFilterAccordionsConfig, ISearchOption, ISearchFilter, ISearchFilterGroup } from './search-form-filter-accordions.config';
+import { ISearchOption, ISearchFilter, ISearchFilterGroup } from './advanced-search-info.types';
 import { searchFormTogglesConfig, ISearchToggle } from './search-form-toggle.config';
 import { SearchAttributeConditionFilterOperators, SearchAttributeConditionFilterFields } from './config';
 import { infoItemsConfiguration } from './exhibit-info.config';
 import { ExhibitDescriptionFieldsVisibilityConfig } from './visible-fields.config';
 
-export { 
-    searchFormFilterAccordionsConfig, 
+export {
     searchFormTogglesConfig, 
     SearchAttributeConditionFilterOperators, 
     SearchAttributeConditionFilterFields, 

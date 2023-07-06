@@ -34,8 +34,8 @@
     }
   },
   "intro": {
-    "title": "Direkteinstieg in die Sammlungen der Staatlichen Museen zu Berlin",
-    "text": "Beim Anklicken gelangen Sie direkt zu den online verfügbaren Objekten der ausgewählten Sammlung und Institute:"
+    "title": "Direkteinstieg in die Sammlungsbestände",
+    "text": "Beim Anklicken gelangen Sie direkt zu den online verfügbaren Objekten der Sammlung oder des Instituts:"
   },
   "topics": {
     "carousel": {
@@ -92,6 +92,7 @@
         "findSpot": "Fundort",
         "fulltext": "Volltext",
         "geographicalReferences": "Geografische Bezüge",
+        "culturalReferences": "Kulturelle Bezüge",
         "id": "Id",
         "identNumber": "Ident. Nr.",
         "involvedParties": "Beteiligte",
@@ -151,6 +152,7 @@
         "dimensionsAndWeight": "Abmessungen",
         "exhibitions": "Ausstellungen",
         "geographicalReferences": "Geografische Bezüge",
+        "culturalReferences": "Kulturelle Bezüge",
         "identNumber": "Ident. Nr.",
         "involvedParties": "Beteiligte",
         "literature": "Literatur",
@@ -159,6 +161,7 @@
         "materialAndTechnique": "Material / Technik",
         "noData": "Keine Daten vorhanden.",
         "provenance": "Provenienz",
+        "provenanceEvaluation": "Provenienz",
         "signatures": "Signaturen und Inschriften",
         "technicalTerm": "Sachbegriff",
         "titles": "Weitere Titel",

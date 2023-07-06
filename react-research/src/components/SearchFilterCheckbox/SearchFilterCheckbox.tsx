@@ -9,11 +9,12 @@ export interface ISearchFilterCheckbox {
   label: string;
   name: string;
   value: boolean;
+  disabled?: boolean;
   onChange?: (value: boolean) => void;
 }
 
 const SearchFilterCheckbox: React.FC<ISearchFilterCheckbox> = props => {
-  const { label, name, value, onChange } = props;
+  const { label, name, value, onChange, disabled } = props;
   const { control } = useFormContext();
   const { field: checkBox } = useController({ name, control, defaultValue: value });
   const classes = useStyles();
@@ -41,6 +42,7 @@ const SearchFilterCheckbox: React.FC<ISearchFilterCheckbox> = props => {
       control={<Checkbox checked={checkBox.value} color="primary" />}
       onKeyPress={handleKeyPress}
       onChange={handleChange}
+      disabled={disabled}
     />
   );
 };

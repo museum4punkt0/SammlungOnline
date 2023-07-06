@@ -12,6 +12,8 @@ export const searchFilterResolversMap: ISearchFilterResolversMap = {
   [ESearchConditionFields.dating]: searchFilterResolver,
   [ESearchConditionFields.geographicalReferences]: searchFilterResolver,
   [ESearchConditionFields.geographicalReferencesID]: searchFilterResolver,
+  [ESearchConditionFields.culturalReferences]: searchFilterResolver,
+  [ESearchConditionFields.culturalReferencesID]: searchFilterResolver,
   [ESearchConditionFields.involvedParties]: searchFilterResolver,
   [ESearchConditionFields.involvedPartiesID]: searchFilterResolver,
   [ESearchConditionFields.materialAndTechnique]: searchFilterResolver,

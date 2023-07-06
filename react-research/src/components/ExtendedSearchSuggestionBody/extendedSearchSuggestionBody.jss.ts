@@ -8,12 +8,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'space-around',
   },
   optionValueWrapper: {
-    width: '90%',
+    width: '100%', // -10% optionCounter
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'start',
     ['@media (max-width:700px)']: {
-      width: '85%',
+      width: '100%', // -15% optionCounter
     },
   },
   optionValue: {

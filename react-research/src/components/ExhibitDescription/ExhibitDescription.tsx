@@ -3,7 +3,11 @@ import React from 'react';
 import { Divider, Grid, Typography } from '@material-ui/core';
 
 import useStyles from './exhibitDescription.jss';
-import { AppStage, useConfigLoader } from '@smb/smb-react-components-library';
+import {
+  AppStage,
+  SafeEscapedHTML,
+  useConfigLoader,
+} from '@smb/smb-react-components-library';
 
 interface IExhibitDescriptionProps {
   titles: string[];
@@ -38,15 +42,12 @@ const ExhibitDescription: React.FC<IExhibitDescriptionProps> = props => {
               const className = i === 0 ? classes.title : classes.titleSecond;
               return (
                 <React.Fragment key={i}>
-                  {titles && (
-                    <Typography
-                      key={i}
-                      variant={variant}
-                      component={component}
-                      className={className}
-                    >
-                      {title}
-                    </Typography>
+                  {title && (
+                    <SafeEscapedHTML
+                      htmlString={title}
+                      htmlTag={component}
+                      cssClassNames={className}
+                    />
                   )}
                 </React.Fragment>
               );

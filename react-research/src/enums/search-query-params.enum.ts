@@ -5,4 +5,5 @@ export enum ESearchQueryParams {
   offset = 'offset',
   controls = 'controls',
   conditions = 'conditions',
+  sort = 'sort',
 }

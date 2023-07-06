@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { EApiSearchQueryParams } from '../enums/index';
+import { EApiSearchQueryParams } from '../enums';
 
 import {
   ISearchOptions,
@@ -8,10 +8,17 @@ import {
   ISuggestion,
   ISearchExhibitsApiResponse,
   ISearchSuggestionsApiResponse,
-} from '../types/index';
+  IFacet,
+  IFetchFacetsOptions,
+  ISearchFacetsApiResponse,
+} from '../types';
 
 import { ExhibitService, IConfiguration } from '@smb/smb-react-components-library';
 import QueryParamsService from '../utils/query-params/query-params.service';
+import {
+  SORT_VALUES_MAP,
+  SortOption,
+} from '../utils/configuration/sorting-info.config';
 
 class SearchService {
   constructor(
@@ -22,18 +29,29 @@ class SearchService {
   public async search(options: ISearchOptions): Promise<ISearchExhibitsApiResponse> {
     const { question, filters = [], offset, limit = 20, language = 'de' } = options;
 
+    const parsedFilters = filters.map(({ field, operator, q }) => ({
+      field,
+      operator,
+      q: ((q as unknown) as ISuggestion)?.value ?? q ?? '',
+    }));
+
     const queryParamsManager = new QueryParamsService();
 
     question && queryParamsManager.set(EApiSearchQueryParams.question, question);
     queryParamsManager.set(EApiSearchQueryParams.language, language);
     queryParamsManager.set(EApiSearchQueryParams.limit, limit);
     queryParamsManager.set(EApiSearchQueryParams.offset, offset);
+    queryParamsManager.set(
+      EApiSearchQueryParams.sort,
+      SORT_VALUES_MAP[options.sort as SortOption],
+    );
 
     const query = queryParamsManager.getQueryString();
 
     const url = `${this._config.ELASTIC_API_URL}/?${query}`;
+
     const { data } = await axios.post<ISearchExhibitsApiResponse>(url, {
-      q_advanced: filters,
+      q_advanced: parsedFilters ?? [],
     });
 
     const exhibits = data.objects.map(this._exhibitService.mapToExhibitModel.bind(this));
@@ -56,7 +74,7 @@ class SearchService {
   public async fetchSuggestions(
     options: IFetchSuggestionsOptions,
   ): Promise<ISuggestion[]> {
-    const { value, attributeField, limit = 10, language = 'de' } = options;
+    const { value, attributeField, limit = 10, language = 'de', qAdvanced } = options;
 
     const queryParamsManager = new QueryParamsService();
 
@@ -70,9 +88,21 @@ class SearchService {
     const query = queryParamsManager.getQueryString();
 
     const url = `${this._config.ELASTIC_API_URL}/suggestions/?${query}`;
-    const { data } = await axios.get<ISearchSuggestionsApiResponse>(url);
+
+    const { data } = await axios.post<ISearchSuggestionsApiResponse>(url, {
+      q_advanced: qAdvanced ?? [],
+    });
 
     return data.suggestions;
+  }
+
+  public async fetchFacets(options?: IFetchFacetsOptions): Promise<IFacet[]> {
+    const url = `${this._config.ELASTIC_API_URL}/facets`;
+    const { data } = await axios.post<ISearchFacetsApiResponse>(url, {
+      q_advanced: options?.qAdvanced ?? [],
+    });
+
+    return data.facets;
   }
 }
 

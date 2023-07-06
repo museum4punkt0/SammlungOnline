@@ -6,6 +6,7 @@ import { SearchInput, DataRangeInput } from '../index';
 import { IDateRangeFilter, ISearchAttributeOption, ISuggestion } from '../../types/index';
 
 import { ESearchConditionFields } from '../../enums/index';
+import { useFacetsContext } from "../../providers";
 
 interface ISearchConditionalInputFactoryProps {
   name: string;
@@ -16,9 +17,9 @@ interface ISearchConditionalInputFactoryProps {
 
 const SearchConditionalInputFactory: React.FC<ISearchConditionalInputFactoryProps> = props => {
   const { name, value, fields, onChange } = props;
-
   const { t } = useTranslation();
   const { control, getValues } = useFormContext();
+  const { updateFacets } = useFacetsContext();
 
   const field =
     useWatch<string>({
@@ -40,8 +41,8 @@ const SearchConditionalInputFactory: React.FC<ISearchConditionalInputFactoryProp
   const handleSelect = (value: string | ISuggestion) => {
     if (typeof value === 'string') {
       fieldInput.onChange(value);
-    } else if (typeof value !== 'string') {
-      fieldInput.onChange(value.value);
+    } else {
+      fieldInput.onChange(value?.value);
     }
     onChange();
   };
@@ -65,7 +66,10 @@ const SearchConditionalInputFactory: React.FC<ISearchConditionalInputFactoryProp
           label={t(label)}
           fieldName={field}
           onBlur={onChange}
-          onSelect={handleSelect}
+          onSelect={val => {
+            handleSelect(val);
+            updateFacets();
+          }}
           onChange={fieldInput.onChange}
           isExtendedSearchInput={true}
         />

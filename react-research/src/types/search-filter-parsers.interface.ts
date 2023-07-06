@@ -7,6 +7,8 @@ export interface ISearchFilterParsersMapInterface {
   [ESearchConditionFields.dating]: IQueryParameterParser<string>;
   [ESearchConditionFields.geographicalReferences]: IQueryParameterParser<string>;
   [ESearchConditionFields.geographicalReferencesID]: IQueryParameterParser<string>;
+  [ESearchConditionFields.culturalReferences]: IQueryParameterParser<string>;
+  [ESearchConditionFields.culturalReferencesID]: IQueryParameterParser<string>;
   [ESearchConditionFields.involvedParties]: IQueryParameterParser<string>;
   [ESearchConditionFields.involvedPartiesID]: IQueryParameterParser<string>;
   [ESearchConditionFields.materialAndTechnique]: IQueryParameterParser<string>;

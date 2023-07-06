@@ -4,12 +4,14 @@ import React from 'react';
 import { AccordionDetails, Grid, Typography } from '@material-ui/core';
 
 import { SearchFiltersList, SearchFiltersOptionsList } from '../index';
-import { IVirtualSearchFilter } from '../../types/index';
+import { IVirtualSearchFilter } from '../../types';
 
 import useStyles from './searchFilterAccordionDetails.jss';
+import { useTranslation } from 'react-i18next';
 
 export interface ISearchFilterAccordionDetailsProps {
   formBaseName: string;
+  filtersGroupName: string;
   filters: IVirtualSearchFilter[];
   sublevel?: Array<{
     title?: string;
@@ -18,7 +20,8 @@ export interface ISearchFilterAccordionDetailsProps {
 }
 
 const SearchFilterAccordionDetails: React.FC<ISearchFilterAccordionDetailsProps> = props => {
-  const { filters, sublevel, formBaseName } = props;
+  const { t } = useTranslation();
+  const { filters, sublevel, formBaseName, filtersGroupName } = props;
   const classes = useStyles();
   const getFiltersArray = (
     row:
@@ -42,7 +45,11 @@ const SearchFilterAccordionDetails: React.FC<ISearchFilterAccordionDetailsProps>
     return (
       <Grid container className={classes.advancedContainer}>
         <Grid item xs={12}>
-          <SearchFiltersList filters={filters} formBaseName={formBaseName} />
+          <SearchFiltersList
+            filters={filters}
+            formBaseName={formBaseName}
+            filtersGroupName={filtersGroupName}
+          />
         </Grid>
         <Grid item xs={12}>
           <SearchFiltersOptionsList filters={filters} formBaseName={formBaseName} />
@@ -59,7 +66,7 @@ const SearchFilterAccordionDetails: React.FC<ISearchFilterAccordionDetailsProps>
             <>
               {row?.title && (
                 <Typography className={classes.headline} variant={'h6'} component={'h5'}>
-                  {row?.title}
+                  {t(row.title)}
                 </Typography>
               )}
             </>

@@ -30,7 +30,7 @@ const useStyles = makeStyles(() =>
       },
 
       '&.Mui-disabled': {
-        border: 'solid transparent',
+        border: '1px solid transparent',
         color: '#666666 !important',
         background: '#d3d3d3 !important',
       },

@@ -7,16 +7,18 @@ import { useDependency } from '../providers/index';
 
 const getRelatedSearchTermFromExhibit = (exhibit?: ExhibitModel): string => {
   if (exhibit?.involvedParties?.length) {
-    if (typeof exhibit?.involvedParties[0] !== 'string') {
-      return exhibit.involvedParties[0]?.formatted;
-    }
-    return exhibit.involvedParties[0];
+    return typeof exhibit?.involvedParties[0] === 'string'
+      ? exhibit.involvedParties[0]
+      : exhibit.involvedParties[0].name || exhibit.involvedParties[0].formatted;
   } else if (exhibit?.technicalTerm) {
-    return exhibit.technicalTerm;
-  } else if (exhibit?.titles?.length) {
-    return exhibit.titles[0];
+    return typeof exhibit.technicalTerm === 'string'
+      ? exhibit.technicalTerm
+      : exhibit.technicalTerm.formatted;
+  } else if (exhibit?.title) {
+    return typeof exhibit.title === 'string'
+      ? exhibit.title
+      : exhibit.title.formatted;
   }
-
   return '';
 };
 

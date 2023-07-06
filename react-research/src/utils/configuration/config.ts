@@ -1,5 +1,5 @@
-import { ESearchConditionFields, ESearchOperators } from '../../enums/index';
-import { ISearchAttributeOption } from '../../types/index';
+import { ESearchConditionFields, ESearchOperators } from "../../enums/index";
+import { ISearchAttributeOption } from "../../types/index";
 
 export const SearchAttributeConditionFilterOperators: ISearchAttributeOption<
   ESearchOperators
@@ -48,6 +48,10 @@ export const SearchAttributeConditionFilterFields: ISearchAttributeOption<
   {
     label: 'searchForm.filters.attributes.geographicalReferences',
     value: ESearchConditionFields.geographicalReferences,
+  },
+  {
+    label: 'searchForm.filters.attributes.culturalReferences',
+    value: ESearchConditionFields.culturalReferences,
   },
   {
     label: 'searchForm.filters.attributes.exhibitions',

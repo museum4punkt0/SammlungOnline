@@ -50,7 +50,7 @@ app.use('/detail/:exhibitId/:exhibitTitle?', async (req, res, next) => {
       const canonicalLink = new LinkBuilder().getPermalinkHref(exhibitId, exhibit?.title);
       const title =
         exhibit?.title?.replace(/["]/g, '') || 'Recherche | Staatliche Museen zu Berlin';
-      const description = exhibit?.description?.substring(0, 300).replace(/["]/g, '');
+      const description = exhibit?.description?.formatted.substring(0, 300).replace(/["]/g, '');
 
       const ssr = ReactDOMServer.renderToString(<App ssr={true} />);
       data = data.replace('<div id="root"></div>', `<div id="root">${ssr}</div>`);
@@ -60,7 +60,7 @@ app.use('/detail/:exhibitId/:exhibitTitle?', async (req, res, next) => {
           query FetchObjectAttachments {
             smb_objects_by_pk(id: ${exhibitId}) {
               attachments(order_by: [{ primary: desc }, { attachment: asc }], limit: 1) {
-                attachment
+                filename: attachment
               }
             }
           }`,
@@ -87,8 +87,8 @@ app.use('/detail/:exhibitId/:exhibitTitle?', async (req, res, next) => {
           meta += `<meta property=\"og:url\" content="${canonicalLink}" />`;
           // image
           const image = result?.data?.smb_objects_by_pk?.attachments[0];
-          if (image?.attachment && image.attachment.indexOf('restricted') === -1) {
-            const img = imageBuilder.buildUrl(image.attachment, 1200, 630);
+          if (image?.filename && image.filename.indexOf('restricted') === -1) {
+            const img = imageBuilder.buildUrl(image.filename, 1200, 630);
             meta += `<meta property=\"og:image\" content="${img}" />`;
             meta += `<meta name=\"twitter:image\" content="${img}" />`;
           }
@@ -97,7 +97,7 @@ app.use('/detail/:exhibitId/:exhibitTitle?', async (req, res, next) => {
 
           // finally done
           data = data.replace(/<title>.+?<\/title>/, '');
-          data = data.replace(/<meta\s+name="description"\s+content=".+?"\s*\/>/m, '');
+          data = data.replace(/<meta\s+name="description"\s+content=".+?"\s*\/?>/m, '');
           data = data.replace('<meta name="placeholder">', meta);
           return res.send(data);
         });

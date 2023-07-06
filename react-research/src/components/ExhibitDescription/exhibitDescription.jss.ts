@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       color: theme.palette.text.secondary,
       marginBottom: '.5rem',
+      '& a': {
+        color: theme.palette.text.secondary,
+      },
     },
 
     titleSecond: {
@@ -30,6 +33,9 @@ const useStyles = makeStyles((theme: Theme) =>
       fontFamily: 'GTWalsheimPro-Bold, Arial',
       '&:not(:last-of-type)': {
         marginBottom: '.25rem',
+      },
+      '& a': {
+        color: theme.palette.text.secondary,
       },
     },
 

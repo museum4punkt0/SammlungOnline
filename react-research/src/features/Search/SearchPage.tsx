@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -6,9 +5,9 @@ import Helmet from 'react-helmet';
 
 import { Typography } from '@material-ui/core';
 
-import { useDependency } from '../../providers/index';
-import { ISearchResult, ISearchFormData } from '../../types/index';
-import { useSearchQuery, useSearch } from '../../hooks/index';
+import { useDependency } from '../../providers';
+import { ISearchResult, ISearchFormData } from '../../types';
+import { useSearchQuery, useSearch } from '../../hooks';
 
 import { SearchForm, SearchResultsModule } from '../../components/index';
 
@@ -18,9 +17,11 @@ import {
   TextSectionContextData,
   LandingpageService,
   WrappedSpinner,
+  MaintenanceDialog,
 } from '@smb/smb-react-components-library';
 
 import useStyles from './searchPage.jss';
+import { SortOption } from '../../utils/configuration/sorting-info.config';
 
 const SearchPage: React.FC = () => {
   const searchQuery = useSearchQuery();
@@ -60,6 +61,7 @@ const SearchPage: React.FC = () => {
       searchControls: formData.searchControls,
       conditions: formData.conditions,
       advancedFilters: formData.advancedFilters,
+      sort: formData.sort,
     });
 
     history.push({
@@ -133,8 +135,12 @@ const SearchPage: React.FC = () => {
                   loading={loading}
                   data={searchResult.items}
                   onChange={offset => {
+                    setFormData({ ...formData });
                     setOffset(offset);
                   }}
+                  onSortChange={(sort: SortOption) =>
+                    setFormData({ ...formData, sort: sort })
+                  }
                 />
               </div>
             </div>
@@ -149,6 +155,7 @@ const SearchPage: React.FC = () => {
       ) : (
         <WrappedSpinner loading={true} platform={'research'} />
       )}
+      <MaintenanceDialog/>
     </>
   );
 };

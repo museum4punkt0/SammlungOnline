@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Box, Grid, Link, Typography } from '@material-ui/core';
 import { FallbackImage, LazyLoadImage } from '@smb/smb-react-components-library';
 
-import { useDependency } from '../../providers/index';
+import { useDependency } from '../../providers';
 
 import { useSearchResultRowStyles } from './searchResultRow.jss';
+import { useFetchExhibitAttachments } from '../../hooks';
+import { MISSING_IMAGES_WITH_REASONS } from '../ExhibitPreview/ExhibitPreview';
 
 interface IAttributes {
   title?: string;
@@ -41,13 +43,21 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = props => {
 
   const { t } = useTranslation();
 
+  const { data: attachments } = useFetchExhibitAttachments(id);
+  const attachmentId = attachments[0]?.id;
+  const specialReason = MISSING_IMAGES_WITH_REASONS.includes(attachmentId as number);
+
+  const reasonText = specialReason
+    ? t(`details.attachment.missingImageReasons.${attachmentId}`)
+    : t('image.notFoundText');
+
   const classes = useSearchResultRowStyles();
 
   const renderFallbackImage = () => {
     return (
       <FallbackImage
         label={title}
-        text={t('image.notFoundText')}
+        text={reasonText}
         width={imageWidth}
         height={imageHeight}
       />
@@ -86,7 +96,7 @@ export const SearchResultRow: React.FC<ISearchResultRowProps> = props => {
           xs={12}
         >
           <LazyLoadImage
-            src={src}
+            src={specialReason ? '#' : src}
             Fallback={renderFallbackImage()}
             width={imageWidth}
             height={imageHeight}

@@ -1,17 +1,21 @@
 /* eslint-disable no-console */
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { useFetchSuggestions } from '../../hooks/index';
-import { ISuggestion } from '../../types/index';
+import { useFetchSuggestions } from '../../hooks';
+import { ISuggestion } from '../../types';
 import { ExtendedSearchSuggestionBody, MainSearchSuggestionBody } from '../index';
 
 import useStyles from './searchInput.jss';
 import useInputStyles from './input.jss';
+import { useFilters } from './use-filters.hook';
+import {ESearchConditionFields, ESearchFormFields, ESearchOperators} from "../../enums";
+import {useFormContext} from "react-hook-form";
+import {useCreateSearchFormChangeEvent, useFormConditionsController} from "../../providers";
 
 export interface ISearchInputProps {
   label: string;
@@ -22,7 +26,7 @@ export interface ISearchInputProps {
   mainInputCSS?: boolean;
   fieldName?: string;
   variant?: 'filled' | 'standard' | 'outlined' | undefined;
-  onChange?: (value: string | ISuggestion) => void;
+  onChange?: (value1: string | ISuggestion, values2?: string) => void;
   onBlur?: () => void;
   onSelect?: (value: string | ISuggestion) => void;
   helperText?: string;
@@ -32,6 +36,18 @@ export interface ISearchInputProps {
   id?: string;
 }
 
+/**
+ * Component rendering the search input responsible with fetching the suggestion
+ * list and autocomplete after value select also reused in advanced filters
+ *
+ * -----
+ * TODO: right now it seems the search value is controlled from multiple
+ *  functions/callbacks/event handlers however none seem to be the real
+ *  controller of the value. Needs more investigation as it points to high
+ *  design flaws. Seems to be a miss-use of MUI.
+ * @param props
+ * @constructor
+ */
 const SearchInput: React.FC<ISearchInputProps> = props => {
   const {
     label,
@@ -60,35 +76,30 @@ const SearchInput: React.FC<ISearchInputProps> = props => {
   const [suggestionList, setSuggestionList] = useState<ISuggestion[]>([]);
 
   const classes = useStyles();
-  const inpiutClasses = useInputStyles();
+  const inputStyles = useInputStyles();
+  const { qAdvancedAll } = useFilters();
 
-  const getSuggestionValueArr = () => {
-    if (suggestionList && suggestionList.length) {
-      return suggestionList.map((suggestion: ISuggestion) => suggestion.value);
-    }
-    return [];
-  };
+  const formCtx = useFormContext();
+  const createSearchFormChangeEvent = useCreateSearchFormChangeEvent();
+  const conditionsControl = useFormConditionsController();
 
-  const renderSuggestionBody = (value: string) => {
-    if (suggestionList && suggestionList.length) {
-      return (
-        <>
-          {isExtendedSearchInput ? (
-            <ExtendedSearchSuggestionBody suggestionList={suggestionList} value={value} />
-          ) : (
-            <MainSearchSuggestionBody suggestionList={suggestionList} value={value} />
-          )}
-        </>
-      );
-    }
-    return null;
+  const renderSuggestionBody = (suggestion: ISuggestion) => {
+    return (
+      <>
+        {isExtendedSearchInput ? (
+          <ExtendedSearchSuggestionBody suggestion={suggestion} />
+        ) : (
+          <MainSearchSuggestionBody suggestion={suggestion} />
+        )}
+      </>
+    );
   };
 
   useEffect(() => {
     if (value && !disableSuggestions) {
       !loading && setLoading(true);
 
-      fetchSuggestions(value, fieldName)
+      fetchSuggestions(value, fieldName, qAdvancedAll)
         .then(suggestions => {
           setLoading(false);
           setSuggestionList(suggestions);
@@ -99,19 +110,16 @@ const SearchInput: React.FC<ISearchInputProps> = props => {
     }
   }, [value]);
 
-  const handleOnChange = (value: string | null) => {
-    const selectedOption = suggestionList.filter(item => item.value === value);
-    if (selectedOption.length) {
-      setValue(selectedOption[0].value);
-      onSelect && onSelect(selectedOption[0]);
-      onChange && onChange(selectedOption[0]);
-      setValue('');
-    } else {
-      if (value) {
-        setValue(value);
-        onSelect && onSelect(value);
-        onChange && onChange(value);
-      }
+  // todo: this does not seem to be ever called - needs more investigation
+  const handleOnChange = (suggestion: string | ISuggestion | null) => {
+    if (typeof suggestion === 'string') {
+      setValue(suggestion);
+      onSelect && onSelect(suggestion);
+      onChange && onChange(suggestion);
+    } else if (suggestion) {
+      setValue(suggestion.value);
+      onSelect && onSelect(suggestion.value);
+      onChange && onChange(suggestion.value, '');
     }
   };
   const getProps = () => {
@@ -130,12 +138,25 @@ const SearchInput: React.FC<ISearchInputProps> = props => {
         paper: mainInputCSS ? classes.paperMain : classes.paper,
         listbox: classes.listbox,
         option: classes.option,
-        root: inpiutClasses.root,
+        root: inputStyles.root,
       }}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onChange={(event: any, value: string | null) => {
+      onChange={(event: ChangeEvent<any>, value: string | ISuggestion | null) => {
+        if(!isExtendedSearchInput && typeof value !== 'string' &&  value?.field){
+          conditionsControl?.append({
+            field: value.field as ESearchConditionFields,
+            value: value.value,
+            operator: ESearchOperators.AND,
+          });
+          formCtx.setValue(ESearchFormFields.conditions, [
+            ...formCtx.getValues(ESearchFormFields.conditions),
+          ]);
+          formCtx.setValue(ESearchFormFields.question, '');
+          createSearchFormChangeEvent();
+        }
+
         if (mainInput) return handleOnChange(value);
         if (value) {
           onSelect && onSelect(value);
@@ -147,7 +168,8 @@ const SearchInput: React.FC<ISearchInputProps> = props => {
       freeSolo
       style={{ width: '100%' }}
       aria-label={translate('search field')}
-      options={getSuggestionValueArr()}
+      getOptionLabel={(opt: ISuggestion) => opt.value ?? opt}
+      options={suggestionList}
       renderOption={renderSuggestionBody}
       defaultValue={defaultValue || ''}
       renderInput={params => {

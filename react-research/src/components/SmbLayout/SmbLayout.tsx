@@ -20,44 +20,47 @@ import {
   DependencyContext,
   IDependencyContext,
   useCoreContext,
-} from '../../providers/index';
-import { AppStage } from '../../enums/index';
+} from '../../providers';
 
-import { QueryRoot, SmbAssortments } from '../../generated/graphql';
+import { QueryRoot } from '../../generated/graphql';
 import LanguageService from '../../utils/LanguageService';
 
 import useStyles from './smbLayout.jss';
+import {
+  AdvancedSearchInfoParser,
+  IFetchAdvancedSearchInfo,
+} from '../../parsers/advanced-search-info.parser';
+import { ILangItem, LanguageSelector } from '../LanguageSelector/LanguageSelector';
 
-const convertAssortmentsToFilters = (
-  assortments: Array<SmbAssortments>,
-): { name: string; value: string }[] => {
-  const filters: { name: string; value: string }[] = [];
-  for (const assortment of assortments) {
-    filters.push(convertAssortment(assortment));
-  }
-  return filters.sort((a, b) => {
-    const nameA = a.name.toLowerCase();
-    const nameB = b.name.toLowerCase();
-    if (nameA < nameB) return -1;
-    return nameA > nameB ? 1 : 0;
-  });
-};
-
-const convertAssortment = (object: SmbAssortments): { name: string; value: string } => {
-  return {
-    name: object?.i18n[0]?.title ?? object.key,
-    value: object.key,
-  };
-};
-
-const FetchAssortments = gql`
-  query FetchAssortments($language: String) {
-    smb_assortments(order_by: { key: asc }) {
+const FetchAdvancedSearchInfo = gql`
+  query FetchAdvancedSearchInfo($language: String) {
+    collections: smb_collections(order_by: [{ type: asc }, { title: asc }]) {
       key
+      searchValue
+      title
+      type
+    }
+    compilations: smb_org_unit(
+      where: { is_compilation: { _eq: true } }
+      order_by: [{ collectionKey: asc }, { title: asc }]
+    ) {
+      collectionKey
+      name: searchValue
+      title
+    }
+    locations: smb_buildings(order_by: [{ title: asc }]) {
+      key: searchValue
+      title
+    }
+    assortments: smb_assortments(order_by: { key: asc }) {
+      key: searchValue
       preview_image
-      i18n(where: { language: { lang: { _eq: $language } } }) {
+      i18n(
+        where: { language: { lang: { _eq: $language } } }
+        order_by: [{ title: asc }]
+      ) {
         title
-        description
+        subtitle
       }
     }
   }
@@ -66,37 +69,45 @@ const FetchAssortments = gql`
 const SmbLayout: React.FC = () => {
   const { configuration } = useCoreContext();
   const [dependencyContext, setDependenciesContext] = useState<IDependencyContext>();
-  const { loading, error, data } = useQuery<QueryRoot>(FetchAssortments, {
-    variables: {
-      language: LanguageService.getCurrentLanguage(),
+  const { loading, error, data: advancedSearchInfo } = useQuery<QueryRoot>(
+    FetchAdvancedSearchInfo,
+    {
+      variables: {
+        language: LanguageService.getCurrentLanguage(),
+      },
     },
-  });
+  );
 
   useEffect(() => {
-    if (data && data.smb_assortments && configuration && !loading && !error) {
-      const assortmentsFilter = {
-        name: 'assortments',
-        filtersKey: 'assortments',
-        label: 'searchForm.filters.assortments',
-        sublevel: undefined,
-        stages: [AppStage.LOCAL, AppStage.DEV, AppStage.STAGE, AppStage.PRODUCTION],
-        filters: convertAssortmentsToFilters(data.smb_assortments),
-      };
-      setDependenciesContext(createDependencies(configuration, assortmentsFilter));
-    } else if (configuration && !loading && error && !data) {
-      const assortmentsFilter = {
-        name: 'assortments',
-        filtersKey: 'assortments',
-        label: 'searchForm.filters.assortments',
-        sublevel: undefined,
-        stages: [AppStage.LOCAL, AppStage.DEV, AppStage.STAGE, AppStage.PRODUCTION],
-        filters: [{ name: '', value: '' }],
-      };
-      setDependenciesContext(createDependencies(configuration, assortmentsFilter));
+    const advancedInfoParser = new AdvancedSearchInfoParser(
+      (advancedSearchInfo as unknown) as IFetchAdvancedSearchInfo,
+    );
+    const filtersInfo = advancedInfoParser.getSearchInfo();
+
+    if (advancedSearchInfo && configuration && !loading && !error) {
+      setDependenciesContext(createDependencies(configuration, filtersInfo));
+    } else if (configuration && !loading && error && !advancedSearchInfo) {
+      setDependenciesContext(createDependencies(configuration, filtersInfo));
     }
   }, [configuration, loading]);
 
   const classes = useStyles();
+
+  // configuration.PRODUCTION_READY may be true on STAGE
+  const showLanguageSelector = configuration.stage === 'stage';
+
+  // TODO couldn't figure out how to use useTranslation here, it triggers infinite rerender
+  const languages: Array<ILangItem> = [
+    {
+      code: "de",
+      displayName: "Deutsch",
+      ariaLabel: "Auswahl: Sprache Deutsch"
+    }, {
+      code: "en",
+      displayName: "English",
+      ariaLabel: "Selection: English language"
+    }
+  ];
 
   return (
     <>
@@ -109,7 +120,9 @@ const SmbLayout: React.FC = () => {
                   data-testid={'header-wrapper'}
                   configuration={configuration}
                   currentPortal={HeaderPlatformType.RESEARCH}
-                />
+                >
+                  <LanguageSelector show={showLanguageSelector} className={''} languages={languages} />
+                </Header>
                 <main className={classes.wrapper} data-testid={'rooter-wrapper'}>
                   <Switch>
                     <Route path="/" component={SearchPage} exact={true} />

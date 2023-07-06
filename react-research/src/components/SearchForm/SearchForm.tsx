@@ -1,12 +1,17 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
 import { SearchFiltersContainer, MainSearch, SearchFormControls } from '../index';
-import { ISearchFormData } from '../../types/index';
-import { ISearchFormContext, SearchFormContext } from '../../providers/index';
-import { useDebouncedCallback } from '../../hooks/index';
+import { ISearchFormData } from '../../types';
+import {
+  ISearchFormContext,
+  SearchFormContext,
+  FacetsContextProvider,
+} from '../../providers';
+import { useDebouncedCallback } from '../../hooks';
+import { ESearchFormFields } from '../../enums';
 
 export interface ISearchFormProps {
   defaultValues?: ISearchFormData;
@@ -14,23 +19,37 @@ export interface ISearchFormProps {
   onChange?: (data: ISearchFormData) => void;
 }
 
+/**
+ * Component rendering entire search panel - input and filters and controls
+ *
+ * -----
+ * NOTE: it is a memoized component and does a manual state check before rerender
+ * @param props - default form values and the submit function
+ * @constructor
+ */
 const SearchFormComponent: React.FC<ISearchFormProps> = props => {
   const { onSubmit, defaultValues } = props;
-
   const formMethods = useForm<ISearchFormData>({
     shouldUnregister: false,
     defaultValues,
   });
+
+  // actual conditions inputs and values (ex: AND, TITEL, 'bachus and ..')
+  const conditionsController = useFieldArray({
+    control: formMethods.control,
+    name: ESearchFormFields.conditions,
+  });
+
   const { handleSubmit, getValues } = formMethods;
 
   const handleChange = useDebouncedCallback(() => {
     const formValues = (getValues() as unknown) as ISearchFormData;
-
     onSubmit(formValues);
   }, 200);
 
   const searchFormContext: ISearchFormContext = {
     onSearchFormChange: handleChange,
+    conditionsController: conditionsController,
   };
 
   return (
@@ -40,7 +59,9 @@ const SearchFormComponent: React.FC<ISearchFormProps> = props => {
           <Grid container spacing={0}>
             <SearchFormControls />
             <MainSearch search={defaultValues?.question} />
-            <SearchFiltersContainer />
+            <FacetsContextProvider>
+              <SearchFiltersContainer />
+            </FacetsContextProvider>
           </Grid>
         </form>
       </SearchFormContext.Provider>

@@ -4,7 +4,7 @@ const ext = hostParts.length > 1 ? hostParts[hostParts.length - 1] : 'dev';
 const envs = [
   {
     name: 'production',
-    siteID: '1',
+    siteID: '72',
     extension: 'museum',
     domains: [
       '*.sammlung.smb.museum',
@@ -12,7 +12,8 @@ const envs = [
       '*.themen.smb.museum',
       '*.touren.smb.museum',
     ],
-    trackingDomain: '//admin.smb.museum/matomo/',
+    trackerName: 'piwik',
+    trackingDomain: 'https://webstats.sbb.berlin/',
     cookieUrl: '*.sammlung.smb.museum',
   },
   {
@@ -25,6 +26,7 @@ const envs = [
       '*.smb-research.xaidev.net',
       '*.smb-topics.xaidev.net',
     ],
+    trackerName: 'matomo',
     trackingDomain: '//smb-admin.xaidev.net/matomo/',
     cookieUrl: '*.smb-landingpage.xaidev.net',
   },
@@ -38,13 +40,14 @@ const envs = [
       '*.smb-research.xailabs.dev',
       '*.smb-topics.xailabs.dev',
     ],
+    trackerName: 'matomo',
     trackingDomain: '//smb-matomo.xailabs.dev/',
     cookieUrl: '*.smb-landingpage.xailabs.dev',
   },
 ];
 
 function getEnv(ext) {
-  return envs.find(env => env.extension === ext);
+  return envs.find((env) => env.extension === ext);
 }
 
 const env = getEnv(ext);
@@ -57,15 +60,13 @@ _paq.push(['setDoNotTrack', true]);
 _paq.push(['disableCookies']);
 _paq.push(['trackPageView']);
 _paq.push(['enableLinkTracking']);
-(function() {
-  var u = env.trackingDomain;
-  _paq.push(['setTrackerUrl', u + 'matomo.php']);
+(function () {
+  var u = env.trackingDomain, n = env.trackerName;
+  _paq.push(['setTrackerUrl', u + n + '.php']);
   _paq.push(['setSiteId', env.siteID]);
-  var d = document,
-    g = d.createElement('script'),
-    s = d.getElementsByTagName('script')[0];
+  var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
   g.type = 'text/javascript';
   g.async = true;
-  g.src = u + 'matomo.js';
+  g.src = u + n + '.js';
   s.parentNode.insertBefore(g, s);
 })();

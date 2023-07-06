@@ -17,6 +17,7 @@ import {
   TwitterShareButton,
 } from 'react-share';
 import { ExhibitModel, LinkBuilder } from '@smb/smb-react-components-library';
+import useStyles from "./exhibitAside.jss";
 
 interface IExhibitAsideProps {
   infoItems: IAsideInfoItem[];
@@ -31,6 +32,7 @@ const ExhibitAside: React.FC<IExhibitAsideProps> = props => {
   const { t } = useTranslation();
   const exhibitID = exhibit?.id || 0;
   const shareButtonsLink = new LinkBuilder().getShareButtonHref(exhibitID);
+  const classes = useStyles();
 
   return (
     <Grid container spacing={2} className={'exhibit-aside'}>
@@ -65,7 +67,7 @@ const ExhibitAside: React.FC<IExhibitAsideProps> = props => {
           lg={12}
           className={'exhibit-aside__credit-line'}
         >
-          <Typography>{creditLine}</Typography>
+          <Typography className={classes.creditLine}>{creditLine}</Typography>
         </Grid>
       )}
       <Grid item xs={12} sm={12} md={12} lg={12}>

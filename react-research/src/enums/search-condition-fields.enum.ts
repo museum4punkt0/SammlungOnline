@@ -4,6 +4,8 @@ export enum ESearchConditionFields {
   dating = 'dating',
   geographicalReferences = 'geographicalReferences',
   geographicalReferencesID = 'geographicalReferences.id',
+  culturalReferences = 'culturalReferences',
+  culturalReferencesID = 'culturalReferences.id',
   materialAndTechnique = 'materialAndTechnique',
   materialAndTechniqueID = 'materialAndTechnique.id',
   identNumber = 'identNumber',

@@ -9,9 +9,9 @@ import { Grid, IconButton } from '@material-ui/core';
 import { useWindowDimensions } from '@smb/smb-react-components-library';
 
 import { SearchInput } from '../index';
-import { ISuggestion, ISearchFormData } from '../../types/index';
-import { useCreateSearchFormChangeEvent, useDependency } from '../../providers/index';
-import { ESearchFormFields } from '../../enums/index';
+import { ISuggestion } from '../../types';
+import { useCreateSearchFormChangeEvent, useDependency } from '../../providers';
+import { ESearchFormFields } from '../../enums';
 
 import useStyles from './mainSearch.jss';
 
@@ -19,11 +19,6 @@ interface IMainSearchProps {
   search?: string;
 }
 
-export interface ISearchFormProps {
-  defaultValues?: ISearchFormData;
-  onSubmit: (data: ISearchFormData) => void;
-  onChange?: (data: ISearchFormData) => void;
-}
 const MainSearch: React.FC<IMainSearchProps> = ({ search }) => {
   const { t } = useTranslation();
   const [searchValue, setSearchValue] = useState(search); //
@@ -31,7 +26,7 @@ const MainSearch: React.FC<IMainSearchProps> = ({ search }) => {
   const labelTextValue = t(
     width < 900 ? 'searchForm.labels.search' : 'searchForm.labels.searchLong',
   );
-  const { setValue } = useFormContext();
+  const { setValue, getValues } = useFormContext();
   const createSearchFormChangeEvent = useCreateSearchFormChangeEvent();
 
   const { searchQueryParamsService } = useDependency();
@@ -51,8 +46,12 @@ const MainSearch: React.FC<IMainSearchProps> = ({ search }) => {
     if (typeof option !== 'string' && option.field) {
       setTimeout(() => {
         setSearchValue('');
+        setValue(ESearchFormFields.conditions, [
+          ...getValues(ESearchFormFields.conditions),
+        ]);
       }, 700);
     }
+    setSearchValue('');
   };
 
   const classes = useStyles();
@@ -64,20 +63,25 @@ const MainSearch: React.FC<IMainSearchProps> = ({ search }) => {
       spacing={0}
       className={classes.searchInputContainer}
     >
-      <div className={classes.searchInput}>
+      <div
+        className={classes.searchInput}
+        onKeyDown={ev => ev.key === 'Enter' && createSearchFormChangeEvent()}
+      >
         <SearchInput
           id="search_id"
           variant="outlined"
           defaultValue={search}
-          mainInput={false}
+          mainInput={true}
           mainInputCSS={true}
           inputValue={searchValue}
           label={labelTextValue}
           onSelect={handleSelectValue}
-          onChange={option => {
+          onChange={(option, searchValueParam?: string) => {
+            const searchValue: string | ISuggestion | undefined = searchValueParam ?? option;
+
             if (typeof option === 'string') {
-              setSearchValue(option);
-              return setValue(ESearchFormFields.question, option);
+              setSearchValue(searchValue as string);
+              return setValue(ESearchFormFields.question, searchValue);
             }
             if (option.field) {
               const conditions = [

@@ -1,3 +1,5 @@
+import { ESearchQueryParams } from '../../enums';
+
 class QueryParamsService {
   private readonly _params: URLSearchParams;
 
@@ -6,7 +8,8 @@ class QueryParamsService {
   }
 
   public set(name: string, value: number | string): void {
-    this._params.set(name, value.toString());
+    if (!value) return;
+    this._params.set(name, value?.toString());
   }
 
   public get(name: string): string | null {
@@ -23,6 +26,22 @@ class QueryParamsService {
 
   public getQueryString(): string {
     return this._params.toString();
+  }
+
+  public getSearchQueryParamsString(): string {
+    const lang = `${ESearchQueryParams.language}=${this._params.get(
+      ESearchQueryParams.language,
+    )}`;
+    const limit = `${ESearchQueryParams.limit}=${this._params.get(
+      ESearchQueryParams.limit,
+    )}`;
+    const sort = `${ESearchQueryParams.sort}=${this._params.get(
+      ESearchQueryParams.sort,
+    )}`;
+    const controls = `${ESearchQueryParams.controls}=${this._params.get(
+      ESearchQueryParams.controls,
+    )}`;
+    return [lang, limit, sort, controls].join('&');
   }
 }
 

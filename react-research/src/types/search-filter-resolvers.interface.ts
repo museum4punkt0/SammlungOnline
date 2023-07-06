@@ -7,6 +7,8 @@ export interface ISearchFilterResolversMap {
   [ESearchConditionFields.dating]: IResolver<string>;
   [ESearchConditionFields.geographicalReferences]: IResolver<string>;
   [ESearchConditionFields.geographicalReferencesID]: IResolver<string>;
+  [ESearchConditionFields.culturalReferences]: IResolver<string>;
+  [ESearchConditionFields.culturalReferencesID]: IResolver<string>;
   [ESearchConditionFields.involvedParties]: IResolver<string>;
   [ESearchConditionFields.involvedPartiesID]: IResolver<string>;
   [ESearchConditionFields.materialAndTechnique]: IResolver<string>;

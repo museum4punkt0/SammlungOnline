@@ -8,8 +8,10 @@ import FormatListBulletedOutlinedIcon from '@material-ui/icons/FormatListBullete
 import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
 
-import { ESearchResultView } from '../../enums/index';
+import { ESearchResultView } from '../../enums';
 import useStyles from './searchPagination.jss';
+import { SortDropdown } from '../SortDropdown/SortDropdown';
+import { SortOption } from '../../utils/configuration/sorting-info.config';
 
 export interface ISwitchSearchResultViewProps {
   view: ESearchResultView;
@@ -35,6 +37,7 @@ interface ISearchPaginationProps {
   view?: ESearchResultView;
   viewToggle?: boolean;
   onOffsetChange?: (offset: number) => void;
+  onSortChange: (sort: SortOption) => void;
 }
 
 export const SearchPagination: React.FC<ISearchPaginationProps> = props => {
@@ -46,6 +49,7 @@ export const SearchPagination: React.FC<ISearchPaginationProps> = props => {
     limit,
     total,
     onViewChange,
+    onSortChange,
   } = props;
 
   const { t: translate } = useTranslation();
@@ -102,6 +106,7 @@ export const SearchPagination: React.FC<ISearchPaginationProps> = props => {
       </div>
       {viewToggle && view && (
         <div className={classes.flipViewArea}>
+          <SortDropdown onSortChange={onSortChange} />
           <IconButton
             aria-label={translate(iconLabel)}
             data-testid="search_pagination-change-view-button"

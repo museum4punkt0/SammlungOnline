@@ -4,9 +4,9 @@ import { ConfigLoader, IConfiguration } from '@smb/smb-react-components-library'
 const createSlug = (text?: string): string => {
   const slug = text
     ?.replace(/[ /.+]/g, '-')
-    ?.replace(/['"()?!:]/g, '')
+    ?.replace(/['"()?!:,]/g, '')
     ?.toLowerCase();
-  return (slug && encodeURIComponent(slug)) || '';
+  return slug ? encodeURIComponent(slug) : '';
 };
 
 const goTo = (link: string): void => {
@@ -46,10 +46,16 @@ export class LinkBuilder {
     return `${this._config.KEYWORDS_ICONCLASSES_LINK}${id}`;
   }
 
-  getSearchConditionLink(key: string, value: string): string {
-    const link = value.includes(' ')
-      ? `?conditions=AND%2B${key}%2B"${encodeURIComponent(value)}"`
-      : `?conditions=AND%2B${key}%2B${encodeURIComponent(value)}`;
+  getSearchConditionLink(key: string, value: string, queryParamsString?: string): string {
+    if (!value) {
+      console.error('undefined key/value specified', key, value);
+      return '';
+    }
+    const queryParams = queryParamsString ? `?${queryParamsString}&` : '?';
+    const link =
+      value.includes(' ') && !value.startsWith('"')
+        ? `${queryParams}conditions=AND%2B${key}%2B"${encodeURIComponent(value)}"`
+        : `${queryParams}conditions=AND%2B${key}%2B${encodeURIComponent(value)}`;
     return `${this._config.RESEARCH_DOMAIN}${link}`;
   }
 }

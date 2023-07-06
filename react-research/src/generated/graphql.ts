@@ -13,19 +13,14 @@ export type Scalars = {
   Float: number;
   bigint: any;
   timestamptz: any;
-  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: any;
-  /** A string used to identify an i18n locale */
   I18NLocaleCode: any;
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
-  /** The `Long` scalar type represents 52-bit integers */
   Long: any;
   IndexModulesDynamicZoneInput: any;
   SmbLandingpageModuleDynamicZoneInput: any;
   SmbSiteConfigLegalPagesDynamicZoneInput: any;
   StoryModulesDynamicZoneInput: any;
-  /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
 
@@ -43,6 +38,16 @@ export type QueryRoot = {
   smb_attributes: Array<SmbAttributes>;
   /** fetch data from the table: "smb.attributes" using primary key columns */
   smb_attributes_by_pk?: Maybe<SmbAttributes>;
+  /** fetch data from the table: "smb.buildings" */
+  smb_buildings: Array<SmbBuildings>;
+  /** fetch data from the table: "smb.buildings" using primary key columns */
+  smb_buildings_by_pk?: Maybe<SmbBuildings>;
+  /** fetch data from the table: "smb.collections" */
+  smb_collections: Array<SmbCollections>;
+  /** fetch data from the table: "smb.collections" using primary key columns */
+  smb_collections_by_pk?: Maybe<SmbCollections>;
+  /** fetch data from the table: "smb.cultural_references" */
+  smb_cultural_references: Array<SmbCulturalReferences>;
   /** fetch data from the table: "smb.exhibitions" */
   smb_exhibitions: Array<SmbExhibitions>;
   /** fetch data from the table: "smb.geographical_references" */
@@ -65,6 +70,8 @@ export type QueryRoot = {
   smb_objects_aggregate: SmbObjectsAggregate;
   /** fetch data from the table: "smb.objects" using primary key columns */
   smb_objects_by_pk?: Maybe<SmbObjects>;
+  /** fetch data from the table: "smb.org_unit" */
+  smb_org_unit: Array<SmbOrgUnit>;
   /** fetch data from the table: "smb.persons" */
   smb_persons: Array<SmbPersons>;
   /** fetch data from the table: "smb.persons_objects" */
@@ -77,9 +84,6 @@ export type QueryRoot = {
   smb_thesaurus_translations: Array<SmbThesaurusTranslations>;
   /** fetch data from the table: "smb.user" */
   smb_user: Array<SmbUser>;
-  strapi_hbf?: Maybe<StrapiHbfQuery>;
-  strapi_isl?: Maybe<StrapiIslQuery>;
-  strapi_kgm?: Maybe<StrapiKgmQuery>;
   strapi_smb?: Maybe<StrapiSmbQuery>;
 };
 
@@ -131,6 +135,43 @@ export type QueryRootSmbAttributesArgs = {
 
 export type QueryRootSmbAttributesByPkArgs = {
   key: Scalars['String'];
+};
+
+
+export type QueryRootSmbBuildingsArgs = {
+  distinct_on?: InputMaybe<Array<SmbBuildingsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbBuildingsOrderBy>>;
+  where?: InputMaybe<SmbBuildingsBoolExp>;
+};
+
+
+export type QueryRootSmbBuildingsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type QueryRootSmbCollectionsArgs = {
+  distinct_on?: InputMaybe<Array<SmbCollectionsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCollectionsOrderBy>>;
+  where?: InputMaybe<SmbCollectionsBoolExp>;
+};
+
+
+export type QueryRootSmbCollectionsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type QueryRootSmbCulturalReferencesArgs = {
+  distinct_on?: InputMaybe<Array<SmbCulturalReferencesSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCulturalReferencesOrderBy>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
 };
 
 
@@ -226,6 +267,15 @@ export type QueryRootSmbObjectsAggregateArgs = {
 
 export type QueryRootSmbObjectsByPkArgs = {
   id: Scalars['bigint'];
+};
+
+
+export type QueryRootSmbOrgUnitArgs = {
+  distinct_on?: InputMaybe<Array<SmbOrgUnitSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbOrgUnitOrderBy>>;
+  where?: InputMaybe<SmbOrgUnitBoolExp>;
 };
 
 
@@ -564,7 +614,7 @@ export type SmbAttachments = {
   primary?: Maybe<Scalars['Boolean']>;
 };
 
-/** Unused - Supposed to store license deeds for image downloads */
+/** License deeds for attachments */
 export type SmbLicenses = {
   __typename?: 'smb_licenses';
   /** An array relationship */
@@ -574,7 +624,7 @@ export type SmbLicenses = {
 };
 
 
-/** Unused - Supposed to store license deeds for image downloads */
+/** License deeds for attachments */
 export type SmbLicensesI18nArgs = {
   distinct_on?: InputMaybe<Array<SmbLicensesTranslationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -598,7 +648,7 @@ export type SmbLicensesTranslationOrderBy = {
   license_text?: InputMaybe<OrderBy>;
 };
 
-/** Unused - Supposed to store license deed translations */
+/** columns and relationships of "smb.licenses_translation" */
 export type SmbLicensesTranslation = {
   __typename?: 'smb_licenses_translation';
   content: Scalars['String'];
@@ -675,66 +725,84 @@ export enum SmbAttributesSelectColumn {
   KEY = 'key'
 }
 
-/** select columns of table "smb.exhibitions" */
-export enum SmbExhibitionsSelectColumn {
+/** select columns of table "smb.buildings" */
+export enum SmbBuildingsSelectColumn {
   /** column name */
-  DESCRIPTION = 'description',
-  /** column name */
-  END_DATE = 'end_date',
-  /** column name */
-  LOCATION = 'location',
-  /** column name */
-  START_DATE = 'start_date',
+  KEY = 'key',
   /** column name */
   TITLE = 'title'
 }
 
-/** Ordering options when selecting data from "smb.exhibitions". */
-export type SmbExhibitionsOrderBy = {
-  description?: InputMaybe<OrderBy>;
-  end_date?: InputMaybe<OrderBy>;
-  location?: InputMaybe<OrderBy>;
-  start_date?: InputMaybe<OrderBy>;
+/** Ordering options when selecting data from "smb.buildings". */
+export type SmbBuildingsOrderBy = {
+  key?: InputMaybe<OrderBy>;
   title?: InputMaybe<OrderBy>;
 };
 
-/** Boolean expression to filter rows from the table "smb.exhibitions". All fields are combined with a logical 'AND'. */
-export type SmbExhibitionsBoolExp = {
-  _and?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
-  _not?: InputMaybe<SmbExhibitionsBoolExp>;
-  _or?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
-  description?: InputMaybe<StringComparisonExp>;
-  end_date?: InputMaybe<StringComparisonExp>;
-  location?: InputMaybe<StringComparisonExp>;
-  start_date?: InputMaybe<StringComparisonExp>;
+/** Boolean expression to filter rows from the table "smb.buildings". All fields are combined with a logical 'AND'. */
+export type SmbBuildingsBoolExp = {
+  _and?: InputMaybe<Array<SmbBuildingsBoolExp>>;
+  _not?: InputMaybe<SmbBuildingsBoolExp>;
+  _or?: InputMaybe<Array<SmbBuildingsBoolExp>>;
+  key?: InputMaybe<StringComparisonExp>;
   title?: InputMaybe<StringComparisonExp>;
 };
 
-/** exhibitions */
-export type SmbExhibitions = {
-  __typename?: 'smb_exhibitions';
-  description?: Maybe<Scalars['String']>;
-  end_date?: Maybe<Scalars['String']>;
-  location?: Maybe<Scalars['String']>;
-  start_date?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
+/** List of all Museum buildings */
+export type SmbBuildings = {
+  __typename?: 'smb_buildings';
+  key: Scalars['String'];
+  /** Display title used for all languages */
+  title: Scalars['String'];
 };
 
-/** select columns of table "smb.geographical_references" */
-export enum SmbGeographicalReferencesSelectColumn {
+/** select columns of table "smb.collections" */
+export enum SmbCollectionsSelectColumn {
   /** column name */
-  DETAILS = 'details',
+  KEY = 'key',
+  /** column name */
+  TITLE = 'title',
+  /** column name */
+  TYPE = 'type'
+}
+
+/** Ordering options when selecting data from "smb.collections". */
+export type SmbCollectionsOrderBy = {
+  key?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+  type?: InputMaybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "smb.collections". All fields are combined with a logical 'AND'. */
+export type SmbCollectionsBoolExp = {
+  _and?: InputMaybe<Array<SmbCollectionsBoolExp>>;
+  _not?: InputMaybe<SmbCollectionsBoolExp>;
+  _or?: InputMaybe<Array<SmbCollectionsBoolExp>>;
+  key?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<StringComparisonExp>;
+};
+
+/** Enum type definition of MDS collection keys */
+export type SmbCollections = {
+  __typename?: 'smb_collections';
+  key: Scalars['String'];
+  title: Scalars['String'];
+  searchValue: Scalars['String'];
+  type: Scalars['String'];
+};
+
+/** select columns of table "smb.cultural_references" */
+export enum SmbCulturalReferencesSelectColumn {
   /** column name */
   SEQUENCE = 'sequence'
 }
 
-/** Ordering options when selecting data from "smb.geographical_references". */
-export type SmbGeographicalReferencesOrderBy = {
-  details?: InputMaybe<OrderBy>;
-  geopol_voc?: InputMaybe<SmbThesaurusOrderBy>;
+/** Ordering options when selecting data from "smb.cultural_references". */
+export type SmbCulturalReferencesOrderBy = {
+  denomination_voc?: InputMaybe<SmbThesaurusOrderBy>;
   language?: InputMaybe<SmbLanguageOrderBy>;
-  place_voc?: InputMaybe<SmbThesaurusOrderBy>;
-  role_voc?: InputMaybe<SmbThesaurusOrderBy>;
+  name_voc?: InputMaybe<SmbThesaurusOrderBy>;
   sequence?: InputMaybe<OrderBy>;
   type_voc?: InputMaybe<SmbThesaurusOrderBy>;
 };
@@ -780,16 +848,14 @@ export type SmbThesaurusMinOrderBy = {
   name?: InputMaybe<OrderBy>;
 };
 
-/** Boolean expression to filter rows from the table "smb.geographical_references". All fields are combined with a logical 'AND'. */
-export type SmbGeographicalReferencesBoolExp = {
-  _and?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
-  _not?: InputMaybe<SmbGeographicalReferencesBoolExp>;
-  _or?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
-  details?: InputMaybe<StringComparisonExp>;
-  geopol_voc?: InputMaybe<SmbThesaurusBoolExp>;
+/** Boolean expression to filter rows from the table "smb.cultural_references". All fields are combined with a logical 'AND'. */
+export type SmbCulturalReferencesBoolExp = {
+  _and?: InputMaybe<Array<SmbCulturalReferencesBoolExp>>;
+  _not?: InputMaybe<SmbCulturalReferencesBoolExp>;
+  _or?: InputMaybe<Array<SmbCulturalReferencesBoolExp>>;
+  denomination_voc?: InputMaybe<SmbThesaurusBoolExp>;
   language?: InputMaybe<SmbLanguageBoolExp>;
-  place_voc?: InputMaybe<SmbThesaurusBoolExp>;
-  role_voc?: InputMaybe<SmbThesaurusBoolExp>;
+  name_voc?: InputMaybe<SmbThesaurusBoolExp>;
   sequence?: InputMaybe<IntComparisonExp>;
   type_voc?: InputMaybe<SmbThesaurusBoolExp>;
 };
@@ -827,18 +893,15 @@ export type IntComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['Int']>>;
 };
 
-/** geographic locations collected from repeatable group items */
-export type SmbGeographicalReferences = {
-  __typename?: 'smb_geographical_references';
-  details?: Maybe<Scalars['String']>;
+/** cultural references collected from repeatable group items */
+export type SmbCulturalReferences = {
+  __typename?: 'smb_cultural_references';
   /** An object relationship */
-  geopol_voc?: Maybe<SmbThesaurus>;
+  denomination_voc?: Maybe<SmbThesaurus>;
   /** An object relationship */
   language: SmbLanguage;
   /** An object relationship */
-  place_voc?: Maybe<SmbThesaurus>;
-  /** An object relationship */
-  role_voc?: Maybe<SmbThesaurus>;
+  name_voc?: Maybe<SmbThesaurus>;
   sequence: Scalars['Int'];
   /** An object relationship */
   type_voc?: Maybe<SmbThesaurus>;
@@ -903,6 +966,97 @@ export enum SmbThesaurusSelectColumn {
   NAME = 'name'
 }
 
+/** select columns of table "smb.exhibitions" */
+export enum SmbExhibitionsSelectColumn {
+  /** column name */
+  DESCRIPTION = 'description',
+  /** column name */
+  END_DATE = 'end_date',
+  /** column name */
+  LOCATION = 'location',
+  /** column name */
+  START_DATE = 'start_date',
+  /** column name */
+  TITLE = 'title'
+}
+
+/** Ordering options when selecting data from "smb.exhibitions". */
+export type SmbExhibitionsOrderBy = {
+  description?: InputMaybe<OrderBy>;
+  end_date?: InputMaybe<OrderBy>;
+  location?: InputMaybe<OrderBy>;
+  start_date?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "smb.exhibitions". All fields are combined with a logical 'AND'. */
+export type SmbExhibitionsBoolExp = {
+  _and?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
+  _not?: InputMaybe<SmbExhibitionsBoolExp>;
+  _or?: InputMaybe<Array<SmbExhibitionsBoolExp>>;
+  description?: InputMaybe<StringComparisonExp>;
+  end_date?: InputMaybe<StringComparisonExp>;
+  location?: InputMaybe<StringComparisonExp>;
+  start_date?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+};
+
+/** exhibitions */
+export type SmbExhibitions = {
+  __typename?: 'smb_exhibitions';
+  description?: Maybe<Scalars['String']>;
+  end_date?: Maybe<Scalars['String']>;
+  location?: Maybe<Scalars['String']>;
+  start_date?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+};
+
+/** select columns of table "smb.geographical_references" */
+export enum SmbGeographicalReferencesSelectColumn {
+  /** column name */
+  DETAILS = 'details',
+  /** column name */
+  SEQUENCE = 'sequence'
+}
+
+/** Ordering options when selecting data from "smb.geographical_references". */
+export type SmbGeographicalReferencesOrderBy = {
+  details?: InputMaybe<OrderBy>;
+  geopol_voc?: InputMaybe<SmbThesaurusOrderBy>;
+  language?: InputMaybe<SmbLanguageOrderBy>;
+  place_voc?: InputMaybe<SmbThesaurusOrderBy>;
+  sequence?: InputMaybe<OrderBy>;
+  type_voc?: InputMaybe<SmbThesaurusOrderBy>;
+};
+
+/** Boolean expression to filter rows from the table "smb.geographical_references". All fields are combined with a logical 'AND'. */
+export type SmbGeographicalReferencesBoolExp = {
+  _and?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
+  _not?: InputMaybe<SmbGeographicalReferencesBoolExp>;
+  _or?: InputMaybe<Array<SmbGeographicalReferencesBoolExp>>;
+  details?: InputMaybe<StringComparisonExp>;
+  geopol_voc?: InputMaybe<SmbThesaurusBoolExp>;
+  language?: InputMaybe<SmbLanguageBoolExp>;
+  place_voc?: InputMaybe<SmbThesaurusBoolExp>;
+  sequence?: InputMaybe<IntComparisonExp>;
+  type_voc?: InputMaybe<SmbThesaurusBoolExp>;
+};
+
+/** geographic locations collected from repeatable group items */
+export type SmbGeographicalReferences = {
+  __typename?: 'smb_geographical_references';
+  details?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  geopol_voc?: Maybe<SmbThesaurus>;
+  /** An object relationship */
+  language: SmbLanguage;
+  /** An object relationship */
+  place_voc?: Maybe<SmbThesaurus>;
+  sequence: Scalars['Int'];
+  /** An object relationship */
+  type_voc?: Maybe<SmbThesaurus>;
+};
+
 /** select columns of table "smb.highlights" */
 export enum SmbHighlightsSelectColumn {
   /** column name */
@@ -913,12 +1067,14 @@ export enum SmbHighlightsSelectColumn {
 export type SmbHighlightsOrderBy = {
   object?: InputMaybe<SmbObjectsOrderBy>;
   object_id?: InputMaybe<OrderBy>;
+  org_unit?: InputMaybe<SmbOrgUnitOrderBy>;
 };
 
 /** Ordering options when selecting data from "smb.objects". */
 export type SmbObjectsOrderBy = {
   attachments_aggregate?: InputMaybe<SmbAttachmentsAggregateOrderBy>;
   attributes_aggregate?: InputMaybe<SmbAttributeTranslationsAggregateOrderBy>;
+  cultural_references_aggregate?: InputMaybe<SmbCulturalReferencesAggregateOrderBy>;
   exhibition_space?: InputMaybe<OrderBy>;
   geographical_references_aggregate?: InputMaybe<SmbGeographicalReferencesAggregateOrderBy>;
   highlights_aggregate?: InputMaybe<SmbHighlightsAggregateOrderBy>;
@@ -966,6 +1122,71 @@ export type SmbAttributeTranslationsMaxOrderBy = {
 export type SmbAttributeTranslationsMinOrderBy = {
   attribute_key?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
+};
+
+/** order by aggregate values of table "smb.cultural_references" */
+export type SmbCulturalReferencesAggregateOrderBy = {
+  avg?: InputMaybe<SmbCulturalReferencesAvgOrderBy>;
+  count?: InputMaybe<OrderBy>;
+  max?: InputMaybe<SmbCulturalReferencesMaxOrderBy>;
+  min?: InputMaybe<SmbCulturalReferencesMinOrderBy>;
+  stddev?: InputMaybe<SmbCulturalReferencesStddevOrderBy>;
+  stddev_pop?: InputMaybe<SmbCulturalReferencesStddevPopOrderBy>;
+  stddev_samp?: InputMaybe<SmbCulturalReferencesStddevSampOrderBy>;
+  sum?: InputMaybe<SmbCulturalReferencesSumOrderBy>;
+  var_pop?: InputMaybe<SmbCulturalReferencesVarPopOrderBy>;
+  var_samp?: InputMaybe<SmbCulturalReferencesVarSampOrderBy>;
+  variance?: InputMaybe<SmbCulturalReferencesVarianceOrderBy>;
+};
+
+/** order by avg() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesAvgOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesMaxOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesMinOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesStddevOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesStddevPopOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesStddevSampOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by sum() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesSumOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesVarPopOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesVarSampOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "smb.cultural_references" */
+export type SmbCulturalReferencesVarianceOrderBy = {
+  sequence?: InputMaybe<OrderBy>;
 };
 
 /** order by aggregate values of table "smb.geographical_references" */
@@ -1232,6 +1453,15 @@ export type SmbMaterialReferencesVarianceOrderBy = {
   sequence?: InputMaybe<OrderBy>;
 };
 
+/** Ordering options when selecting data from "smb.org_unit". */
+export type SmbOrgUnitOrderBy = {
+  collectionKey?: InputMaybe<OrderBy>;
+  highlights_aggregate?: InputMaybe<SmbHighlightsAggregateOrderBy>;
+  is_compilation?: InputMaybe<OrderBy>;
+  name?: InputMaybe<OrderBy>;
+  title?: InputMaybe<OrderBy>;
+};
+
 /** Boolean expression to filter rows from the table "smb.highlights". All fields are combined with a logical 'AND'. */
 export type SmbHighlightsBoolExp = {
   _and?: InputMaybe<Array<SmbHighlightsBoolExp>>;
@@ -1239,6 +1469,7 @@ export type SmbHighlightsBoolExp = {
   _or?: InputMaybe<Array<SmbHighlightsBoolExp>>;
   object?: InputMaybe<SmbObjectsBoolExp>;
   object_id?: InputMaybe<BigintComparisonExp>;
+  org_unit?: InputMaybe<SmbOrgUnitBoolExp>;
 };
 
 /** Boolean expression to filter rows from the table "smb.objects". All fields are combined with a logical 'AND'. */
@@ -1248,6 +1479,7 @@ export type SmbObjectsBoolExp = {
   _or?: InputMaybe<Array<SmbObjectsBoolExp>>;
   attachments?: InputMaybe<SmbAttachmentsBoolExp>;
   attributes?: InputMaybe<SmbAttributeTranslationsBoolExp>;
+  cultural_references?: InputMaybe<SmbCulturalReferencesBoolExp>;
   exhibition_space?: InputMaybe<StringComparisonExp>;
   geographical_references?: InputMaybe<SmbGeographicalReferencesBoolExp>;
   highlights?: InputMaybe<SmbHighlightsBoolExp>;
@@ -1330,12 +1562,27 @@ export type TimestamptzComparisonExp = {
   _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
 };
 
+/** Boolean expression to filter rows from the table "smb.org_unit". All fields are combined with a logical 'AND'. */
+export type SmbOrgUnitBoolExp = {
+  _and?: InputMaybe<Array<SmbOrgUnitBoolExp>>;
+  _not?: InputMaybe<SmbOrgUnitBoolExp>;
+  _or?: InputMaybe<Array<SmbOrgUnitBoolExp>>;
+  collectionKey?: InputMaybe<StringComparisonExp>;
+  highlights?: InputMaybe<SmbHighlightsBoolExp>;
+  highlights_aggregate?: InputMaybe<SmbHighlightsAggregateBoolExp>;
+  is_compilation?: InputMaybe<BooleanComparisonExp>;
+  name?: InputMaybe<StringComparisonExp>;
+  title?: InputMaybe<StringComparisonExp>;
+};
+
 /** SMB highlight objects */
 export type SmbHighlights = {
   __typename?: 'smb_highlights';
   /** An object relationship */
   object: SmbObjects;
   object_id: Scalars['bigint'];
+  /** An object relationship */
+  org_unit: SmbOrgUnit;
 };
 
 /** SMB objects fetched from MDS */
@@ -1345,6 +1592,8 @@ export type SmbObjects = {
   attachments: Array<SmbAttachments>;
   /** An array relationship */
   attributes: Array<SmbAttributeTranslations>;
+  /** An array relationship */
+  cultural_references: Array<SmbCulturalReferences>;
   exhibition_space?: Maybe<Scalars['String']>;
   /** An array relationship */
   geographical_references: Array<SmbGeographicalReferences>;
@@ -1378,6 +1627,16 @@ export type SmbObjectsAttributesArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<SmbAttributeTranslationsOrderBy>>;
   where?: InputMaybe<SmbAttributeTranslationsBoolExp>;
+};
+
+
+/** SMB objects fetched from MDS */
+export type SmbObjectsCulturalReferencesArgs = {
+  distinct_on?: InputMaybe<Array<SmbCulturalReferencesSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCulturalReferencesOrderBy>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
 };
 
 
@@ -1606,6 +1865,39 @@ export type SmbMaterialReferences = {
   type_voc?: Maybe<SmbThesaurus>;
 };
 
+/** Org-units fetched from MDS, used to group SMB objects */
+export type SmbOrgUnit = {
+  __typename?: 'smb_org_unit';
+  collectionKey?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  highlights: Array<SmbHighlights>;
+  /** An aggregate relationship */
+  highlights_aggregate: SmbHighlightsAggregate;
+  is_compilation?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  title?: Maybe<Scalars['String']>;
+};
+
+
+/** Org-units fetched from MDS, used to group SMB objects */
+export type SmbOrgUnitHighlightsArgs = {
+  distinct_on?: InputMaybe<Array<SmbHighlightsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbHighlightsOrderBy>>;
+  where?: InputMaybe<SmbHighlightsBoolExp>;
+};
+
+
+/** Org-units fetched from MDS, used to group SMB objects */
+export type SmbOrgUnitHighlightsAggregateArgs = {
+  distinct_on?: InputMaybe<Array<SmbHighlightsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbHighlightsOrderBy>>;
+  where?: InputMaybe<SmbHighlightsBoolExp>;
+};
+
 /** select columns of table "smb.language" */
 export enum SmbLanguageSelectColumn {
   /** column name */
@@ -1724,6 +2016,16 @@ export type SmbObjectsVarianceFields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** select columns of table "smb.org_unit" */
+export enum SmbOrgUnitSelectColumn {
+  /** column name */
+  IS_COMPILATION = 'is_compilation',
+  /** column name */
+  NAME = 'name',
+  /** column name */
+  TITLE = 'title'
+}
+
 /** select columns of table "smb.persons" */
 export enum SmbPersonsSelectColumn {
   /** column name */
@@ -1826,8 +2128,8 @@ export type SmbUser = {
   email: Scalars['String'];
 };
 
-export type StrapiHbfQuery = {
-  __typename?: 'strapi_hbfQuery';
+export type StrapiSmbQuery = {
+  __typename?: 'strapi_smbQuery';
   categories?: Maybe<CategoryEntityResponseCollection>;
   category?: Maybe<CategoryEntityResponse>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
@@ -1846,6 +2148,8 @@ export type StrapiHbfQuery = {
   topics?: Maybe<TopicEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
+  uploadFolder?: Maybe<UploadFolderEntityResponse>;
+  uploadFolders?: Maybe<UploadFolderEntityResponseCollection>;
   usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
@@ -1853,7 +2157,7 @@ export type StrapiHbfQuery = {
 };
 
 
-export type StrapiHbfQueryCategoriesArgs = {
+export type StrapiSmbQueryCategoriesArgs = {
   filters?: InputMaybe<CategoryFiltersInput>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   pagination?: InputMaybe<PaginationArg>;
@@ -1862,65 +2166,65 @@ export type StrapiHbfQueryCategoriesArgs = {
 };
 
 
-export type StrapiHbfQueryCategoryArgs = {
+export type StrapiSmbQueryCategoryArgs = {
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfQueryI18NLocaleArgs = {
+export type StrapiSmbQueryI18NLocaleArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type StrapiHbfQueryI18NLocalesArgs = {
+export type StrapiSmbQueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type StrapiHbfQueryIndexArgs = {
+export type StrapiSmbQueryIndexArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
 
-export type StrapiHbfQuerySiteConfigArgs = {
+export type StrapiSmbQuerySiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfQuerySmbGuidepageArgs = {
+export type StrapiSmbQuerySmbGuidepageArgs = {
   publicationState?: InputMaybe<PublicationState>;
 };
 
 
-export type StrapiHbfQuerySmbLandingpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiHbfQuerySmbResearchpageArgs = {
+export type StrapiSmbQuerySmbLandingpageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
 
-export type StrapiHbfQuerySmbSiteConfigArgs = {
+export type StrapiSmbQuerySmbResearchpageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
 
-export type StrapiHbfQuerySmbTopicspageArgs = {
+export type StrapiSmbQuerySmbSiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   publicationState?: InputMaybe<PublicationState>;
 };
 
 
-export type StrapiHbfQueryStoriesArgs = {
+export type StrapiSmbQuerySmbTopicspageArgs = {
+  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+  publicationState?: InputMaybe<PublicationState>;
+};
+
+
+export type StrapiSmbQueryStoriesArgs = {
   filters?: InputMaybe<StoryFiltersInput>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   pagination?: InputMaybe<PaginationArg>;
@@ -1929,19 +2233,19 @@ export type StrapiHbfQueryStoriesArgs = {
 };
 
 
-export type StrapiHbfQueryStoryArgs = {
+export type StrapiSmbQueryStoryArgs = {
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfQueryTopicArgs = {
+export type StrapiSmbQueryTopicArgs = {
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfQueryTopicsArgs = {
+export type StrapiSmbQueryTopicsArgs = {
   filters?: InputMaybe<TopicFiltersInput>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
   pagination?: InputMaybe<PaginationArg>;
@@ -1950,36 +2254,48 @@ export type StrapiHbfQueryTopicsArgs = {
 };
 
 
-export type StrapiHbfQueryUploadFileArgs = {
+export type StrapiSmbQueryUploadFileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type StrapiHbfQueryUploadFilesArgs = {
+export type StrapiSmbQueryUploadFilesArgs = {
   filters?: InputMaybe<UploadFileFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type StrapiHbfQueryUsersPermissionsRoleArgs = {
+export type StrapiSmbQueryUploadFolderArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type StrapiHbfQueryUsersPermissionsRolesArgs = {
+export type StrapiSmbQueryUploadFoldersArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type StrapiSmbQueryUsersPermissionsRoleArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type StrapiSmbQueryUsersPermissionsRolesArgs = {
   filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
-export type StrapiHbfQueryUsersPermissionsUserArgs = {
+export type StrapiSmbQueryUsersPermissionsUserArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type StrapiHbfQueryUsersPermissionsUsersArgs = {
+export type StrapiSmbQueryUsersPermissionsUsersArgs = {
   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -2014,6 +2330,7 @@ export type DateTimeFilterInput = {
   containsi?: InputMaybe<Scalars['DateTime']>;
   endsWith?: InputMaybe<Scalars['DateTime']>;
   eq?: InputMaybe<Scalars['DateTime']>;
+  eqi?: InputMaybe<Scalars['DateTime']>;
   gt?: InputMaybe<Scalars['DateTime']>;
   gte?: InputMaybe<Scalars['DateTime']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
@@ -2057,6 +2374,7 @@ export type StringFilterInput = {
   containsi?: InputMaybe<Scalars['String']>;
   endsWith?: InputMaybe<Scalars['String']>;
   eq?: InputMaybe<Scalars['String']>;
+  eqi?: InputMaybe<Scalars['String']>;
   gt?: InputMaybe<Scalars['String']>;
   gte?: InputMaybe<Scalars['String']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -2080,6 +2398,7 @@ export type IntFilterInput = {
   containsi?: InputMaybe<Scalars['Int']>;
   endsWith?: InputMaybe<Scalars['Int']>;
   eq?: InputMaybe<Scalars['Int']>;
+  eqi?: InputMaybe<Scalars['Int']>;
   gt?: InputMaybe<Scalars['Int']>;
   gte?: InputMaybe<Scalars['Int']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
@@ -2103,6 +2422,7 @@ export type BooleanFilterInput = {
   containsi?: InputMaybe<Scalars['Boolean']>;
   endsWith?: InputMaybe<Scalars['Boolean']>;
   eq?: InputMaybe<Scalars['Boolean']>;
+  eqi?: InputMaybe<Scalars['Boolean']>;
   gt?: InputMaybe<Scalars['Boolean']>;
   gte?: InputMaybe<Scalars['Boolean']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Boolean']>>>;
@@ -2133,6 +2453,7 @@ export type IdFilterInput = {
   containsi?: InputMaybe<Scalars['ID']>;
   endsWith?: InputMaybe<Scalars['ID']>;
   eq?: InputMaybe<Scalars['ID']>;
+  eqi?: InputMaybe<Scalars['ID']>;
   gt?: InputMaybe<Scalars['ID']>;
   gte?: InputMaybe<Scalars['ID']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
@@ -2461,7 +2782,7 @@ export type UploadFile = {
   width?: Maybe<Scalars['Int']>;
 };
 
-export type GenericMorph = Category | ComponentComponentsBannerCard | ComponentComponentsBreadcrumbsLink | ComponentComponentsButtonComponent | ComponentComponentsCardLinkComponent | ComponentComponentsContentCardComponent | ComponentComponentsCookie | ComponentComponentsEasyDbItems | ComponentComponentsEasyDbRef | ComponentComponentsHeadlineComponent | ComponentComponentsImageCard | ComponentComponentsImageMapCard | ComponentComponentsImageScrollCard | ComponentComponentsLegalPages | ComponentComponentsLinkComponent | ComponentComponentsMediaComponent | ComponentComponentsModelInfoPoints | ComponentComponentsNavigationLinkComponent | ComponentComponentsRichTextComponent | ComponentComponentsSimpleLink | ComponentComponentsSlug | ComponentComponentsSmbCollectionsBlock | ComponentComponentsSmbDownloadModule | ComponentComponentsSmbHeaderMenuItems | ComponentComponentsSmbHighlightsBlock | ComponentComponentsSmbLegalPagesBlock | ComponentComponentsSmbResearchModal | ComponentComponentsSmbSearchButtonBlock | ComponentComponentsSmbSection | ComponentComponentsSmbTextCard | ComponentComponentsSmbVideoBlock | ComponentComponentsSmbWebModule | ComponentComponentsStoryComponent | ComponentComponentsTagComponent | ComponentComponentsTextComponent | ComponentConfigHeroSwiperItem | ComponentConfigIndexConfig | ComponentConfigPageConfig | ComponentConfigTheme | ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | I18NLocale | Index | SiteConfig | SmbGuidepage | SmbLandingpage | SmbResearchpage | SmbSiteConfig | SmbTopicspage | Story | Topic | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Category | ComponentComponentsBannerCard | ComponentComponentsBreadcrumbsLink | ComponentComponentsButtonComponent | ComponentComponentsCardLinkComponent | ComponentComponentsContentCardComponent | ComponentComponentsCookie | ComponentComponentsEasyDbItems | ComponentComponentsEasyDbRef | ComponentComponentsHeadlineComponent | ComponentComponentsImageCard | ComponentComponentsImageMapCard | ComponentComponentsImageScrollCard | ComponentComponentsLegalPages | ComponentComponentsLinkComponent | ComponentComponentsMediaComponent | ComponentComponentsModelInfoPoints | ComponentComponentsNavigationLinkComponent | ComponentComponentsRichTextComponent | ComponentComponentsSimpleLink | ComponentComponentsSlug | ComponentComponentsSmbCollectionsBlock | ComponentComponentsSmbDownloadModule | ComponentComponentsSmbHeaderMenuItems | ComponentComponentsSmbHighlightsBlock | ComponentComponentsSmbLegalPagesBlock | ComponentComponentsSmbResearchModal | ComponentComponentsSmbSearchButtonBlock | ComponentComponentsSmbSection | ComponentComponentsSmbTextCard | ComponentComponentsSmbVideoBlock | ComponentComponentsSmbWebModule | ComponentComponentsStoryComponent | ComponentComponentsTagComponent | ComponentComponentsTextComponent | ComponentConfigHeroSwiperItem | ComponentConfigIndexConfig | ComponentConfigPageConfig | ComponentConfigTheme | ComponentGlobal3DModel | ComponentGlobalCardImageModule | ComponentGlobalColorSeparatorModule | ComponentGlobalContentModule | ComponentGlobalEasyDbImageModule | ComponentGlobalFilterModule | ComponentGlobalHeroModule | ComponentGlobalImageBannerModule | ComponentGlobalImageMapModule | ComponentGlobalImagePlayerModule | ComponentGlobalImageScrollModule | ComponentGlobalLinkedStoriesModule | ComponentGlobalLinksModule | ComponentGlobalMediaModule | ComponentGlobalRichtextModule | ComponentGlobalRouteNavigationModule | ComponentGlobalSammlungOnlineAdapter | ComponentGlobalSeparatorModule | ComponentGlobalStoriesContainerModule | ComponentGlobalTagCarouselModule | ComponentGlobalTagCloudModule | ComponentGlobalTextCardModule | ComponentGlobalTextDrawerModule | ComponentGlobalVideoModule | I18NLocale | Index | SiteConfig | SmbGuidepage | SmbLandingpage | SmbResearchpage | SmbSiteConfig | SmbTopicspage | Story | Topic | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type ComponentComponentsBannerCard = {
   __typename?: 'ComponentComponentsBannerCard';
@@ -2799,6 +3120,8 @@ export type UploadFileFiltersInput = {
   caption?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   ext?: InputMaybe<StringFilterInput>;
+  folder?: InputMaybe<UploadFolderFiltersInput>;
+  folderPath?: InputMaybe<StringFilterInput>;
   formats?: InputMaybe<JsonFilterInput>;
   hash?: InputMaybe<StringFilterInput>;
   height?: InputMaybe<IntFilterInput>;
@@ -2817,6 +3140,22 @@ export type UploadFileFiltersInput = {
   width?: InputMaybe<IntFilterInput>;
 };
 
+export type UploadFolderFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  children?: InputMaybe<UploadFolderFiltersInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  files?: InputMaybe<UploadFileFiltersInput>;
+  id?: InputMaybe<IdFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<UploadFolderFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
+  parent?: InputMaybe<UploadFolderFiltersInput>;
+  path?: InputMaybe<StringFilterInput>;
+  pathId?: InputMaybe<IntFilterInput>;
+  sitemap_exclude?: InputMaybe<BooleanFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
 export type JsonFilterInput = {
   and?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
   between?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
@@ -2824,6 +3163,7 @@ export type JsonFilterInput = {
   containsi?: InputMaybe<Scalars['JSON']>;
   endsWith?: InputMaybe<Scalars['JSON']>;
   eq?: InputMaybe<Scalars['JSON']>;
+  eqi?: InputMaybe<Scalars['JSON']>;
   gt?: InputMaybe<Scalars['JSON']>;
   gte?: InputMaybe<Scalars['JSON']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['JSON']>>>;
@@ -2847,6 +3187,7 @@ export type FloatFilterInput = {
   containsi?: InputMaybe<Scalars['Float']>;
   endsWith?: InputMaybe<Scalars['Float']>;
   eq?: InputMaybe<Scalars['Float']>;
+  eqi?: InputMaybe<Scalars['Float']>;
   gt?: InputMaybe<Scalars['Float']>;
   gte?: InputMaybe<Scalars['Float']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
@@ -3484,6 +3825,7 @@ export type LongFilterInput = {
   containsi?: InputMaybe<Scalars['Long']>;
   endsWith?: InputMaybe<Scalars['Long']>;
   eq?: InputMaybe<Scalars['Long']>;
+  eqi?: InputMaybe<Scalars['Long']>;
   gt?: InputMaybe<Scalars['Long']>;
   gte?: InputMaybe<Scalars['Long']>;
   in?: InputMaybe<Array<InputMaybe<Scalars['Long']>>>;
@@ -3932,6 +4274,48 @@ export type SmbTopicspageEntity = {
   id?: Maybe<Scalars['ID']>;
 };
 
+export type UploadFolder = {
+  __typename?: 'UploadFolder';
+  children?: Maybe<UploadFolderRelationResponseCollection>;
+  createdAt?: Maybe<Scalars['DateTime']>;
+  files?: Maybe<UploadFileRelationResponseCollection>;
+  name: Scalars['String'];
+  parent?: Maybe<UploadFolderEntityResponse>;
+  path: Scalars['String'];
+  pathId: Scalars['Int'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type UploadFolderChildrenArgs = {
+  filters?: InputMaybe<UploadFolderFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type UploadFolderFilesArgs = {
+  filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type UploadFolderRelationResponseCollection = {
+  __typename?: 'UploadFolderRelationResponseCollection';
+  data: Array<UploadFolderEntity>;
+};
+
+export type UploadFolderEntity = {
+  __typename?: 'UploadFolderEntity';
+  attributes?: Maybe<UploadFolder>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type UploadFolderEntityResponse = {
+  __typename?: 'UploadFolderEntityResponse';
+  data?: Maybe<UploadFolderEntity>;
+};
+
 export type UsersPermissionsPermission = {
   __typename?: 'UsersPermissionsPermission';
   action: Scalars['String'];
@@ -4174,6 +4558,12 @@ export type UploadFileEntityResponseCollection = {
   meta: ResponseCollectionMeta;
 };
 
+export type UploadFolderEntityResponseCollection = {
+  __typename?: 'UploadFolderEntityResponseCollection';
+  data: Array<UploadFolderEntity>;
+  meta: ResponseCollectionMeta;
+};
+
 export type UsersPermissionsRoleEntityResponseCollection = {
   __typename?: 'UsersPermissionsRoleEntityResponseCollection';
   data: Array<UsersPermissionsRoleEntity>;
@@ -4191,494 +4581,16 @@ export type UsersPermissionsUserEntityResponseCollection = {
   meta: ResponseCollectionMeta;
 };
 
-export type StrapiIslQuery = {
-  __typename?: 'strapi_islQuery';
-  categories?: Maybe<CategoryEntityResponseCollection>;
-  category?: Maybe<CategoryEntityResponse>;
-  i18NLocale?: Maybe<I18NLocaleEntityResponse>;
-  i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
-  index?: Maybe<IndexEntityResponse>;
-  me?: Maybe<UsersPermissionsMe>;
-  siteConfig?: Maybe<SiteConfigEntityResponse>;
-  smbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  smbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  smbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  smbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  smbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  stories?: Maybe<StoryEntityResponseCollection>;
-  story?: Maybe<StoryEntityResponse>;
-  topic?: Maybe<TopicEntityResponse>;
-  topics?: Maybe<TopicEntityResponseCollection>;
-  uploadFile?: Maybe<UploadFileEntityResponse>;
-  uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
-  usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
-  usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
-  usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
-  usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
-};
-
-
-export type StrapiIslQueryCategoriesArgs = {
-  filters?: InputMaybe<CategoryFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiIslQueryCategoryArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslQueryI18NLocaleArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiIslQueryI18NLocalesArgs = {
-  filters?: InputMaybe<I18NLocaleFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiIslQueryIndexArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiIslQuerySiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslQuerySmbGuidepageArgs = {
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiIslQuerySmbLandingpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiIslQuerySmbResearchpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiIslQuerySmbSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiIslQuerySmbTopicspageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiIslQueryStoriesArgs = {
-  filters?: InputMaybe<StoryFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiIslQueryStoryArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslQueryTopicArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslQueryTopicsArgs = {
-  filters?: InputMaybe<TopicFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiIslQueryUploadFileArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiIslQueryUploadFilesArgs = {
-  filters?: InputMaybe<UploadFileFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiIslQueryUsersPermissionsRoleArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiIslQueryUsersPermissionsRolesArgs = {
-  filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiIslQueryUsersPermissionsUserArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiIslQueryUsersPermissionsUsersArgs = {
-  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-export type StrapiKgmQuery = {
-  __typename?: 'strapi_kgmQuery';
-  categories?: Maybe<CategoryEntityResponseCollection>;
-  category?: Maybe<CategoryEntityResponse>;
-  i18NLocale?: Maybe<I18NLocaleEntityResponse>;
-  i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
-  index?: Maybe<IndexEntityResponse>;
-  me?: Maybe<UsersPermissionsMe>;
-  siteConfig?: Maybe<SiteConfigEntityResponse>;
-  smbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  smbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  smbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  smbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  smbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  stories?: Maybe<StoryEntityResponseCollection>;
-  story?: Maybe<StoryEntityResponse>;
-  topic?: Maybe<TopicEntityResponse>;
-  topics?: Maybe<TopicEntityResponseCollection>;
-  uploadFile?: Maybe<UploadFileEntityResponse>;
-  uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
-  usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
-  usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
-  usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
-  usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
-};
-
-
-export type StrapiKgmQueryCategoriesArgs = {
-  filters?: InputMaybe<CategoryFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiKgmQueryCategoryArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmQueryI18NLocaleArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiKgmQueryI18NLocalesArgs = {
-  filters?: InputMaybe<I18NLocaleFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiKgmQueryIndexArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiKgmQuerySiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmQuerySmbGuidepageArgs = {
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiKgmQuerySmbLandingpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiKgmQuerySmbResearchpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiKgmQuerySmbSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiKgmQuerySmbTopicspageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiKgmQueryStoriesArgs = {
-  filters?: InputMaybe<StoryFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiKgmQueryStoryArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmQueryTopicArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmQueryTopicsArgs = {
-  filters?: InputMaybe<TopicFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiKgmQueryUploadFileArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiKgmQueryUploadFilesArgs = {
-  filters?: InputMaybe<UploadFileFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiKgmQueryUsersPermissionsRoleArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiKgmQueryUsersPermissionsRolesArgs = {
-  filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiKgmQueryUsersPermissionsUserArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiKgmQueryUsersPermissionsUsersArgs = {
-  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-export type StrapiSmbQuery = {
-  __typename?: 'strapi_smbQuery';
-  categories?: Maybe<CategoryEntityResponseCollection>;
-  category?: Maybe<CategoryEntityResponse>;
-  i18NLocale?: Maybe<I18NLocaleEntityResponse>;
-  i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
-  index?: Maybe<IndexEntityResponse>;
-  me?: Maybe<UsersPermissionsMe>;
-  siteConfig?: Maybe<SiteConfigEntityResponse>;
-  smbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  smbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  smbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  smbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  smbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  stories?: Maybe<StoryEntityResponseCollection>;
-  story?: Maybe<StoryEntityResponse>;
-  topic?: Maybe<TopicEntityResponse>;
-  topics?: Maybe<TopicEntityResponseCollection>;
-  uploadFile?: Maybe<UploadFileEntityResponse>;
-  uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
-  usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
-  usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
-  usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
-  usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
-};
-
-
-export type StrapiSmbQueryCategoriesArgs = {
-  filters?: InputMaybe<CategoryFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiSmbQueryCategoryArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbQueryI18NLocaleArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiSmbQueryI18NLocalesArgs = {
-  filters?: InputMaybe<I18NLocaleFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiSmbQueryIndexArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiSmbQuerySiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbQuerySmbGuidepageArgs = {
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiSmbQuerySmbLandingpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiSmbQuerySmbResearchpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiSmbQuerySmbSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiSmbQuerySmbTopicspageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  publicationState?: InputMaybe<PublicationState>;
-};
-
-
-export type StrapiSmbQueryStoriesArgs = {
-  filters?: InputMaybe<StoryFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiSmbQueryStoryArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbQueryTopicArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbQueryTopicsArgs = {
-  filters?: InputMaybe<TopicFiltersInput>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-  pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiSmbQueryUploadFileArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiSmbQueryUploadFilesArgs = {
-  filters?: InputMaybe<UploadFileFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiSmbQueryUsersPermissionsRoleArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiSmbQueryUsersPermissionsRolesArgs = {
-  filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type StrapiSmbQueryUsersPermissionsUserArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiSmbQueryUsersPermissionsUsersArgs = {
-  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
 /** mutation root */
 export type MutationRoot = {
   __typename?: 'mutation_root';
-  strapi_hbf?: Maybe<StrapiHbfMutation>;
-  strapi_isl?: Maybe<StrapiIslMutation>;
-  strapi_kgm?: Maybe<StrapiKgmMutation>;
   strapi_smb?: Maybe<StrapiSmbMutation>;
 };
 
-export type StrapiHbfMutation = {
-  __typename?: 'strapi_hbfMutation';
+export type StrapiSmbMutation = {
+  __typename?: 'strapi_smbMutation';
+  /** Change user password. Confirm with the current password. */
+  changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createCategoryLocalization?: Maybe<CategoryEntityResponse>;
   createIndexLocalization?: Maybe<IndexEntityResponse>;
@@ -4692,6 +4604,7 @@ export type StrapiHbfMutation = {
   createTopic?: Maybe<TopicEntityResponse>;
   createTopicLocalization?: Maybe<TopicEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
+  createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
@@ -4707,6 +4620,7 @@ export type StrapiHbfMutation = {
   deleteStory?: Maybe<StoryEntityResponse>;
   deleteTopic?: Maybe<TopicEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
+  deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -4734,6 +4648,7 @@ export type StrapiHbfMutation = {
   updateStory?: Maybe<StoryEntityResponse>;
   updateTopic?: Maybe<TopicEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
+  updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
@@ -4742,181 +4657,198 @@ export type StrapiHbfMutation = {
 };
 
 
-export type StrapiHbfMutationCreateCategoryArgs = {
+export type StrapiSmbMutationChangePasswordArgs = {
+  currentPassword: Scalars['String'];
+  password: Scalars['String'];
+  passwordConfirmation: Scalars['String'];
+};
+
+
+export type StrapiSmbMutationCreateCategoryArgs = {
   data: CategoryInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateCategoryLocalizationArgs = {
+export type StrapiSmbMutationCreateCategoryLocalizationArgs = {
   data?: InputMaybe<CategoryInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateIndexLocalizationArgs = {
+export type StrapiSmbMutationCreateIndexLocalizationArgs = {
   data?: InputMaybe<IndexInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateSiteConfigLocalizationArgs = {
+export type StrapiSmbMutationCreateSiteConfigLocalizationArgs = {
   data?: InputMaybe<SiteConfigInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateSmbLandingpageLocalizationArgs = {
+export type StrapiSmbMutationCreateSmbLandingpageLocalizationArgs = {
   data?: InputMaybe<SmbLandingpageInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateSmbResearchpageLocalizationArgs = {
+export type StrapiSmbMutationCreateSmbResearchpageLocalizationArgs = {
   data?: InputMaybe<SmbResearchpageInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateSmbSiteConfigLocalizationArgs = {
+export type StrapiSmbMutationCreateSmbSiteConfigLocalizationArgs = {
   data?: InputMaybe<SmbSiteConfigInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateSmbTopicspageLocalizationArgs = {
+export type StrapiSmbMutationCreateSmbTopicspageLocalizationArgs = {
   data?: InputMaybe<SmbTopicspageInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateStoryArgs = {
+export type StrapiSmbMutationCreateStoryArgs = {
   data: StoryInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateStoryLocalizationArgs = {
+export type StrapiSmbMutationCreateStoryLocalizationArgs = {
   data?: InputMaybe<StoryInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateTopicArgs = {
+export type StrapiSmbMutationCreateTopicArgs = {
   data: TopicInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateTopicLocalizationArgs = {
+export type StrapiSmbMutationCreateTopicLocalizationArgs = {
   data?: InputMaybe<TopicInput>;
   id?: InputMaybe<Scalars['ID']>;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationCreateUploadFileArgs = {
+export type StrapiSmbMutationCreateUploadFileArgs = {
   data: UploadFileInput;
 };
 
 
-export type StrapiHbfMutationCreateUsersPermissionsRoleArgs = {
+export type StrapiSmbMutationCreateUploadFolderArgs = {
+  data: UploadFolderInput;
+};
+
+
+export type StrapiSmbMutationCreateUsersPermissionsRoleArgs = {
   data: UsersPermissionsRoleInput;
 };
 
 
-export type StrapiHbfMutationCreateUsersPermissionsUserArgs = {
+export type StrapiSmbMutationCreateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
 };
 
 
-export type StrapiHbfMutationDeleteCategoryArgs = {
+export type StrapiSmbMutationDeleteCategoryArgs = {
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteIndexArgs = {
+export type StrapiSmbMutationDeleteIndexArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteSiteConfigArgs = {
+export type StrapiSmbMutationDeleteSiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteSmbLandingpageArgs = {
+export type StrapiSmbMutationDeleteSmbLandingpageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteSmbResearchpageArgs = {
+export type StrapiSmbMutationDeleteSmbResearchpageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteSmbSiteConfigArgs = {
+export type StrapiSmbMutationDeleteSmbSiteConfigArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteSmbTopicspageArgs = {
+export type StrapiSmbMutationDeleteSmbTopicspageArgs = {
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteStoryArgs = {
+export type StrapiSmbMutationDeleteStoryArgs = {
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteTopicArgs = {
+export type StrapiSmbMutationDeleteTopicArgs = {
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationDeleteUploadFileArgs = {
+export type StrapiSmbMutationDeleteUploadFileArgs = {
   id: Scalars['ID'];
 };
 
 
-export type StrapiHbfMutationDeleteUsersPermissionsRoleArgs = {
+export type StrapiSmbMutationDeleteUploadFolderArgs = {
   id: Scalars['ID'];
 };
 
 
-export type StrapiHbfMutationDeleteUsersPermissionsUserArgs = {
+export type StrapiSmbMutationDeleteUsersPermissionsRoleArgs = {
   id: Scalars['ID'];
 };
 
 
-export type StrapiHbfMutationEmailConfirmationArgs = {
+export type StrapiSmbMutationDeleteUsersPermissionsUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type StrapiSmbMutationEmailConfirmationArgs = {
   confirmation: Scalars['String'];
 };
 
 
-export type StrapiHbfMutationForgotPasswordArgs = {
+export type StrapiSmbMutationForgotPasswordArgs = {
   email: Scalars['String'];
 };
 
 
-export type StrapiHbfMutationLoginArgs = {
+export type StrapiSmbMutationLoginArgs = {
   input: UsersPermissionsLoginInput;
 };
 
 
-export type StrapiHbfMutationMultipleUploadArgs = {
+export type StrapiSmbMutationMultipleUploadArgs = {
   field?: InputMaybe<Scalars['String']>;
   files: Array<InputMaybe<Scalars['Upload']>>;
   ref?: InputMaybe<Scalars['String']>;
@@ -4924,115 +4856,127 @@ export type StrapiHbfMutationMultipleUploadArgs = {
 };
 
 
-export type StrapiHbfMutationRegisterArgs = {
+export type StrapiSmbMutationRegisterArgs = {
   input: UsersPermissionsRegisterInput;
 };
 
 
-export type StrapiHbfMutationRemoveFileArgs = {
+export type StrapiSmbMutationRemoveFileArgs = {
   id: Scalars['ID'];
 };
 
 
-export type StrapiHbfMutationResetPasswordArgs = {
+export type StrapiSmbMutationResetPasswordArgs = {
   code: Scalars['String'];
   password: Scalars['String'];
   passwordConfirmation: Scalars['String'];
 };
 
 
-export type StrapiHbfMutationUpdateCategoryArgs = {
+export type StrapiSmbMutationUpdateCategoryArgs = {
   data: CategoryInput;
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateFileInfoArgs = {
+export type StrapiSmbMutationUpdateFileInfoArgs = {
   id: Scalars['ID'];
   info?: InputMaybe<FileInfoInput>;
 };
 
 
-export type StrapiHbfMutationUpdateIndexArgs = {
+export type StrapiSmbMutationUpdateIndexArgs = {
   data: IndexInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateSiteConfigArgs = {
+export type StrapiSmbMutationUpdateSiteConfigArgs = {
   data: SiteConfigInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateSmbGuidepageArgs = {
+export type StrapiSmbMutationUpdateSmbGuidepageArgs = {
   data: SmbGuidepageInput;
 };
 
 
-export type StrapiHbfMutationUpdateSmbLandingpageArgs = {
+export type StrapiSmbMutationUpdateSmbLandingpageArgs = {
   data: SmbLandingpageInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateSmbResearchpageArgs = {
+export type StrapiSmbMutationUpdateSmbResearchpageArgs = {
   data: SmbResearchpageInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateSmbSiteConfigArgs = {
+export type StrapiSmbMutationUpdateSmbSiteConfigArgs = {
   data: SmbSiteConfigInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateSmbTopicspageArgs = {
+export type StrapiSmbMutationUpdateSmbTopicspageArgs = {
   data: SmbTopicspageInput;
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateStoryArgs = {
+export type StrapiSmbMutationUpdateStoryArgs = {
   data: StoryInput;
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateTopicArgs = {
+export type StrapiSmbMutationUpdateTopicArgs = {
   data: TopicInput;
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
 };
 
 
-export type StrapiHbfMutationUpdateUploadFileArgs = {
+export type StrapiSmbMutationUpdateUploadFileArgs = {
   data: UploadFileInput;
   id: Scalars['ID'];
 };
 
 
-export type StrapiHbfMutationUpdateUsersPermissionsRoleArgs = {
+export type StrapiSmbMutationUpdateUploadFolderArgs = {
+  data: UploadFolderInput;
+  id: Scalars['ID'];
+};
+
+
+export type StrapiSmbMutationUpdateUsersPermissionsRoleArgs = {
   data: UsersPermissionsRoleInput;
   id: Scalars['ID'];
 };
 
 
-export type StrapiHbfMutationUpdateUsersPermissionsUserArgs = {
+export type StrapiSmbMutationUpdateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
   id: Scalars['ID'];
 };
 
 
-export type StrapiHbfMutationUploadArgs = {
+export type StrapiSmbMutationUploadArgs = {
   field?: InputMaybe<Scalars['String']>;
   file: Scalars['Upload'];
   info?: InputMaybe<FileInfoInput>;
   ref?: InputMaybe<Scalars['String']>;
   refId?: InputMaybe<Scalars['ID']>;
+};
+
+export type UsersPermissionsLoginPayload = {
+  __typename?: 'UsersPermissionsLoginPayload';
+  jwt?: Maybe<Scalars['String']>;
+  user: UsersPermissionsMe;
 };
 
 export type CategoryInput = {
@@ -5086,7 +5030,7 @@ export type ComponentConfigIndexConfigInput = {
 };
 
 export type SiteConfigInput = {
-  breadcrumbsLink?: InputMaybe<ComponentComponentsSimpleLinkInput>;
+  breadcrumbsLink?: InputMaybe<ComponentComponentsBreadcrumbsLinkInput>;
   cookies?: InputMaybe<ComponentComponentsCookieInput>;
   copyright?: InputMaybe<Scalars['String']>;
   footerPrimaryLinkItems?: InputMaybe<Array<InputMaybe<ComponentComponentsNavigationLinkComponentInput>>>;
@@ -5098,7 +5042,9 @@ export type SiteConfigInput = {
   sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ComponentComponentsSimpleLinkInput = {
+export type ComponentComponentsBreadcrumbsLinkInput = {
+  collapseText?: InputMaybe<Scalars['String']>;
+  expandText?: InputMaybe<Scalars['String']>;
   href?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   title?: InputMaybe<Scalars['String']>;
@@ -5283,10 +5229,18 @@ export type ComponentGlobalTextCardModuleInput = {
   theme?: InputMaybe<ComponentConfigThemeInput>;
 };
 
+export type ComponentComponentsSimpleLinkInput = {
+  href?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  title?: InputMaybe<Scalars['String']>;
+};
+
 export type UploadFileInput = {
   alternativeText?: InputMaybe<Scalars['String']>;
   caption?: InputMaybe<Scalars['String']>;
   ext?: InputMaybe<Scalars['String']>;
+  folder?: InputMaybe<Scalars['ID']>;
+  folderPath?: InputMaybe<Scalars['String']>;
   formats?: InputMaybe<Scalars['JSON']>;
   hash?: InputMaybe<Scalars['String']>;
   height?: InputMaybe<Scalars['Int']>;
@@ -5299,6 +5253,16 @@ export type UploadFileInput = {
   size?: InputMaybe<Scalars['Float']>;
   url?: InputMaybe<Scalars['String']>;
   width?: InputMaybe<Scalars['Int']>;
+};
+
+export type UploadFolderInput = {
+  children?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  files?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  name?: InputMaybe<Scalars['String']>;
+  parent?: InputMaybe<Scalars['ID']>;
+  path?: InputMaybe<Scalars['String']>;
+  pathId?: InputMaybe<Scalars['Int']>;
+  sitemap_exclude?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UsersPermissionsRoleInput = {
@@ -5330,12 +5294,6 @@ export type UsersPermissionsUserInput = {
 export type UsersPermissionsDeleteRolePayload = {
   __typename?: 'UsersPermissionsDeleteRolePayload';
   ok: Scalars['Boolean'];
-};
-
-export type UsersPermissionsLoginPayload = {
-  __typename?: 'UsersPermissionsLoginPayload';
-  jwt?: Maybe<Scalars['String']>;
-  user: UsersPermissionsMe;
 };
 
 export type UsersPermissionsPasswordPayload = {
@@ -5373,1080 +5331,6 @@ export type UsersPermissionsUpdateRolePayload = {
   ok: Scalars['Boolean'];
 };
 
-export type StrapiIslMutation = {
-  __typename?: 'strapi_islMutation';
-  createCategory?: Maybe<CategoryEntityResponse>;
-  createCategoryLocalization?: Maybe<CategoryEntityResponse>;
-  createIndexLocalization?: Maybe<IndexEntityResponse>;
-  createSiteConfigLocalization?: Maybe<SiteConfigEntityResponse>;
-  createSmbLandingpageLocalization?: Maybe<SmbLandingpageEntityResponse>;
-  createSmbResearchpageLocalization?: Maybe<SmbResearchpageEntityResponse>;
-  createSmbSiteConfigLocalization?: Maybe<SmbSiteConfigEntityResponse>;
-  createSmbTopicspageLocalization?: Maybe<SmbTopicspageEntityResponse>;
-  createStory?: Maybe<StoryEntityResponse>;
-  createStoryLocalization?: Maybe<StoryEntityResponse>;
-  createTopic?: Maybe<TopicEntityResponse>;
-  createTopicLocalization?: Maybe<TopicEntityResponse>;
-  createUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Create a new role */
-  createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
-  /** Create a new user */
-  createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  deleteCategory?: Maybe<CategoryEntityResponse>;
-  deleteIndex?: Maybe<IndexEntityResponse>;
-  deleteSiteConfig?: Maybe<SiteConfigEntityResponse>;
-  deleteSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  deleteSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  deleteSmbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  deleteSmbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  deleteSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  deleteStory?: Maybe<StoryEntityResponse>;
-  deleteTopic?: Maybe<TopicEntityResponse>;
-  deleteUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Delete an existing role */
-  deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
-  /** Delete an existing user */
-  deleteUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  /** Confirm an email users email address */
-  emailConfirmation?: Maybe<UsersPermissionsLoginPayload>;
-  /** Request a reset password token */
-  forgotPassword?: Maybe<UsersPermissionsPasswordPayload>;
-  login: UsersPermissionsLoginPayload;
-  multipleUpload: Array<Maybe<UploadFileEntityResponse>>;
-  /** Register a user */
-  register: UsersPermissionsLoginPayload;
-  removeFile?: Maybe<UploadFileEntityResponse>;
-  /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
-  resetPassword?: Maybe<UsersPermissionsLoginPayload>;
-  updateCategory?: Maybe<CategoryEntityResponse>;
-  updateFileInfo: UploadFileEntityResponse;
-  updateIndex?: Maybe<IndexEntityResponse>;
-  updateSiteConfig?: Maybe<SiteConfigEntityResponse>;
-  updateSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  updateSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  updateSmbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  updateSmbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  updateSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  updateStory?: Maybe<StoryEntityResponse>;
-  updateTopic?: Maybe<TopicEntityResponse>;
-  updateUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Update an existing role */
-  updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
-  /** Update an existing user */
-  updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  upload: UploadFileEntityResponse;
-};
-
-
-export type StrapiIslMutationCreateCategoryArgs = {
-  data: CategoryInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateCategoryLocalizationArgs = {
-  data?: InputMaybe<CategoryInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateIndexLocalizationArgs = {
-  data?: InputMaybe<IndexInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateSiteConfigLocalizationArgs = {
-  data?: InputMaybe<SiteConfigInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateSmbLandingpageLocalizationArgs = {
-  data?: InputMaybe<SmbLandingpageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateSmbResearchpageLocalizationArgs = {
-  data?: InputMaybe<SmbResearchpageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateSmbSiteConfigLocalizationArgs = {
-  data?: InputMaybe<SmbSiteConfigInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateSmbTopicspageLocalizationArgs = {
-  data?: InputMaybe<SmbTopicspageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateStoryArgs = {
-  data: StoryInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateStoryLocalizationArgs = {
-  data?: InputMaybe<StoryInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateTopicArgs = {
-  data: TopicInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateTopicLocalizationArgs = {
-  data?: InputMaybe<TopicInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationCreateUploadFileArgs = {
-  data: UploadFileInput;
-};
-
-
-export type StrapiIslMutationCreateUsersPermissionsRoleArgs = {
-  data: UsersPermissionsRoleInput;
-};
-
-
-export type StrapiIslMutationCreateUsersPermissionsUserArgs = {
-  data: UsersPermissionsUserInput;
-};
-
-
-export type StrapiIslMutationDeleteCategoryArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteIndexArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteSmbLandingpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteSmbResearchpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteSmbSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteSmbTopicspageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteStoryArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteTopicArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationDeleteUploadFileArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiIslMutationDeleteUsersPermissionsRoleArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiIslMutationDeleteUsersPermissionsUserArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiIslMutationEmailConfirmationArgs = {
-  confirmation: Scalars['String'];
-};
-
-
-export type StrapiIslMutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type StrapiIslMutationLoginArgs = {
-  input: UsersPermissionsLoginInput;
-};
-
-
-export type StrapiIslMutationMultipleUploadArgs = {
-  field?: InputMaybe<Scalars['String']>;
-  files: Array<InputMaybe<Scalars['Upload']>>;
-  ref?: InputMaybe<Scalars['String']>;
-  refId?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiIslMutationRegisterArgs = {
-  input: UsersPermissionsRegisterInput;
-};
-
-
-export type StrapiIslMutationRemoveFileArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiIslMutationResetPasswordArgs = {
-  code: Scalars['String'];
-  password: Scalars['String'];
-  passwordConfirmation: Scalars['String'];
-};
-
-
-export type StrapiIslMutationUpdateCategoryArgs = {
-  data: CategoryInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateFileInfoArgs = {
-  id: Scalars['ID'];
-  info?: InputMaybe<FileInfoInput>;
-};
-
-
-export type StrapiIslMutationUpdateIndexArgs = {
-  data: IndexInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateSiteConfigArgs = {
-  data: SiteConfigInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateSmbGuidepageArgs = {
-  data: SmbGuidepageInput;
-};
-
-
-export type StrapiIslMutationUpdateSmbLandingpageArgs = {
-  data: SmbLandingpageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateSmbResearchpageArgs = {
-  data: SmbResearchpageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateSmbSiteConfigArgs = {
-  data: SmbSiteConfigInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateSmbTopicspageArgs = {
-  data: SmbTopicspageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateStoryArgs = {
-  data: StoryInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateTopicArgs = {
-  data: TopicInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiIslMutationUpdateUploadFileArgs = {
-  data: UploadFileInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiIslMutationUpdateUsersPermissionsRoleArgs = {
-  data: UsersPermissionsRoleInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiIslMutationUpdateUsersPermissionsUserArgs = {
-  data: UsersPermissionsUserInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiIslMutationUploadArgs = {
-  field?: InputMaybe<Scalars['String']>;
-  file: Scalars['Upload'];
-  info?: InputMaybe<FileInfoInput>;
-  ref?: InputMaybe<Scalars['String']>;
-  refId?: InputMaybe<Scalars['ID']>;
-};
-
-export type StrapiKgmMutation = {
-  __typename?: 'strapi_kgmMutation';
-  createCategory?: Maybe<CategoryEntityResponse>;
-  createCategoryLocalization?: Maybe<CategoryEntityResponse>;
-  createIndexLocalization?: Maybe<IndexEntityResponse>;
-  createSiteConfigLocalization?: Maybe<SiteConfigEntityResponse>;
-  createSmbLandingpageLocalization?: Maybe<SmbLandingpageEntityResponse>;
-  createSmbResearchpageLocalization?: Maybe<SmbResearchpageEntityResponse>;
-  createSmbSiteConfigLocalization?: Maybe<SmbSiteConfigEntityResponse>;
-  createSmbTopicspageLocalization?: Maybe<SmbTopicspageEntityResponse>;
-  createStory?: Maybe<StoryEntityResponse>;
-  createStoryLocalization?: Maybe<StoryEntityResponse>;
-  createTopic?: Maybe<TopicEntityResponse>;
-  createTopicLocalization?: Maybe<TopicEntityResponse>;
-  createUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Create a new role */
-  createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
-  /** Create a new user */
-  createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  deleteCategory?: Maybe<CategoryEntityResponse>;
-  deleteIndex?: Maybe<IndexEntityResponse>;
-  deleteSiteConfig?: Maybe<SiteConfigEntityResponse>;
-  deleteSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  deleteSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  deleteSmbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  deleteSmbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  deleteSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  deleteStory?: Maybe<StoryEntityResponse>;
-  deleteTopic?: Maybe<TopicEntityResponse>;
-  deleteUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Delete an existing role */
-  deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
-  /** Delete an existing user */
-  deleteUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  /** Confirm an email users email address */
-  emailConfirmation?: Maybe<UsersPermissionsLoginPayload>;
-  /** Request a reset password token */
-  forgotPassword?: Maybe<UsersPermissionsPasswordPayload>;
-  login: UsersPermissionsLoginPayload;
-  multipleUpload: Array<Maybe<UploadFileEntityResponse>>;
-  /** Register a user */
-  register: UsersPermissionsLoginPayload;
-  removeFile?: Maybe<UploadFileEntityResponse>;
-  /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
-  resetPassword?: Maybe<UsersPermissionsLoginPayload>;
-  updateCategory?: Maybe<CategoryEntityResponse>;
-  updateFileInfo: UploadFileEntityResponse;
-  updateIndex?: Maybe<IndexEntityResponse>;
-  updateSiteConfig?: Maybe<SiteConfigEntityResponse>;
-  updateSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  updateSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  updateSmbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  updateSmbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  updateSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  updateStory?: Maybe<StoryEntityResponse>;
-  updateTopic?: Maybe<TopicEntityResponse>;
-  updateUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Update an existing role */
-  updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
-  /** Update an existing user */
-  updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  upload: UploadFileEntityResponse;
-};
-
-
-export type StrapiKgmMutationCreateCategoryArgs = {
-  data: CategoryInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateCategoryLocalizationArgs = {
-  data?: InputMaybe<CategoryInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateIndexLocalizationArgs = {
-  data?: InputMaybe<IndexInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateSiteConfigLocalizationArgs = {
-  data?: InputMaybe<SiteConfigInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateSmbLandingpageLocalizationArgs = {
-  data?: InputMaybe<SmbLandingpageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateSmbResearchpageLocalizationArgs = {
-  data?: InputMaybe<SmbResearchpageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateSmbSiteConfigLocalizationArgs = {
-  data?: InputMaybe<SmbSiteConfigInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateSmbTopicspageLocalizationArgs = {
-  data?: InputMaybe<SmbTopicspageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateStoryArgs = {
-  data: StoryInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateStoryLocalizationArgs = {
-  data?: InputMaybe<StoryInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateTopicArgs = {
-  data: TopicInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateTopicLocalizationArgs = {
-  data?: InputMaybe<TopicInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationCreateUploadFileArgs = {
-  data: UploadFileInput;
-};
-
-
-export type StrapiKgmMutationCreateUsersPermissionsRoleArgs = {
-  data: UsersPermissionsRoleInput;
-};
-
-
-export type StrapiKgmMutationCreateUsersPermissionsUserArgs = {
-  data: UsersPermissionsUserInput;
-};
-
-
-export type StrapiKgmMutationDeleteCategoryArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteIndexArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteSmbLandingpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteSmbResearchpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteSmbSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteSmbTopicspageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteStoryArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteTopicArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationDeleteUploadFileArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiKgmMutationDeleteUsersPermissionsRoleArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiKgmMutationDeleteUsersPermissionsUserArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiKgmMutationEmailConfirmationArgs = {
-  confirmation: Scalars['String'];
-};
-
-
-export type StrapiKgmMutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type StrapiKgmMutationLoginArgs = {
-  input: UsersPermissionsLoginInput;
-};
-
-
-export type StrapiKgmMutationMultipleUploadArgs = {
-  field?: InputMaybe<Scalars['String']>;
-  files: Array<InputMaybe<Scalars['Upload']>>;
-  ref?: InputMaybe<Scalars['String']>;
-  refId?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiKgmMutationRegisterArgs = {
-  input: UsersPermissionsRegisterInput;
-};
-
-
-export type StrapiKgmMutationRemoveFileArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiKgmMutationResetPasswordArgs = {
-  code: Scalars['String'];
-  password: Scalars['String'];
-  passwordConfirmation: Scalars['String'];
-};
-
-
-export type StrapiKgmMutationUpdateCategoryArgs = {
-  data: CategoryInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateFileInfoArgs = {
-  id: Scalars['ID'];
-  info?: InputMaybe<FileInfoInput>;
-};
-
-
-export type StrapiKgmMutationUpdateIndexArgs = {
-  data: IndexInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateSiteConfigArgs = {
-  data: SiteConfigInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateSmbGuidepageArgs = {
-  data: SmbGuidepageInput;
-};
-
-
-export type StrapiKgmMutationUpdateSmbLandingpageArgs = {
-  data: SmbLandingpageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateSmbResearchpageArgs = {
-  data: SmbResearchpageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateSmbSiteConfigArgs = {
-  data: SmbSiteConfigInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateSmbTopicspageArgs = {
-  data: SmbTopicspageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateStoryArgs = {
-  data: StoryInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateTopicArgs = {
-  data: TopicInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiKgmMutationUpdateUploadFileArgs = {
-  data: UploadFileInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiKgmMutationUpdateUsersPermissionsRoleArgs = {
-  data: UsersPermissionsRoleInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiKgmMutationUpdateUsersPermissionsUserArgs = {
-  data: UsersPermissionsUserInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiKgmMutationUploadArgs = {
-  field?: InputMaybe<Scalars['String']>;
-  file: Scalars['Upload'];
-  info?: InputMaybe<FileInfoInput>;
-  ref?: InputMaybe<Scalars['String']>;
-  refId?: InputMaybe<Scalars['ID']>;
-};
-
-export type StrapiSmbMutation = {
-  __typename?: 'strapi_smbMutation';
-  createCategory?: Maybe<CategoryEntityResponse>;
-  createCategoryLocalization?: Maybe<CategoryEntityResponse>;
-  createIndexLocalization?: Maybe<IndexEntityResponse>;
-  createSiteConfigLocalization?: Maybe<SiteConfigEntityResponse>;
-  createSmbLandingpageLocalization?: Maybe<SmbLandingpageEntityResponse>;
-  createSmbResearchpageLocalization?: Maybe<SmbResearchpageEntityResponse>;
-  createSmbSiteConfigLocalization?: Maybe<SmbSiteConfigEntityResponse>;
-  createSmbTopicspageLocalization?: Maybe<SmbTopicspageEntityResponse>;
-  createStory?: Maybe<StoryEntityResponse>;
-  createStoryLocalization?: Maybe<StoryEntityResponse>;
-  createTopic?: Maybe<TopicEntityResponse>;
-  createTopicLocalization?: Maybe<TopicEntityResponse>;
-  createUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Create a new role */
-  createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
-  /** Create a new user */
-  createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  deleteCategory?: Maybe<CategoryEntityResponse>;
-  deleteIndex?: Maybe<IndexEntityResponse>;
-  deleteSiteConfig?: Maybe<SiteConfigEntityResponse>;
-  deleteSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  deleteSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  deleteSmbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  deleteSmbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  deleteSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  deleteStory?: Maybe<StoryEntityResponse>;
-  deleteTopic?: Maybe<TopicEntityResponse>;
-  deleteUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Delete an existing role */
-  deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
-  /** Delete an existing user */
-  deleteUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  /** Confirm an email users email address */
-  emailConfirmation?: Maybe<UsersPermissionsLoginPayload>;
-  /** Request a reset password token */
-  forgotPassword?: Maybe<UsersPermissionsPasswordPayload>;
-  login: UsersPermissionsLoginPayload;
-  multipleUpload: Array<Maybe<UploadFileEntityResponse>>;
-  /** Register a user */
-  register: UsersPermissionsLoginPayload;
-  removeFile?: Maybe<UploadFileEntityResponse>;
-  /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
-  resetPassword?: Maybe<UsersPermissionsLoginPayload>;
-  updateCategory?: Maybe<CategoryEntityResponse>;
-  updateFileInfo: UploadFileEntityResponse;
-  updateIndex?: Maybe<IndexEntityResponse>;
-  updateSiteConfig?: Maybe<SiteConfigEntityResponse>;
-  updateSmbGuidepage?: Maybe<SmbGuidepageEntityResponse>;
-  updateSmbLandingpage?: Maybe<SmbLandingpageEntityResponse>;
-  updateSmbResearchpage?: Maybe<SmbResearchpageEntityResponse>;
-  updateSmbSiteConfig?: Maybe<SmbSiteConfigEntityResponse>;
-  updateSmbTopicspage?: Maybe<SmbTopicspageEntityResponse>;
-  updateStory?: Maybe<StoryEntityResponse>;
-  updateTopic?: Maybe<TopicEntityResponse>;
-  updateUploadFile?: Maybe<UploadFileEntityResponse>;
-  /** Update an existing role */
-  updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
-  /** Update an existing user */
-  updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  upload: UploadFileEntityResponse;
-};
-
-
-export type StrapiSmbMutationCreateCategoryArgs = {
-  data: CategoryInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateCategoryLocalizationArgs = {
-  data?: InputMaybe<CategoryInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateIndexLocalizationArgs = {
-  data?: InputMaybe<IndexInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateSiteConfigLocalizationArgs = {
-  data?: InputMaybe<SiteConfigInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateSmbLandingpageLocalizationArgs = {
-  data?: InputMaybe<SmbLandingpageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateSmbResearchpageLocalizationArgs = {
-  data?: InputMaybe<SmbResearchpageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateSmbSiteConfigLocalizationArgs = {
-  data?: InputMaybe<SmbSiteConfigInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateSmbTopicspageLocalizationArgs = {
-  data?: InputMaybe<SmbTopicspageInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateStoryArgs = {
-  data: StoryInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateStoryLocalizationArgs = {
-  data?: InputMaybe<StoryInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateTopicArgs = {
-  data: TopicInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateTopicLocalizationArgs = {
-  data?: InputMaybe<TopicInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationCreateUploadFileArgs = {
-  data: UploadFileInput;
-};
-
-
-export type StrapiSmbMutationCreateUsersPermissionsRoleArgs = {
-  data: UsersPermissionsRoleInput;
-};
-
-
-export type StrapiSmbMutationCreateUsersPermissionsUserArgs = {
-  data: UsersPermissionsUserInput;
-};
-
-
-export type StrapiSmbMutationDeleteCategoryArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteIndexArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteSmbLandingpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteSmbResearchpageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteSmbSiteConfigArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteSmbTopicspageArgs = {
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteStoryArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteTopicArgs = {
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationDeleteUploadFileArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiSmbMutationDeleteUsersPermissionsRoleArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiSmbMutationDeleteUsersPermissionsUserArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiSmbMutationEmailConfirmationArgs = {
-  confirmation: Scalars['String'];
-};
-
-
-export type StrapiSmbMutationForgotPasswordArgs = {
-  email: Scalars['String'];
-};
-
-
-export type StrapiSmbMutationLoginArgs = {
-  input: UsersPermissionsLoginInput;
-};
-
-
-export type StrapiSmbMutationMultipleUploadArgs = {
-  field?: InputMaybe<Scalars['String']>;
-  files: Array<InputMaybe<Scalars['Upload']>>;
-  ref?: InputMaybe<Scalars['String']>;
-  refId?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type StrapiSmbMutationRegisterArgs = {
-  input: UsersPermissionsRegisterInput;
-};
-
-
-export type StrapiSmbMutationRemoveFileArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type StrapiSmbMutationResetPasswordArgs = {
-  code: Scalars['String'];
-  password: Scalars['String'];
-  passwordConfirmation: Scalars['String'];
-};
-
-
-export type StrapiSmbMutationUpdateCategoryArgs = {
-  data: CategoryInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateFileInfoArgs = {
-  id: Scalars['ID'];
-  info?: InputMaybe<FileInfoInput>;
-};
-
-
-export type StrapiSmbMutationUpdateIndexArgs = {
-  data: IndexInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateSiteConfigArgs = {
-  data: SiteConfigInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateSmbGuidepageArgs = {
-  data: SmbGuidepageInput;
-};
-
-
-export type StrapiSmbMutationUpdateSmbLandingpageArgs = {
-  data: SmbLandingpageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateSmbResearchpageArgs = {
-  data: SmbResearchpageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateSmbSiteConfigArgs = {
-  data: SmbSiteConfigInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateSmbTopicspageArgs = {
-  data: SmbTopicspageInput;
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateStoryArgs = {
-  data: StoryInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateTopicArgs = {
-  data: TopicInput;
-  id: Scalars['ID'];
-  locale?: InputMaybe<Scalars['I18NLocaleCode']>;
-};
-
-
-export type StrapiSmbMutationUpdateUploadFileArgs = {
-  data: UploadFileInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiSmbMutationUpdateUsersPermissionsRoleArgs = {
-  data: UsersPermissionsRoleInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiSmbMutationUpdateUsersPermissionsUserArgs = {
-  data: UsersPermissionsUserInput;
-  id: Scalars['ID'];
-};
-
-
-export type StrapiSmbMutationUploadArgs = {
-  field?: InputMaybe<Scalars['String']>;
-  file: Scalars['Upload'];
-  info?: InputMaybe<FileInfoInput>;
-  ref?: InputMaybe<Scalars['String']>;
-  refId?: InputMaybe<Scalars['ID']>;
-};
-
 export type SubscriptionRoot = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "smb.assortments" */
@@ -6471,6 +5355,22 @@ export type SubscriptionRoot = {
   smb_attributes_by_pk?: Maybe<SmbAttributes>;
   /** fetch data from the table in a streaming manner: "smb.attributes" */
   smb_attributes_stream: Array<SmbAttributes>;
+  /** fetch data from the table: "smb.buildings" */
+  smb_buildings: Array<SmbBuildings>;
+  /** fetch data from the table: "smb.buildings" using primary key columns */
+  smb_buildings_by_pk?: Maybe<SmbBuildings>;
+  /** fetch data from the table in a streaming manner: "smb.buildings" */
+  smb_buildings_stream: Array<SmbBuildings>;
+  /** fetch data from the table: "smb.collections" */
+  smb_collections: Array<SmbCollections>;
+  /** fetch data from the table: "smb.collections" using primary key columns */
+  smb_collections_by_pk?: Maybe<SmbCollections>;
+  /** fetch data from the table in a streaming manner: "smb.collections" */
+  smb_collections_stream: Array<SmbCollections>;
+  /** fetch data from the table: "smb.cultural_references" */
+  smb_cultural_references: Array<SmbCulturalReferences>;
+  /** fetch data from the table in a streaming manner: "smb.cultural_references" */
+  smb_cultural_references_stream: Array<SmbCulturalReferences>;
   /** fetch data from the table: "smb.exhibitions" */
   smb_exhibitions: Array<SmbExhibitions>;
   /** fetch data from the table in a streaming manner: "smb.exhibitions" */
@@ -6509,6 +5409,10 @@ export type SubscriptionRoot = {
   smb_objects_by_pk?: Maybe<SmbObjects>;
   /** fetch data from the table in a streaming manner: "smb.objects" */
   smb_objects_stream: Array<SmbObjects>;
+  /** fetch data from the table: "smb.org_unit" */
+  smb_org_unit: Array<SmbOrgUnit>;
+  /** fetch data from the table in a streaming manner: "smb.org_unit" */
+  smb_org_unit_stream: Array<SmbOrgUnit>;
   /** fetch data from the table: "smb.persons" */
   smb_persons: Array<SmbPersons>;
   /** fetch data from the table: "smb.persons_objects" */
@@ -6618,6 +5522,64 @@ export type SubscriptionRootSmbAttributesStreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<SmbAttributesStreamCursorInput>>;
   where?: InputMaybe<SmbAttributesBoolExp>;
+};
+
+
+export type SubscriptionRootSmbBuildingsArgs = {
+  distinct_on?: InputMaybe<Array<SmbBuildingsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbBuildingsOrderBy>>;
+  where?: InputMaybe<SmbBuildingsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbBuildingsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type SubscriptionRootSmbBuildingsStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbBuildingsStreamCursorInput>>;
+  where?: InputMaybe<SmbBuildingsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCollectionsArgs = {
+  distinct_on?: InputMaybe<Array<SmbCollectionsSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCollectionsOrderBy>>;
+  where?: InputMaybe<SmbCollectionsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCollectionsByPkArgs = {
+  key: Scalars['String'];
+};
+
+
+export type SubscriptionRootSmbCollectionsStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbCollectionsStreamCursorInput>>;
+  where?: InputMaybe<SmbCollectionsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCulturalReferencesArgs = {
+  distinct_on?: InputMaybe<Array<SmbCulturalReferencesSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbCulturalReferencesOrderBy>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
+};
+
+
+export type SubscriptionRootSmbCulturalReferencesStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbCulturalReferencesStreamCursorInput>>;
+  where?: InputMaybe<SmbCulturalReferencesBoolExp>;
 };
 
 
@@ -6769,6 +5731,22 @@ export type SubscriptionRootSmbObjectsStreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<SmbObjectsStreamCursorInput>>;
   where?: InputMaybe<SmbObjectsBoolExp>;
+};
+
+
+export type SubscriptionRootSmbOrgUnitArgs = {
+  distinct_on?: InputMaybe<Array<SmbOrgUnitSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SmbOrgUnitOrderBy>>;
+  where?: InputMaybe<SmbOrgUnitBoolExp>;
+};
+
+
+export type SubscriptionRootSmbOrgUnitStreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SmbOrgUnitStreamCursorInput>>;
+  where?: InputMaybe<SmbOrgUnitBoolExp>;
 };
 
 
@@ -6949,6 +5927,49 @@ export type SmbAttributesStreamCursorValueInput = {
   key?: InputMaybe<Scalars['String']>;
 };
 
+/** Streaming cursor of the table "smb_buildings" */
+export type SmbBuildingsStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbBuildingsStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbBuildingsStreamCursorValueInput = {
+  key?: InputMaybe<Scalars['String']>;
+  /** Display title used for all languages */
+  title?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "smb_collections" */
+export type SmbCollectionsStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbCollectionsStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbCollectionsStreamCursorValueInput = {
+  key?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+};
+
+/** Streaming cursor of the table "smb_cultural_references" */
+export type SmbCulturalReferencesStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbCulturalReferencesStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbCulturalReferencesStreamCursorValueInput = {
+  sequence?: InputMaybe<Scalars['Int']>;
+};
+
 /** Streaming cursor of the table "smb_exhibitions" */
 export type SmbExhibitionsStreamCursorInput = {
   /** Stream column input with initial value */
@@ -7061,6 +6082,21 @@ export type SmbObjectsStreamCursorValueInput = {
   exhibition_space?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['bigint']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Streaming cursor of the table "smb_org_unit" */
+export type SmbOrgUnitStreamCursorInput = {
+  /** Stream column input with initial value */
+  initial_value: SmbOrgUnitStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SmbOrgUnitStreamCursorValueInput = {
+  is_compilation?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 /** Streaming cursor of the table "smb_persons_objects" */

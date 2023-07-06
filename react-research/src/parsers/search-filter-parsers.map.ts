@@ -12,6 +12,8 @@ export const searchFilterParsersMap: ISearchFilterParsersMapInterface = {
   [ESearchConditionFields.dating]: searchFilterQueryParameterParser,
   [ESearchConditionFields.geographicalReferences]: searchFilterQueryParameterParser,
   [ESearchConditionFields.geographicalReferencesID]: searchFilterQueryParameterParser,
+  [ESearchConditionFields.culturalReferences]: searchFilterQueryParameterParser,
+  [ESearchConditionFields.culturalReferencesID]: searchFilterQueryParameterParser,
   [ESearchConditionFields.involvedParties]: searchFilterQueryParameterParser,
   [ESearchConditionFields.involvedPartiesID]: searchFilterQueryParameterParser,
   [ESearchConditionFields.materialAndTechnique]: searchFilterQueryParameterParser,

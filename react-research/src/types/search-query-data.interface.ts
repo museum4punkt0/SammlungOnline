@@ -3,6 +3,7 @@ import {
   IVirtualSearchFilterGroup,
   IVirtualSearchSwitch,
 } from './index';
+import { SortOption } from "../utils/configuration/sorting-info.config";
 
 export interface ISearchQueryParamsData {
   question: string;
@@ -12,4 +13,5 @@ export interface ISearchQueryParamsData {
   searchControls: IVirtualSearchSwitch[];
   advancedFilters: IVirtualSearchFilterGroup[];
   conditions: IVirtualSearchAttributeCondition[];
+  sort: SortOption;
 }

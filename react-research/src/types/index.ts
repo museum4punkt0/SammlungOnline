@@ -26,6 +26,8 @@ import { IVirtualSearchSwitch } from './virtual-switch.interface';
 import { IExhibitInfoItemConfig } from './exhibit-info.config.interface';
 import { IAsideContainerItem, ILink, IAsideInfoItem } from './details.interface';
 
+export * from './search-facets.interface';
+
 // eslint-disable-next-line prettier/prettier
 export type { 
     IAttribute, 

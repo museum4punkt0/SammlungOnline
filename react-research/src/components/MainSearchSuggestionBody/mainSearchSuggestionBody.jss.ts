@@ -9,23 +9,24 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   optionField: {
     display: 'flex',
-    width: '170px',
+    width: '190px',
     minWidth: '150px',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    fontSize: '.8rem',
+    fontSize: '1rem',
+    marginRight: '1rem',
     ['@media (max-width:700px)']: {
       display: 'none!important',
     },
   },
   optionValueWrapper: {
-    width: 'calc(90% - 170px)', // -10% optionCounter, -170px optionField
+    width: '100%', // -10% optionCounter
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'start',
     ['@media (max-width:700px)']: {
-      width: '85%', // -15% optionCounter
+      width: '100%', // -15% optionCounter
     },
   },
   optionValue: {

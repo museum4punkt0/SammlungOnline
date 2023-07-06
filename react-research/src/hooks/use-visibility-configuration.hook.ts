@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import { useTranslation } from 'react-i18next';
 
-import { EVisibility } from '../enums/index';
-import { ExhibitDescriptionFieldsVisibilityConfig } from '../utils/configuration/index';
+import { EVisibility } from '../enums';
+import { ExhibitDescriptionFieldsVisibilityConfig } from '../utils/configuration';
 import { LinkBuilder } from '../utils/LinkBuilder';
+import { GridFieldsParser } from '../parsers';
 import {
   ExhibitModel,
   IGridItem,
@@ -11,6 +12,8 @@ import {
   IAccordionObject,
   useConfigLoader,
 } from '@smb/smb-react-components-library';
+import { replaceInternalLinks } from '../parsers/visibility-config.parsers';
+import { useQueryParamsGetter } from "./use-query-params-getter.hook";
 
 export interface IUseVisibilityConfiguration {
   exhibit: ExhibitModel | null;
@@ -34,13 +37,14 @@ export interface ExhibitDescriptionFieldsKeys {
  * @param name: determines which configuration is to be used in ExhibitDescriptionFieldsVisibilityConfig
  * @param exhibit: ExhibitModel | null; The Exhibition-Object Data to be formatted
  * @param lineBreak: string the line breaks to use for array conversion
- * @returns an Array of Accordion Items, that is formatted according to the configuration, empty items are filtered out
+ * @returns an Array of Grid Items, that is formatted according to the configuration, empty items are filtered out
  */
 export const useGridConfiguration = ({
   exhibit,
   lineBreak = '\n',
 }: IUseVisibilityConfiguration): IGridItem[] => {
   const { t } = useTranslation();
+  const getQueryParamsString = useQueryParamsGetter();
   const configurations = ExhibitDescriptionFieldsVisibilityConfig['grid'];
   let configuration = null;
   /** Parses the Config object to determine weather to use the default config or some
@@ -58,78 +62,13 @@ export const useGridConfiguration = ({
     return [];
   }
 
-  // transverses each field of the configuration file
-  const items: IGridItem[] = configuration?.fields
-    ?.map(field => {
-      // sets default text for empty exhibition fields
-      const noDataAvailableText = t('search.exhibit.attributes.noData');
-      // gets the fields content from the field
-      let content = exhibit[(field.key as unknown) as keyof ExhibitModel] as
-        | string
-        | string[]
-        | string[]
-        | Array<{
-            formatted: string;
-            href: string;
-            html: boolean;
-          }>;
+  const parser = new GridFieldsParser(exhibit, t, getQueryParamsString);
 
-      if (field.key == 'titles' && Array.isArray(content)) {
-        content = content.slice(1, content.length);
-      }
-
-      // joins the content if its is an array,
-      let contentTransformed:
-        | string
-        | Array<{
-            formatted: string;
-            href: string;
-            html: boolean;
-          }> = '';
-
-      if (Array.isArray(content) && typeof content[0] === 'string') {
-        contentTransformed = (content as string[]).map(item => {
-          return {
-            formatted: item,
-            href: item,
-            html: true,
-          };
-        });
-      } else if (Array.isArray(content) && typeof content[0] !== 'string') {
-        contentTransformed = content as any;
-      } else {
-        contentTransformed = content ? (content as string) : '';
-        // Filters out empty values
-        contentTransformed = contentTransformed
-          .split('\n')
-          .filter(value => value.trim())
-          .join(lineBreak);
-        // If "Visible_if_Available"  is set and there is no content it sets
-        // title and content to  '' (will be removed with filter in the end)
-        // otherwise sets text to default empty-text or the prepared Data
-
-        if (
-          field.visibility === EVisibility.VISIBLE_IF_AVAILABLE &&
-          !contentTransformed?.trim()
-        ) {
-          return { title: '', content: '' };
-        } else {
-          contentTransformed = contentTransformed || noDataAvailableText;
-        }
-      }
-      return {
-        title:
-          field.key !== 'involvedParties'
-            ? t(`search.exhibit.attributes.${field.key}`)
-            : ' ',
-        content: contentTransformed,
-      };
+  const items = configuration?.fields
+    ?.map(fieldConfig => {
+      return parser.parseField(fieldConfig.key);
     })
-    .filter(
-      // filters out empty items
-      item => item.title && item.content,
-    );
-
+    .filter(i => (i as IGridItem).content); // remove items with no content
   return items ?? [];
 };
 
@@ -180,7 +119,6 @@ export const useCardConfiguration = ({
           }>;
       // joins the content if its is an array,
       let contentTransformed: string;
-      // console.log('content----', field, content);
 
       if (Array.isArray(content) && typeof content[0] !== 'string') {
         contentTransformed = (content[0]?.formatted ?? '') as string;
@@ -197,7 +135,6 @@ export const useCardConfiguration = ({
       // If "Visible_if_Available"  is set and there is no content it sets
       // title and content to  '' (will be removed with filter in the end)
       // otherwise sets text to default empty-text or the prepared Data
-      // console.log(field, 'field.visibility');
 
       if (
         field.visibility === EVisibility.VISIBLE_IF_AVAILABLE &&
@@ -239,7 +176,6 @@ export const useCardConfiguration = ({
  * @param lineBreak: string the line breaks to use for array conversion
  * @returns an Array of Accordion Items, that is formatted according to the configuration, empty items are filtered out
  */
-
 export const useAccordionConfiguration = ({
   exhibit,
   lineBreak = '\n',
@@ -263,22 +199,36 @@ export const useAccordionConfiguration = ({
         content &&
         content.map(item => {
           const link = new LinkBuilder(config);
-          const regex = new RegExp(/\[(.[^[\]]+)\](.+)/g);
-          const groups = regex.exec(item);
-
-          if (groups) {
-            const id = groups[1];
-            const content = groups[2];
-            return {
-              text: `${id} ${content.trimStart()}`,
-              externalUrl: link.getIconClassLink(id),
-              internalUrl: link.getSearchConditionLink(field.key, item),
+          let text = '';
+          if (typeof item === 'string') {
+            text = item;
+          } else {
+            const possibleMarkupField = (item as unknown) as {
+              formatted: string;
+              markup: string;
+              key: string;
             };
+            text = possibleMarkupField.markup
+              ? replaceInternalLinks(
+                  field.key,
+                  possibleMarkupField.markup,
+                  possibleMarkupField.formatted,
+                  t,
+                )
+              : possibleMarkupField.formatted;
           }
+          // todo: internal and external urls should no longer be relevant.
+          //    check and remove them!
           return {
-            text: item,
+            text: text,
             externalUrl: '',
-            internalUrl: link.getSearchConditionLink(field.key, item),
+            internalUrl: link.getSearchConditionLink(
+              field.key,
+              ((item as unknown) as { name: string }).name ||
+                ((item as unknown) as { key: string }).key ||
+                ((item as unknown) as { formatted: string }).formatted ||
+                item,
+            ),
           };
         });
 
@@ -324,16 +274,17 @@ export const useAccordionConfiguration = ({
       let keywordsList: IAccordionObject[] | null = [];
       const content = exhibit[(field.key as unknown) as keyof ExhibitModel] as
         | string
-        | string[];
+        | string[]
+        | { markup: string; formatted: string }[];
       if (field.key === 'provenanceEvaluation') {
         listTitle = content ? content.toString() : '';
       }
 
-      let contentTransformed: string | string[];
+      let contentTransformed: string | string[] = [];
       // Removes empty values from accordion array but keeps the array form.
-      if (Array.isArray(content)) {
-        contentTransformed = content.filter(value => value.trim());
-      } else {
+      if (Array.isArray(content) && typeof content[0] === 'string') {
+        contentTransformed = (content as string[]).filter(value => value.trim());
+      } else if (typeof content === 'string') {
         // joins the content if its is an array,
         contentTransformed = content ?? '';
 
@@ -342,6 +293,12 @@ export const useAccordionConfiguration = ({
           .split('\n')
           .filter(value => value.trim())
           .join(lineBreak);
+      } else if (Array.isArray(content)) {
+        contentTransformed = (content as { markup: string; formatted: string }[]).map(
+          el => {
+            return el.markup;
+          },
+        );
       }
 
       // If "Visible_if_Available"  is set and there is no content it sets
@@ -405,5 +362,10 @@ export const useAccordionConfiguration = ({
     items[provenanceIndex].listTitle = listTitle;
   }
 
-  return items ?? [];
+  // filter out accordion items without content or keywords to be displayed
+  return (
+    items.filter(
+      item => (item.content && item.content.length) || item.keywordsList.length,
+    ) ?? []
+  );
 };

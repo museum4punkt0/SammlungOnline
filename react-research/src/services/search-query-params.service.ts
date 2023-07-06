@@ -1,21 +1,18 @@
-import {
-  ESearchConditionFields,
-  ESearchOperators,
-  ESearchQueryParams,
-} from '../enums/index';
+import { ESearchConditionFields, ESearchOperators, ESearchQueryParams } from '../enums';
 
-import { ISearchToggle, ISearchFilterGroup } from '../utils/configuration/index';
+import { ISearchToggle, ISearchFilterGroup } from '../utils/configuration';
 
 import {
   ICreateSearchQueryOptions,
   ISearchQueryParamsData,
   ISearchFilterParsersMapInterface,
-} from '../types/index';
+} from '../types';
 
 import QueryParamsService from '../utils/query-params/query-params.service';
 import isSomeEnum from '../utils/enum.assertion';
 
 import { IConfiguration } from '@smb/smb-react-components-library';
+import { SortOption } from '../utils/configuration/sorting-info.config';
 
 class SearchQueryParamsService {
   private readonly _conditionSplitter = '+';
@@ -36,6 +33,7 @@ class SearchQueryParamsService {
       searchControls,
       conditions,
       advancedFilters,
+      sort,
     } = options;
     const queryParamsManager = new QueryParamsService();
 
@@ -43,6 +41,7 @@ class SearchQueryParamsService {
     question && queryParamsManager.set(ESearchQueryParams.question, question);
     limit && queryParamsManager.set(ESearchQueryParams.limit, limit);
     offset && queryParamsManager.set(ESearchQueryParams.offset, offset);
+    sort && queryParamsManager.set(ESearchQueryParams.sort, sort);
 
     let activeControlsCount = 0;
 
@@ -94,11 +93,12 @@ class SearchQueryParamsService {
 
     const question = queryParamsManager.get(ESearchQueryParams.question) ?? '';
     const language = queryParamsManager.get(ESearchQueryParams.language) ?? 'de';
+    const sort = queryParamsManager.get(ESearchQueryParams.sort) ?? SortOption.RELEVANCE;
 
     const rawOffset = queryParamsManager.get(ESearchQueryParams.offset);
     const rawLimit = queryParamsManager.get(ESearchQueryParams.limit);
     const offset = rawOffset ? parseInt(rawOffset, 10) : 0;
-    const limit = rawLimit ? parseInt(rawLimit, 10) : 20;
+    const limit = rawLimit ? parseInt(rawLimit, 10) : 15; // TODO set the default only once, duplicated in SearchPage and SearchContainer
 
     const searchControlsFromQuery = queryParamsManager.getAll(
       ESearchQueryParams.controls,
@@ -127,8 +127,8 @@ class SearchQueryParamsService {
 
     const advancedFilters = this._searchFilterGroups.map(item => {
       const selectedFilters = queryParamsManager.getAll(item.filtersKey);
-      const filters = item.filters.map((filter, _index) => {
-        const options = filter.options?.map((option, _index) => {
+      const filters = item.filters.map((filter, fIdx) => {
+        const options = filter.options?.map((option, oIdx) => {
           const filterKey = filter.optionsKey || '';
           const selectedOptions = queryParamsManager.getAll(filterKey);
 
@@ -136,19 +136,19 @@ class SearchQueryParamsService {
             filterKey,
             name: option.name,
             value: option.value,
-            index: _index,
+            index: oIdx,
             virtualValue: selectedOptions.includes(option.value),
           };
         });
 
         return {
           name: filter.name,
-          index: _index,
-          level: filter?.level || '',
+          index: fIdx,
+          level: filter.level || '',
           label: filter.label || '',
           filterKey: item.filtersKey || '',
           value: filter.value,
-          virtualValue: filter?.value ? selectedFilters.includes(filter?.value) : '',
+          virtualValue: filter.value ? selectedFilters.includes(filter.value) : '', // TODO virtualValue must be boolean, right?
           options: options ?? [],
         };
       });
@@ -156,7 +156,7 @@ class SearchQueryParamsService {
       return {
         name: item.name,
         label: item.label,
-        sublevel: item?.sublevel,
+        sublevel: item.sublevel,
         filters: filters ?? [],
       };
     });
@@ -169,6 +169,7 @@ class SearchQueryParamsService {
       searchControls,
       advancedFilters,
       conditions,
+      sort,
     };
   }
 }

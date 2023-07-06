@@ -26,6 +26,7 @@ export const useSearch = (): searchFunction => {
       filters: filters,
       language: data.language,
       offset: data.offset,
+      sort: data.sort,
     });
   };
 

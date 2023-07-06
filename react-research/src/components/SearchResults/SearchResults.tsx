@@ -5,12 +5,13 @@ import { Typography } from '@material-ui/core';
 
 import { ExhibitModel, LoadingSpinner } from '@smb/smb-react-components-library';
 
-import { ESearchResultView } from '../../enums/index';
+import { ESearchResultView } from '../../enums';
 import { SearchContent, SearchPagination } from '../index';
-import { useDependency } from '../../providers/index';
+import { useDependency } from '../../providers';
 import QueryParamsService from '../../utils/query-params/query-params.service';
 
 import useStyles from './searchResults.jss';
+import { SortOption } from '../../utils/configuration/sorting-info.config';
 
 export interface ISearchResultsModule {
   data: ExhibitModel[];
@@ -19,6 +20,7 @@ export interface ISearchResultsModule {
   limit: number;
   loading: boolean;
   onChange: (offset: number) => void;
+  onSortChange: (sort: SortOption) => void;
 }
 
 const SearchResultsModule: React.FC<ISearchResultsModule> = props => {
@@ -88,6 +90,7 @@ const SearchResultsModule: React.FC<ISearchResultsModule> = props => {
         view={paginationView}
         onOffsetChange={onChange}
         onViewChange={toggleViewStyle}
+        onSortChange={props.onSortChange}
       />
       <div className={classes.content}>
         <SearchContent
@@ -105,6 +108,7 @@ const SearchResultsModule: React.FC<ISearchResultsModule> = props => {
           window.scroll(0, 0);
         }}
         viewToggle={false}
+        onSortChange={props.onSortChange}
       />
     </>
   );

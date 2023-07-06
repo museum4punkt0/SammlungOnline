@@ -1,4 +1,4 @@
-import { ESearchOperators } from '../enums/search-operators.enum';
+import { ESearchOperators } from '../enums';
 
 import {
   ISearchFormData,
@@ -7,18 +7,41 @@ import {
   IVirtualSearchSwitch,
   ISearchFilterResolversMap,
   ISearchFilter,
-} from '../types/index';
+} from '../types';
 
 class SearchFiltersService {
   constructor(private readonly _searchFilterResolversMap: ISearchFilterResolversMap) {}
 
   public createFilters(data: ISearchFormData): ISearchFilter[] {
-    const searchControlsFilter = this._createSearchControlsFilters(data.searchControls);
-    const conditionFilters = this._createConditionsFilters(data.conditions);
-    const advancedFilters = this._createAdvancedFilters(data.advancedFilters);
-
-    return [...searchControlsFilter, ...conditionFilters, ...advancedFilters];
+    const { conditions, controls, facets } = this.buildFilters(data);
+    return [...(controls ?? []), ...(conditions ?? []), ...(facets ?? [])];
   }
+
+  public buildFilters = (
+    data: ISearchFormData,
+    controls = true,
+    conditions = true,
+    facets = true,
+  ): {
+    controls?: ISearchFilter[];
+    conditions?: ISearchFilter[];
+    facets?: ISearchFilter[];
+  } => {
+    const searchControlsFilter = controls
+      ? this._createSearchControlsFilters(data.searchControls)
+      : undefined;
+    const conditionFilters = conditions
+      ? this._createConditionsFilters(data.conditions)
+      : undefined;
+    const advancedFilters = facets
+      ? this._createAdvancedFilters(data.advancedFilters)
+      : undefined;
+    return {
+      controls: searchControlsFilter,
+      conditions: conditionFilters,
+      facets: advancedFilters,
+    };
+  };
 
   private _createAdvancedFilters(
     advancedFilters: IVirtualSearchFilterGroup[] = [],
@@ -30,13 +53,14 @@ class SearchFiltersService {
         filter => filter.virtualValue,
       );
       if (selectedFilters.length) {
-        const field = selectedFilters[0].filterKey; // TODO cleanup, filterKey should be available in parent IVirtualSearchFilterGroup
+        const field = selectedFilters[0].filterKey;
         const operator = ESearchOperators.AND;
         const values: Array<string> = [];
         selectedFilters.forEach(filter => {
           let value = filter.value;
           const selectedOptions = filter.options.filter(option => option.virtualValue);
           if (selectedOptions.length) {
+            // TODO check if options should better be AND-combined with value instead of replacing it
             value = selectedOptions
               .map(option => option.value)
               .join(` ${ESearchOperators.OR} `);
@@ -54,17 +78,11 @@ class SearchFiltersService {
     conditions: IVirtualSearchAttributeCondition[] = [],
   ): ISearchFilter[] {
     const filters = conditions.map(({ field, value, operator }) => {
-      if (!field) {
-        return null;
-      }
-
-      const filterResolver = this._searchFilterResolversMap[field];
-      const resolvedValue = filterResolver.resolve(value);
-
+      const filterResolver = field && this._searchFilterResolversMap[field];
+      const resolvedValue = filterResolver && filterResolver.resolve(value);
       if (!resolvedValue) {
         return null;
       }
-
       return <ISearchFilter>{ operator, field, q: resolvedValue };
     });
 

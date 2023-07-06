@@ -7,9 +7,7 @@ services:
       dockerfile: docker/Dockerfile-build
     image: smb/research
     container_name: smb-research
-    volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx.conf:/etc/nginx/nginx.conf
+
 
 networks:
   default:
