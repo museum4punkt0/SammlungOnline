@@ -27,9 +27,9 @@ import de.smbonline.mdssync.jaxb.search.response.ModuleReference;
 import de.smbonline.mdssync.jaxb.search.response.ModuleReferenceItem;
 import de.smbonline.mdssync.jaxb.search.response.RepeatableGroup;
 import de.smbonline.mdssync.jaxb.search.response.RepeatableGroupItem;
+import de.smbonline.mdssync.jaxb.search.response.VocabularyReference;
 import de.smbonline.mdssync.jaxb.search.response.VocabularyReferenceItem;
 import de.smbonline.mdssync.ruleset.ExhibitionSpaceRule;
-import de.smbonline.mdssync.util.ValueExtractor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -54,8 +53,8 @@ import static de.smbonline.mdssync.util.Dates.*;
 import static de.smbonline.mdssync.util.Lookup.*;
 import static de.smbonline.mdssync.util.MdsConstants.*;
 import static de.smbonline.mdssync.util.Misc.*;
-
-import de.smbonline.mdssync.jaxb.search.response.VocabularyReference;
+import static de.smbonline.mdssync.util.ValueExtractor.*;
+import static java.util.Objects.*;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -140,7 +139,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
                     process(obj, Operation.DELETE);
                 } else {
                     // update visibility flag for all attributes according to collection approvals
-                    String orgUnit = Objects.requireNonNull(extractOrgUnit(obj));
+                    String orgUnit = requireNonNull(extractOrgUnit(obj));
                     obj.getAttributes().forEach(attr -> {
                         attr.setVisible(this.approvalHelper.isApproved(attr, orgUnit));
                     });
@@ -244,7 +243,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
         }
 
         // compare update and sync dates
-        OffsetDateTime lastModified = toOffsetDateTime(Objects.requireNonNull(lastModifiedAttr.getValue()));
+        OffsetDateTime lastModified = toOffsetDateTime(requireNonNull(lastModifiedAttr.getValue()));
         boolean upToDate = !lastModified.isAfter(syncedTime);
         if (upToDate) {
             LOGGER.debug("Skipping sync of {}. Object is up-to-date ({} <= {})", obj.getMdsId(), lastModified, syncedTime);
@@ -310,9 +309,9 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
 
         // parse nested module items
         for (ModuleItem nestedItem : module.getModuleItem()) {
-            ModuleReferenceItem refItem = Objects.requireNonNull(findModuleRefItem(refItems, nestedItem.getId()));
+            ModuleReferenceItem refItem = requireNonNull(findModuleRefItem(refItems, nestedItem.getId()));
             refItems.remove(refItem);
-            int seqNo = ValueExtractor.extractSortInfo(refItem);
+            int seqNo = extractSortInfo(refItem);
             List<AttributeValue> nestedAttributes = parser.parseModuleItem(nestedItem).getAttributes();
             if ("ObjRegistrarRef".equals(moduleRefName)) {
                 // "Registrar" has yet another level of reference to "Exhibition"
@@ -353,15 +352,15 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
         // try with current-location
         VocabularyReference locationRef = findVocRef(moduleItem.getVocabularyReference(), "ObjCurrentLocationVoc");
         boolean useNormalLocation = currentLocationIsNormalLocation(locationRef) ||
-                // FIXME ISL hacked-in
-                Objects.requireNonNull(ValueExtractor.extractValue(findSysField(moduleItem.getSystemField(), FIELD_ORG_UNIT))).startsWith("ISL");
+                // ISL doesn't use ObjCurrentLocationVoc
+                requireNonNull(extractValue(findSysField(moduleItem.getSystemField(), FIELD_ORG_UNIT))).startsWith("ISL");
         if (useNormalLocation) {
             // fallback to normal location
             locationRef = findVocRef(moduleItem.getVocabularyReference(), "ObjNormalLocationVoc");
         }
         if (locationRef != null) {
             // build thesaurus from voc
-            VocabularyReferenceItem locationRefItem = Objects.requireNonNull(locationRef.getVocabularyReferenceItem());
+            VocabularyReferenceItem locationRefItem = requireNonNull(locationRef.getVocabularyReferenceItem());
             Thesaurus thesaurus = new Thesaurus(Long.parseLong(locationRefItem.getId()), locationRef.getName());
             thesaurus.setName(nonNullVocName(locationRefItem));
             thesaurus.setInstance(locationRef.getInstanceName());
@@ -379,15 +378,15 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
         // special but not very rare case: ObjCurrentLocationVoc points to ObjNormalLocationVoc (aktueller=ständiger Standort)
         String currentIsNormalRegExp = "^.*(([Aa]ktueller)? *=?|wie \"?) *[Ss]t(ä|ae)ndiger *Standort.*$";
         String name = nonNullVocName(locationRefItem);
-        return !name.matches(currentIsNormalRegExp);
+        return name.matches(currentIsNormalRegExp);
     }
 
     private List<GeographicalReference> extractGeoRefs(final ModuleItem moduleItem) {
         return findGroupItems(moduleItem, "ObjGeograficGrp").stream().map(groupItem -> {
             List<Thesaurus> thesauri = extractThesauri(groupItem);
-            int sequence = ValueExtractor.extractSortInfo(groupItem);
+            int sequence = extractSortInfo(groupItem);
             GeographicalReference ref = new GeographicalReference(groupItem.getId(), moduleItem.getId(), sequence);
-            ref.setDetails(ValueExtractor.extractValue(findDataField(groupItem.getDataField(), "DetailsTxt")));
+            ref.setDetails(extractValue(findDataField(groupItem.getDataField(), "DetailsTxt")));
             ref.setThesauri(thesauri);
             return ref;
         }).sorted(BY_SEQUENCE).toList();
@@ -397,7 +396,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
     private List<CulturalReference> extractCulturalRefs(final ModuleItem moduleItem) {
         return findGroupItems(moduleItem, "ObjCulturalContextGrp").stream().map(groupItem -> {
             List<Thesaurus> thesauri = extractThesauri(groupItem);
-            int sequence = ValueExtractor.extractSortInfo(groupItem);
+            int sequence = extractSortInfo(groupItem);
             CulturalReference ref = new CulturalReference(groupItem.getId(), moduleItem.getId(), sequence);
             ref.setThesauri(thesauri);
             return ref;
@@ -406,9 +405,9 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
 
     private List<MaterialReference> extractMaterials(final ModuleItem moduleItem) {
         return findGroupItems(moduleItem, "ObjMaterialTechniqueGrp").stream().map(groupItem -> {
-            int sequence = ValueExtractor.extractSortInfo(groupItem);
+            int sequence = extractSortInfo(groupItem);
             MaterialReference ref = new MaterialReference(groupItem.getId(), moduleItem.getId(), sequence);
-            ref.setDetails(ValueExtractor.extractValue(findDataField(groupItem.getDataField(), "ExportClb")));
+            ref.setDetails(extractValue(findDataField(groupItem.getDataField(), "ExportClb")));
             ref.setThesauri(extractThesauri(groupItem));
             return ref;
         }).sorted(BY_SEQUENCE).toList();
@@ -416,7 +415,7 @@ public class ObjectsResolver extends ModuleItemResolverBase<PrincipalObject> {
 
     private List<Thesaurus> extractThesauri(final RepeatableGroupItem groupItem) {
         return groupItem.getVocabularyReference().stream().map(vocRef -> {
-            VocabularyReferenceItem vocRefItem = Objects.requireNonNull(vocRef.getVocabularyReferenceItem());
+            VocabularyReferenceItem vocRefItem = requireNonNull(vocRef.getVocabularyReferenceItem());
             Thesaurus thesaurus = new Thesaurus(Long.parseLong(vocRefItem.getId()), vocRef.getName());
             thesaurus.setName(nonNullVocName(vocRefItem));
             thesaurus.setInstance(vocRef.getInstanceName());
