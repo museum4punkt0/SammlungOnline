@@ -920,7 +920,6 @@
                   "timeout_sec": 600
                 },
                 "webhook": "http://smb-search-indexer:8085/triggers/index-event"
-                }
               }
             ]
           },
@@ -1743,7 +1742,6 @@
                   "timeout_sec": 600
                 },
                 "webhook": "http://smb-search-indexer:8085/triggers/index-event"
-                }
               }
             ]
           },
