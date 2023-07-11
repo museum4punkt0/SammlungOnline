@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   smb-elasticsearch:
-    image: reg.xailabs.dev/xailabs/elasticsearch:7.16.1
+    image: reg-smb.xaidev.net/xailabs/elasticsearch:7.16.1
     container_name: smb-elasticsearch
     restart: unless-stopped
     environment: 

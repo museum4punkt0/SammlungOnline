@@ -103,7 +103,7 @@ export interface ITitle {
  * This varies from endpoint to endpoint (flat | full | id) and therefore should
  * be parsed to it's corresponding ExhibitModel (ExhibitModelFull | ExhibitModelFlat)
  *
- * @docs: https://gitsrv01.xailabs.dev/smb/search-indexer/-/tree/html-support/
+ * @docs: https://gitlab-smb.xaidev.net/smb/search-indexer/-/tree/dev/
  */
 export class GraphqlExhibitModel {
   public readonly id!: number;

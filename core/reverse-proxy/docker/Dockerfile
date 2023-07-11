@@ -1,5 +1,5 @@
-FROM reg.xailabs.dev/xailabs/nginx:1.22
-LABEL maintainer="Xailabs<it-support@xailabs.de>"
+FROM reg-smb.xaidev.net/xailabs/nginx:1.22
+LABEL maintainer="xailabs-smb<it-support@xailabs.de>"
 
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx.conf /etc/nginx/nginx.conf

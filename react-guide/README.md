@@ -42,7 +42,7 @@ npm ERR! syscall spawn git
 npm ERR! path git
 npm ERR! errno -24
 npm ERR! An unknown git error occurred
-npm ERR! command git --no-replace-objects clone https://gitsrv01.xailabs.dev/smb/eslint-config-smb.git .npm/_cacache/tmp/git-cloneWznM2B --recurse-submodules
+npm ERR! command git --no-replace-objects clone https://gitlab-smb.xaidev.net/smb/eslint-config-smb.git .npm/_cacache/tmp/git-cloneWznM2B --recurse-submodules
 ```
 
 Fix:

@@ -1,5 +1,5 @@
-FROM reg.xailabs.dev/xailabs/nginx:1.23
-LABEL maintainer="Xailabs<it-support@xailabs.de>"
+FROM reg-smb.xaidev.net/xailabs/nginx:1.23
+LABEL maintainer="xailabs-smb<it-support@xailabs.de>"
 
 RUN apt-get update && apt-get install -y nginx-extras apache2-utils logrotate
 

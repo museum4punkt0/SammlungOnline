@@ -1,8 +1,8 @@
 # Build Container
 # ------------------------------------
 
-FROM reg.xailabs.dev/xailabs/openjdk:17-slim as builder
-LABEL maintainer="xailabs<it-support@xailabs.de>"
+FROM reg-smb.xaidev.net/xailabs/openjdk:17-slim as builder
+LABEL maintainer="xailabs-smb<it-support@xailabs.de>"
 
 WORKDIR /opt/mds-sync
 COPY . .
@@ -12,8 +12,8 @@ RUN ./gradlew bootWar
 # Runnable Container
 # ------------------------------------
 
-FROM reg.xailabs.dev/xailabs/openjdk:17-slim as server
-LABEL maintainer="xailabs<it-support@xailabs.de>"
+FROM reg-smb.xaidev.net/xailabs/openjdk:17-slim as server
+LABEL maintainer="xailabs-smb<it-support@xailabs.de>"
 
 WORKDIR /opt/mds-sync
 COPY --from=builder /opt/mds-sync/build/libs/mds-sync* ./mds-sync.war

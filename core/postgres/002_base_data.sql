@@ -656,10 +656,10 @@ INSERT INTO smb.stt_platform(value, comment) VALUES
 --
 
 INSERT INTO smb.stt_platform_config(id, platform_key, link_template, hide_in_overview, hero_slider_limit, enable_story_filter) VALUES 
- ( 1, 'SMB', 'https://stt-smb.xailabs.com/:lang/story/:slug', false, 20, true)
-,( 2, 'HBF', 'https://stt-hbf.xailabs.com/:lang/story/:slug', false,  5, true)
-,( 3, 'ISL', 'https://stt-isl.xailabs.com/:lang/story/:slug', false, 10, true)
-,( 4, 'KGM', 'https://stt-kgm.xailabs.com/:lang/story/:slug', false,  3, true)
+ ( 1, 'SMB', 'https://stt-smb.xaidev.net/:lang/story/:slug', false, 20, true)
+,( 2, 'HBF', 'https://stt-hbf.xaidev.net/:lang/story/:slug', false,  5, true)
+,( 3, 'ISL', 'https://stt-isl.xaidev.net/:lang/story/:slug', false, 10, true)
+,( 4, 'KGM', 'https://stt-kgm.xaidev.net/:lang/story/:slug', false,  3, true)
 ;
 SELECT setval('smb.stt_platform_config_id_seq', 5); -- MAX(id) + 1
 

@@ -1,6 +1,6 @@
 # Build Container
-FROM reg.xailabs.dev/xailabs/openjdk:17-slim as builder
-LABEL maintainer="Xailabs<it-support@xailabs.de>"
+FROM reg-smb.xaidev.net/xailabs/openjdk:17-slim as builder
+LABEL maintainer="xailabs-smb<it-support@xailabs.de>"
 
 WORKDIR /opt/hasura-auth
 COPY . .
@@ -9,8 +9,8 @@ RUN chmod +x ./gradlew
 RUN ./gradlew bootJar
 
 # Runnable Container
-FROM reg.xailabs.dev/xailabs/openjdk:17-slim as server
-LABEL maintainer="Xailabs<it-support@xailabs.de>"
+FROM reg-smb.xaidev.net/xailabs/openjdk:17-slim as server
+LABEL maintainer="xailabs-smb<it-support@xailabs.de>"
 
 WORKDIR /opt/hasura-auth
 COPY --from=builder /opt/hasura-auth/build/libs/hasura-auth* ./hasura-auth.jar

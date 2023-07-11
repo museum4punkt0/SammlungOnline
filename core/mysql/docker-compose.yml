@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   smb-mysql:
-    image: reg.xailabs.dev/xailabs/mysql:5.7
+    image: reg-smb.xaidev.net/xailabs/mysql:5.7
     container_name: smb-mysql
     restart: unless-stopped
     

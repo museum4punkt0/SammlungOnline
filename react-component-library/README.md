@@ -3,7 +3,7 @@
 ## Quick start
 
 ```bash
-git clone https://gitsrv01.xailabs.dev/smb/react-component-library-2.git
+git clone https://gitlab-smb.xaidev.net/smb/react-component-library-2.git
 npm install
 npm run start
 ```
@@ -17,7 +17,7 @@ This is a components library for sharing React components and SMB services via G
 In order to use the library in other projects install it as dependency.
 
 ```bash
-npm i --save git+https://gitsrv01.xailabs.dev/smb/react-component-library-2.git
+npm i --save git+https://gitlab-smb.xaidev.net/smb/react-component-library-2.git
 ```
 
 ### How to install in SMB platform projects
