@@ -144,9 +144,9 @@ const TRANSLATION_EN = {
       filtersSelected: 'Active filters',
     },
     actions: {
-      clear: '',
-      addCondition: '',
-      search: '',
+      clear: 'Remove',
+      addCondition: 'Refine search',
+      search: 'Start search',
     },
     sorting: {
       label: 'Sort by',

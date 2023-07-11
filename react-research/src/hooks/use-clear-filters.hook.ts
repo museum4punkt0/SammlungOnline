@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ISearchFormData, IVirtualSearchFilterGroup } from '../types/index';
 import { ESearchFormFields } from '../enums/index';
+import { LOCAL_STORAGE_FILTERS_KEY } from "../providers/facets-context.provider";
 
 export const useClearFilters = () => {
   const { reset, getValues } = useFormContext<ISearchFormData>();
@@ -27,5 +28,7 @@ export const useClearFilters = () => {
       advancedFilters,
       searchControls: getValues(ESearchFormFields.searchControls),
     });
+    // reset entry point filters in local storage
+    localStorage.setItem(LOCAL_STORAGE_FILTERS_KEY, '[]');
   }, [reset, getValues]);
 };

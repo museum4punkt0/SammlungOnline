@@ -58,7 +58,7 @@ export const FacetsContext = createContext<IFacetsContext>({
 
 export const useFacetsContext = () => useContext(FacetsContext);
 
-const LOCAL_STORAGE_FILTERS_KEY = 'filtersEntryPoint';
+export const LOCAL_STORAGE_FILTERS_KEY = 'filtersEntryPoint';
 
 /**
  * Function to read the value from local storage for the selected filters groups
@@ -66,6 +66,9 @@ const LOCAL_STORAGE_FILTERS_KEY = 'filtersEntryPoint';
  */
 const _getLocalStorageValueParsed = (): ISelectedFiltersGroup[] => {
   const localStorageValue = localStorage.getItem(LOCAL_STORAGE_FILTERS_KEY) as string;
+  if (!localStorageValue) {
+    return [];
+  }
   try {
     return JSON.parse(localStorageValue);
   } catch (e) {
@@ -87,7 +90,7 @@ export const FacetsContextProvider: React.FC = ({ children }) => {
 
   const [selectedFiltersGroups, setSelectedFiltersGroups] = useState<
     ISelectedFiltersGroup[]
-  >(_getLocalStorageValueParsed());
+  >(_getLocalStorageValueParsed() ?? []);
 
   useEffect(() => {
     // persist selectedFiltersGroups to local storage between page refresh
@@ -192,14 +195,13 @@ export const FacetsContextProvider: React.FC = ({ children }) => {
           filtersGroup.selectedFiltersLabels.push(filter);
         }
       }
-
       if (!hasGroup) {
         newList.push({
           groupName: group,
           selectedFiltersLabels: [filter],
         });
       }
-
+      
       setSelectedFiltersGroups(newList);
     },
     [selectedFiltersGroups],
@@ -221,7 +223,6 @@ export const FacetsContextProvider: React.FC = ({ children }) => {
           }
         }
       }
-
       if (emptyPosition !== -1) {
         newList.splice(emptyPosition, 1);
       }

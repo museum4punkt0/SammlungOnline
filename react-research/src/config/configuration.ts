@@ -26,7 +26,7 @@ const STAGE: IConfiguration = {
 const PRODUCTION: IConfiguration = {
   stage: AppStage.PRODUCTION,
   PRODUCTION_READY: true,
-  IMAGE_PROVIDER_ENDPOINT: 'https://smb-research-live.xaidev.net/images',
+  IMAGE_PROVIDER_ENDPOINT: 'https://recherche.smb.museum/images',
   GRAPHQL_ENDPOINT: 'https://api.smb.museum/v1/graphql',
   ELASTIC_API_URL: 'https://api.smb.museum/search',
   INTRO_DOMAIN: 'https://sammlung.smb.museum',
